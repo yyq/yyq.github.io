@@ -6,7 +6,7 @@ comments: true
 sharing: true
 footer: true
 ---
-最近去过舟山
+###最近去过，舟山
 ![image](http://youngstory.qiniudn.com/IMG_0229.JPG)
 ###她和我
-![image](../images/20080930davidlily_mini.jpg)
+![image](http://youngstory.qiniudn.com/20080930davidlily.jpg)
