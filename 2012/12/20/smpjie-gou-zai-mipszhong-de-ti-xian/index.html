@@ -1,0 +1,125 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/><meta content="telephone=no" name="format-detection"/><meta name="description" content="Technology Blog"/><title>SMP结构在MIPS中的体现 | Young Blog</title><link rel="stylesheet" type="text/css" href="/css/normalize.css"/><link rel="stylesheet" type="text/css" href="/css/pure-min.css"/><link rel="stylesheet" type="text/css" href="/css/grids-responsive-min.css"/><link rel="stylesheet" type="text/css" href="/css/style.css"/><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"/><link rel="apple-touch-icon" href="/apple-touch-icon.png"/><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"/><link rel="alternate" type="application/atom+xml" href="/atom.xml"/></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">SMP结构在MIPS中的体现</h1><a id="logo" href="/">Young Blog</a><p class="description">Stay Hungry Stay Foolish</p></div><div id="nav-menu"><a href="/" class="current"><i class="icon-home"> Home</i></a><a href="/archives/"><i class="icon-archive"> Archive</i></a><a href="/about/"><i class="icon-about"> About</i></a><a href="/atom.xml"><i class="icon-rss"> RSS</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post post-page"><h1 class="post-title">SMP结构在MIPS中的体现</h1><div class="post-meta">2012-12-20 | </div><span data-disqus-identifier="2012/12/20/smpjie-gou-zai-mipszhong-de-ti-xian/" class="disqus-comment-count"></span><div class="post-content"><p>囧了哎，前面分析完x86的一堆代码，这会儿又得找到在内核源码中，有关mips架构和smp有关的代码</p>
+<p>恩，一句话评论：mips的smp结构就是x86的smp的一种精简</p>
+<p>依旧是kernel 3.5.4 ，主要在目录/arch/mips下<br><a id="more"></a></p>
+<h1 id="和MIPS有关的SMP数据结构和函数"><a href="#和MIPS有关的SMP数据结构和函数" class="headerlink" title="和MIPS有关的SMP数据结构和函数"></a>和MIPS有关的SMP数据结构和函数</h1><h2 id="xchg指令，CPU锁总线"><a href="#xchg指令，CPU锁总线" class="headerlink" title="xchg指令，CPU锁总线"></a>xchg指令，CPU锁总线</h2><p><strong>spinlock_t</strong>数据结构</p>
+<p>include/linux/spinlock_types.h, line 76</p>
+<pre><code>struct {
+    u8 __padding[LOCK_PADSIZE];
+    struct lockdep_map dep_map;
+};
+</code></pre><p><strong>spin_trylock()</strong>和<strong>spin_unlock()</strong>之间是需要保证互斥，同一时间中，只有一个CPU在里面执行的临界区。</p>
+<h2 id="内存路障Memory-Barrier"><a href="#内存路障Memory-Barrier" class="headerlink" title="内存路障Memory Barrier"></a>内存路障Memory Barrier</h2><p>高速缓存的使用可能会使实际的内存操作改变次序。从访问内存的角度看，CPU可能会有一些路基操作已经完成，但是物理上尚未实现。“内存路障”就是使得某些操作之前，把之前的物理操作完成，才能开始新的。函数<strong>mb(),rmb(),wmb()</strong><br>    arch/mips/include/asm/barrier.h, line 132</p>
+<pre><code>#define wmb()           fast_wmb()
+#define rmb()           fast_rmb()
+#define mb()            fast_mb()
+</code></pre><h2 id="知道当前进程在哪个cpu上运行"><a href="#知道当前进程在哪个cpu上运行" class="headerlink" title="知道当前进程在哪个cpu上运行"></a>知道当前进程在哪个cpu上运行</h2><p><strong>smp_processor_id()</strong>,include/linux/smp.h, line 218</p>
+<pre><code># define smp_processor_id() debug_smp_processor_id()
+</code></pre><p><strong>smp_processor_id()</strong>,include/linux/smp.h, line 220</p>
+<pre><code># define smp_processor_id() raw_smp_processor_id()
+</code></pre><p><strong>hard_smp_processor_id()</strong>,arch/mips/include/asm/netlogic/mips-extns.h, line 71</p>
+<pre><code>static inline int hard_smp_processor_id(void)
+{
+    return __read_32bit_c0_register($15, 1) &amp; 0x3ff;
+}
+</code></pre><h2 id="一CPU应系统中另一CPU的请求而进行一次进程调度"><a href="#一CPU应系统中另一CPU的请求而进行一次进程调度" class="headerlink" title="一CPU应系统中另一CPU的请求而进行一次进程调度"></a>一CPU应系统中另一CPU的请求而进行一次进程调度</h2><p>当一个CPU需要另一个CPU进行一次进程调度时，就可以通过调用一个函数smp_send_reschedule()向目标CPU发出一个RESCHEDULE_VECTOR中断请求。</p>
+<p><strong>smp_send_reschedule()</strong>,arch/mips/include/asm/smp.h, line 53</p>
+<pre><code>static inline void smp_send_reschedule(int cpu)
+{
+    extern struct plat_smp_ops *mp_ops;     /* private */ 
+    mp_ops-&gt;send_ipi_single(cpu, SMP_RESCHEDULE_YOURSELF);
+}
+</code></pre><h2 id="处理器间某种中断向量：CALL-FUNCTION-VECTOR"><a href="#处理器间某种中断向量：CALL-FUNCTION-VECTOR" class="headerlink" title="处理器间某种中断向量：CALL_FUNCTION_VECTOR"></a>处理器间某种中断向量：CALL_FUNCTION_VECTOR</h2><p>还有一个处理器间中断向量是CALL_FUNCTION_VECTOR，用来请求目标CPU执行一个指定的函数。<br>(x86才找到这个，mips没找到)发送者先设置好一个全局的call_data_struct数据结构，然后向目标发出请求。</p>
+<p>该向量的中断服务程序是<strong>smp_call_function_interrupt()</strong></p>
+<p>arch/mips/kernel/smp.c, line 146</p>
+<pre><code>void __irq_entry smp_call_function_interrupt(void)
+{
+    irq_enter();
+    generic_smp_call_function_single_interrupt();
+    generic_smp_call_function_interrupt();
+    irq_exit();
+}
+</code></pre><h2 id="SMP结构中的进程调度"><a href="#SMP结构中的进程调度" class="headerlink" title="SMP结构中的进程调度"></a>SMP结构中的进程调度</h2><p>cpu会通过<strong>schedule()</strong>从系统的就绪队列中挑选了一个进程作为运行的下一个进程。</p>
+<p>kernel/sched/core.c, line 3462</p>
+<pre><code>asmlinkage void __sched schedule(void)
+{
+     struct task_struct *tsk = current; 
+     sched_submit_work(tsk);
+     __schedule();
+}
+EXPORT_SYMBOL(schedule);
+</code></pre><p>__schedule()中，区分了smp和单CPU。</p>
+<h2 id="SMP系统的引导"><a href="#SMP系统的引导" class="headerlink" title="SMP系统的引导"></a>SMP系统的引导</h2><p>系统刚刚加电时或者reset后，系统中暂时只有一个处理器运行：“引导处理器”BP，其余暂停状态的是“应用处理器”AP。</p>
+<p>BP完成自身初始化，进入保护模式，开启页式存储管理机制，完成内存的初始化，然后<strong>start_kernel()</strong>会调用<strong>smp_init()</strong>SMP结构初始化</p>
+<p>init/main.c, line 322</p>
+<pre><code>static void __init smp_init(void)
+{
+    APIC_init_uniprocessor();    //其中内容很多
+}
+//2.6代码如下：
+smp_boot_cpus();
+smp_threads_read=1
+smp_commence()
+</code></pre><p>在某处注释发现：<strong>smp_boot_cpus()/smp_commence() is replaced by smp_prepare_cpus()/__cpu_up()/smp_cpus_done()</strong></p>
+<p>依次启动系统中的各个CPU。各自初始化后都停下来等待统一的“起跑”命令。smp_commence（）</p>
+<p><strong>smp_prepare_boot_cpu</strong>，arch/mips/kernel/smp.c, line 189</p>
+<pre><code>/* preload SMP state for boot cpu */
+void __devinit smp_prepare_boot_cpu(void)
+{
+    set_cpu_possible(0, true);
+    set_cpu_online(0, true);
+    cpu_set(0, cpu_callin_map);
+}
+</code></pre><p><strong>smp_prepare_cpus</strong>，arch/mips/kernel/smp.c, line 178</p>
+<pre><code>void __init smp_prepare_cpus(unsigned int max_cpus)
+{
+    init_new_context(current, &amp;init_mm);
+    current_thread_info()-&gt;cpu = 0;
+    mp_ops-&gt;prepare_cpus(max_cpus);
+    set_cpu_sibling_map(0);
+#ifndef CONFIG_HOTPLUG_CPU
+    init_cpu_present(cpu_possible_mask);
+#endif
+}
+</code></pre><p><strong>__cpu_up</strong>，arch/mips/kernel/smp.c, line 197</p>
+<pre><code>int __cpuinit __cpu_up(unsigned int cpu, struct task_struct *tidle)
+{
+    mp_ops-&gt;boot_secondary(cpu, tidle); 
+    /*
+     * Trust is futile.  We should really have timeouts ...
+     */
+    while (!cpu_isset(cpu, cpu_callin_map))
+            udelay(100);
+
+    return 0;
+}
+</code></pre><p><strong>smp_cpus_done</strong>，arch/mips/kernel/smp.c, line 171</p>
+<pre><code>void __init smp_cpus_done(unsigned int max_cpus)
+{
+    mp_ops-&gt;cpus_done();
+    synchronise_count_master();
+}
+</code></pre><p>内核中的全局变量，<strong>max_cpus</strong>，表示系统中有多少个CPU。也可以指定。</p>
+<p>arch/mips/kernel/smp-bmips.c, line 39</p>
+<pre><code>static int __maybe_unused max_cpus = 1;
+</code></pre></div><div class="tags"><a href="/tags/mips/">mips</a><a href="/tags/cpu/">cpu</a><a href="/tags/smp/">smp</a></div><div class="post-nav"><a href="/2012/12/20/shu-ju-jie-gou-cpuinfo-mipsfen-xi/" class="pre"><i class="icon-previous">数据结构cpuinfo_mips分析</i></a><a href="/2012/12/20/smpyou-guan-de-shu-ju-jie-gou-he-han-shu/" class="next">SMP有关的数据结构和函数<i class="icon-next"></i></a></div><div id="disqus_thread"><script>var disqus_shortname = 'yyq';
+var disqus_identifier = '2012/12/20/smpjie-gou-zai-mipszhong-de-ti-xian/';
+var disqus_title = 'SMP结构在MIPS中的体现';
+var disqus_url = 'http://yyqing.me/2012/12/20/smpjie-gou-zai-mipszhong-de-ti-xian/';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//yyq.disqus.com/count.js" async="async"></script></div></div></div></div><div class="pure-u-1-4"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search" class="search-form-input"/><input type="hidden" name="sitesearch" value="http://yyqing.me"/></form></div><div class="widget"><form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="search" name="word" maxlength="20" placeholder="Search" class="search-form-input"/><input type="hidden" name="si" value="http://yyqing.me"/><input name="tn" type="hidden" value="bds"/><input name="cl" type="hidden" value="3"/><input name="ct" type="hidden" value="2097152"/><input name="s" type="hidden" value="on"/></form></div><div class="widget"><div class="widget-title">Categories</div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/生活/">生活</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/生活/五味杂陈/">五味杂陈</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/">计算机</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/infrastructure/">Infrastructure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/algorithm/">algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/security/">security</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a></li></ul></div><div class="widget"><div class="widget-title">Tags</div><div class="tagcloud"><a href="/tags/clearcase/" style="font-size: 15px;">clearcase</a> <a href="/tags/git/" style="font-size: 15px;">git</a> <a href="/tags/cpu/" style="font-size: 15px;">cpu</a> <a href="/tags/smp/" style="font-size: 15px;">smp</a> <a href="/tags/数据结构/" style="font-size: 15px;">数据结构</a> <a href="/tags/unix/" style="font-size: 15px;">unix</a> <a href="/tags/apue/" style="font-size: 15px;">apue</a> <a href="/tags/life/" style="font-size: 15px;">life</a> <a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/doxygen/" style="font-size: 15px;">doxygen</a> <a href="/tags/tools/" style="font-size: 15px;">tools</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/ios/" style="font-size: 15px;">ios</a> <a href="/tags/xcode/" style="font-size: 15px;">xcode</a> <a href="/tags/numberpad/" style="font-size: 15px;">NumberPad</a> <a href="/tags/simulator/" style="font-size: 15px;">simulator</a> <a href="/tags/device/" style="font-size: 15px;">device</a> <a href="/tags/storyboard/" style="font-size: 15px;">storyboard</a> <a href="/tags/autolayout/" style="font-size: 15px;">autolayout</a> <a href="/tags/facebook/" style="font-size: 15px;">facebook</a> <a href="/tags/hack/" style="font-size: 15px;">hack</a> <a href="/tags/文摘/" style="font-size: 15px;">文摘</a> <a href="/tags/kernel/" style="font-size: 15px;">kernel</a> <a href="/tags/apple/" style="font-size: 15px;">apple</a> <a href="/tags/ios/" style="font-size: 15px;">iOS</a> <a href="/tags/hig/" style="font-size: 15px;">HIG</a> <a href="/tags/北京交通大学/" style="font-size: 15px;">北京交通大学</a> <a href="/tags/objective-c/" style="font-size: 15px;">objective-c</a> <a href="/tags/gprof/" style="font-size: 15px;">gprof</a> <a href="/tags/class/" style="font-size: 15px;">class</a> <a href="/tags/debug/" style="font-size: 15px;">debug</a> <a href="/tags/eclipse/" style="font-size: 15px;">eclipse</a> <a href="/tags/gdb/" style="font-size: 15px;">gdb</a> <a href="/tags/qemu/" style="font-size: 15px;">qemu</a> <a href="/tags/yahoo/" style="font-size: 15px;">yahoo</a> <a href="/tags/mac/" style="font-size: 15px;">mac</a> <a href="/tags/latex/" style="font-size: 15px;">Latex</a> <a href="/tags/中文/" style="font-size: 15px;">中文</a> <a href="/tags/乱码/" style="font-size: 15px;">乱码</a> <a href="/tags/shortcut/" style="font-size: 15px;">shortcut</a> <a href="/tags/autoindent/" style="font-size: 15px;">autoindent</a> <a href="/tags/mashup/" style="font-size: 15px;">mashup</a> <a href="/tags/hackthon/" style="font-size: 15px;">hackthon</a> <a href="/tags/flickr/" style="font-size: 15px;">flickr</a> <a href="/tags/yql/" style="font-size: 15px;">YQL</a> <a href="/tags/c/" style="font-size: 15px;">c</a> <a href="/tags/offer/" style="font-size: 15px;">offer</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/笔试，面试，找工作/" style="font-size: 15px;">笔试，面试，找工作</a> <a href="/tags/mips/" style="font-size: 15px;">mips</a> <a href="/tags/cleartool/" style="font-size: 15px;">cleartool</a> <a href="/tags/git-cc/" style="font-size: 15px;">git-cc</a> <a href="/tags/博库书城/" style="font-size: 15px;">博库书城</a> <a href="/tags/麻子汤圆/" style="font-size: 15px;">麻子汤圆</a> <a href="/tags/文二路/" style="font-size: 15px;">文二路</a> <a href="/tags/阮一峰/" style="font-size: 15px;">阮一峰</a> <a href="/tags/黑客与画家/" style="font-size: 15px;">黑客与画家</a> <a href="/tags/公交一公司/" style="font-size: 15px;">公交一公司</a> <a href="/tags/益乐桥/" style="font-size: 15px;">益乐桥</a> <a href="/tags/杨公堤/" style="font-size: 15px;">杨公堤</a> <a href="/tags/虎跑路/" style="font-size: 15px;">虎跑路</a> <a href="/tags/阿里巴巴滨江园区/" style="font-size: 15px;">阿里巴巴滨江园区</a> <a href="/tags/情人节/" style="font-size: 15px;">情人节</a> <a href="/tags/狼图腾/" style="font-size: 15px;">狼图腾</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/log/" style="font-size: 15px;">log</a> <a href="/tags/log4j/" style="font-size: 15px;">log4j</a> <a href="/tags/security/" style="font-size: 15px;">security</a> <a href="/tags/algorithm/" style="font-size: 15px;">algorithm</a> <a href="/tags/leetcode/" style="font-size: 15px;">leetcode</a> <a href="/tags/oj/" style="font-size: 15px;">oj</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/certification/" style="font-size: 15px;">certification</a> <a href="/tags/https/" style="font-size: 15px;">https</a> <a href="/tags/ssl/" style="font-size: 15px;">ssl</a> <a href="/tags/上坟/" style="font-size: 15px;">上坟</a> <a href="/tags/坟冢/" style="font-size: 15px;">坟冢</a> <a href="/tags/婆/" style="font-size: 15px;">婆</a> <a href="/tags/小猫/" style="font-size: 15px;">小猫</a> <a href="/tags/洋芋/" style="font-size: 15px;">洋芋</a> <a href="/tags/build/" style="font-size: 15px;">build</a> <a href="/tags/ci/" style="font-size: 15px;">CI</a> <a href="/tags/cloud/" style="font-size: 15px;">cloud</a> <a href="/tags/coverage/" style="font-size: 15px;">coverage</a> <a href="/tags/coveralls/" style="font-size: 15px;">coveralls</a> <a href="/tags/service/" style="font-size: 15px;">service</a> <a href="/tags/travis/" style="font-size: 15px;">travis</a> <a href="/tags/装饰器/" style="font-size: 15px;">装饰器</a> <a href="/tags/py2app/" style="font-size: 15px;">py2app</a> <a href="/tags/smtp/" style="font-size: 15px;">SMTP</a> <a href="/tags/wxpython/" style="font-size: 15px;">wxpython</a> <a href="/tags/爬虫/" style="font-size: 15px;">爬虫</a> <a href="/tags/theos/" style="font-size: 15px;">theos</a> <a href="/tags/tweak/" style="font-size: 15px;">tweak</a> <a href="/tags/conference/" style="font-size: 15px;">conference</a> <a href="/tags/security/" style="font-size: 15px;">Security</a> <a href="/tags/working/" style="font-size: 15px;">working</a> <a href="/tags/计算机/" style="font-size: 15px;">计算机</a></div></div><div class="widget"><div class="widget-title">Recent</div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/i-m-back/">I'm back</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/11/MARIAGE D'AMOUR/">新琴首秀之MARIAGE D'AMOUR</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/26/commit-a-bug-to-wooyun/">在乌云提交一个漏洞成功并注册成为白帽子</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/19/archsummit2015/">参加ArchSummit2015有感</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/11/ios-security-learn-3/">iOS逆向工程学习日记3--实践</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/07/ios-security-learn-2/">iOS逆向-学习日记2-Mac OS X上的工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/24/python_spider/">Python爬糗百热门20条并邮件分发+wxPython简易GUI+py2app转成可执行文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/14/python-property/">Python @property装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/05/python-decorator-research/">Python装饰器有趣实例探究</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/05/14/that-cloud-services-of-ci/">That Cloud Services of CI</a></li></ul></div><div class="widget"><div class="widget-title">Recent Comments</div><script type="text/javascript" src="//yyq.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div><div class="widget"><div class="widget-title">Blogroll</div><ul></ul><a href="http://blog.csdn.net/davidbeckham2901" title="My CSDN Blog" target="_blank">My CSDN Blog</a><ul></ul><a href="http://www.google.com/" title="Google" target="_blank">Google</a></div></div></div></div><div id="footer">© <a href="/" rel="nofollow">Young Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div><a id="rocket" href="#top" class="show"></a><script src="/js/jquery.min.js"></script>
+<script src="/js/totop.js"></script><script src="/js/fancybox.pack.js"></script>
+<script src="/js/jquery.fancybox.js"></script><link rel="stylesheet" href="/css/jquery.fancybox.css"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create','UA-37075097-1','auto');ga('send','pageview');
+</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cef6d518277d9356460d9798b8e22fb8";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+  })();</script></div></body></html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/><meta content="telephone=no" name="format-detection"/><meta name="description" content="Technology Blog"/><title>学习linux启动过程 | Young Blog</title><link rel="stylesheet" type="text/css" href="/css/normalize.css"/><link rel="stylesheet" type="text/css" href="/css/pure-min.css"/><link rel="stylesheet" type="text/css" href="/css/grids-responsive-min.css"/><link rel="stylesheet" type="text/css" href="/css/style.css"/><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"/><link rel="apple-touch-icon" href="/apple-touch-icon.png"/><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"/><link rel="alternate" type="application/atom+xml" href="/atom.xml"/></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">学习linux启动过程</h1><a id="logo" href="/">Young Blog</a><p class="description">Stay Hungry Stay Foolish</p></div><div id="nav-menu"><a href="/" class="current"><i class="icon-home"> Home</i></a><a href="/archives/"><i class="icon-archive"> Archive</i></a><a href="/about/"><i class="icon-about"> About</i></a><a href="/atom.xml"><i class="icon-rss"> RSS</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post post-page"><h1 class="post-title">学习linux启动过程</h1><div class="post-meta">2013-01-15 | </div><span data-disqus-identifier="2013/01/15/xue-xi-linuxqi-dong-guo-cheng/" class="disqus-comment-count"></span><div class="post-content"><p>下一步需要学习动态的linux函数调用关系，所以得先从启动过程开始了解。从一本书<strong>linux内核设计的艺术</strong>中了解到的资料，以下内容如果不做特别注释的话，均为Linux0.11中的方式，可能新版本的kernel的函数名和这个会不一样，但是处理流程，我想应该每个操作系统都是一样的吧。</p>
+<a id="more"></a>
+<h2 id="从开机加电，到执行main函数之前的过程"><a href="#从开机加电，到执行main函数之前的过程" class="headerlink" title="从开机加电，到执行main函数之前的过程"></a>从开机加电，到执行main函数之前的过程</h2><p>好吧，这里应该是有执行3个汇编的文件，但是我不太了解。囧</p>
+<h2 id="从main函数，到启动OK（即可以响应用户操作了）"><a href="#从main函数，到启动OK（即可以响应用户操作了）" class="headerlink" title="从main函数，到启动OK（即可以响应用户操作了）"></a>从main函数，到启动OK（即可以响应用户操作了）</h2><p>这个步骤做了3件事情：</p>
+<ul>
+<li>创建进程0，使之具备在主机中进行运算的能力，2.1</li>
+<li>已进程0为母本创建进程1，不仅有运算能力，而且还能以文件的行驶与外设进行数据交互，2.2-2.4</li>
+<li>以进程1为母本创建进程2，全面具备进程1的能力和环境，进一步具备支持“人机交互”，实现怠速，2.5-2.8</li>
+</ul>
+<h3 id="开中断之前的准备工作"><a href="#开中断之前的准备工作" class="headerlink" title="开中断之前的准备工作"></a>开中断之前的准备工作</h3><ol>
+<li>复制根设备号和硬盘参数表</li>
+<li>物理内存规划格局：除了1MB以内的内核区之外，其余物理内存要完成的工作是不同的，对这三类不同性质的区域，在大小，位置，以及管理方式上进行规划<ul>
+<li>“主内存区“：用来承载进程的相关信息，包括进程管理结构，进程对应的程序；</li>
+<li>“缓冲区”：主机与外设进行数据交互的中转站</li>
+<li>“虚拟盘区”：可选的区域，可将外设上的数据先复制到虚拟盘区，然后再使用。</li>
+</ul>
+</li>
+<li>虚拟盘设置与初始化：rd_init（某个设备请求的函数，对应到内核某块代码？？？？？）</li>
+<li>内存管理结构mem_map初始化：mem_init,对于1MB以上的内存都是分页管理的。</li>
+<li>异常处理类中断服务程序挂接：trap_init</li>
+<li>初始化块设备请求项结构</li>
+<li>与简历人机交互界面相关的外设的中断服务程序挂接<ul>
+<li>串行口设置</li>
+<li>显示器设置</li>
+<li>键盘设置</li>
+</ul>
+</li>
+<li>开机启动时间设置：进程0需要具备对时间的掌控能力，time_init()</li>
+<li>系统开始激活进程0：sched_init函数开始<ul>
+<li>使其具备运算及创建其他进程的能力</li>
+<li>时刻具备参与多进程轮询的能力</li>
+<li>具备处理系统调用的能力</li>
+</ul>
+</li>
+<li>进程相关事务初始化设置：<ul>
+<li>“任务状态描述符表”和“局部数据描述符表”挂接到全局描述附表GDT中<ul>
+<li>对GDT和进程管理结构task[64]中除了与进程0相关的位置外，清空设置</li>
+<li>将GDT中关于进程0的“任务状态描述符”和“局部数据描述符”分别记录在CPU中的“任务状态寄存器”和“局部数据寄存器”中。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>时钟中断设置</li>
+<li>系统调用服务程序挂接：set_system_gate与中断描述符表挂接</li>
+<li>初始化缓冲区管理结构</li>
+<li>初始化硬盘hd_init,hd_interrupt</li>
+<li>初始化软盘floppy_init</li>
+<li>开中断:<strong>系统中所有中断服务程序都已经和中断描述附表正常挂接</strong>，中断服务构建完毕，系统可以在32位保护模式下处理中断信号了。</li>
+</ol>
+<h3 id="进程创建的最基本动作"><a href="#进程创建的最基本动作" class="headerlink" title="进程创建的最基本动作"></a>进程创建的最基本动作</h3><ol>
+<li>OS为进程0创建进程1做准备，<ul>
+<li>move_to_user_mode,从内核态转换到用户态</li>
+<li>上述函数后，相当于进行了一次中断返回，CS特权级从0转换到3，内核&rarr;用户</li>
+<li>用户态的进程0，从LDT去的代码段描述符，与弹出的EIP组成线性地址</li>
+<li>调用fork函数</li>
+</ul>
+</li>
+<li>在进程槽中为进程1申请一个空闲位置并且获取进程号<ul>
+<li>find_empty_process，为进程1获得可用的进程号和空闲的任务号</li>
+<li>全局变量last_pid存放系统开机以来累计的进程数。</li>
+<li>内核的数据区中有个task[NR_TASKS]进程槽，存放task_struct指针。第一次遍历该数组，判断获得的进程号是否可用。ifyes,第二次遍历获得一个空的task_struct。linux0.11中，最多64个进程。</li>
+</ul>
+</li>
+<li>复制进程信息之前，先将一些数据压栈：将进程0的管理结构拷贝给进程1的管理结构<ul>
+<li>copy_process</li>
+</ul>
+</li>
+<li>初步设置进程1管理结构<ul>
+<li>进程0的母本包括：“进程0的管理结构”，“进程0的页表项”</li>
+</ul>
+</li>
+<li>进程0创建进程1的过程中发生时钟中断（场景分析）<ul>
+<li>中断服务程序开始工作，跳转到_timer_interrupt执行，xxx压入进程0内核栈，保护现场</li>
+<li>_do_timer判断是否需要进程切换</li>
+</ul>
+</li>
+<li>从时钟中断返回<ul>
+<li>ret_from_sys_call开始执行</li>
+</ul>
+</li>
+<li>调整进程1管理结构<ul>
+<li>进程0的管理结构数据信息不一定全都适用于进程1，还需针对具体情况调整。</li>
+</ul>
+</li>
+<li>设置进程1的线性地址空间及物理页面<ul>
+<li>创建页目录项和复制页表，从copy_mem开始</li>
+<li>copy_page_tables</li>
+</ul>
+</li>
+<li>调整进程1管理结构</li>
+<li>OS如何区分进程0和进程1<ul>
+<li>_syscall0函数中，if(res&gt;=0)这一行就是进程0中断返回后将要执行的第一行指令。。。</li>
+<li>到底如何区分，我也没搞清楚。。。</li>
+</ul>
+</li>
+<li>进程0准备切换到进程1</li>
+<li>系统切换到进程1执行</li>
+</ol>
+<h3 id="加载根文件系统（进程1来完成；原文中均有流程图说明）"><a href="#加载根文件系统（进程1来完成；原文中均有流程图说明）" class="headerlink" title="加载根文件系统（进程1来完成；原文中均有流程图说明）"></a>加载根文件系统（进程1来完成；原文中均有流程图说明）</h3><ul>
+<li>进程1通过对一些与硬盘管理相关的数据结构进行设置，进一步为进程依托系统与硬盘以文件行驶进行数据交互创造条件</li>
+<li>进程11用虚拟盘代替软盘，使之成为根设备</li>
+<li>进程1以虚拟盘中提供的数据为依据，加载根文件系统</li>
+</ul>
+<hr>
+<ol>
+<li>开始执行：从_syscall0的if(__res&gt;=0)这行代码开始,然后调用init函数</li>
+<li>开始执行：在init中，先调用setup</li>
+<li>进程1开始以数据块的形式操作硬盘</li>
+<li>将找到的缓冲块与请求项挂接</li>
+<li>将请求项与硬盘处理函数挂接</li>
+<li>进行硬盘读盘前的准备工作</li>
+<li>给硬盘下达读盘指令</li>
+<li>进程1由于等待读盘操作挂起</li>
+<li>系统切换到进程0执行</li>
+<li>进程0的执行过程</li>
+<li>进程0执行过程中发生硬盘中断</li>
+<li>硬盘中断服务程序响应后，进程0继续执行</li>
+<li>再次响应硬盘中断并唤醒进程1</li>
+<li>读盘操作完成后，进程1继续执行</li>
+<li>进程1继续设置硬盘管理结构</li>
+<li>进程1获取软盘超级块，为加载根文件系统做准备</li>
+<li>进程1备份超级快数据</li>
+<li>进程1将根文件系统从软盘拷贝到虚拟盘</li>
+<li>进程1开始加载根文件系统</li>
+<li>进程1准备根文件系统超级块</li>
+<li>进程1准备读取根目录i节点</li>
+<li>进程1加载根目录i节点<br>1。进程1结束加载根文件系统的过程</li>
+</ol>
+<h3 id="打开中断设备文件及复制文件句柄"><a href="#打开中断设备文件及复制文件句柄" class="headerlink" title="打开中断设备文件及复制文件句柄"></a>打开中断设备文件及复制文件句柄</h3><ol>
+<li>进程1与内核文件表挂接，为打开文件做准备</li>
+<li>确定打开操作的起点</li>
+<li>获得枝梢i节点-dev目录文件的i节点</li>
+<li>确定dev目录文件i节点为枝梢i节点</li>
+<li>继续返回枝梢i节点</li>
+<li>查找tty0文件的i节点</li>
+<li>将tty0设备文件的i节点返回给sys_open系统调用</li>
+<li>分析tty0文件i节点</li>
+<li>设置文件管理结构并返回给用户进程</li>
+<li>进程1复制tty0文件句柄</li>
+</ol>
+<h3 id="创建进程2"><a href="#创建进程2" class="headerlink" title="创建进程2"></a>创建进程2</h3><h3 id="进程1等待进程2退出"><a href="#进程1等待进程2退出" class="headerlink" title="进程1等待进程2退出"></a>进程1等待进程2退出</h3><h3 id="shell程序的加载"><a href="#shell程序的加载" class="headerlink" title="shell程序的加载"></a>shell程序的加载</h3><h3 id="系统实现怠速"><a href="#系统实现怠速" class="headerlink" title="系统实现怠速"></a>系统实现怠速</h3></div><div class="tags"><a href="/tags/linux/">linux</a><a href="/tags/kernel/">kernel</a></div><div class="post-nav"><a href="/2013/01/18/apple-ios-mobilehig-review/" class="pre"><i class="icon-previous">apple iOS MobileHIG 摘要</i></a><a href="/2013/01/13/yue-du-wen-zhai-:da-zao-facebook,qin-li-facebookbao-fa-de-5nian/" class="next">阅读文摘：打造facebook，亲历facebook爆发的5年<i class="icon-next"></i></a></div><div id="disqus_thread"><script>var disqus_shortname = 'yyq';
+var disqus_identifier = '2013/01/15/xue-xi-linuxqi-dong-guo-cheng/';
+var disqus_title = '学习linux启动过程';
+var disqus_url = 'http://yyqing.me/2013/01/15/xue-xi-linuxqi-dong-guo-cheng/';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//yyq.disqus.com/count.js" async="async"></script></div></div></div></div><div class="pure-u-1-4"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search" class="search-form-input"/><input type="hidden" name="sitesearch" value="http://yyqing.me"/></form></div><div class="widget"><form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="search" name="word" maxlength="20" placeholder="Search" class="search-form-input"/><input type="hidden" name="si" value="http://yyqing.me"/><input name="tn" type="hidden" value="bds"/><input name="cl" type="hidden" value="3"/><input name="ct" type="hidden" value="2097152"/><input name="s" type="hidden" value="on"/></form></div><div class="widget"><div class="widget-title">Categories</div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/生活/">生活</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/生活/五味杂陈/">五味杂陈</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/">计算机</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/infrastructure/">Infrastructure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/algorithm/">algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/security/">security</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a></li></ul></div><div class="widget"><div class="widget-title">Tags</div><div class="tagcloud"><a href="/tags/clearcase/" style="font-size: 15px;">clearcase</a> <a href="/tags/git/" style="font-size: 15px;">git</a> <a href="/tags/cpu/" style="font-size: 15px;">cpu</a> <a href="/tags/smp/" style="font-size: 15px;">smp</a> <a href="/tags/数据结构/" style="font-size: 15px;">数据结构</a> <a href="/tags/unix/" style="font-size: 15px;">unix</a> <a href="/tags/apue/" style="font-size: 15px;">apue</a> <a href="/tags/life/" style="font-size: 15px;">life</a> <a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/doxygen/" style="font-size: 15px;">doxygen</a> <a href="/tags/tools/" style="font-size: 15px;">tools</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/ios/" style="font-size: 15px;">ios</a> <a href="/tags/xcode/" style="font-size: 15px;">xcode</a> <a href="/tags/numberpad/" style="font-size: 15px;">NumberPad</a> <a href="/tags/simulator/" style="font-size: 15px;">simulator</a> <a href="/tags/device/" style="font-size: 15px;">device</a> <a href="/tags/storyboard/" style="font-size: 15px;">storyboard</a> <a href="/tags/autolayout/" style="font-size: 15px;">autolayout</a> <a href="/tags/facebook/" style="font-size: 15px;">facebook</a> <a href="/tags/hack/" style="font-size: 15px;">hack</a> <a href="/tags/文摘/" style="font-size: 15px;">文摘</a> <a href="/tags/kernel/" style="font-size: 15px;">kernel</a> <a href="/tags/apple/" style="font-size: 15px;">apple</a> <a href="/tags/ios/" style="font-size: 15px;">iOS</a> <a href="/tags/hig/" style="font-size: 15px;">HIG</a> <a href="/tags/北京交通大学/" style="font-size: 15px;">北京交通大学</a> <a href="/tags/objective-c/" style="font-size: 15px;">objective-c</a> <a href="/tags/gprof/" style="font-size: 15px;">gprof</a> <a href="/tags/class/" style="font-size: 15px;">class</a> <a href="/tags/debug/" style="font-size: 15px;">debug</a> <a href="/tags/eclipse/" style="font-size: 15px;">eclipse</a> <a href="/tags/gdb/" style="font-size: 15px;">gdb</a> <a href="/tags/qemu/" style="font-size: 15px;">qemu</a> <a href="/tags/yahoo/" style="font-size: 15px;">yahoo</a> <a href="/tags/mac/" style="font-size: 15px;">mac</a> <a href="/tags/latex/" style="font-size: 15px;">Latex</a> <a href="/tags/中文/" style="font-size: 15px;">中文</a> <a href="/tags/乱码/" style="font-size: 15px;">乱码</a> <a href="/tags/shortcut/" style="font-size: 15px;">shortcut</a> <a href="/tags/autoindent/" style="font-size: 15px;">autoindent</a> <a href="/tags/mashup/" style="font-size: 15px;">mashup</a> <a href="/tags/hackthon/" style="font-size: 15px;">hackthon</a> <a href="/tags/flickr/" style="font-size: 15px;">flickr</a> <a href="/tags/yql/" style="font-size: 15px;">YQL</a> <a href="/tags/c/" style="font-size: 15px;">c</a> <a href="/tags/offer/" style="font-size: 15px;">offer</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/笔试，面试，找工作/" style="font-size: 15px;">笔试，面试，找工作</a> <a href="/tags/mips/" style="font-size: 15px;">mips</a> <a href="/tags/cleartool/" style="font-size: 15px;">cleartool</a> <a href="/tags/git-cc/" style="font-size: 15px;">git-cc</a> <a href="/tags/博库书城/" style="font-size: 15px;">博库书城</a> <a href="/tags/麻子汤圆/" style="font-size: 15px;">麻子汤圆</a> <a href="/tags/文二路/" style="font-size: 15px;">文二路</a> <a href="/tags/阮一峰/" style="font-size: 15px;">阮一峰</a> <a href="/tags/黑客与画家/" style="font-size: 15px;">黑客与画家</a> <a href="/tags/公交一公司/" style="font-size: 15px;">公交一公司</a> <a href="/tags/益乐桥/" style="font-size: 15px;">益乐桥</a> <a href="/tags/杨公堤/" style="font-size: 15px;">杨公堤</a> <a href="/tags/虎跑路/" style="font-size: 15px;">虎跑路</a> <a href="/tags/阿里巴巴滨江园区/" style="font-size: 15px;">阿里巴巴滨江园区</a> <a href="/tags/情人节/" style="font-size: 15px;">情人节</a> <a href="/tags/狼图腾/" style="font-size: 15px;">狼图腾</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/log/" style="font-size: 15px;">log</a> <a href="/tags/log4j/" style="font-size: 15px;">log4j</a> <a href="/tags/security/" style="font-size: 15px;">security</a> <a href="/tags/algorithm/" style="font-size: 15px;">algorithm</a> <a href="/tags/leetcode/" style="font-size: 15px;">leetcode</a> <a href="/tags/oj/" style="font-size: 15px;">oj</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/certification/" style="font-size: 15px;">certification</a> <a href="/tags/https/" style="font-size: 15px;">https</a> <a href="/tags/ssl/" style="font-size: 15px;">ssl</a> <a href="/tags/上坟/" style="font-size: 15px;">上坟</a> <a href="/tags/坟冢/" style="font-size: 15px;">坟冢</a> <a href="/tags/婆/" style="font-size: 15px;">婆</a> <a href="/tags/小猫/" style="font-size: 15px;">小猫</a> <a href="/tags/洋芋/" style="font-size: 15px;">洋芋</a> <a href="/tags/build/" style="font-size: 15px;">build</a> <a href="/tags/ci/" style="font-size: 15px;">CI</a> <a href="/tags/cloud/" style="font-size: 15px;">cloud</a> <a href="/tags/coverage/" style="font-size: 15px;">coverage</a> <a href="/tags/coveralls/" style="font-size: 15px;">coveralls</a> <a href="/tags/service/" style="font-size: 15px;">service</a> <a href="/tags/travis/" style="font-size: 15px;">travis</a> <a href="/tags/装饰器/" style="font-size: 15px;">装饰器</a> <a href="/tags/py2app/" style="font-size: 15px;">py2app</a> <a href="/tags/smtp/" style="font-size: 15px;">SMTP</a> <a href="/tags/wxpython/" style="font-size: 15px;">wxpython</a> <a href="/tags/爬虫/" style="font-size: 15px;">爬虫</a> <a href="/tags/theos/" style="font-size: 15px;">theos</a> <a href="/tags/tweak/" style="font-size: 15px;">tweak</a> <a href="/tags/conference/" style="font-size: 15px;">conference</a> <a href="/tags/security/" style="font-size: 15px;">Security</a> <a href="/tags/working/" style="font-size: 15px;">working</a> <a href="/tags/计算机/" style="font-size: 15px;">计算机</a></div></div><div class="widget"><div class="widget-title">Recent</div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/i-m-back/">I'm back</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/11/MARIAGE D'AMOUR/">新琴首秀之MARIAGE D'AMOUR</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/26/commit-a-bug-to-wooyun/">在乌云提交一个漏洞成功并注册成为白帽子</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/19/archsummit2015/">参加ArchSummit2015有感</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/11/ios-security-learn-3/">iOS逆向工程学习日记3--实践</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/07/ios-security-learn-2/">iOS逆向-学习日记2-Mac OS X上的工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/24/python_spider/">Python爬糗百热门20条并邮件分发+wxPython简易GUI+py2app转成可执行文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/14/python-property/">Python @property装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/05/python-decorator-research/">Python装饰器有趣实例探究</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/05/14/that-cloud-services-of-ci/">That Cloud Services of CI</a></li></ul></div><div class="widget"><div class="widget-title">Recent Comments</div><script type="text/javascript" src="//yyq.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div><div class="widget"><div class="widget-title">Blogroll</div><ul></ul><a href="http://blog.csdn.net/davidbeckham2901" title="My CSDN Blog" target="_blank">My CSDN Blog</a><ul></ul><a href="http://www.google.com/" title="Google" target="_blank">Google</a></div></div></div></div><div id="footer">© <a href="/" rel="nofollow">Young Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div><a id="rocket" href="#top" class="show"></a><script src="/js/jquery.min.js"></script>
+<script src="/js/totop.js"></script><script src="/js/fancybox.pack.js"></script>
+<script src="/js/jquery.fancybox.js"></script><link rel="stylesheet" href="/css/jquery.fancybox.css"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create','UA-37075097-1','auto');ga('send','pageview');
+</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cef6d518277d9356460d9798b8e22fb8";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+  })();</script></div></body></html>

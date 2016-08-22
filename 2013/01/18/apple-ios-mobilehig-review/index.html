@@ -1,0 +1,387 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/><meta content="telephone=no" name="format-detection"/><meta name="description" content="Technology Blog"/><title>apple iOS MobileHIG 摘要 | Young Blog</title><link rel="stylesheet" type="text/css" href="/css/normalize.css"/><link rel="stylesheet" type="text/css" href="/css/pure-min.css"/><link rel="stylesheet" type="text/css" href="/css/grids-responsive-min.css"/><link rel="stylesheet" type="text/css" href="/css/style.css"/><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"/><link rel="apple-touch-icon" href="/apple-touch-icon.png"/><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"/><link rel="alternate" type="application/atom+xml" href="/atom.xml"/></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">apple iOS MobileHIG 摘要</h1><a id="logo" href="/">Young Blog</a><p class="description">Stay Hungry Stay Foolish</p></div><div id="nav-menu"><a href="/" class="current"><i class="icon-home"> Home</i></a><a href="/archives/"><i class="icon-archive"> Archive</i></a><a href="/about/"><i class="icon-about"> About</i></a><a href="/atom.xml"><i class="icon-rss"> RSS</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post post-page"><h1 class="post-title">apple iOS MobileHIG 摘要</h1><div class="post-meta">2013-01-18 | </div><span data-disqus-identifier="2013/01/18/apple-ios-mobilehig-review/" class="disqus-comment-count"></span><div class="post-content"><p>一直想开发一个自己的app放在app store上，想先做一个有关数独的app。一个是因为我身边有不少人都喜欢玩这个游戏，还有一个是因为这个东西算法不是很难，之前用java和c#在android和windowsphone平台实现过。</p>
+<p>等我idp申请下来，开始能上机调试，自己把数独的基本功能都搞定了之后，发现问题来了。我这程序吧，能够正常运行，仅仅能用。但是发现这界面啊，颜色啊，操作方式啊，都TMD烂透了。就开始琢磨这个事儿，这么样的程序提交app store铁定不会通过，自己已经为程序设计好一个图标，让同学和女友都看过，还过得去。但是点开图标之后的程序，那个实在是，我不知道该怎么下手来改进了。遂想起apple好像有个什么指南，告诉你移动开发者如何设计程序的人机交互的。在网上找了找，终于找到了这个资料,官网地址：<a href="http://developer.apple.com/library/ios/#documentation/UserExperience/Conceptual/MobileHIG/Introduction/Introduction.html" target="_blank" rel="external">iOS Human Interface Guidelines</a></p>
+<p>此文用来记录我从该文档中摘抄的我觉得现阶段对我有用处的东西。<br><a id="more"></a></p>
+<h1 id="Platform-Characteristics"><a href="#Platform-Characteristics" class="headerlink" title="Platform Characteristics"></a>Platform Characteristics</h1><ul>
+<li>When people return to a suspended app, it can instantly resume running from the point where it went to the background, without having to reload its UI.</li>
+<li>Two Types of Software Run in iOS<ul>
+<li>iOS apps:is an app you develop using the iOS SDK to run natively on iOS device.</li>
+<li>Web content:is hosted by a website that people visit using their iOS devices.<ul>
+<li>Web apps</li>
+<li>Optimized webpages</li>
+<li>Compatible webpages</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>当人们从睡眠状态的app启动时，能马上恢复，从哪个状态进入后台的，要能立马重现那个状态，不需要重新载入界面。</li>
+<li>iOS设备上有两类app<ul>
+<li>一类是本地app，只通过iOS SDK在本地运行在ios设备就ok</li>
+<li>一类是网络app，这类程序又可以有三种<ul>
+<li>纯网页浏览，隐藏safari的按钮界面什么的，用户在操作的是网页上的元素</li>
+<li>优化过的网页：专门为iOS优化过的网页，例如不用flash插件等，网页上的图片能根据ios设备的不同而进行不同的缩放</li>
+<li>兼容并存的网页：和ios的safari兼容的网页和操作。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="Human-Interface-Principles"><a href="#Human-Interface-Principles" class="headerlink" title="Human Interface Principles"></a>Human Interface Principles</h1><ul>
+<li>Direct Manipulation<ul>
+<li>Rotate or otherwise move the device to affect onscreen objects</li>
+<li>Use gestures to manipulate onscreen objects</li>
+<li>Can see that their actions have immediate,visible results</li>
+</ul>
+</li>
+<li>Feedback<ul>
+<li>Feedback acknowledges people’s actions and asssures them that processing is occurring.</li>
+<li>The built-in iOS apps respond to every user action with some perceptible change.</li>
+<li>Subtle animation can give people meaningful feedback that helps clarify the results of their action.</li>
+<li>Sound can also give people useful feedback</li>
+</ul>
+</li>
+<li>User Control<ul>
+<li>The best apps find the correct balance between giving people the capabilities they need while helping them avoid dangerous outcomes.</li>
+</ul>
+</li>
+<li>直接操作，能让人们直接的动作在ios设备上得到反馈或者响应，如下几种典型的操作：<ul>
+<li>旋转或者移动设备，来影响屏幕上的物体</li>
+<li>用手势来直接操作屏幕上的物体</li>
+<li>可以看到我们的操作有直接的可视化的结果</li>
+</ul>
+</li>
+<li>反馈<ul>
+<li>反馈可以ack人们的操作和告诉人们某个处理过程is doing now</li>
+<li>内置iOS app对于每一个用户操作都会有一个某种类型的可感觉的反馈</li>
+<li>一些微秒的动画，可以给人们有意义的反馈，来让人们更加明确他们操作的结果</li>
+<li>声音的反馈也很重要</li>
+</ul>
+</li>
+<li>用户控制<ul>
+<li>那些很好的app找到了一个很好的平衡点，来告诉人们该做什么操作，从而避免出现错误的结果</li>
+</ul>
+</li>
+</ul>
+<h1 id="App-Design-Strategies"><a href="#App-Design-Strategies" class="headerlink" title="App Design Strategies"></a>App Design Strategies</h1><h2 id="Create-an-App-Definition-Statement"><a href="#Create-an-App-Definition-Statement" class="headerlink" title="Create an App Definition Statement"></a>Create an App Definition Statement</h2><ol>
+<li>List All the Features You Think Users Might Like</li>
+<li>Determine Who Your Users Are</li>
+<li>Filter the Feature List Through the Audience Definition<ul>
+<li>Now you can craft your app definition statement, concretely summarizing what the app does and for whom.</li>
+</ul>
+</li>
+<li>Dont stop there<ul>
+<li>As you consider whether to add a new feature,ask yourself whether it is essential to the main purpose of your app and to your target audience.</li>
+<li>As you consider the look and behavior of the UI,ask yourself whether your users appreciate a simple,streamlined style or a more overtly thmeatic style.</li>
+<li>As you consider the terminology to use,strive to match your audience’s expertise with the subject.</li>
+</ul>
+</li>
+</ol>
+<h2 id="Design-the-App-for-the-Device"><a href="#Design-the-App-for-the-Device" class="headerlink" title="Design the App for the Device"></a>Design the App for the Device</h2><p>make sure that your app looks and feels like it was designed expressly for an iOS device</p>
+<h3 id="Embrace-iOS-UI-Paradigms"><a href="#Embrace-iOS-UI-Paradigms" class="headerlink" title="Embrace iOS UI Paradigms"></a>Embrace iOS UI Paradigms</h3><ul>
+<li>controls should look tappable</li>
+<li>app structure should be clean and easy to navigate</li>
+<li>user feedback should be subtle,but clear<h3 id="Reconsider-Web-Based-Designs"><a href="#Reconsider-Web-Based-Designs" class="headerlink" title="Reconsider Web-Based Designs"></a>Reconsider Web-Based Designs</h3>if you’re coming from the web,you need to make sure that you give people an iOS app experience,not a web experience.</li>
+<li>Focus your app</li>
+<li>Make sure your app lets people do something</li>
+<li>design for touch</li>
+<li>let people scroll</li>
+<li>relocate the homepage icon</li>
+</ul>
+<h2 id="Tailor-Customization-to-the-Task"><a href="#Tailor-Customization-to-the-Task" class="headerlink" title="Tailor Customization to the Task"></a>Tailor Customization to the Task</h2><ul>
+<li>be sure to consider customization early in the design process</li>
+<li><p>you need to determine how customization might affect the task your app enables.As you consider the tasks in your app,think about how ofter users perform them and under waht circumstances.</p>
+<ul>
+<li>For example, imagine an app that enables phone calls. Now imagine that instead of a keypad, the app displays a beautiful, realistic rotary dial. The dial is meticulously rendered, so users both appreciate its quality and instantly know how to use it. The dial behaves realistically, so users delight in making the dialing gesture and hearing the distinctive sounds. But for users who often need to call numbers that are not in Contacts, initial appreciation of the experience soon gives way to frustration, because using a rotary dial is much less efficient than using a keypad. In an app that is designed to help people make phone calls, this beautiful custom UI is a hindrance.</li>
+<li>In this case,the custom UI not only shows people how to use the app,it also makes the task easire to accomplish.</li>
+</ul>
+</li>
+<li><p>Always have a reason for customization**</p>
+</li>
+<li>As much as possible, avoid increasing the user’s cognitive burden</li>
+<li>Be internally consistent</li>
+<li>Think twice before you redesign a standard control</li>
+<li>Be sure to thoroughly user-test custom UI elements</li>
+</ul>
+<h1 id="Transition-Case-Studies"><a href="#Transition-Case-Studies" class="headerlink" title="Transition Case Studies"></a>Transition Case Studies</h1><ul>
+<li>这一段的大部分内容主要就说的是如何从desktop app转换到ios app要注意的一些方法，两者的区别等等。我就不怎么关注了。只摘抄了一句话：</li>
+<li>Most iOS apps don’t need to provide all the features that only power users need.</li>
+</ul>
+<h1 id="User-Experience-Guidelines"><a href="#User-Experience-Guidelines" class="headerlink" title="User Experience Guidelines"></a>User Experience Guidelines</h1><h3 id="Focus-on-the-Promary-Task"><a href="#Focus-on-the-Promary-Task" class="headerlink" title="Focus on the Promary Task"></a>Focus on the Promary Task</h3><h3 id="Elevate-the-Content-that-People-Care-About"><a href="#Elevate-the-Content-that-People-Care-About" class="headerlink" title="Elevate the Content that People Care About"></a>Elevate the Content that People Care About</h3><h3 id="Give-People-a-Logical-Path-to-Follow"><a href="#Give-People-a-Logical-Path-to-Follow" class="headerlink" title="Give People a Logical Path to Follow"></a>Give People a Logical Path to Follow</h3><ul>
+<li>Make the path through the information you present logical and easy for users to predict.</li>
+<li>In most cases,give users only one path to a screen.</li>
+</ul>
+<h3 id="Make-Usage-Easy-and-Obvious"><a href="#Make-Usage-Easy-and-Obvious" class="headerlink" title="Make Usage Easy and Obvious"></a>Make Usage Easy and Obvious</h3><ul>
+<li>Make the main function of your app immediately apparent.</li>
+<li>Be consistent with the usage paradigms of the built-in apps.</li>
+</ul>
+<h3 id="Minimize-the-Effort-Required-for-User-Input"><a href="#Minimize-the-Effort-Required-for-User-Input" class="headerlink" title="Minimize the Effort Required for User Input"></a>Minimize the Effort Required for User Input</h3><ul>
+<li>Make it easy for users to make choices. For example.you can use a table view or a picker instead of a text field, because it’s usually easier for people to select an item from a list than to type words</li>
+</ul>
+<h3 id="Downplay-File-Handling-Operations"><a href="#Downplay-File-Handling-Operations" class="headerlink" title="Downplay File-Handling Operations"></a>Downplay File-Handling Operations</h3><ul>
+<li>although iOS apps can allow people to create and manipulate files,this does not mean that people should have an awareness of a file system on an iOS device.</li>
+<li>As much as possible, allow people to manage documents without opening iTunes on their computer.</li>
+</ul>
+<h3 id="Enable-Collaboration-and-Connectedness"><a href="#Enable-Collaboration-and-Connectedness" class="headerlink" title="Enable Collaboration and Connectedness"></a>Enable Collaboration and Connectedness</h3><ul>
+<li>When appropriate, make it easy for people to interact with others and share things like their location, opinions, and high scores.</li>
+</ul>
+<h3 id="De-emphasize-Settings"><a href="#De-emphasize-Settings" class="headerlink" title="De-emphasize Settings"></a>De-emphasize Settings</h3><ul>
+<li>Avoid including settings in your app if you can.</li>
+<li>Let users set the behavior they want by using configuration options in your app. Configuration options let your app react dynamically to changes, because people don’t have to leave your app to set them.<ul>
+<li>In the main UI, put options that provide primary functionality or that people want to change frequently.</li>
+<li>In iPhone apps, you can put options that people don’t need to change frequently on the back of a view.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Brand-Appropriately"><a href="#Brand-Appropriately" class="headerlink" title="Brand Appropriately"></a>Brand Appropriately</h3><ul>
+<li>Incorporate a brand’s colors or images in a refined, unobtrusive way</li>
+<li>Avoid taking space away from the content people care about.</li>
+</ul>
+<h3 id="Make-Search-Quick-and-Rewarding"><a href="#Make-Search-Quick-and-Rewarding" class="headerlink" title="Make Search Quick and Rewarding"></a>Make Search Quick and Rewarding</h3><p>if you need to provide search in your app, follow these guidelines to ensure that it performs well.</p>
+<ul>
+<li>Build indexes of your data so that you are always prepared for search.</li>
+<li>Live-filter local data so that you can display results more quickly</li>
+<li>When possible, also filter remote data while users type</li>
+<li>Display a search bar above a list or the index in a list</li>
+<li>Use a tab for search only in special circumstances.</li>
+<li>If necessary, display placeholder content right away and partial results as they become available. </li>
+<li>Consider providing a scope bar if the data sorts naturally into different categories.</li>
+</ul>
+<h3 id="Entice-and-Inform-with-a-Well-Written-Description"><a href="#Entice-and-Inform-with-a-Well-Written-Description" class="headerlink" title="Entice and Inform with a Well-Written Description"></a>Entice and Inform with a Well-Written Description</h3><p>Your App Store description is a great opportunity to communicate with potential users. In addition to describing your app accurately and highlighting the qualities you think people might appreciate the most, follow these guidelines:</p>
+<ul>
+<li>Be sure to correct all spelling, grammatical, and punctuation errors</li>
+<li>Keep all-capital words to a minimum</li>
+<li>Consider describing specific bug fixes</li>
+</ul>
+<h3 id="Be-Succinct"><a href="#Be-Succinct" class="headerlink" title="Be Succinct"></a>Be Succinct</h3><ul>
+<li>Think like a newspaper editor,and strive to convey information in a condensed,headline style.</li>
+<li>Give controls short labels,or use well-understood symbols</li>
+</ul>
+<h3 id="Use-UI-Elements-Consistently"><a href="#Use-UI-Elements-Consistently" class="headerlink" title="Use UI Elements Consistently"></a>Use UI Elements Consistently</h3><ul>
+<li>Avoid radically changing the appearance of a control that performs a standard action.</li>
+</ul>
+<h3 id="Consider-Adding-Physicality-and-Realism"><a href="#Consider-Adding-Physicality-and-Realism" class="headerlink" title="Consider Adding Physicality and Realism"></a>Consider Adding Physicality and Realism</h3><ul>
+<li>Example:Contacts on iPad,Voice Memos app on iPhone</li>
+</ul>
+<h3 id="Delight-People-with-Stunning-Graphics"><a href="#Delight-People-with-Stunning-Graphics" class="headerlink" title="Delight People with Stunning Graphics"></a>Delight People with Stunning Graphics</h3><ul>
+<li>Consider replicating the look of high-quality or precious materials</li>
+<li>Create high-resolution artwork.</li>
+<li>Spend the time to design a beautiful,memorable app icon.</li>
+</ul>
+<h3 id="Handle-Orientation-Changes"><a href="#Handle-Orientation-Changes" class="headerlink" title="Handle Orientation Changes"></a>Handle Orientation Changes</h3><ul>
+<li>In all orientations,maintain focus on the primary content</li>
+<li>Think twice before preventing your app from running in all orientations<ul>
+<li>Launch your app in your supported orientation,regardless of the current device orientation</li>
+<li>Avoid displaying a UI element that tells people to rotate the device.</li>
+<li>Support both variants of an orientation.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Make-Targets-Fingertip-Size"><a href="#Make-Targets-Fingertip-Size" class="headerlink" title="Make Targets Fingertip-Size"></a>Make Targets Fingertip-Size</h3><ul>
+<li>Give tappable elements in your app a target area of about 44X44 pointx</li>
+<li>Use animation consistently throughout your app.</li>
+</ul>
+<h3 id="Ask-People-to-Save-Only-When-Necessary"><a href="#Ask-People-to-Save-Only-When-Necessary" class="headerlink" title="Ask People to Save Only When Necessary"></a>Ask People to Save Only When Necessary</h3><h3 id="Start-Instantly"><a href="#Start-Instantly" class="headerlink" title="Start Instantly"></a>Start Instantly</h3><ul>
+<li>Display a lunch image</li>
+<li>Avoid displaying an About window or a splash screen</li>
+<li>Launch in the appropriate default orientation</li>
+<li>Avoid asking people to supply setup information<ul>
+<li>Focus your solution on the needs of 80  percent of your users</li>
+<li>Get as much information as possible from other sources.</li>
+<li>If you must ask for setup information,prompt people to enter it within your app</li>
+</ul>
+</li>
+<li>Delay a login requirement for as long as possible</li>
+<li>When your app restarts,restore its state so that users can continue what they were doing.</li>
+</ul>
+<h3 id="Always-Be-Prepared-to-Stop"><a href="#Always-Be-Prepared-to-Stop" class="headerlink" title="Always Be Prepared to Stop"></a>Always Be Prepared to Stop</h3><ul>
+<li>Save user data as soon as possible and as often as reasonable</li>
+<li>Save the current state when stopping.</li>
+</ul>
+<h1 id="iOS-Technology-Usage-Guidelines"><a href="#iOS-Technology-Usage-Guidelines" class="headerlink" title="iOS Technology Usage Guidelines"></a>iOS Technology Usage Guidelines</h1><h3 id="Routing"><a href="#Routing" class="headerlink" title="Routing"></a>Routing</h3><p>讲地图的起点和终点切换的那个控件，估计我短期内用不到。</p>
+<h3 id="Passbook"><a href="#Passbook" class="headerlink" title="Passbook"></a>Passbook</h3><p>好吧，作为个人开发者，短期也不会用这个东西。</p>
+<h3 id="Social-Media"><a href="#Social-Media" class="headerlink" title="Social Media"></a>Social Media</h3><ul>
+<li>Give users a convenient way to compose a post without leaving your app</li>
+<li>When possible,avoid asking users to sign into a social media account</li>
+<li>Consider using an activity view controller to helop users choose one of their social media accounts.</li>
+</ul>
+<h3 id="iCloud"><a href="#iCloud" class="headerlink" title="iCloud"></a>iCloud</h3><h3 id="In-App-Purchase"><a href="#In-App-Purchase" class="headerlink" title="In-App Purchase"></a>In-App Purchase</h3><h3 id="Game-Center"><a href="#Game-Center" class="headerlink" title="Game Center"></a>Game Center</h3><h3 id="Multitasking"><a href="#Multitasking" class="headerlink" title="Multitasking"></a>Multitasking</h3><p>To support this experience,multitasking allows an app to enter a suspended state in the background when users switch away from it.When users switch back to the app,the app can resume quickly because it doesn’t have to reload its UI.</p>
+<ul>
+<li>At a high level, this means that all apps should:<ul>
+<li>Handle interruptions or audio from other apps gracefully</li>
+<li>Stop and restart–that is,transition to and from the background–quickly and smoothly</li>
+<li>Behave responsibly when not in the foreground.</li>
+</ul>
+</li>
+<li>Be prepared for interruptions,and be ready to resume</li>
+<li>Make sure your UI can handle the double-high status bar.</li>
+<li>Be ready to pause activities that require people’s attention or active participation</li>
+<li>Ensure that your audio behaves appropriately.</li>
+<li>Use local notifications aparingly,</li>
+<li>When appropriate,finish user-initiated tasks in the background.</li>
+</ul>
+<h3 id="Notification-Center"><a href="#Notification-Center" class="headerlink" title="Notification Center"></a>Notification Center</h3><h3 id="Printing"><a href="#Printing" class="headerlink" title="Printing"></a>Printing</h3><h3 id="iAd-Rich-Media-Ads"><a href="#iAd-Rich-Media-Ads" class="headerlink" title="iAd Rich Media Ads"></a>iAd Rich Media Ads</h3><h3 id="Location-Services-and-Data-Privacy"><a href="#Location-Services-and-Data-Privacy" class="headerlink" title="Location Services and Data Privacy"></a>Location Services and Data Privacy</h3><h3 id="Quick-Look-Document-Preview"><a href="#Quick-Look-Document-Preview" class="headerlink" title="Quick Look Document Preview"></a>Quick Look Document Preview</h3><h3 id="Sound"><a href="#Sound" class="headerlink" title="Sound"></a>Sound</h3><h4 id="Define-the-Audio-Behavior-of-Your-App"><a href="#Define-the-Audio-Behavior-of-Your-App" class="headerlink" title="Define the Audio Behavior of Your App"></a>Define the Audio Behavior of Your App</h4><ul>
+<li>if necessary,you can adjust relative,independent volume levels to produce the best mix in your app’s audio output</li>
+<li>Ensure that your app can display the audio route picker,if appropriate</li>
+<li>if your app produces only UI sound effects that are incidental to its functionality,use System Sound Services.</li>
+<li>If sound plays an important role in your app,use Audio Session Services</li>
+</ul>
+<h3 id="Manage-Audio-Interruptions"><a href="#Manage-Audio-Interruptions" class="headerlink" title="Manage Audio Interruptions"></a>Manage Audio Interruptions</h3><h3 id="Handle-Media-Remote-Control-Events-if-Appropriate"><a href="#Handle-Media-Remote-Control-Events-if-Appropriate" class="headerlink" title="Handle Media Remote Control Events,if Appropriate"></a>Handle Media Remote Control Events,if Appropriate</h3><h3 id="VoiceOver-and-Accessibility"><a href="#VoiceOver-and-Accessibility" class="headerlink" title="VoiceOver and Accessibility"></a>VoiceOver and Accessibility</h3><h3 id="Edit-Menu"><a href="#Edit-Menu" class="headerlink" title="Edit Menu"></a>Edit Menu</h3><p>在文本处理的时候可以用到</p>
+<h3 id="Undo-and-Redo"><a href="#Undo-and-Redo" class="headerlink" title="Undo and Redo"></a>Undo and Redo</h3><h3 id="Keyboards-and-Input-Views"><a href="#Keyboards-and-Input-Views" class="headerlink" title="Keyboards and Input Views"></a>Keyboards and Input Views</h3><p>In iOS 4.2 and later,you can use the standard keyboard click sound to provide audible feedback when people tap the custom controls in your input view.To learn how to enable this sound in your code,see the documentation for <em>playInputClick</em> in UIDevice Class Reference.</p>
+<h1 id="iOS-UI-Element-Usage-Guidelines"><a href="#iOS-UI-Element-Usage-Guidelines" class="headerlink" title="iOS UI Element Usage Guidelines"></a>iOS UI Element Usage Guidelines</h1><p>If you create custom UI elements to replicate standard UI elements in all but appearance, you should instead consider using the appearance customization programming interfaces available in iOS 5 and later.</p>
+<h3 id="Bars"><a href="#Bars" class="headerlink" title="Bars"></a>Bars</h3><p>The UIStatusBarStyle constant, described in UIApplication Class Reference , controls the status bar style. To specify the status bar style, you set a value in your Info.plist file. </p>
+<ul>
+<li>Don’t create a custom status bar.</li>
+<li>When appropriate,display the network activity indicator</li>
+<li>On iphone,specify the color of the status bar</li>
+</ul>
+<h3 id="Navigation-Bar"><a href="#Navigation-Bar" class="headerlink" title="Navigation Bar"></a>Navigation Bar</h3><ul>
+<li>Use the title of the current view as the title of the navigation bar</li>
+<li>Make sure it’s easy to read the text in the navigation bar</li>
+<li>Consider putting a segmented control in a navigation bar at the top level of an app.</li>
+<li>Make sure it’s easy to read the text in the navigation bar</li>
+<li>Consider putting a segmented control in a navigation bar at the top level of an app.</li>
+<li>Avoid crowding a navigation bar with additional controls, even if there appears to be enough space.</li>
+<li>Use system-provided buttons according to their documented meaning.</li>
+<li>If appropriate, customize the appearance of a navigation bar to coordinate with the look of your app.</li>
+<li>If appropriate,customize the appearance of navigation-bar contrls.</li>
+<li>On iPhone, be prepared for the change in navigation bar height that occurs on device rotation.</li>
+</ul>
+<h3 id="Toolbar"><a href="#Toolbar" class="headerlink" title="Toolbar"></a>Toolbar</h3><ul>
+<li>Use a toolbar to give people a selection of frequently used commands that make sense in the current context.</li>
+<li>If appropriate, customize the appearance of a toolbar to coordinate with the overall look of your app. </li>
+<li>Maintain a hit target area of at least 44 x 44 points for each toolbar item</li>
+<li>Use system-provided toolbar items according to their documented meaning. </li>
+<li>If appropriate, customize the appearance of toolbar items. </li>
+<li>Try to avoid mixing plain style (borderless) and bordered toolbar items in the same toolbar.</li>
+</ul>
+<h3 id="Tab-Bar"><a href="#Tab-Bar" class="headerlink" title="Tab Bar"></a>Tab Bar</h3><ul>
+<li>Don’t use a tab bar to give users controls that act on elements in the current mode or screen. </li>
+<li>In general, use a tab bar to organize information at the app level</li>
+<li>Don’t remove a tab when its function is unavailable. </li>
+<li>On iPad, you might use a tab bar in a split view pane or a popover </li>
+<li>Consider badging a tab bar icon to communicate unobtrusively.</li>
+<li>Use system-provided tab bar icons according to their documented meaning. </li>
+<li>If necessary, provide a custom selection indicator image.</li>
+</ul>
+<h2 id="Content-Views"><a href="#Content-Views" class="headerlink" title="Content Views"></a>Content Views</h2><h3 id="Activity"><a href="#Activity" class="headerlink" title="Activity"></a>Activity</h3><h3 id="Collection-View"><a href="#Collection-View" class="headerlink" title="Collection View"></a>Collection View</h3><p>To learn more about defining a collection view in your code, see Collection View Programming Guide for iOS.</p>
+<ul>
+<li>Don’t use a collection view when a table view is a better choice. </li>
+<li>Make it easy for people to select an item.</li>
+<li>Use caution if you make dynamic layout changes.</li>
+</ul>
+<h3 id="Container-View-Controller"><a href="#Container-View-Controller" class="headerlink" title="Container View Controller"></a>Container View Controller</h3><h3 id="Image-View"><a href="#Image-View" class="headerlink" title="Image View"></a>Image View</h3><h3 id="Map-View"><a href="#Map-View" class="headerlink" title="Map View"></a>Map View</h3><h3 id="Page-View-Controller"><a href="#Page-View-Controller" class="headerlink" title="Page View Controller"></a>Page View Controller</h3><h3 id="Popover-iPad-Only"><a href="#Popover-iPad-Only" class="headerlink" title="Popover(iPad Only)"></a>Popover(iPad Only)</h3><h3 id="Scroll-View"><a href="#Scroll-View" class="headerlink" title="Scroll View"></a>Scroll View</h3><h3 id="Split-View-iPad-Only"><a href="#Split-View-iPad-Only" class="headerlink" title="Split View(iPad Only)"></a>Split View(iPad Only)</h3><h3 id="Table-View"><a href="#Table-View" class="headerlink" title="Table View"></a>Table View</h3><p>a table view presents data in a single-column list of multiple rows.</p>
+<p>If you want to lay out your table rows in a nonstandard way, it’s better to create a custom table-‐cell style than to significantly alter a standard one. To learn how to create your own cells, see “Customizing Cells” in Table View Programming Guide for iOS .</p>
+<h3 id="Text-View"><a href="#Text-View" class="headerlink" title="Text View"></a>Text View</h3><p>it  accepts and displays multiple lines of text</p>
+<h3 id="Web-View"><a href="#Web-View" class="headerlink" title="Web View"></a>Web View</h3><h3 id="Alerts-Action-Sheets-and-Modal-Views"><a href="#Alerts-Action-Sheets-and-Modal-Views" class="headerlink" title="Alerts, Action Sheets, and Modal Views"></a>Alerts, Action Sheets, and Modal Views</h3><ul>
+<li>When possible, use a sentence fragment. A short, informative statement is often easier to understand than<br>a complete sentence.</li>
+<li>Be sure to test the appearance of your alert in both orientations.</li>
+<li><p><strong>Generally, use a two-button alert.</strong> A two-‐button alert is often the most useful, because it’s easiest for people to choose between two alternatives. A single button alert is rarely helpful because it informs without giving people any control over the situation. An alert that contains three or more buttons is significantly more complex than a two-‐button alert and should be avoided if possible.</p>
+</li>
+<li><p>On iPad, an action sheet is always displayed within a popover;</p>
+</li>
+<li>On both devices, use the red button color if a potentially destructive action can be performed. </li>
+</ul>
+<h3 id="Modal-View"><a href="#Modal-View" class="headerlink" title="Modal View"></a>Modal View</h3><ul>
+<li>On iPad, don’t display a modal view on top of a popover.</li>
+<li>On iPhone, coordinate the overall look of a modal view with the appearance of your app. </li>
+<li>On both devices, display a title that identifies the task, if appropriate:For example, the Messages app on iPhone presents a modal view when users want to compose a text message. </li>
+</ul>
+<h2 id="Controls"><a href="#Controls" class="headerlink" title="Controls"></a>Controls</h2><h3 id="Activity-Indicator"><a href="#Activity-Indicator" class="headerlink" title="Activity Indicator"></a>Activity Indicator</h3><p>An activity indicator shows that a task or process is progressing </p>
+<ul>
+<li>Don’t display a stationary activity indicator, because users associate this with a stalled process.</li>
+<li>If appropriate, customize the size and color of an activity indicator</li>
+</ul>
+<h3 id="Date-Picker"><a href="#Date-Picker" class="headerlink" title="Date Picker"></a>Date Picker</h3><p>Countdown timer. The countdown timer mode displays wheels for the hour and minute. You can specify the total duration of a countdown, up to a maximum of 23 hours and 59 minutes.</p>
+<h3 id="Contack-Add-Button"><a href="#Contack-Add-Button" class="headerlink" title="Contack Add Button"></a>Contack Add Button</h3><p>A Contact Add button lets the user add an existing contact to a text field or other text-‐based view (shown here in the To field of Messages).</p>
+<h3 id="Detail-Disclosure-Button"><a href="#Detail-Disclosure-Button" class="headerlink" title="Detail Disclosure Button"></a>Detail Disclosure Button</h3><h3 id="Info-Button"><a href="#Info-Button" class="headerlink" title="Info Button"></a>Info Button</h3><h3 id="Label"><a href="#Label" class="headerlink" title="Label"></a>Label</h3><h3 id="Network-Activity-Indicator"><a href="#Network-Activity-Indicator" class="headerlink" title="Network Activity Indicator"></a>Network Activity Indicator</h3><p>A network activity indicator appears in the status bar and shows that network activity is occurring </p>
+<h3 id="Page-Control"><a href="#Page-Control" class="headerlink" title="Page Control"></a>Page Control</h3><p>A page control indicates how many views are open and which one is currently visible.</p>
+<h3 id="Picker"><a href="#Picker" class="headerlink" title="Picker"></a>Picker</h3><h3 id="Progress-View"><a href="#Progress-View" class="headerlink" title="Progress View"></a>Progress View</h3><h3 id="Refresh-Control"><a href="#Refresh-Control" class="headerlink" title="Refresh Control"></a>Refresh Control</h3><p>To learn more about defining a refresh control in your code, see UIRefreshControl Class Reference.(恩，这是个新东西，应该是iOS6才出现)</p>
+<h3 id="Rounded-Rectangle-Button"><a href="#Rounded-Rectangle-Button" class="headerlink" title="Rounded Rectangle Button"></a>Rounded Rectangle Button</h3><h3 id="Scope-Bar"><a href="#Scope-Bar" class="headerlink" title="Scope Bar"></a>Scope Bar</h3><h3 id="Search-Bar"><a href="#Search-Bar" class="headerlink" title="Search Bar"></a>Search Bar</h3><h3 id="Segmented-Control"><a href="#Segmented-Control" class="headerlink" title="Segmented Control"></a>Segmented Control</h3><h3 id="Slider"><a href="#Slider" class="headerlink" title="Slider"></a>Slider</h3><p>If appropriate, customize the appearance of a slider. </p>
+<h3 id="Stepper"><a href="#Stepper" class="headerlink" title="Stepper"></a>Stepper</h3><h3 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h3><h3 id="Text-Field"><a href="#Text-Field" class="headerlink" title="Text Field"></a>Text Field</h3><p>A text field accepts a single line of user input.</p>
+<ul>
+<li>Display the Clear button in the right end of a text field when appropriate. </li>
+<li>Display a hint in the text field if it helps users understand its purpose</li>
+<li>Specify a keyboard type that’s appropriate for the type of content you expect users to enter. </li>
+</ul>
+<h3 id="System-Provided-Buttons-and-Icons"><a href="#System-Provided-Buttons-and-Icons" class="headerlink" title="System-Provided Buttons and Icons"></a>System-Provided Buttons and Icons</h3><ul>
+<li>Use the system-provided items correctly</li>
+<li>Avoid designing a custom icon that looks too similar to a system-provided icon</li>
+</ul>
+<h3 id="Standard-Buttons-for-Use-in-Toolbars-and-Navigation-Bars"><a href="#Standard-Buttons-for-Use-in-Toolbars-and-Navigation-Bars" class="headerlink" title="Standard Buttons for Use in Toolbars and Navigation Bars"></a>Standard Buttons for Use in Toolbars and Navigation Bars</h3><h3 id="Standard-Icons-for-Use-in-Tab-Bars"><a href="#Standard-Icons-for-Use-in-Tab-Bars" class="headerlink" title="Standard Icons for Use in Tab Bars"></a>Standard Icons for Use in Tab Bars</h3><p>恩，意思是这里有一堆专用的图标，自己不用去创造新图标了</p>
+<h3 id="Standard-Buttons-for-Use-in-Table-Rows-and-Other-UI-Elements"><a href="#Standard-Buttons-for-Use-in-Table-Rows-and-Other-UI-Elements" class="headerlink" title="Standard Buttons for Use in Table Rows and Other UI Elements"></a>Standard Buttons for Use in Table Rows and Other UI Elements</h3><p>同前面一条。</p>
+<h1 id="Custom-Icon-and-Image-Creation-Guidelines"><a href="#Custom-Icon-and-Image-Creation-Guidelines" class="headerlink" title="Custom Icon and Image Creation Guidelines"></a>Custom Icon and Image Creation Guidelines</h1><h3 id="Tips-for-Designing-Great-Icons-and-Images"><a href="#Tips-for-Designing-Great-Icons-and-Images" class="headerlink" title="Tips for Designing Great Icons and Images"></a>Tips for Designing Great Icons and Images</h3><ul>
+<li>For the best results,enlist the help of a professional graphic designer.</li>
+<li>Use universal imagery that people will easily recognize</li>
+<li>Embrace simplicity</li>
+<li>Use color and shadow judiciously to help the icon tell its story.</li>
+<li>In general, avoid using “greek” text or wavy lines to suggest text</li>
+<li>In general, create an idealized version of the subject rather than using a photo</li>
+<li>Portray real substances accurately</li>
+<li>Use transparency when it makes sense. </li>
+</ul>
+<h3 id="Tips-for-Creating-Great-Artwork-for-the-Retina-Display"><a href="#Tips-for-Creating-Great-Artwork-for-the-Retina-Display" class="headerlink" title="Tips for Creating Great Artwork for the Retina Display"></a>Tips for Creating Great Artwork for the Retina Display</h3><ul>
+<li>Richer in texture.</li>
+<li>More detailed</li>
+<li><p>More realistic</p>
+</li>
+<li><p>Start by scaling up your original artwork and then redraw it.</p>
+</li>
+<li>Add detail and depth.</li>
+<li>Consider adding blur for better results in effects such as engravings and drop shadows. </li>
+</ul>
+<h3 id="Tips-for-Creating-Resizable-Images"><a href="#Tips-for-Creating-Resizable-Images" class="headerlink" title="Tips for Creating Resizable Images"></a>Tips for Creating Resizable Images</h3><p>Tiling is less performant than stretching, but it’s the only way to achieve a textured or patterned effect.</p>
+<h3 id="App-Icons"><a href="#App-Icons" class="headerlink" title="App Icons"></a>App Icons</h3><p>YoucanpreventiOSfromaddingtheshinetoyourappicon.Todothis,youneedtoaddthe UIPrerenderedIcon key to your app’s Info.plist file (to learn about this file, see “The Information Property List” in iOS App Programming Guide ).</p>
+<ul>
+<li>Ensure that your icon is eligible for the visual enhancements iOS provides.You should provide an image that:<ul>
+<li>Has 90° corners (it’s important to avoid cropping the corners of your icon—iOS does that for you when it applies the corner-‐rounding mask)</li>
+<li>Does not include a drop shadow</li>
+<li>Does not have any shine or gloss (unless you’ve chosen to prevent the addition of the reflective shine)</li>
+<li>Does not use alpha transparency</li>
+</ul>
+</li>
+<li>Create a large version of your app icon for display in the App Store<ul>
+<li>512 X 512 pixels, 1024 X 1024 pixels</li>
+<li>Be sure to name this version of your app icon iTunesArtwork and iTunesArtwork@2x, respectively. </li>
+</ul>
+</li>
+</ul>
+<h3 id="Launch-Images"><a href="#Launch-Images" class="headerlink" title="Launch Images"></a>Launch Images</h3><ul>
+<li>Generally, design a launch image that is identical to the first screen of the app.<ul>
+<li>Exceptions:</li>
+<li>Text. The launch image is static, so any text you display in it will not be localized.</li>
+<li>UI elements that might change.</li>
+</ul>
+</li>
+<li>For iPhone and iPod touch launch images, include the status bar region.</li>
+<li>For iPad launch images, do not include the status bar region. </li>
+<li>Examples：<ul>
+<li>Settings的那个软件的启动界面，好吧，我就不放在我博客里了，自己去apple官网看吧</li>
+<li>还有股票那个软件的</li>
+</ul>
+</li>
+</ul>
+<h3 id="Small-Icons"><a href="#Small-Icons" class="headerlink" title="Small Icons"></a>Small Icons</h3><p>You can name your icon anything you want as long as you use the CFBundleIcons key to declare the names</p>
+<h3 id="Document-Icons"><a href="#Document-Icons" class="headerlink" title="Document Icons"></a>Document Icons</h3><h3 id="Web-Clip-Icons"><a href="#Web-Clip-Icons" class="headerlink" title="Web Clip Icons"></a>Web Clip Icons</h3><ul>
+<li>If necessary, include custom pressed or selected appearances for your icons. </li>
+</ul>
+<h3 id="Newsstand-Icons"><a href="#Newsstand-Icons" class="headerlink" title="Newsstand Icons"></a>Newsstand Icons</h3></div><div class="tags"><a href="/tags/apple/">apple</a><a href="/tags/ios/">iOS</a><a href="/tags/hig/">HIG</a></div><div class="post-nav"><a href="/2013/01/23/gprofshi-yong-fang-fa/" class="pre"><i class="icon-previous">Gprof使用方法</i></a><a href="/2013/01/15/xue-xi-linuxqi-dong-guo-cheng/" class="next">学习linux启动过程<i class="icon-next"></i></a></div><div id="disqus_thread"><script>var disqus_shortname = 'yyq';
+var disqus_identifier = '2013/01/18/apple-ios-mobilehig-review/';
+var disqus_title = 'apple iOS MobileHIG 摘要';
+var disqus_url = 'http://yyqing.me/2013/01/18/apple-ios-mobilehig-review/';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//yyq.disqus.com/count.js" async="async"></script></div></div></div></div><div class="pure-u-1-4"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search" class="search-form-input"/><input type="hidden" name="sitesearch" value="http://yyqing.me"/></form></div><div class="widget"><form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="search" name="word" maxlength="20" placeholder="Search" class="search-form-input"/><input type="hidden" name="si" value="http://yyqing.me"/><input name="tn" type="hidden" value="bds"/><input name="cl" type="hidden" value="3"/><input name="ct" type="hidden" value="2097152"/><input name="s" type="hidden" value="on"/></form></div><div class="widget"><div class="widget-title">Categories</div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/生活/">生活</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/生活/五味杂陈/">五味杂陈</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/">计算机</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/infrastructure/">Infrastructure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/algorithm/">algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/security/">security</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a></li></ul></div><div class="widget"><div class="widget-title">Tags</div><div class="tagcloud"><a href="/tags/clearcase/" style="font-size: 15px;">clearcase</a> <a href="/tags/git/" style="font-size: 15px;">git</a> <a href="/tags/cpu/" style="font-size: 15px;">cpu</a> <a href="/tags/smp/" style="font-size: 15px;">smp</a> <a href="/tags/数据结构/" style="font-size: 15px;">数据结构</a> <a href="/tags/unix/" style="font-size: 15px;">unix</a> <a href="/tags/apue/" style="font-size: 15px;">apue</a> <a href="/tags/life/" style="font-size: 15px;">life</a> <a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/doxygen/" style="font-size: 15px;">doxygen</a> <a href="/tags/tools/" style="font-size: 15px;">tools</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/ios/" style="font-size: 15px;">ios</a> <a href="/tags/xcode/" style="font-size: 15px;">xcode</a> <a href="/tags/numberpad/" style="font-size: 15px;">NumberPad</a> <a href="/tags/simulator/" style="font-size: 15px;">simulator</a> <a href="/tags/device/" style="font-size: 15px;">device</a> <a href="/tags/storyboard/" style="font-size: 15px;">storyboard</a> <a href="/tags/autolayout/" style="font-size: 15px;">autolayout</a> <a href="/tags/facebook/" style="font-size: 15px;">facebook</a> <a href="/tags/hack/" style="font-size: 15px;">hack</a> <a href="/tags/文摘/" style="font-size: 15px;">文摘</a> <a href="/tags/kernel/" style="font-size: 15px;">kernel</a> <a href="/tags/apple/" style="font-size: 15px;">apple</a> <a href="/tags/ios/" style="font-size: 15px;">iOS</a> <a href="/tags/hig/" style="font-size: 15px;">HIG</a> <a href="/tags/北京交通大学/" style="font-size: 15px;">北京交通大学</a> <a href="/tags/objective-c/" style="font-size: 15px;">objective-c</a> <a href="/tags/gprof/" style="font-size: 15px;">gprof</a> <a href="/tags/class/" style="font-size: 15px;">class</a> <a href="/tags/debug/" style="font-size: 15px;">debug</a> <a href="/tags/eclipse/" style="font-size: 15px;">eclipse</a> <a href="/tags/gdb/" style="font-size: 15px;">gdb</a> <a href="/tags/qemu/" style="font-size: 15px;">qemu</a> <a href="/tags/yahoo/" style="font-size: 15px;">yahoo</a> <a href="/tags/mac/" style="font-size: 15px;">mac</a> <a href="/tags/latex/" style="font-size: 15px;">Latex</a> <a href="/tags/中文/" style="font-size: 15px;">中文</a> <a href="/tags/乱码/" style="font-size: 15px;">乱码</a> <a href="/tags/shortcut/" style="font-size: 15px;">shortcut</a> <a href="/tags/autoindent/" style="font-size: 15px;">autoindent</a> <a href="/tags/mashup/" style="font-size: 15px;">mashup</a> <a href="/tags/hackthon/" style="font-size: 15px;">hackthon</a> <a href="/tags/flickr/" style="font-size: 15px;">flickr</a> <a href="/tags/yql/" style="font-size: 15px;">YQL</a> <a href="/tags/c/" style="font-size: 15px;">c</a> <a href="/tags/offer/" style="font-size: 15px;">offer</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/笔试，面试，找工作/" style="font-size: 15px;">笔试，面试，找工作</a> <a href="/tags/mips/" style="font-size: 15px;">mips</a> <a href="/tags/cleartool/" style="font-size: 15px;">cleartool</a> <a href="/tags/git-cc/" style="font-size: 15px;">git-cc</a> <a href="/tags/博库书城/" style="font-size: 15px;">博库书城</a> <a href="/tags/麻子汤圆/" style="font-size: 15px;">麻子汤圆</a> <a href="/tags/文二路/" style="font-size: 15px;">文二路</a> <a href="/tags/阮一峰/" style="font-size: 15px;">阮一峰</a> <a href="/tags/黑客与画家/" style="font-size: 15px;">黑客与画家</a> <a href="/tags/公交一公司/" style="font-size: 15px;">公交一公司</a> <a href="/tags/益乐桥/" style="font-size: 15px;">益乐桥</a> <a href="/tags/杨公堤/" style="font-size: 15px;">杨公堤</a> <a href="/tags/虎跑路/" style="font-size: 15px;">虎跑路</a> <a href="/tags/阿里巴巴滨江园区/" style="font-size: 15px;">阿里巴巴滨江园区</a> <a href="/tags/情人节/" style="font-size: 15px;">情人节</a> <a href="/tags/狼图腾/" style="font-size: 15px;">狼图腾</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/log/" style="font-size: 15px;">log</a> <a href="/tags/log4j/" style="font-size: 15px;">log4j</a> <a href="/tags/security/" style="font-size: 15px;">security</a> <a href="/tags/algorithm/" style="font-size: 15px;">algorithm</a> <a href="/tags/leetcode/" style="font-size: 15px;">leetcode</a> <a href="/tags/oj/" style="font-size: 15px;">oj</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/certification/" style="font-size: 15px;">certification</a> <a href="/tags/https/" style="font-size: 15px;">https</a> <a href="/tags/ssl/" style="font-size: 15px;">ssl</a> <a href="/tags/上坟/" style="font-size: 15px;">上坟</a> <a href="/tags/坟冢/" style="font-size: 15px;">坟冢</a> <a href="/tags/婆/" style="font-size: 15px;">婆</a> <a href="/tags/小猫/" style="font-size: 15px;">小猫</a> <a href="/tags/洋芋/" style="font-size: 15px;">洋芋</a> <a href="/tags/build/" style="font-size: 15px;">build</a> <a href="/tags/ci/" style="font-size: 15px;">CI</a> <a href="/tags/cloud/" style="font-size: 15px;">cloud</a> <a href="/tags/coverage/" style="font-size: 15px;">coverage</a> <a href="/tags/coveralls/" style="font-size: 15px;">coveralls</a> <a href="/tags/service/" style="font-size: 15px;">service</a> <a href="/tags/travis/" style="font-size: 15px;">travis</a> <a href="/tags/装饰器/" style="font-size: 15px;">装饰器</a> <a href="/tags/py2app/" style="font-size: 15px;">py2app</a> <a href="/tags/smtp/" style="font-size: 15px;">SMTP</a> <a href="/tags/wxpython/" style="font-size: 15px;">wxpython</a> <a href="/tags/爬虫/" style="font-size: 15px;">爬虫</a> <a href="/tags/theos/" style="font-size: 15px;">theos</a> <a href="/tags/tweak/" style="font-size: 15px;">tweak</a> <a href="/tags/conference/" style="font-size: 15px;">conference</a> <a href="/tags/security/" style="font-size: 15px;">Security</a> <a href="/tags/working/" style="font-size: 15px;">working</a> <a href="/tags/计算机/" style="font-size: 15px;">计算机</a></div></div><div class="widget"><div class="widget-title">Recent</div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/i-m-back/">I'm back</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/11/MARIAGE D'AMOUR/">新琴首秀之MARIAGE D'AMOUR</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/26/commit-a-bug-to-wooyun/">在乌云提交一个漏洞成功并注册成为白帽子</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/19/archsummit2015/">参加ArchSummit2015有感</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/11/ios-security-learn-3/">iOS逆向工程学习日记3--实践</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/07/ios-security-learn-2/">iOS逆向-学习日记2-Mac OS X上的工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/24/python_spider/">Python爬糗百热门20条并邮件分发+wxPython简易GUI+py2app转成可执行文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/14/python-property/">Python @property装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/05/python-decorator-research/">Python装饰器有趣实例探究</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/05/14/that-cloud-services-of-ci/">That Cloud Services of CI</a></li></ul></div><div class="widget"><div class="widget-title">Recent Comments</div><script type="text/javascript" src="//yyq.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div><div class="widget"><div class="widget-title">Blogroll</div><ul></ul><a href="http://blog.csdn.net/davidbeckham2901" title="My CSDN Blog" target="_blank">My CSDN Blog</a><ul></ul><a href="http://www.google.com/" title="Google" target="_blank">Google</a></div></div></div></div><div id="footer">© <a href="/" rel="nofollow">Young Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div><a id="rocket" href="#top" class="show"></a><script src="/js/jquery.min.js"></script>
+<script src="/js/totop.js"></script><script src="/js/fancybox.pack.js"></script>
+<script src="/js/jquery.fancybox.js"></script><link rel="stylesheet" href="/css/jquery.fancybox.css"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create','UA-37075097-1','auto');ga('send','pageview');
+</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cef6d518277d9356460d9798b8e22fb8";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+  })();</script></div></body></html>

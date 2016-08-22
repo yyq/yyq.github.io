@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/><meta content="telephone=no" name="format-detection"/><meta name="description" content="Technology Blog"/><title>C Traps and Pitfalls | Young Blog</title><link rel="stylesheet" type="text/css" href="/css/normalize.css"/><link rel="stylesheet" type="text/css" href="/css/pure-min.css"/><link rel="stylesheet" type="text/css" href="/css/grids-responsive-min.css"/><link rel="stylesheet" type="text/css" href="/css/style.css"/><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"/><link rel="apple-touch-icon" href="/apple-touch-icon.png"/><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"/><link rel="alternate" type="application/atom+xml" href="/atom.xml"/></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">C Traps and Pitfalls</h1><a id="logo" href="/">Young Blog</a><p class="description">Stay Hungry Stay Foolish</p></div><div id="nav-menu"><a href="/" class="current"><i class="icon-home"> Home</i></a><a href="/archives/"><i class="icon-archive"> Archive</i></a><a href="/about/"><i class="icon-about"> About</i></a><a href="/atom.xml"><i class="icon-rss"> RSS</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post post-page"><h1 class="post-title">C Traps and Pitfalls</h1><div class="post-meta">2013-05-29 | </div><span data-disqus-identifier="2013/05/29/c-traps-and-pitfalls/" class="disqus-comment-count"></span><div class="post-content"><p>了解到一本很经典的C语言的书，我没有读过，《C陷阱与缺陷》，此书不厚，但是经典。这片博客用来做读书笔记吧。</p>
+<ol>
+<li><p>printf(“%d”,010);</p>
+<p> 输出是8。平常一不小心就错了。</p>
+</li>
+<li><p>词法分析中的贪心法：a—b的意思是 (a–)-b,而不是a-(–b);因为编译器从左到右扫描，最长的一个有意义的字符是 –；</p>
+</li>
+<li><p><strong>a=b/*p</strong> 肯定会报错，因为 <strong>/*</strong> 会被解析成注释的前缀。</p>
+<p> 正确的表达方式应该是<strong>a= b / *p</strong> 或者 <strong>a = b /(*p)</strong></p>
+</li>
+<li><p><strong>printf(‘\n’);</strong> 是错误的；<strong>printf(“\n”)</strong> 是正确的；</p>
+<p> char Hello[]={‘h’,’e’,’l’,’l’,’o’,’w’,’o’,’r’,’l’,’d’,’\n’,’0’};<br> printf(Hello);</p>
+ <a id="more"></a></li>
+<li><p>void</p>
+ <figure class="highlight clojure"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(<span class="name"><span class="builtin-name">*</span></span>(<span class="name">void</span>(<span class="name"><span class="builtin-name">*</span></span>)()<span class="number">0</span>)) ()<span class="comment">;</span></div></pre></td></tr></table></figure>
+<p> 独立运行于某种微处理器上的C程序，当计算机启动时，硬件将调用首地址为0位置的子进程。为了模拟开机启动时的清醒，设计一个C语句，显式调用孩子进程。</p>
+<ul>
+<li>float *g():代表一个函数，返回值为float型指针</li>
+<li>floag (*h)():代表一个函数指针，这个指针指向一个返回float变量的函数。</li>
+<li>假设fp是一个函数指针，那么调用那个函数就是<figure class="highlight clojure"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(\*fp)()<span class="comment">;</span></div></pre></td></tr></table></figure>,<figure class="highlight clojure"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(\*0)()</div></pre></td></tr></table></figure>则表示调用位置在0的函数了。</li>
+<li><p>通过如下可以完成调用存储位置为0的子进程    </p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">void (<span class="name">*fp</span>)()<span class="comment">;</span></div><div class="line">or</div><div class="line">(<span class="name">*fp</span>)()<span class="comment">;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>一旦知道声明一个变量，就知道如何对一个常数进行类型转换，将其转型为该变量的类型，只需要在变量声明中，把变量名去掉即可，将常数0转换为“指向返回值为float的函数的指针”类型，可以写成：</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">( float(<span class="name"><span class="builtin-name">*</span></span>)() )<span class="number">0</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>运算符优先级，单目运算 &gt; 双目运算 &gt; 三目运算</p>
+<p> 双目运算符中:算术运算符 &gt; 移位运算符 &gt; 关系运算符 &gt; 逻辑运算符 &gt; 赋值运算符 &gt; 条件运算符(三目运算符)</p>
+<p> 运算所需变量为一个的运算符叫单目运算符</p>
+<ul>
+<li>任何一个逻辑运算符的优先级都低于任何一个关系运算符</li>
+<li>移位运算符比算术运算符要低</li>
+</ul>
+</li>
+<li><p>错误表达方式：</p>
+<pre><code>while (c=getc(in) != EOF)
+    putc(c,out);
+</code></pre><p>正确表达方式：</p>
+<pre><code>while ( (c=getc(in)) != EOF) 
+     putc(c,out);
+</code></pre></li>
+<li><p>extern</p>
+<p>  在所有的函数体之外： </p>
+   <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = <span class="number">7</span>; <span class="comment">//是一个声明语句，在定义a的同时，也为a明确指定了初始值。</span></div><div class="line"><span class="keyword">extern</span> <span class="keyword">int</span> a; <span class="comment">//从链接器的角度来看，这个声明是对外部变量a的引用，不是对a的定义。</span></div></pre></td></tr></table></figure>
+<p>   如果在文件1.c中，声明了int a = 7,文件2.c中声明了extern int a;那么，就不可以有其他的文件中再出现int a = …因为如果这样，显然链接器会不知所措。分别编译文件时可以OK,但是在link的时候就会报错了。</p>
+<p>   这个时候，<strong>static</strong>则可以起到作用了。static int a;这样一个句子，就会<strong>限定了变量a的作用域在一个源文件之内</strong>，对于其他源文件a是不可见的。</p>
+</li>
+<li><p>命名冲突和static</p>
+<p> 如果一个库函数需要调用另一个未在ANSI C标准中列出的库函数，那么它应该以“隐藏名称”来调用后者。这就使得程序员可以定义一个函数，比如函数名为read，而不用担心库函数getc本应调用库文件中的read函数，去调用了这个用户定义的read函数，但大多数C语言实现并不是这样做的，因此这类命名冲突仍然是一个问题。</p>
+<p> static修饰符是一个能够减少此类命名冲突的有用工具。static修饰符不近适用于变量，也适用于函数。如果函数f需要调用另一个函数g，而且只有函数f需要调用函数g，我们可以吧函数f与函数g都放到同一个源文件中，并且声明g为static；</p>
+</li>
+<li><p>如果一个函数在被定义或者声明之前调用，那么它的返回类型就默认为整形。</p>
+<p>文件1.c   </p>
+<pre><code>{% codeblock %}
+		int square(int a);
+		main(){ printf("%d\n",square(3));}
+		{% endcodeblock %}
+</code></pre><p>文件2.c</p>
+<pre><code>{% codeblock %}
+		int square(int a){ return a*a; }
+		{% endcodeblock %}
+</code></pre><p>正常情况下，返回为9。若把文件1中的声明去掉，返回值也为9.<br>若改成如下这个样子：</p>
+<pre><code>{% codeblock %}
+		main(){ printf("%lf\n",square(3));}
+		{% endcodeblock %}
+</code></pre><p>文件3.c</p>
+<pre><code>{% codeblock %}
+		double square(int a){ return a*a*1.0; }
+		{% endcodeblock %}
+</code></pre><p>  那文件1的输出就是0.000000了</p>
+<p>  如果square的调用和定义分别位于不同的文件中，那么我们必须在调用它的文件中声明square函数。</p>
+</li>
+<li><p>宏</p>
+<p>宏定义中需要注意<strong>空格</strong>和<strong>括号</strong></p>
+<p><strong>example1:</strong></p>
+   <figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-id">#define</span> <span class="selector-tag">abs</span>(x) <span class="selector-tag">x</span>&gt;<span class="selector-tag">0</span>?<span class="selector-tag">x</span><span class="selector-pseudo">:-x</span></div></pre></td></tr></table></figure> 
+<p>   这个定义是错误的,</p>
+<p>   因为<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">abs</span><span class="params">(a-b)</span></span></div></pre></td></tr></table></figure>这个算式宏展开之后，</p>
+<p>   就是<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">a</span>-b&gt;<span class="number">0</span>?<span class="keyword">a</span>-b:-<span class="keyword">a</span>-b</div></pre></td></tr></table></figure>,而这显然不是我们想要的结果。</p>
+<p>   而<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#define abs(<span class="name">x</span>) (((<span class="name">x</span>)&gt;=0)?(<span class="name">x</span>)<span class="symbol">:-</span>(<span class="name">x</span>))</div></pre></td></tr></table></figure>看上去更像是正确答案</p>
+<p>   <strong>example2:</strong></p>
+<p>   看看这个<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#define max(<span class="name">a</span>,b) ((<span class="name">a</span>)&gt;(<span class="name">b</span>)?(<span class="name">a</span>):(<span class="name">b</span>))</div></pre></td></tr></table></figure>,好像也是正确的样子.</p>
+<p>   但是仍然存在其他的问题。<strong>一个操作数如果在两处被用到，就会被求值两次。</strong>这个算式中，如果实际情况是a&gt;b的话，那么a会被求值两次：第一次在a和b比较的时候，第二次在max求结果的时候。下面来看看可能的错误情形:</p>
+<pre><code>{% codeblock %}
+   		biggest = x[10];
+   		i = 1;
+   		while( i < n )
+   			biggest = max(biggest , x[i++]); 		{% endcodeblock %}
+</code></pre><p>   这个过程就是要找出数组中最大的数。就是这里了，注意到max宏调用时，给进去的第二个数据中的i++;宏展开后看一下：</p>
+   <figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">(biggest)</span>&gt;<span class="comment">(x[i++])</span>?<span class="comment">(biggest)</span>:<span class="comment">(x[i++])</span></div></pre></td></tr></table></figure>
+<p>   在比较完成时，i已经++了，然后给max求值时，若是选择冒号后面的算式的话，后果不堪设想了。</p>
+<p>   <strong>example3</strong></p>
+<p>   宏的另外一个危险就是：宏展开可能产生非常庞大的表达式，占用的空间远远超过了我们所期望的空间。比如上述的那个max宏。如果我们需要找到abcd四个数中的最大值，利用上面的宏来写，最方便的写法就是<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">max(<span class="name">a</span>,max(<span class="name">b</span>,(<span class="name">max</span>(<span class="name">c</span>,d))))</div></pre></td></tr></table></figure>，展开后就是。。。。太长了，我不想写。若是把刚才的写法稍微改一下<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">max(<span class="name">max</span>(<span class="name">a</span>,b),max(<span class="name">c</span>,d))</div></pre></td></tr></table></figure>则会好一些，但是还是略长。</p>
+<p>   其实，写成如下的代码似乎程序运行效率更高一些：</p>
+<pre><code>biggest = a;
+if(b&gt;biggest) b = biggest;
+if(c&gt;biggest) c = biggest;
+if(d&gt;biggest) d = biggest;
+</code></pre><p>   <strong>example4</strong></p>
+<p>   宏不适合定义类型</p>
+<pre><code>#define T1 struct foo *
+typedef struct foo *T2
+T1 a,b;
+T2 c,d;
+</code></pre><p>   上面句子中的第三行就会出现问题了，struct foo *a, b;那么a和b的类型就一个是指针，一个是结构了。</p>
+</li>
+<li><p>可移植性的一个例子</p>
+<p>下面的程序接受两个参数：一个long型整数和一个函数指针。这段程序的作用是把给出的long型整数转换为其10进制表示，并且对10进制表示中的每个字符都调用函数指针所指向的函数。</p>
+<pre><code>{% codeblock %}
+		void printnum( long n, void(*p)()){
+			if( n < 0 ){
+					(*p)('-');
+					n = -n;
+			}
+			if( n >= 10 )
+					printnum(n/10 , p);
+			(*p) ((int)(n%10) + '0');
+		}	
+		{% endcodeblock %}
+</code></pre><p><strong>问题1</strong></p>
+<p>在最后一行传入数字字符的时候，使用的是数字加上‘0’，这样的写法，在ASCII字符集是有效的，换了其他的就不一定了。可以考虑用另外一种更为有效的表达方法，用一张代表数字的字符表。因为一个字符串常量可以用来表示一个字符数组，所以在数组名出现的地方都可以用字符串常量来替换。如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"0123456789"</span>[ n % <span class="number">10</span>]</div></pre></td></tr></table></figure>
+<p><strong>问题2</strong></p>
+<p>在n=-n的这个操作中，很容易就考虑到，如果是基于2的补码的计算机，很有可能溢出了。比如-32768的相反数肯定就不是32768。因此，如果我们保证不将n转换为对应的正数，则可以避免这一个问题。如果n是正数，则转换成负数来处理即可。在此之后的所有算术运算针对负数进行。修改后代码如下：</p>
+<pre><code>{% codeblock %}
+		void printneg(long n, void(*p)()){
+			if( n <= 10="" 10){="" printneg(n="" ,="" p);="" }="" (*p)("0123456789"[-(n%10)]);="" void="" printnum(long="" n,="" void(*p)()){="" if(="" n="" <="" 0){="" (*p)('-');="" printneg(n,p);="" }else="" printneg(-n,p);="" {%="" endcodeblock="" %}="" code=""></=></code></pre><p><strong>问题3</strong></p>
+<p>当n为负数的时候，n%10也有可能为正数，那-n%10就有可能为负数，那么”0123456789”[-(n%10)]就不存在了。那我们创建两个临时变量来分别保存商和余数。在除法完成之后，看余数是否在合理范围（即正数从0到9）；如果不是，则调整。printnum不用改，改改printneg.</p>
+<pre><code>{% codeblock %}
+		void printneg( long n , void (*p)()){
+			long q;
+			int r;
+			q = n / 10;
+			r = n % 10;
+			if( r> 0){
+				r -= 10; q ++;
+			}
+			if( n <= -10)="" printneg(="" q="" ,="" p);="" (*p)("0123456789"[-r]);="" }="" {%="" endcodeblock="" %}="" <="" code=""></=></code></pre></li>
+</ol>
+<h2 id="小节"><a href="#小节" class="headerlink" title="小节"></a>小节</h2><p>至此，c陷阱与缺陷这本书算是看完第一遍了。感觉自己对c又有了新的认识。用书中译者的话来说就是，在C语言最为幽微晦暗的部分探奇揽胜。能从书中感受到，这些问题来自于作者多年的实际经验，才会有如此多的case。很多问题，作者也没有去深究为何，但是都给出了解决问题的方法或者思路，很多的陷阱都有很多的方式可以绕过去。就看平时自己的积累了。     </p>
+</div><div class="tags"><a href="/tags/c/">c</a></div><div class="post-nav"><a href="/2013/06/18/xiao-xin-jia-fa-,hui-yi-chu/" class="pre"><i class="icon-previous">小心加法的溢出</i></a><a href="/2013/05/28/xcodezi-dong-pai-ban-kuai-jie-jian/" class="next">xcode自动排版快捷键<i class="icon-next"></i></a></div><div id="disqus_thread"><script>var disqus_shortname = 'yyq';
+var disqus_identifier = '2013/05/29/c-traps-and-pitfalls/';
+var disqus_title = 'C Traps and Pitfalls';
+var disqus_url = 'http://yyqing.me/2013/05/29/c-traps-and-pitfalls/';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script id="dsq-count-scr" src="//yyq.disqus.com/count.js" async="async"></script></div></div></div></div><div class="pure-u-1-4"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search" class="search-form-input"/><input type="hidden" name="sitesearch" value="http://yyqing.me"/></form></div><div class="widget"><form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="search" name="word" maxlength="20" placeholder="Search" class="search-form-input"/><input type="hidden" name="si" value="http://yyqing.me"/><input name="tn" type="hidden" value="bds"/><input name="cl" type="hidden" value="3"/><input name="ct" type="hidden" value="2097152"/><input name="s" type="hidden" value="on"/></form></div><div class="widget"><div class="widget-title">Categories</div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/生活/">生活</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/生活/五味杂陈/">五味杂陈</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/">计算机</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/infrastructure/">Infrastructure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/algorithm/">algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机/security/">security</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/读书/">读书</a></li></ul></div><div class="widget"><div class="widget-title">Tags</div><div class="tagcloud"><a href="/tags/clearcase/" style="font-size: 15px;">clearcase</a> <a href="/tags/git/" style="font-size: 15px;">git</a> <a href="/tags/cpu/" style="font-size: 15px;">cpu</a> <a href="/tags/smp/" style="font-size: 15px;">smp</a> <a href="/tags/数据结构/" style="font-size: 15px;">数据结构</a> <a href="/tags/unix/" style="font-size: 15px;">unix</a> <a href="/tags/apue/" style="font-size: 15px;">apue</a> <a href="/tags/life/" style="font-size: 15px;">life</a> <a href="/tags/music/" style="font-size: 15px;">music</a> <a href="/tags/doxygen/" style="font-size: 15px;">doxygen</a> <a href="/tags/tools/" style="font-size: 15px;">tools</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/ios/" style="font-size: 15px;">ios</a> <a href="/tags/xcode/" style="font-size: 15px;">xcode</a> <a href="/tags/numberpad/" style="font-size: 15px;">NumberPad</a> <a href="/tags/simulator/" style="font-size: 15px;">simulator</a> <a href="/tags/device/" style="font-size: 15px;">device</a> <a href="/tags/storyboard/" style="font-size: 15px;">storyboard</a> <a href="/tags/autolayout/" style="font-size: 15px;">autolayout</a> <a href="/tags/facebook/" style="font-size: 15px;">facebook</a> <a href="/tags/hack/" style="font-size: 15px;">hack</a> <a href="/tags/文摘/" style="font-size: 15px;">文摘</a> <a href="/tags/kernel/" style="font-size: 15px;">kernel</a> <a href="/tags/apple/" style="font-size: 15px;">apple</a> <a href="/tags/ios/" style="font-size: 15px;">iOS</a> <a href="/tags/hig/" style="font-size: 15px;">HIG</a> <a href="/tags/北京交通大学/" style="font-size: 15px;">北京交通大学</a> <a href="/tags/objective-c/" style="font-size: 15px;">objective-c</a> <a href="/tags/gprof/" style="font-size: 15px;">gprof</a> <a href="/tags/class/" style="font-size: 15px;">class</a> <a href="/tags/debug/" style="font-size: 15px;">debug</a> <a href="/tags/eclipse/" style="font-size: 15px;">eclipse</a> <a href="/tags/gdb/" style="font-size: 15px;">gdb</a> <a href="/tags/qemu/" style="font-size: 15px;">qemu</a> <a href="/tags/yahoo/" style="font-size: 15px;">yahoo</a> <a href="/tags/mac/" style="font-size: 15px;">mac</a> <a href="/tags/latex/" style="font-size: 15px;">Latex</a> <a href="/tags/中文/" style="font-size: 15px;">中文</a> <a href="/tags/乱码/" style="font-size: 15px;">乱码</a> <a href="/tags/shortcut/" style="font-size: 15px;">shortcut</a> <a href="/tags/autoindent/" style="font-size: 15px;">autoindent</a> <a href="/tags/mashup/" style="font-size: 15px;">mashup</a> <a href="/tags/hackthon/" style="font-size: 15px;">hackthon</a> <a href="/tags/flickr/" style="font-size: 15px;">flickr</a> <a href="/tags/yql/" style="font-size: 15px;">YQL</a> <a href="/tags/c/" style="font-size: 15px;">c</a> <a href="/tags/offer/" style="font-size: 15px;">offer</a> <a href="/tags/算法/" style="font-size: 15px;">算法</a> <a href="/tags/笔试，面试，找工作/" style="font-size: 15px;">笔试，面试，找工作</a> <a href="/tags/mips/" style="font-size: 15px;">mips</a> <a href="/tags/cleartool/" style="font-size: 15px;">cleartool</a> <a href="/tags/git-cc/" style="font-size: 15px;">git-cc</a> <a href="/tags/博库书城/" style="font-size: 15px;">博库书城</a> <a href="/tags/麻子汤圆/" style="font-size: 15px;">麻子汤圆</a> <a href="/tags/文二路/" style="font-size: 15px;">文二路</a> <a href="/tags/阮一峰/" style="font-size: 15px;">阮一峰</a> <a href="/tags/黑客与画家/" style="font-size: 15px;">黑客与画家</a> <a href="/tags/公交一公司/" style="font-size: 15px;">公交一公司</a> <a href="/tags/益乐桥/" style="font-size: 15px;">益乐桥</a> <a href="/tags/杨公堤/" style="font-size: 15px;">杨公堤</a> <a href="/tags/虎跑路/" style="font-size: 15px;">虎跑路</a> <a href="/tags/阿里巴巴滨江园区/" style="font-size: 15px;">阿里巴巴滨江园区</a> <a href="/tags/情人节/" style="font-size: 15px;">情人节</a> <a href="/tags/狼图腾/" style="font-size: 15px;">狼图腾</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/log/" style="font-size: 15px;">log</a> <a href="/tags/log4j/" style="font-size: 15px;">log4j</a> <a href="/tags/security/" style="font-size: 15px;">security</a> <a href="/tags/algorithm/" style="font-size: 15px;">algorithm</a> <a href="/tags/leetcode/" style="font-size: 15px;">leetcode</a> <a href="/tags/oj/" style="font-size: 15px;">oj</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/certification/" style="font-size: 15px;">certification</a> <a href="/tags/https/" style="font-size: 15px;">https</a> <a href="/tags/ssl/" style="font-size: 15px;">ssl</a> <a href="/tags/上坟/" style="font-size: 15px;">上坟</a> <a href="/tags/坟冢/" style="font-size: 15px;">坟冢</a> <a href="/tags/婆/" style="font-size: 15px;">婆</a> <a href="/tags/小猫/" style="font-size: 15px;">小猫</a> <a href="/tags/洋芋/" style="font-size: 15px;">洋芋</a> <a href="/tags/build/" style="font-size: 15px;">build</a> <a href="/tags/ci/" style="font-size: 15px;">CI</a> <a href="/tags/cloud/" style="font-size: 15px;">cloud</a> <a href="/tags/coverage/" style="font-size: 15px;">coverage</a> <a href="/tags/coveralls/" style="font-size: 15px;">coveralls</a> <a href="/tags/service/" style="font-size: 15px;">service</a> <a href="/tags/travis/" style="font-size: 15px;">travis</a> <a href="/tags/装饰器/" style="font-size: 15px;">装饰器</a> <a href="/tags/py2app/" style="font-size: 15px;">py2app</a> <a href="/tags/smtp/" style="font-size: 15px;">SMTP</a> <a href="/tags/wxpython/" style="font-size: 15px;">wxpython</a> <a href="/tags/爬虫/" style="font-size: 15px;">爬虫</a> <a href="/tags/theos/" style="font-size: 15px;">theos</a> <a href="/tags/tweak/" style="font-size: 15px;">tweak</a> <a href="/tags/conference/" style="font-size: 15px;">conference</a> <a href="/tags/security/" style="font-size: 15px;">Security</a> <a href="/tags/working/" style="font-size: 15px;">working</a> <a href="/tags/计算机/" style="font-size: 15px;">计算机</a></div></div><div class="widget"><div class="widget-title">Recent</div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/i-m-back/">I'm back</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/11/MARIAGE D'AMOUR/">新琴首秀之MARIAGE D'AMOUR</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/26/commit-a-bug-to-wooyun/">在乌云提交一个漏洞成功并注册成为白帽子</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/19/archsummit2015/">参加ArchSummit2015有感</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/11/ios-security-learn-3/">iOS逆向工程学习日记3--实践</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/07/ios-security-learn-2/">iOS逆向-学习日记2-Mac OS X上的工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/24/python_spider/">Python爬糗百热门20条并邮件分发+wxPython简易GUI+py2app转成可执行文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/14/python-property/">Python @property装饰器</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/05/python-decorator-research/">Python装饰器有趣实例探究</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/05/14/that-cloud-services-of-ci/">That Cloud Services of CI</a></li></ul></div><div class="widget"><div class="widget-title">Recent Comments</div><script type="text/javascript" src="//yyq.disqus.com/recent_comments_widget.js?num_items=5&amp;hide_avatars=1&amp;avatar_size=32&amp;excerpt_length=20&amp;hide_mods=1"></script></div><div class="widget"><div class="widget-title">Blogroll</div><ul></ul><a href="http://blog.csdn.net/davidbeckham2901" title="My CSDN Blog" target="_blank">My CSDN Blog</a><ul></ul><a href="http://www.google.com/" title="Google" target="_blank">Google</a></div></div></div></div><div id="footer">© <a href="/" rel="nofollow">Young Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div><a id="rocket" href="#top" class="show"></a><script src="/js/jquery.min.js"></script>
+<script src="/js/totop.js"></script><script src="/js/fancybox.pack.js"></script>
+<script src="/js/jquery.fancybox.js"></script><link rel="stylesheet" href="/css/jquery.fancybox.css"><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create','UA-37075097-1','auto');ga('send','pageview');
+</script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?cef6d518277d9356460d9798b8e22fb8";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+  })();</script></div></body></html>
