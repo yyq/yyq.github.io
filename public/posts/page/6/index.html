@@ -1,0 +1,308 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<link href=/posts/index.xml rel=alternate type=application/rss+xml title="Young Story">
+<link href=/posts/index.xml rel=feed type=application/rss+xml title="Young Story">
+<meta property="og:title" content="Posts">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yyq.github.io/posts/">
+<meta itemprop=name content="Posts">
+<meta itemprop=description content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="Posts">
+<meta name=twitter:description content>
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class="pb3-m pb6-l bg-black">
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+<div class="tc-l pv3 ph3 ph4-ns">
+<h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+Posts
+</h1>
+</div>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="pa3 pa4-ns nested-copy-line-height nested-img">
+<section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray"></section>
+<section class="flex-ns flex-wrap justify-around mt5">
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-07-07-ios-security-learn-2/ class="link black dim">
+iOS逆向-学习日记2-Mac OS X上的工具
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+<p>这一次，主要是按照别人的教程，把Mac上逆向工程有关的工具挨个试了个遍。先说几个重点的：Charles，Reveal，TheOS，IDA，Hopper。其中Charles，Reveal，IDA和Hopper都是收费的，且都有demo版本可以下载适用，TheOS是免费。</p>
+<h2 id=简介四个收费工具>简介四个收费工具</h2>
+<p>Charles用于分析网络流量，模拟器，mac os x，device都可以搞定各种get post connect，header cookie分门别类一目了然。价格不贵。</p>
+<p>Reveal主攻iOS UI，模拟器和device都行，对于越狱的设备可在cydia里装个插件，然后查看并且临时修改UI，利器。</p>
+<p>IDA和Hopper，算作一类了，主要功能是二进制文件到汇编代码，和进一步的汇编代码到C语言代码。我亲自使用过后，着实感觉到工具的强大，十分的强大。再加上工具里各种代码块和控制流的显示，就算我只是一个逆向工程的外行，也知道这样的信息会带来多么恐怖的分析成果。IDA是各个平台的产品都有，价格上千美刀了。Hopper是只有Mac平台上的，价格几百块的样子。据学习过逆向工程的同事说，IDA还是很强大很流行的。</p>
+<p>这四个工具的使用难度，Charles比较简单，Reveal略复杂一点。反汇编工具就超级复杂了。不过都有UI，自己可以一个个试着玩玩。</p>
+<h2 id=详细介绍theos越狱开发工具>详细介绍Theos越狱开发工具</h2>
+<p>接下来说说花了我很多时间用来实践的Theos吧。一个跨平台的development kit，用于开发编译iOS软件的，without Xcode。越狱后的iOS所用的插件，Cydia上的那些工具，大都基于Theos开发的。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-06-24-python_spider/ class="link black dim">
+Python爬糗百热门20条并邮件分发+wxPython简易GUI+py2app转成可执行文件
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+<p>学了一阵子Python，拿来做个什么有意思的东西呢？爬糗百好了，爬到的内容，邮件分发出去。</p>
+<p>然后又啃了两天的wxpython，做了个简易的邮件管理界面，可以在这里增加或者删除邮件，并且一键爬虫发送。</p>
+<p>最后，索性封装成APP吧，又试了一把py2app，简单好用。</p>
+<p>由于是让用户自行添加和删除邮箱，所以程序一定要兼顾到各种情况：比如输入的邮箱格式不合法，输入的邮箱里包含中文字符，分隔符不对，删除了全部邮箱然后又要发邮件等问题。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-06-14-python-property/ class="link black dim">
+Python @property装饰器
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+廖老师的博客链接如下，一开始没看懂，搜罗了一大堆，有点感觉了
+点击打开链接其实@property装饰器就是把class的方法变成属性，见下面这个class，它有两个私有属性。
+通过第一个@property和第二个@score.setter，我们可以像访问属性一样来调用类里面的方法，例如：
+s=Student(“David”,99)
+s.score = 100
+至于用这种装饰器的原因，我想，就是为了简洁吧，直接用属性赋值的方式，执行了方法。Python 肯定是个懒人发明的。
+ 
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-06-05-python-decorator-research/ class="link black dim">
+Python装饰器有趣实例探究
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+<p>廖老师的教程实在太高深，没弄懂，点击打开链接</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>deco_functionNeedDoc</span>(func):
+    <span style=color:#66d9ef>if</span> func<span style=color:#f92672>.</span>__doc__ <span style=color:#f92672>==</span> <span style=color:#66d9ef>None</span> :
+        print func, <span style=color:#e6db74>&#34;has no __doc__, it&#39;s a bad habit.&#34;</span>
+    <span style=color:#66d9ef>else</span>:
+        print func, <span style=color:#e6db74>&#39;:&#39;</span>, func<span style=color:#f92672>.</span>__doc__, <span style=color:#e6db74>&#39;.&#39;</span>
+    <span style=color:#66d9ef>return</span> func
+<span style=color:#a6e22e>@deco_functionNeedDoc</span>
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>f</span>():
+    print <span style=color:#e6db74>&#39;f() Do something&#39;</span>
+<span style=color:#a6e22e>@deco_functionNeedDoc</span>
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>g</span>():
+    <span style=color:#e6db74>&#39;I have a __doc__&#39;</span>
+    print <span style=color:#e6db74>&#39;g() Do something&#39;</span>
+f()
+g()
+print f
+print g<span style=color:#f92672>&lt;/</span>pre<span style=color:#f92672>&gt;</span>
+</code></pre></div><p>这段代码打印结果如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&lt;</span>function f at <span style=color:#ae81ff>0x0238F930</span><span style=color:#f92672>&gt;</span> has no<span style=color:#f92672>**</span>doc<span style=color:#f92672>**</span>, it<span style=color:#f92672>&amp;</span><span style=color:#75715e>#8217;s a bad habit.</span>
+
+<span style=color:#f92672>&lt;</span>function g at <span style=color:#ae81ff>0x0238F8B0</span><span style=color:#f92672>&gt;</span> : I have a <span style=color:#f92672>**</span>doc<span style=color:#f92672>**</span> <span style=color:#f92672>.</span>f() Do somethingg() Do something
+
+<span style=color:#f92672>&lt;</span>function f at <span style=color:#ae81ff>0x0238F930</span><span style=color:#f92672>&gt;</span>
+
+<span style=color:#f92672>&lt;</span>function g at <span style=color:#ae81ff>0x0238F8B0</span><span style=color:#f92672>&gt;</span>
+</code></pre></div><p>当时我就晕菜了，想了很久，原来在@装饰器函数的时候就会调用装饰器，装饰器函数return func，而func就是传进去的参数f。这个时候把代码改改。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-05-14-that-cloud-services-of-ci/ class="link black dim">
+That Cloud Services of CI
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+<p>When we find some open source projects on github( e.g. ruby-cucumber). We can found some green icon to display the status of the project on the README.md file. Like these:</p>
+<p><img src=2015-05-14-10.18.58.png alt=x></p>
+<p>, it looks very attractive to me. Especially the build passing status and the code coverage. Even I’m not working for the CI in our company, I’m still interested in it.</p>
+<p>When push some code to my code base, then automatically building the code, running tests, and showing the build status & code coverage real-time on the readme page, That’s COOL! When I look into more, the <a href=https://travis-ci.org>travis-ci.org</a> and the <a href=https://coveralls.io>coveralls.io</a> are free for open source project on github.</p>
+<p>Let me have a try.</p>
+<p>Since recently I’m learning python. First, I created a <a href=https://github.com/yyq/HelloWorldPython>helloworldpython</a> project on my github.</p>
+<h1 id=the-travis-ci>The Travis-CI</h1>
+<p>it supports most popular languages. After signing in it with github account, open the service for my helloworld project. After the authentication for travis-ci, it will add an service for the project, we can found that on the setting of the project:</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-04-29-svn-transfer2-git/ class="link black dim">
+svn转git简单实践
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+前言 涉及公司内部的名词，就用abc来代替好了。
+我负责的C工程，代码之前一直是用SVN来管理代码版本。为了响应党的号召，改Git，公司还花钱买了github企业版，这年头花钱买github而不是自己搭gitlab，良心企业啊。上网搜搜教程，试了一试，便成功了。关键操作记录在此了。
+需求一：svn转git git svn init http://svn_address git svn fetch&lt;/pre> or using git svn fetch -r 1:HEAD, 从revision 1开始fetch 去趟厕所，再喝杯咖啡，看stdout的信息可以看到正在从svn server上一个revision一个revision的内容往下拖，C工程（java代码为主，三万多行代码，引用的jar包10来个，其他的引用的jar包都用maven配置好了，所以不用把jar包存在工程里，SVN 的revision 700个左右），耗时大概10分钟，便转换完毕了。
+然后本地的git project已经建立好了。往远端push就好了。
+git remote add origin git@git_address git push -u origin master&lt;/pre> 需求二：将svn的改动同步到git 由于IDE使用的不熟悉，不是立马用IDE git clone过来工程就能直接用，没空来折腾。所以最近几天仍然只用svn来commit，但是想要更新svn project上的内容到git。
+怎么搞。上网一搜，挺好搞。
+git svn fetch git svn rebase git svn fetch git push -u origin master&lt;/pre> 不要问我为什么用这几句话，我也就是临时上网搜一下拿来用了。需要知道这命令干什么用的话，用help命令好了。
+产出 之后用git来管理C工程源代码了，托github企业版的福，可以更加方便的在网页上show给别人看了，哪天我改了多少代码，代码量啦，多少个新的feature啦，release note啦，issue track啦，都可以统统的放在一个网站上搞定了。
+还有，github pages的功能，给C工程建了一个宣传网页，瞬间高大上了有没有。
+by the way, 我参考的网页
+http://www.blogjava.net/lishunli/archive/2012/01/15/368562.html
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-04-27-kitty/ class="link black dim">
+小猫洋芋
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+<p>每逢长假，最头疼的就是小猫寄养问题，送过两次到宠物店，接回来的时候小家伙的嗓子都是哑的——她在店里叫个不停，可能害怕店里的狗。</p>
+<p>后来索性不送去宠物店，放家里，然后找朋友上门添食倒水铲屎。听朋友说，她状态极差，原本蹲在床上一角发呆冥想，很久之后确认家里进来人了，一个箭步冲出去，围着我朋友前后打转，叫个不停。最后朋友都关门下楼了，还能听见楼上她凄惨的叫声。所以，放家里，最后她的嗓子还是哑的。</p>
+<p>不仅是长假，每天下班回到家，洋芋都会一个箭步从她的’王位’上冲到门边，围着我们（主要是围着我=.=），用脑袋蹭腿，求爱抚。甚至有时候，她会叼着一只拖鞋，坐在门边，等着我们开门的动静。</p>
+<p>洋芋没事儿就爱跟着我转悠，我去厨房，她去厨房，我去厕所，她就坐在厕所门口等着。她爹地笑称，洋芋是我最忠实的小粉丝。</p>
+<p>卧室的木地板比较轻薄，我在前面走，她在后面追，追到身后伸出两个前爪从后环抱我的小腿——她总以为我走路的双腿在跟她嬉戏。肉肉的爪子落在地板上，声音好似小马驹奔跑在青石板道上，然后我跟她爹地就笑的不行——猫太胖，才能在木地板上发出这种声音。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-04-12-tomb-sweeping-day/ class="link black dim">
+清明节回乡祭祖
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+从情节人那篇之后很久未更，因为琐事缠身。先是婚纱照，去门店预约到拍照。然后是换房找房搬家，老房东各种找茬克扣押金，新房东目前来看倒是清爽人。
+婚纱照其实是我比较鄙夷的一种陋习，尤其对于白纱无感，不知道小说里女主角披上白纱之后那种神圣感是从哪里来的，反正我是没感受到。抹胸婚纱的束腰和别针，反而让我胸闷。所幸除了抹胸白纱和传统大鱼尾婚纱，另外三套衣服是我自己挑的，颇为满意。在造型师、摄影师的一番摆弄下，拍出来的效果、气场倒是大大超过我的预期。
+拍完婚纱照没多久就开始搬家。木易先森说，这是倒数第二次搬家了，下次就直接搬到自己的新家里。可能正是因为如此，这次搬家把人折腾的精疲力竭。眼看胜利就在眼前，以后再来一次就再也不用保持每年一搬的频率了，可打包、搬运、拆包装、摆放、清扫还是把人的精气神儿全都吸走了。这种劳累，到骨子里了，出去全身按摩+足疗也解不了乏。
+搬完家，紧接着，就着清明节的假期回乡。20多个小时的火车，于我反倒是休息，回到家与各路亲戚相聚，热闹非凡，跟过年一样。可是天气却一直不见明朗，雨下个没完，田地里一脚踩进去，就拔不出来了。这样的话，我根本没办法去给婆上坟。
+等到临走前一天，还是没见晴，我跟妈说，不行，不能等了，今天一定要去上坟。在楼下英子姐那里买了火纸、冥币和鞭炮之后，找到老爸，让他打火纸。所谓打火纸，就是用工具和木头棒子在火纸表面敲出来一排排整齐的铜钱印子。据说只能男孩子敲。
+婆的坟在我家一块田地里，田在山上，那块地里现在种满了杉树，长的郁郁葱葱。雨下了太久，从家里上山的路十分不好走。哥在前面各种拉拽着我俩。婆的坟就在这一片杉树后面，坟前一颗桂花树。最后一次来，桂花树和杉树都没有这么高，而现在，它们已经完全遮盖住了婆的坟冢。这就是我梦中挂念的地方啊，好几次，都没能到婆的坟冢前来，要么走到一半找不到路，要么就是差几节台阶，但就是迈不过去，一直到梦醒，都迈不过去。
+一边烧纸，一边跟哥打趣，这冥币面值真大，8千亿一张，烧多了，那边会不会通货膨胀？冥币上还写着天地通用，咋个通用法？烧完纸，我心里念念叨叨，婆啊，快来捡钱吧，在那边打个小麻将啥的，没有病痛，没有烦扰，好好安享乐日，还有，婆啊，今儿把孙女婿带来了，你好好看看啊。
+一不小心，香灰掉到手上，烫起一个泡。我迷信的认为，因为我很多年都没来看婆，这是神明对我的惩罚。
+一切完毕后，我扶着坟冢侧边，看坟冢后面那个突起的土堆，这里埋着我们家族里最辛苦最伟大的婆，不晓得她在这里面好不好玩，寂不寂寞，虽然旁边有爷，还有老太（爷的母亲，婆的婆婆）。最后，我执意要把坟前后的垃圾收集起来（所谓垃圾，不过是之前来上坟的亲人带上来的塑料袋、饮料瓶、酒盒等）带下山，算是临走前为婆尽最后一点孝心。
+其实我很胆小，这是我唯一一次敢自己绕着坟冢转的。别人家的坟，我独自一人时是决然不敢靠近，更别提绕着坟冢前前后后转悠。因为这个坟冢里埋的是我的婆啊。
+下到半山腰，再回头看看婆的坟冢，其实什么也看不到，都被杉树挡住了。但就在那个位置，有袅袅雾气升起，婆大概是感知到了吧。就这样，以后回乡再去看你。
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-03-30-java-install-ssl-certification/ class="link black dim">
+Java访问https网页时证书问题
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+<p>报错信息：</p>
+<p>内部工具开发中，有一个步骤要去一个https的网页上抓取内容，然后该网站的证书没有被本机认可，于是乎拒绝了抓取内容。我本来的想法是，检测到证书问题之后，安装证书好了。上网搜了搜，解决方案大致两类：一是自己手动改改这里那里添加证书完事。二是在java代码中设定忽略所有证书问题。</p>
+<p>如果是用第一种方案，那我的工具在所有其他工程师电脑上运行的时候，都需要它们自己去手动添加证书，那也太麻烦我的customer们了，虽然这种手动添加证书的事情只用干一次，但是他们都那么娇生惯养的，估计耽误他们工作时间来做这样的事情肯定不妥的。遂放弃的第一种思路，来看第二种，忽略所有，呵呵，代码能搞定。不过会有安全问题是吧。不过这又是内部工具，就把安全问题忽略好了。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-03-30-python-through-leetcodeoj/ class="link black dim">
+我要用python把leetcodeOJ算法题刷一遍。
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+给自己挖下一个坑，看看多久能摆平，平常吧，对算法有些兴趣，却总是没有持续的投入时间去学习。这次为了考验自己，看看到底有多强的执行力。leetcodeOJ难度对我来说刚刚好，不会难到我根本搞不定，也不会容易到每道题都能一次切过。在github上建立一个工程，https://github.com/yyq/LeetCodeOJ-python，看看多少时间能完成。完成顺序，就按照人家网站上的题号从小到大来吧。
+这里写下这篇文章，也顺便记录一下，在切题过程中遇到的坑，以及学习心得，感想。
+第四题。两个有序数组找中位数问题，时间复杂度log(n), 注意考虑奇偶性的情况，因为这个重复提交了好几遍才AC.
+第五题：找回文字符串，思路好说，边界问题坑了我两三把。
+第八题：字符串转数字的方法，各种特殊情况都需要考虑周全。
+</div>
+</div>
+</div>
+</div>
+</section>
+<ul class="pagination pagination-default">
+<li class=page-item>
+<a href=/posts/ aria-label=First class=page-link role=button><span aria-hidden=true>&#171;&#171;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/page/5/ aria-label=Previous class=page-link role=button><span aria-hidden=true>&#171;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/page/4/ aria-label="Page 4" class=page-link role=button>4</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/5/ aria-label="Page 5" class=page-link role=button>5</a>
+</li>
+<li class="page-item active">
+<a aria-current=page aria-label="Page 6" class=page-link role=button>6</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/7/ aria-label="Page 7" class=page-link role=button>7</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/8/ aria-label="Page 8" class=page-link role=button>8</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/7/ aria-label=Next class=page-link role=button><span aria-hidden=true>&#187;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/page/11/ aria-label=Last class=page-link role=button><span aria-hidden=true>&#187;&#187;</span></a>
+</li>
+</ul></article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

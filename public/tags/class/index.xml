@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>class on Young Story</title><link>https://yyq.github.io/tags/class/</link><description>Recent content in class on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 11 Feb 2013 11:11:01 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/class/index.xml" rel="self" type="application/rss+xml"/><item><title>学习obj-c笔记2:有关class</title><link>https://yyq.github.io/posts/2013/2013-02-11-xue-xi-obj-cbi-ji-2-you-guan-class/</link><pubDate>Mon, 11 Feb 2013 11:11:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-02-11-xue-xi-obj-cbi-ji-2-you-guan-class/</guid><description>&lt;p>在obj-c中的类，主要包含以下两个部分：&lt;/p>
+&lt;ul>
+&lt;li>@interface:classname&lt;/li>
+&lt;li>@implementation:classname&lt;/li>
+&lt;/ul>
+&lt;p>如果是一个程序而不是一个单独的类时，还得包括一个&lt;/p>
+&lt;ul>
+&lt;li>program section，也即main函数等等&lt;/li>
+&lt;/ul>
+&lt;p>在interface section中，应该包括有property和Method的声明，关于property的使用，暂时还没注意到，不过看到了对于method的描述，简单的说就是，+开头的方法，都是类方法，-开头的方法，都是实例方法。不过我觉得自己的表述还是缺乏精确性。摘抄原文如下：&lt;/p></description></item></channel></rss>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>owasp on Young Story</title><link>https://yyq.github.io/tags/owasp/</link><description>Recent content in owasp on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 27 Mar 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/owasp/index.xml" rel="self" type="application/rss+xml"/><item><title>OWASP TOP 10 浅显解读</title><link>https://yyq.github.io/posts/2017/2017-03-27-owasp-top10-go-through/</link><pubDate>Mon, 27 Mar 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-03-27-owasp-top10-go-through/</guid><description>OWASP的全称是Open Web Application Security Project，开放式网络应用安全项目，官网在https://www.owasp.org/index.php/Main_Page
+OWASP组织最近一次正式发布TOP10是在2013年，官网介绍页面是https://www.owasp.org/index.php/Top_10_2013-Top_10
+A1-注入 注入，例如SQL注入，操作系统注入，LDAP注入等等，一般发生在命令或者查询中包括了不可信任的数据，并且被发送到了解释器（解释命令或者查询的软件）。攻击者的攻击数据可以出发解释器来执行一些不怀好意的命令或者访问一些数据而无需正常授权。
+A2-坏授权和会话管理 在web应用中，和授权有关的，会话管理有关的一些功能，通常没有正确的实现，这会让攻击者破坏你的密码，密钥或者会话令牌，或者利用其它 实现的缺陷来伪装其它用户的身份
+A3-跨站脚本 XSS漏洞，通常发生在：应用拿到不可信任的数据并且发送给浏览器而没有做出正确的校验和过滤。XSS会允许攻击者在受害者的浏览器来执行脚本，这可以让攻击者劫持用户会话，修改网站或者把用户重定向到恶意网站
+A4-不安全的直接引用其他对象 这个缺陷一般发生：在当开发人员暴露一个对象给内部功能用，比如某个文件，某个目录或者某个数据库秘钥。如果没有正确的权限控制检查或者其他保护，那么攻击者可以操作利用这个对象来访问未授权的数据。
+A5-安全的错误配置 良好的安全:得有一个安全配置的规则，并且部署到应用，框架，应用服务器，网络服务器，数据库服务器和平台。安全设置应该被妥善的定义，实施和维护，一般来说默认场景都是不安全的。另外，软件要尽量保持更新。
+A6-敏感数据泄露 许多web应用都没有合适的保护好敏感数据，例如信用卡，个人税号和密码等等。攻击者可以偷取或者修改弱保护数据来实施信用卡欺诈，身份盗用或者其他犯罪。敏感的数据应该需要更多的保护，例如存储时和传输时都要进行加密，和浏览器进行交互时也需要特殊的预防泄露。
+A7-缺失的功能分级访问控制 大多数web应用会在把功能展示在界面上之前进行验证访问权限。、，当每一个功能被访问的时候，都要在服务器上执行同样的检查访问权限。如果网络请求没有被验证通过，攻击者将会伪造请求来进行未授权的访问。
+A8-CSRF，跨站伪造请求 CSRF攻击会迫使一个已经登录的受害者的浏览器来发送伪造的http请求，包括受害者的会话cookie，也包括任何其他的身份验证信息，发送到一个脆弱的web应用。这让攻击者可以强迫受害者的浏览器来生成请求,而没有防护的应用会认为这个请求来自于受害者的合法请求
+A9-使用了有已知漏洞的组件 组件，例如库，框架和其他软件模块，他们通常是以拥有所有权限来运行的。如果一个有漏洞的组件暴露了出来，一个攻击者就可以造成严重的数据丢失或者服务器接管。一个有已知漏洞组件的应用可能自己身的防御已经失效并且会引发一系列可能的攻击和影响
+A10-未授权的重定向和转发 web应用频繁的重定向和把用户引导向其他的页面和网站，使用不信任的数据来决定最终的目的地网页。如果没有合适的校验过程，攻击者可以将受害者重定向到钓鱼网站或者恶意网站，或者使用转发来访问未经授权的页面。</description></item></channel></rss>

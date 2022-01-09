@@ -1,0 +1,162 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>coursera Andrew Ng 机器学习第三周笔记 逻辑回归与泛化 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="Logistic Regression Classification The classification problem is just like the regression problem, except that the values y we now want to predict take on only a small number of discrete values. For now, we will focus on the binary classification problem in which y can take on only two values, 0 and 1.
+Logistic Regression Model Decision Boundary The decision boundary is the line that separates the area where y = 0 and where y = 1.">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="coursera Andrew Ng 机器学习第三周笔记 逻辑回归与泛化">
+<meta property="og:description" content="Logistic Regression Classification The classification problem is just like the regression problem, except that the values y we now want to predict take on only a small number of discrete values. For now, we will focus on the binary classification problem in which y can take on only two values, 0 and 1.
+Logistic Regression Model Decision Boundary The decision boundary is the line that separates the area where y = 0 and where y = 1.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2017/2017-08-03-machine-learning-week3/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-08-03T00:00:00+00:00">
+<meta property="article:modified_time" content="2017-08-03T00:00:00+00:00">
+<meta itemprop=name content="coursera Andrew Ng 机器学习第三周笔记 逻辑回归与泛化">
+<meta itemprop=description content="Logistic Regression Classification The classification problem is just like the regression problem, except that the values y we now want to predict take on only a small number of discrete values. For now, we will focus on the binary classification problem in which y can take on only two values, 0 and 1.
+Logistic Regression Model Decision Boundary The decision boundary is the line that separates the area where y = 0 and where y = 1."><meta itemprop=datePublished content="2017-08-03T00:00:00+00:00">
+<meta itemprop=dateModified content="2017-08-03T00:00:00+00:00">
+<meta itemprop=wordCount content="316">
+<meta itemprop=keywords content="ai,machine learning,Andrew Ng,Logistic Regression,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="coursera Andrew Ng 机器学习第三周笔记 逻辑回归与泛化">
+<meta name=twitter:description content="Logistic Regression Classification The classification problem is just like the regression problem, except that the values y we now want to predict take on only a small number of discrete values. For now, we will focus on the binary classification problem in which y can take on only two values, 0 and 1.
+Logistic Regression Model Decision Boundary The decision boundary is the line that separates the area where y = 0 and where y = 1.">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">coursera Andrew Ng 机器学习第三周笔记 逻辑回归与泛化</h1>
+<p class=tracked>
+By <strong>
+Young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2017-08-03T00:00:00Z>August 3, 2017</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h2 id=logistic-regression>Logistic Regression</h2>
+<h4 id=classification>Classification</h4>
+<p>The classification problem is just like the regression problem, except that the values y we now want to predict take on only a small number of discrete values. For now, we will focus on the <strong>binary classification problem</strong> in which y can take on only two values, 0 and 1.</p>
+<h4 id=logistic-regression-model>Logistic Regression Model</h4>
+<p><img src=./2017-08-03/sigmoid-1.png alt></p>
+<p><img src=./2017-08-03/sigmoid-2.png alt></p>
+<p><img src=./2017-08-03/sigmoid-3.png alt></p>
+<h4 id=decision-boundary>Decision Boundary</h4>
+<p>The <strong>decision boundary</strong> is the line that separates the area where y = 0 and where y = 1. It is created by our hypothesis function.</p>
+<h4 id=logistic-regression-cost-function>Logistic Regression Cost Function</h4>
+<p>We cannot use the same cost function that we use for linear regression because the Logistic Function will cause the output to be wavy, causing many local optima. In other words, it will not be a convex function.</p>
+<p><strong>我们不可以用和线性回归一样的代价函数了，因为如果使用了同样的代价函数，那么这个函数会波动起伏，有很多局部最优解，简而言之，它就不是凸函数了，不适合用来当做代价函数了</strong></p>
+<p><img src=./2017-08-03/cost-function-1.png alt></p>
+<p><img src=./2017-08-03/cost-function-2.png alt></p>
+<p><img src=./2017-08-03/cost-function-3.png alt></p>
+<p>If our correct answer &lsquo;y&rsquo; is 0, then the cost function will be 0 if our hypothesis function also outputs 0. If our hypothesis approaches 1, then the cost function will approach infinity.</p>
+<h4 id=simplified-cost-function-and-gradient-descent>simplified cost function and Gradient Descent</h4>
+<p><img src=./2017-08-03/cost-full-1.png alt></p>
+<p><strong>向量化的代价函数</strong></p>
+<p><img src=./2017-08-03/cost-full-2.png alt></p>
+<p><img src=./2017-08-03/gradient-1.png alt></p>
+<p><strong>向量化的梯度下降</strong></p>
+<p><img src=./2017-08-03/gradient-2.png alt></p>
+<h4 id=advanced-optimization高级优化算法>Advanced Optimization,高级优化算法</h4>
+<p>&ldquo;Conjugate gradient&rdquo;, &ldquo;BFGS&rdquo;, and &ldquo;L-BFGS&rdquo; are more sophisticated, faster ways to optimize θ that can be used instead of gradient descent. We suggest that you should not write these more sophisticated algorithms yourself (unless you are an expert in numerical computing) but use the libraries instead, as they&rsquo;re already tested and highly optimized.</p>
+<p><img src=./2017-08-03/optimized.png alt></p>
+<p>例如matlab里的fminunc()，一般来说都是把自己写好的代价函数，初始化的theta，等等参数传入</p>
+<h4 id=multicalss-calssification>multicalss calssification</h4>
+<p>one vs all = N * one vs rest</p>
+<p>one vs rest = logistic regression classifier</p>
+<h2 id=regularization>Regularization</h2>
+<h4 id=problem-of-overfitting>problem of overfitting</h4>
+<ul>
+<li>
+<p>Reduce the number of features</p>
+</li>
+<li>
+<p>Manually select which features to keep</p>
+</li>
+<li>
+<p>use a model selection algorithm</p>
+</li>
+<li>
+<p>Regularization</p>
+</li>
+<li>
+<p>keep all the features, but reduce the magnitude of parameters theta-j</p>
+</li>
+<li>
+<p>Regularization works well when we have a lot of slightly useful features.</p>
+</li>
+</ul>
+<h4 id=with-lambda>with lambda</h4>
+<p>The λ, or lambda, is the regularization parameter. It determines how much the costs of our theta parameters are inflated.</p>
+<p>cost function with lambda</p>
+<p><img src=./2017-08-03/lambda-cost.png alt></p>
+<p>gradient descent with lambda</p>
+<p><img src=./2017-08-03/lambda-gradient.png alt></p>
+<ul class=pa0>
+<li class=list>
+<a href=/tags/ai class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ai</a>
+</li>
+<li class=list>
+<a href=/tags/machine-learning class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">machine learning</a>
+</li>
+<li class=list>
+<a href=/tags/andrew-ng class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Andrew Ng</a>
+</li>
+<li class=list>
+<a href=/tags/logistic-regression class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Logistic Regression</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2017/2017-08-02-machine-learning-week2/>coursera Andrew Ng 机器学习第二周笔记 多个变量的线性回归</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-01-machine-learning-week1/>coursera Andrew Ng 机器学习第一周笔记 线性回归</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

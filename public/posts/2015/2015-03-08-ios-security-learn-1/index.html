@@ -1,0 +1,151 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>iOS安全-学习日记1 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="前(fei)言(hua)
+上班之余，自学一些计算机安全一类的知识。有相关经验的同学给了我几个建议：1.计算机安全范围很广，有web啦，sql啦，移动端啦balabala，自己选择一个自己感兴趣的较窄的学习就好。2. 社区，乌云，看雪
+我自己对iOS还有些兴趣，遂决定开始自学iOS安全。乌云我是连注册都没资格，需要提交漏洞才行，我这什么相关知识都不会，只先看看好了。在谷歌上搜了搜，很容易搜到CSDN上念茜的《iOS安全攻防》这个看上去知识比较浅一点，应该会适合我。那么就一课一课开始学。她写的相关博文是一两年前了，不一定百分之百能适用于当前的环境，不过正好是增加学习难度的机会。也可以用自己的博文来更新和更加详细的注释一下她的博客，更容易让初学者学习到。
+ iOS安全攻防（一）：Hack必备的命令与工具
+念茜博客原文地址
+先是一些操作系统的基本的命令，我用过并且略有了解的如下：ps, netstat, route, ifconfig, tcpdump, gdb, ssh
+然后我没有接触过的：
+sysctl：检查设定Kernel配置；renice：调整程序运行的优先级；lsof：列出当前系统打开的文件列表，一切皆文件包括网络，硬件设备；patch：补丁工具。
+然后她有特意注释的三个工具，otool，可以查看可执行程序都链接了哪些库，nm，显示符号表，ldid，用于给需要运行在iOS上的程序签名用。otool和nm在自己的mac电脑上有，os x上我没找到ldid，于是在ipad上用cydia装了ldid。不过之后的实验中好像不签名也能运行来着。">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="iOS安全-学习日记1">
+<meta property="og:description" content="前(fei)言(hua)
+上班之余，自学一些计算机安全一类的知识。有相关经验的同学给了我几个建议：1.计算机安全范围很广，有web啦，sql啦，移动端啦balabala，自己选择一个自己感兴趣的较窄的学习就好。2. 社区，乌云，看雪
+我自己对iOS还有些兴趣，遂决定开始自学iOS安全。乌云我是连注册都没资格，需要提交漏洞才行，我这什么相关知识都不会，只先看看好了。在谷歌上搜了搜，很容易搜到CSDN上念茜的《iOS安全攻防》这个看上去知识比较浅一点，应该会适合我。那么就一课一课开始学。她写的相关博文是一两年前了，不一定百分之百能适用于当前的环境，不过正好是增加学习难度的机会。也可以用自己的博文来更新和更加详细的注释一下她的博客，更容易让初学者学习到。
+ iOS安全攻防（一）：Hack必备的命令与工具
+念茜博客原文地址
+先是一些操作系统的基本的命令，我用过并且略有了解的如下：ps, netstat, route, ifconfig, tcpdump, gdb, ssh
+然后我没有接触过的：
+sysctl：检查设定Kernel配置；renice：调整程序运行的优先级；lsof：列出当前系统打开的文件列表，一切皆文件包括网络，硬件设备；patch：补丁工具。
+然后她有特意注释的三个工具，otool，可以查看可执行程序都链接了哪些库，nm，显示符号表，ldid，用于给需要运行在iOS上的程序签名用。otool和nm在自己的mac电脑上有，os x上我没找到ldid，于是在ipad上用cydia装了ldid。不过之后的实验中好像不签名也能运行来着。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2015/2015-03-08-ios-security-learn-1/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2015-03-08T00:00:00+00:00">
+<meta property="article:modified_time" content="2015-03-08T00:00:00+00:00">
+<meta itemprop=name content="iOS安全-学习日记1">
+<meta itemprop=description content="前(fei)言(hua)
+上班之余，自学一些计算机安全一类的知识。有相关经验的同学给了我几个建议：1.计算机安全范围很广，有web啦，sql啦，移动端啦balabala，自己选择一个自己感兴趣的较窄的学习就好。2. 社区，乌云，看雪
+我自己对iOS还有些兴趣，遂决定开始自学iOS安全。乌云我是连注册都没资格，需要提交漏洞才行，我这什么相关知识都不会，只先看看好了。在谷歌上搜了搜，很容易搜到CSDN上念茜的《iOS安全攻防》这个看上去知识比较浅一点，应该会适合我。那么就一课一课开始学。她写的相关博文是一两年前了，不一定百分之百能适用于当前的环境，不过正好是增加学习难度的机会。也可以用自己的博文来更新和更加详细的注释一下她的博客，更容易让初学者学习到。
+ iOS安全攻防（一）：Hack必备的命令与工具
+念茜博客原文地址
+先是一些操作系统的基本的命令，我用过并且略有了解的如下：ps, netstat, route, ifconfig, tcpdump, gdb, ssh
+然后我没有接触过的：
+sysctl：检查设定Kernel配置；renice：调整程序运行的优先级；lsof：列出当前系统打开的文件列表，一切皆文件包括网络，硬件设备；patch：补丁工具。
+然后她有特意注释的三个工具，otool，可以查看可执行程序都链接了哪些库，nm，显示符号表，ldid，用于给需要运行在iOS上的程序签名用。otool和nm在自己的mac电脑上有，os x上我没找到ldid，于是在ipad上用cydia装了ldid。不过之后的实验中好像不签名也能运行来着。"><meta itemprop=datePublished content="2015-03-08T00:00:00+00:00">
+<meta itemprop=dateModified content="2015-03-08T00:00:00+00:00">
+<meta itemprop=wordCount content="39">
+<meta itemprop=keywords content="iOS,security,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="iOS安全-学习日记1">
+<meta name=twitter:description content="前(fei)言(hua)
+上班之余，自学一些计算机安全一类的知识。有相关经验的同学给了我几个建议：1.计算机安全范围很广，有web啦，sql啦，移动端啦balabala，自己选择一个自己感兴趣的较窄的学习就好。2. 社区，乌云，看雪
+我自己对iOS还有些兴趣，遂决定开始自学iOS安全。乌云我是连注册都没资格，需要提交漏洞才行，我这什么相关知识都不会，只先看看好了。在谷歌上搜了搜，很容易搜到CSDN上念茜的《iOS安全攻防》这个看上去知识比较浅一点，应该会适合我。那么就一课一课开始学。她写的相关博文是一两年前了，不一定百分之百能适用于当前的环境，不过正好是增加学习难度的机会。也可以用自己的博文来更新和更加详细的注释一下她的博客，更容易让初学者学习到。
+ iOS安全攻防（一）：Hack必备的命令与工具
+念茜博客原文地址
+先是一些操作系统的基本的命令，我用过并且略有了解的如下：ps, netstat, route, ifconfig, tcpdump, gdb, ssh
+然后我没有接触过的：
+sysctl：检查设定Kernel配置；renice：调整程序运行的优先级；lsof：列出当前系统打开的文件列表，一切皆文件包括网络，硬件设备；patch：补丁工具。
+然后她有特意注释的三个工具，otool，可以查看可执行程序都链接了哪些库，nm，显示符号表，ldid，用于给需要运行在iOS上的程序签名用。otool和nm在自己的mac电脑上有，os x上我没找到ldid，于是在ipad上用cydia装了ldid。不过之后的实验中好像不签名也能运行来着。">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">iOS安全-学习日记1</h1>
+<p class=tracked>
+By <strong>
+young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2015-03-08T00:00:00Z>March 8, 2015</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h1 id=前fei言hua>前(fei)言(hua)</h1>
+<p>上班之余，自学一些计算机安全一类的知识。有相关经验的同学给了我几个建议：1.计算机安全范围很广，有web啦，sql啦，移动端啦balabala，自己选择一个自己感兴趣的较窄的学习就好。2. 社区，乌云，看雪</p>
+<p>我自己对iOS还有些兴趣，遂决定开始自学iOS安全。乌云我是连注册都没资格，需要提交漏洞才行，我这什么相关知识都不会，只先看看好了。在谷歌上搜了搜，很容易搜到CSDN上念茜的《iOS安全攻防》这个看上去知识比较浅一点，应该会适合我。那么就一课一课开始学。她写的相关博文是一两年前了，不一定百分之百能适用于当前的环境，不过正好是增加学习难度的机会。也可以用自己的博文来更新和更加详细的注释一下她的博客，更容易让初学者学习到。</p>
+<h1 id=ios安全攻防一hack必备的命令与工具> iOS安全攻防（一）：Hack必备的命令与工具</h1>
+<p><a href=http://blog.csdn.net/yiyaaixuexi/article/details/8288077>念茜博客原文地址</a></p>
+<p>先是一些操作系统的基本的命令，我用过并且略有了解的如下：ps, netstat, route, ifconfig, tcpdump, gdb, ssh</p>
+<p>然后我没有接触过的：</p>
+<p>sysctl：检查设定Kernel配置；renice：调整程序运行的优先级；lsof：列出当前系统打开的文件列表，一切皆文件包括网络，硬件设备；patch：补丁工具。</p>
+<p>然后她有特意注释的三个工具，otool，可以查看可执行程序都链接了哪些库，nm，显示符号表，ldid，用于给需要运行在iOS上的程序签名用。otool和nm在自己的mac电脑上有，os x上我没找到ldid，于是在ipad上用cydia装了ldid。不过之后的实验中好像不签名也能运行来着。</p>
+<p>她的步骤一找编译器和SDK，她找的是llvm-gcc，我用的是clang，然后找到SDK的地址，很顺找到利/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk</p>
+<p>helloworld.c这是上大学第一堂C语言课就学了的。</p>
+<p>我编译helloword用的命令为</p>
+<p>-arch后面得注意了，什么型号对应什么CPU，自己上网查查先。很容易在<a href=http://stackoverflow.com/questions/6517822/do-i-need-to-add-armv6-support-when-limiting-apps-to-ios-4-0>stackoverflow</a>上找到当前的一些设备的信息。</p>
+<h1 id=ios安全攻防二后台daemon非法窃取用户itunesstore信息>iOS安全攻防（二）：后台daemon非法窃取用户iTunesstore信息</h1>
+<h3 id=开机自启动程序>开机自启动程序</h3>
+<p>新建plist属性文件，按照她给的例子弄一个好了，然后稍微注意一下plist中的一些value，可执行文件的名字，就是之后步骤build出mydemo这个可执行文件，socket端口号自己记住一下，之后步骤有用到，这里用的是55</p>
+<p>这里是她原文中的，根据Google出来的信息，还需要添加一个</p>
+<p>然后她是将这个plist文件scp到设备的/System/Library/LaunchDaemons/目录下了，之后的步骤我都做好之后，试了半天没啥反应，估计是这里错了，后来从:<a href=http://iphonedevwiki.net/index.php/Updating_extensions_for_iOS_8#What_is_new_in_iOS_8.2C_and_how_does_it_work.3F>http://iphonedevwiki.net/index.php/Updating_extensions_for_iOS_8#What_is_new_in_iOS_8.2C_and_how_does_it_work.3F</a>  找到了原因。新版iOS的玩法略有不同，需要把plist文件放在目录 /Library/LaunchDaemons/下，然后用命令load /Library/LaunchDaemons/mydemo.plist即可。</p>
+<h3 id=编写读取某特定文件的程序>编写读取某特定文件的程序</h3>
+<p>她是用的这样的C代码来读取某文件内容输出到标准输出流。</p>
+<p>据说那个文件里能找到你安装了哪些app，经我实践，好像有些不一样，不知道是apple给这个文件加密或者混淆了还是怎么着，反正这么弄直接出来的结果，是看不到多少信息的，不过可以从那个目录下的其他的一些sqlitedb文件获取到类似的信息。</p>
+<p>build这个文件为mydemo，然后scp到设备上，然后ldid -S mydemo，然后mv到/usr/bin目录下。</p>
+<p>应该是这个程序就在后台开始运行了，或者重启设备之后mydemo就开始运行了</p>
+<h3 id=netcat获取文件内容>netcat获取文件内容</h3>
+<h3 id=收获>收获</h3>
+<p>Anyway，我了解了这样一个流程：通过plist文件的设置，可以从远端去获取越狱了的ipad上的指定文件的方法。</p><ul class=pa0>
+<li class=list>
+<a href=/tags/ios class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">iOS</a>
+</li>
+<li class=list>
+<a href=/tags/security class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">security</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2013/2013-06-28-cs193p-hw1-suo-zuo-suo-kan-suo-xiang/>cs193p HW1 所做所看所想</a>
+</li>
+<li class=mb2>
+<a href=/posts/2013/2013-01-18-apple-ios-mobilehig-review/>apple iOS MobileHIG 摘要</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

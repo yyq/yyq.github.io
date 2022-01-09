@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>svm on Young Story</title><link>https://yyq.github.io/tags/svm/</link><description>Recent content in svm on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 07 Aug 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/svm/index.xml" rel="self" type="application/rss+xml"/><item><title>coursera Andrew Ng 机器学习第七周笔记 支持向量机</title><link>https://yyq.github.io/posts/2017/2017-08-07-machine-learning-week7/</link><pubDate>Mon, 07 Aug 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-08-07-machine-learning-week7/</guid><description>Support Vector Machines optimization Objective Large Margin Intuition Kernels Using an SVM choice of parameter C
+choice of kernel(similarity function)
+if Gaussian Kernel, need to choose sigma^2
+Not all similarity functions make valid kernels(need to satisfy technical condition called &amp;ldquo;Mercer&amp;rsquo;s Theorem&amp;rdquo; to make sure SVM packages' optimizations run correctly, and do not diverge).
+Polynomial kernel: More esoteric: String kernel, chi-square kernel, histogram intersection kernel
+multi-class calssification
+K SVMs, one to distinguish one from the rest.</description></item></channel></rss>

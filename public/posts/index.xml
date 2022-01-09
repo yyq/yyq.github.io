@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Young Story</title><link>https://yyq.github.io/posts/</link><description>Recent content in Posts on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 22 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://yyq.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>对数据科学实验的思考</title><link>https://yyq.github.io/posts/2020/2020-10-22-exp-thinking/</link><pubDate>Thu, 22 Oct 2020 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2020/2020-10-22-exp-thinking/</guid><description>从本周的一位同学的分享开始
+他分享的是一系列特征有关的实验，末尾是QA环节，实验质量（实验方式，实验结果的分析）被多个角度质疑，显而易见，他的实验结果大家很难认可了。无论是他个人的时间花费，还是这次分享的质量，都有些苍白。
+最近某项目小组，在一个调优目标上，多位同学参与，短时间内也做了大量的实验，从结果来看，无一显著性的提升。其实我的内心也有在怀疑小伙伴们实验做的很仓促（所以很粗糙），写的代码有bug么？上传到评分版的数据有传错么？实验结论难道仅仅只看最终的一个准确率指标比大小？有没有看稍微更详细的一点的实验结果？新加的改动，对重要的预测条目有什么影响？有的实验结果是准确率上升了，按理说应该很高兴，但是我也会问一下有从哪几个角度看一下数据泄露的可能性没？
+实验结果最好不要只有最后一个准确率的数字，应该从一个准确率的数字，下钻到更多的细节，有更多的观察，然后给出进一步的分析结论，进而给出进一步想探索的实验思路。
+实验的分析链条上，尽量的严密，逻辑要清晰，连贯，自洽。不要随意猜。
+分析思路枯竭了，再开始猜，可以先有猜想，然后看数字来证明到自己的猜想是对还是错。
+大家在学生阶段的课上应该都学过基本的实验思路，在动手开始实验之前，要明确实验的变量是什么，哪些是不变的，实验过程你会怎么做，预期实验结果是什么。如果结果和预期一致，那么说明了什么，证明了你的什么想法。如果结果和预期不一致，也请回顾实验过程的各个环节（有没有做错哪里？），每个环节的现象是什么，来间接推理为什么结果和预期不一致。想来，做数据科学的实验，也应该保持小时候做科学实验的初心，好奇，探索，严谨，而不是只交出一个数字。
+之前和同事A交流的时候，讨论过需要收集很多很多实验结果，来做meta learning，应是有趣的一条路；目前，我的想法有变，单次实验的质量比大量（不一定准确的）实验结果更加重要。
+为了尽量去保证团队中各位同学的实验质量，可以有什么手段呢？手把手指导，言传身教？我也没想清楚。
+以上的思考，或许是这此听分享给我带来的最大的价值。</description></item><item><title>kaggle | quickdraw-doodle-recognition top 6%</title><link>https://yyq.github.io/posts/2018/2018-12-07-doodle-recognition/</link><pubDate>Fri, 07 Dec 2018 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2018/2018-12-07-doodle-recognition/</guid><description>前言 这次是google举办的一个“你画我猜”的题目，题目链接：kaggle - quickdraw-doodle-recognition。给的数据是游戏玩家在屏幕上画画的每一笔的坐标起始位置，然后让训练模型来猜出这幅画是画的什么，4900万张画，340个category。我记得微信上有个小游戏就是这么个东东。
+本来没打算做这个比赛的，家里事情多了一些，然后毕竟cv也不是自己擅长的，后来吧，觉着GCP上还有1500多刀的过期时间和这个比赛时间一样，不用白不用，那就突破一下自己的comfort zone。比赛前期一直是自己在刷，最后8天的时候，自己做的两个单模在0.932，然后有找cv方面比较擅长的朋友组队，最后成绩还是略遗憾，没拿到银牌，和实力有关，也和运气有关吧，最后选交的不是队伍的最高分数。队友还是有比较伤心的，同时感觉自己年龄大了，对这个成绩和分数不是那么看重了，在论坛浏览了很多，和队友讨论了很多，过程中自己实践了很多，这才是对我最有价值的体验。
+自己的收获 总的来说，认真从头到尾实践了cv的比赛，谢谢google送我的free credits，大幅修炼了我多显卡的实践能力（双卡？四卡？nonono，小伙子同时使用8个v100了解一下，还为了训练速度认真调优了显卡，cpu的使用率和io的效率等）。
+图像有关的题嘛，卷积神经网络是肯定得用上了，然后笔画顺序有关嘛，循环神经网络肯定能有贡献，最后自己训练的两个单模se-resnet50和xception都是CNN类的，双向的lstm玩崩了，试了若干次都是第一个epoch顺利完成第2个epoch中间崩掉，至今没找到错误原因在哪。
+下面总结一下自己的收获和踩过的坑吧：
+先看来自蛙神的建议：bigger img size matters, larger batch_size matters, training number matters, more iterations matters, 简单验证过他这几个idea，全对！但是，卧槽了，这么些牛逼的建议再加上4900万张图，云主机党表示钱包好慌张 最新版的TF里自带的keras版本号是2.1.6，多GPU有神坑，性能奇差无比，别问我怎么知道的，花了老子好多钱之后才知道！后来单独用的最新版2.2.4的keras有很大提升。 2.2.4的keras的multiGPU的model也有坑，save_model的时候，得找到多GPU的model里的那个单GPU model的那一层，然后存下来 keras的fit_generator之前用过，这次很熟悉的再来一次 json.loads比ast.literal_eval快了10倍不止 制作img的速度，cv2和pillow这两个库不相上下，其他的都是垃圾 做3-channel彩色图的结果比灰度图的结果更好 做图的时候，line width matters，我猜是太细的笔画pool了几次之后就损失了细节 pretrained并没有比随机初始化的好，至少我自己实验是这样子的，论坛上意见不一 图片数量太多，极其费时，用二分法查找到自己最大的batch_size 再次看到蛙神的帖子，感谢paperhttps://arxiv.org/pdf/1810.00736.pdf ,这篇里有一张图展示了各类state of the art models的性能对比吧，主要是top-1 accuracy, top-5 accuracy, Operations(G-FLOPs)，这对资源吃紧而又想要分高的朋友特别重要了 16 cpu core的电脑，训练时别把16个core都用完了，还得留几个给处理多GPUmodel，10个workers比较合适 以前只知道在若干个epoch之后调整学习率，这一个epoch至少20个小时的训练肯定不能这么玩，习得新的调整LR的技法，比如Cyclical Learning Rate 或者是余弦学习率衰减, 原来keras的callback还有个默认的操作手法是在batch_end时有所动作，论坛上还有其他调整LR的算法，值得慢慢把玩 实在是时间有限，精力有限，以后参赛想要高分，对于我这类水平的人说，尽早开始多试错才能弥补专业知识的不足 观摩大佬分享 第一名 [ods.ai]Pablos link CNN方面，尝试了这么多的模型: resnet18, resnet34, resnet50, resnet101, resnet152, resnext50, resnext101, densenet121, densenet201, vgg11, pnasnet, incresnet, polynet, nasnetmobile, senet154, seresnet50, seresnext50, seresnext101，1 channel的3 channel的图像，112的256的图像都试了，一共搞了40来个模型 (大佬是有多少机器资源？或者收敛速度是我的几十倍？)</description></item><item><title>kaggle | Machine Learning for Insights Challenge</title><link>https://yyq.github.io/posts/2018/2018-09-25-kaggle-model-insights/</link><pubDate>Tue, 25 Sep 2018 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2018/2018-09-25-kaggle-model-insights/</guid><description>前言 最近比较忙，这次不是比赛分享了，是来分享一个“挑战”，kaggle上用词说是Challenge，在我理解这个是某专家管理员建立了一个简短的course，介绍了某主题的玩法，然后让大家做做简单的练习，一起讨论交流一下。
+这次学习的是一个关于模型洞察力的主题，原文链接https://www.kaggle.com/ml-for-insights-signup， 本文这里主要是将我看到的有用的内容按照自己的理解翻译，记录下来。这个ML for insights，字面直译为模型洞察力了，在我理解来则是模型可解释性分析。
+My Insights 我个人在玩kaggle和工作中用到最多的主要是树类模型(lgb,xgb)和神经网络(cnn, rnn)，确实很少去思考其中的含义和解释性，如果让我自己回答这个问题，我理解到用决策树的信息熵计算统计概率得出叶子节点的重要性，再加上拟合残差的思路就是xgb类的算法了。而神经网络方面，我则简单的理解为求导拟合。高中课本里的一次函数二次函数的求导大家都会，神经网络只是用链式法则给若干个矩阵求导罢了，思路还是朝着目标去拟合。
+如此之粗浅，见笑了，下面看看别人的insights玩法。
+User Case 一个模型的哪些东西是可解释的 许多人认为机器学习模型是黑盒子，在他们认为模型可以做出很好的预测，但是大家无法理解这些预测背后的逻辑。确实是，很多数据科学家不知道如何用模型来解释数据的实际意义。这里的文章将会从这么几个方面来讨论：
+哪些特征在模型看到是最重要的？ 关于某一条记录的预测，每一个特征是如何影响到最终的预测结果的？ 从大量的记录整体来考虑，每一个特征如何影响模型的预测的？ 为什么这些解释信息是有价值的 调试模型用 指导工程师做特征工程 指导数据采集的方向 指导人们做决策 建立模型和人之间的信任 调试模型用 一般的真实业务场景会有很多不可信赖的，没有组织好的脏数据。你在预处理数据时就有可能加进来了潜在的错误，或者不小心泄露了预测目标的信息等，考虑各种潜在的灾难性后果，debug的思路就尤其重要了。当你遇到了用现有业务知识无法解释的数据的时候，了解模型预测的模式，可以帮助你快速定位问题，balabala
+指导特征工程 特征工程通常是提升模型准确率最有效的方法。特征工程通常涉及到到反复的操作原始数据(或者之前的简单特征)，用不同的方法来得到新的特征。
+有时候你完成FE的过程只用到了自己的直觉。这其实还不够，当你有上百个原始特征的时候，或者当你缺乏业务背景知识的时候，你将会需要更多的指导方向。
+这个预测贷款结果的kaggle竞赛就是一个比较极端的例子，这个比赛有上百个原始特征。并且因为隐私原因，特征的名称都是f1, f2, f3等等而不是普通的英文单词来描述。这就模拟了一个场景，你没有任何业务方面直觉的场景。有一位参赛者发现了某两个特征相减f527, f528可以创建出特别有用的新特征。拥有这个新特征的模型比没有这个特征的模型优秀很多。但是当你面对几百个特征时，你如何创造出这样优秀的特征呢？
+在这门课程里，你将会学习到找到最重要的特征的方法，并且可以发现两个特别相关的特征，当面对越来越多的特征的时候，这种方法就会很重要啦。
+指导未来数据收集 对于网上下载的数据集你完全控制不了。不过很多公司和机构用数据科学来指导他们从更多方面收集数据。一般来说，收集新数据很可能花费比较高或者不是很容易，所以大家很想要知道哪些数据是值得收集的。基于模型的洞察力分析可以教你很好的理解已有的特征，这将会帮助你推断什么样子的新特征是有用的
+指导人们决策 一些决策是模型自动做出来的，虽然亚马逊不会用人工来决定展示给你网页上的商品，但是很多重要的决策是由人来做出的，而对于这些决定，模型的洞察力会比模型的预测结果更有价值。
+建立信任 很多人在做重要决策的时候不会轻易的相信模型，除非他们验证过模型的一些基本特性，这当然是合理的。实际上，把模型的可解释性展示出来，如果可以匹配上人们对问题的理解，那么这将会建立起大家对模型的信任，即使是在那些没有数据科学知识的人群中。
+Permuation Importance 一个最基本的问题大概会是什么特征对我模型预测的影响最大呢？ 这个东西就叫做“feature importance”即特征重要性。anyway，字面意思看这个东东就很重要啦。我们有很多方法来衡量特征的重要性，这里呢，将会介绍一种方法：排列重要性。这种方法和其他方法比起来，优势有：
+计算速度快 广泛使用和理解 Consistent with properties we would want a feature importance measure to have 工作原理 排列重要性，一定是在model训练完成后，才可以计算的。简单来说，就是改变数据表格中某一列的数据的排列，看其对预测准确性的影响有多大。大概三个步骤：
+训练好模型 拿某一个feature column, 然后随机打乱顺序。然后用模型来重新预测一遍，看看自己的metric或者loss function变化了多少 把上一个步骤中打乱的column复原，换下一个column重复上一个步骤，直到所有column都算一遍 代码示例 这个case是利用FIFA 18很多场的足球比赛的数据统计，来预测&amp;quot;Winner of The Game&amp;quot;</description></item><item><title>kaggle | avito-demand-prediction top 10%</title><link>https://yyq.github.io/posts/2018/2018-06-29-kaggle-avito/</link><pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2018/2018-06-29-kaggle-avito/</guid><description>题目链接:kaggle, avito是一家俄罗斯公司，从网站上来看是一个线上购物平台，这一次题目的目标，就是预测某一个商品在某一天被售出的概率，给定的数据有一段时间内的商品的销售情况（数量，价格，地区，品类，商品的全面俄文描述，商品的图片）等信息。
+我的kaggle账号：https://www.kaggle.com/yyqing/competitions
+丢了top10% 自己的时间规划出了点问题，工作上临时加了点任务，所以玩比赛这边就少花了点时间，水平也不到位，本来在勉强拿到10%的最后一名，当剔除违规竞赛者之后，排在了10%之外。:(
+很少有题目同时用到了GBDT,CV,NLP的，这次算是遇到一个，算是涨了见识，有人取胜重点靠抽取到商品图像的特征，有人取胜重点靠全量商品描述的词向量，有人取胜在于强大的ensemble各路模型各路特征。这一次我入场比较晚，找人组队就很难了，一个人打还是比较累的，虽然利用到了之前储存好的各种代码片段，不过还是时间太紧，精力有限，再加上我是球迷，我德表现如此糟糕，于是，哎哟喂，我也表现如此糟糕
+自己的收获 短短10天，虽然成绩不佳，但是知识和技能上的收获还是感觉满满的：
+组合模型在这一题发挥了重要的作用，我除了自己训练了xgb，lgb和catboost之外，还从讨论区拷贝来了rnn，ridge regression的成果 自己没怎么实践过自然语言处理，照猫画虎罗列好了tfidf，pca，svd等等，微调一下ngram，对自己分数提高还有有用的 认真按照自己的思路对着各路category实践了target encode，感觉用处不大，过拟合有点重了，后来在讨论中得知，大神们用的高阶的target encode还有加噪音加平滑，据说也有用，下次我也玩高级的TE 由于是第一次搞词向量的题目，第一次实践了稀疏矩阵，lgb和xgb都支持，catboost还不支持，不过用pca将稀疏矩阵做成少量几列还是可以喂给catboost用 拼接各种数据的时候，numpy的运算速度比dataframe要快，有的时候直接用pandas做数学运算，慢到出奇，不如把数据先导出到numpy，运算完再重填回dataframe，节约时间大于一个数量级 压缩数据在内存中占的体积，link这个参考很不错 多线程提取图像特征，参考这里，让我差不多一天时间就把大约180万张图的基本特征都拿出来了。 在处理大量小图片的时候，固态硬盘比机械硬盘的优势就显示出来了，机械硬盘的IOPS实在是跟不上cpu gpu的推理速度，分分钟就到瓶颈，不过GCP上的几百GB ssd价格好贵啊，玩了一会儿做完图像就赶紧换回了机械硬盘。 高分答案集锦 这一次由于数据的丰富性，值得学习的思路很多，且很多大神分享的思路会有部分重合，这里只摘抄我认为最值得学习并且去重的部分思路
+1st, Little Boat, Dance with Ensemble 有一些lgb，有一些nn，有一些xgb作为第一层，第二层还是一些lgb+nn+xgb,第三层就是一个nn了。不过这么组合出来分数提升了大约0.0002到0.0004，和直接线性组合比起来，可能差不多。
+最佳单模型的nn和lgb都做到了215x的分数，另外队友加来一个大量商品描述+RNN做出来的特征，给lgb分数boost到了213x。
+stacking在这一局非常重要，模型的多样化是取胜的关键，
+神经网络 我自己是重点时间都放NN了，所以也没怎么做特征工程。我就来分享一下如何用一个nn做到215x的吧。
+数字特征加上类别特征，分数有0.227x 加上了title和description都用rnn训练一下，再加上fastText预训练的embedding，调整一下，分数到了0.221x 自训练的fastText embedding，在全量数据上，分数到了0.220x 加上vgg16的top layer的平均池化，这个让分数变差了。tuning一下，在合并文本、图像、类别、数字特征之前，分别加了一层，有了效果，0.219x了 尝试调整文本模型，CNN或者attention等等，没有一个work。最后，两层的LSTM加一个dense，提高了分数0.0003 给图像尝试不同的CNN，没有一个“fine tune”的模型有用，并且还花了很多时间。最后发现fixed ResNet50的中间层有用，提高了0.0005， 到了0.218x了 开始各种tuning，都是基于自己想法的去调，发现在text和LSTM之间加上spatial dropout超级有用，提升了大约0.0007到0.001，又结合调整了dropout的比例，提升了0.001到0.0015，分数到了0.2165到0.217 开始把队友做的特征都加进来，队友做的文字类的特征加进来都没啥用，不过其他类的特征都有用，最后一个NN做到0.215x 如果一路上把所有模型都存下来（少量特征训练的模型，加了特征分数变差的模型），然后再训练一个全连接on top of those,可以得到0.008的提升，这个分数可以进入前10名了 秀一下我的模型架构图吧： 评论区摘抄 我在评论中看到他有说，keras的RNN模型，用CuDNN实现的来运行的话，会快很多。
+然后他贴出了他的rnn代码：
+seq_title_description = Input(shape=[max_seq_description_length], name=&amp;quot;seq_description&amp;quot;) emb_seq_title_description = Embedding(vocab_size, EMBEDDING_DIM1, weights=[embedding_matrix1], trainable=False)( seq_title_description) emb_seq_title_description = SpatialDropout1D(0.</description></item><item><title>kaggle模型组合指南</title><link>https://yyq.github.io/posts/2018/2018-05-14-kaggle-ensemble-guide/</link><pubDate>Mon, 14 May 2018 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2018/2018-05-14-kaggle-ensemble-guide/</guid><description>前言 本文大部分干货内容，翻译自 kaggle ensembling guide,感谢。
+半年前刚刚开始玩kaggle的时候,讨论区，kernel区，获奖分享等等就有很多人发出关键字ensemble，blend之类的。当想要深入了解其中,许多人首推这个博客链接：https://mlwave.com/kaggle-ensembling-guide/, 随意瞥一眼，看上去有用。自己实践的时候，只用了多个模型预测结果的线性组合，有效果。于是计划了要仔细从头到尾把这篇长博客撸一遍，今天终于有空来，翻译一下，方便以后查阅。
+模型组合是一个非常强大的黑科技，在很多类型的机器学习任务中都可以用来提升准确率。这篇文章我将会分享我在kaggle比赛中用到的各种组合方法。
+文章的第一部分，我会介绍从submission文件作出组合来，第二部分我会介绍用融合的方法。
+我会解释为什么组合会降低general的错误。最后我会展示不同的组合方法，给出一些代码，你也可以自己试试.
+This is how you win ML competitions: you take other peoples’ work and ensemble them together. by Vitaly Kuznetsov NIPS2014
+从submission文件创建组合 最基本的最方便的组合方式，就是从提交的csv文件开始。你只需要那些预测的结果文件，不需要重新训练模型。这是对已经存在的模型最快的组合方式，在组队的时候玩起来更high。
+投票组合 我们先来看看简单的投票玩法。了解为什么模型组合可以降低错误率，为什么用低相关性的模型结果的组合效果更好。
+纠错码 在某个竞赛任务重，所有的信号都正确的排列，是非常重要的。如果我们有一个二进制信号序列如下： 1110110011101111011111011011 然而我们得到的是有一点点被破坏了的版本（有一位被取反了）： 1010110011101111011111011011
+一个机器学习例子 投票者的数量 相关性 在热带雨林覆盖类型预测题目中的应用</description></item><item><title>kaggle | talkingdata-adtracking-fraud-detection top 4%</title><link>https://yyq.github.io/posts/2018/2018-05-09-talking-data/</link><pubDate>Wed, 09 May 2018 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2018/2018-05-09-talking-data/</guid><description>题目链接:kaggle, talkingdata是一家中国公司，我将其理解成一个第三方的移动数据平台，移动端的广告分发是其一个重要业务，其中会出现一些恶意的点击，这个比赛的意义在于：他们想要通过机器学习的方式抓出其中的欺诈类型的点击。
+我的kaggle账号：https://www.kaggle.com/yyqing/competitions
+纪念一下自己的第一个solo 银牌 之前有个比赛进过前5%的，不过由于用了两个账号在轮番提交，被取消成绩了。这次算是记住教训了，就一个账号玩，依然solo，排名122/3967，public LB score 0.9898130, private LB 0.9821300, mark一下，离自己的mater目标迈出了重要的一步。另外值得庆幸的是，这是第若干次比赛成绩出来后，我的私榜排名是比公榜排名进步的，证明我的模型的泛化能力一直还行，至少是领先于kaggle上大家的平均水平的。
+这次比赛的最后一次ensemble结果提交是在回湖南的火车上完成的，正好看到kaggle社区总积分的新晋No.1&amp;ndash;bestfitting的访谈博客，这位同学竟然是长沙人，也是蛮意外的。我努力向老乡学习吧。
+自评：又一场内存的战役 学到了很多，这些知识大概不会有哪本书籍有写，也不会有哪个视频教程说，都是自己摸爬滚打得来的，主要是对于大量数据的存，取，和运算。公司也没有给我集群机器玩的情况下，只能自己在谷歌云上玩了。当自费的玩大容量云主机的时候，全都按时收费，每一个GB内存和硬盘都要收费，每一个cpu core都收费的情况下，我会格外的在意，我会最大化的利用cpu，内存等&amp;quot;昂贵&amp;quot;资源。穷嘛，省时间就是省钱。
+接下来就说一些在有关方面的技巧吧
+习惯性的del不再使用的数据，then gc.collect() could save your asshole. 很多时候调整模型都要考虑使用或者更改不同的特征，当你有几十个特征，每个特征的存放都会占用GB级别的资源的时候，不要尝试一次性处理所有的特征。一个一个来，180Million的数据，一个特征，一次开一个进程，只计算一个特征，比如groupby过程中会爆炸到20多GB的内存，虽然最后计算完结果只有1GB内存。 不要尝试将包含所有特征的大表存成一个文件，将每一个特征保存成一个单独文件。之后要用到这个特征的时候，再读取进来join到dataframe中。提高灵活性，用哪些我就只载入哪些。 pandas读取大体积（1GB或者更大）csv文件速度很慢，特别是当我有几十个特征，每个特征都有一两GB的时候，pandas读取一个30GB的csv文件所花费的时间，绝对会让你崩溃。这个时候pandas.read_feather()和pandas.to_feather()是一个很好的方式，直接把一个dataframe的内容，以feather的格式，从内存dump到磁盘，不用管csv的index等等相关参数，就是dump什么样的内容到磁盘，读取回来还是什么内容在内存，重点是，速度比read_csv快了一个数量级。 关于pandas有点慢的问题，期间还认真尝试过dask和pandas on ray两个开源工具，dask功能齐全一些，在有一些操作比pandas快很多，不过在这次实践中对我的时间节约没有太多的帮助，所以没用。pandas on ray的话，显然还不太成熟，各种常用函数缺失，遂放弃。 每一次探索新特征的时候，一定要有一个较小的可用的可靠的快速的validation的方案，来验证新的特征是否有效。不然每次都用全量的数据来计算，时间成本太高。 每一次运行时间较长的实验（比如全量数据，比如超小的学习率）之前，一定得有一个debug pipeline，快速走完整个过程。 养成随时save model的好习惯。之前做图像深度学习的时候还知道存下很多个epoch完毕之后的模型文件，没成想lightGBM在遇到稍微大点的数据集的也会有各种坑。比如有时候会遇到训练到一半，内存炸了，程序崩了，比如有时候会train完毕后没有及时清理删除训练数据集，predict的时候内存炸了。想起mxnet的李沐博士的视频里说的，我就是不小心把整栋机房弄停电了嘛，你们跑了三四天的程序都不保存中间模型，那能怪我喽，谁叫你们不随时保存的。 哎呀，说多了都是泪，对于我个人来说都是浪费的钱啊，以后想起来什么泪点，我再补充到这个段落来。 高分答案集锦 接下来欣赏欣赏别人的思路吧
+3rd, bestfitting, NN based solution 在同时做另外一个google landmark的题目，正好发现最近的NN模型可以用，就在这里也直接用NN了。（大神就是可以模型广泛应用到各个业务上，难道以后深度模型要统治所有，彻底打败树么）。他的主要尝试了的是23个特征，用single LGBM做到了在public LB分数0.9817。（这分数比我最终提交的分数还高），这是他第一次在kaggle里用LGBM。
+设计了基于那23个特征，并且适当处理后(NA, out of vocabulary, scale)，用NN做到了公榜0.9820，然后论坛上发现click delta是个重要线索，于是多做了前五个和后五个click的时间序列加到网络里，用RNN来寻找点击序列的模式，模型可以做到公榜9821了。然后设计了不同的神经网络来增加多样性，都是很简单的，比如增加一些残差链接到dense层。四个模型，不单独考虑分数，只考虑综合起来的多样性带来的提升。在组装了神经网络和lgbm模型的成绩之后，分数到了9827。
+再加上n-fold和全部数据。稍微有点花时间了，一个fold就两个多小时，一块1080i的GPU.
+然后用之前的模型在整个数据集上预测的结果，再加上一些特征（基于IP的，app-os-channel），做了第二层神经网络,分数到了9833。最后的这个提升做好的时候，离比赛时间结束只有30个小时了，来不及其他改进了，时间限制，NN模型的弱点，等等，就酱。他用到的一些特征如下：
+channel 1011 os 544 hour 472 app 468 ip_app_os_device_day_click_time_next_1 320 app_channel_os_mean_is_attributed 189 ip_app_mean_is_attributed 124 ip_app_os_device_day_click_time_next_2 120 ip_os_device_count_click_id 113 ip_var_hour 94 ip_day_hour_count_click_id 91 ip_mean_is_attributed 74 ip_count_click_id 73 ip_app_os_device_day_click_time_lag1 67 app_mean_is_attributed 67 ip_nunique_os_device 65 ip_nunique_app 63 ip_nunique_os 51 ip_nunique_app_channel 49 ip_os_device_mean_is_attributed 46 device 41 app_channel_os_count_click_id 37 ip_hour_mean_is_attributed 21 (可以看出来几类特征比较有效，click_time_next，target mean code，count，unique count，还有就是大多特征都是基于ip和其他特征组合来的)</description></item><item><title>记近两天调优图像训练的过程</title><link>https://yyq.github.io/posts/2018/2018-03-30-opt-image-training/</link><pubDate>Fri, 30 Mar 2018 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2018/2018-03-30-opt-image-training/</guid><description>起因 拿来小伙伴的代码，数据预处理阶段程序就跪了，找了找原因，内存用完了。要来他的top命令截图一看，呵呵，0.2t，小伙伴用的学校实验室的最好的机器，256GB的内存，玩起来当然没所谓，我用的公司的机器就略微寒酸了，内存32GB。我这个要玩的话，只能分批次读入图片，处理。 what i&amp;rsquo;ve done 认真找了找tensorflow的分批次读取数据的方案，有方法，找到了tf dataset的文档，功能强大，完全，可以一批一批高效的读进来数据给显卡时刻准备着。 后来还是放弃了tf的路子，现有的代码全是keras，把tf的代码嵌入进来，略微费劲儿了一点，况且我这次实验目标只是一个短期小实验，如果之后需要上线产品用再改用tf dataset或者TFRecord好了，在大量数据情况下配合集群hdfs会有更好的成效。 将来用的时候可以参考的这几个链接，描述tf读取数据的技巧： tensorflow 官网链接1 tensorflow 官网链接2 博客 a 博客 b 找到了keras里有也有分批次读取数据的玩法，叫做fit_generator, 找到了官网文档，然后也找到了一位斯坦福同学的博客，我就按着这两个做下来，恩，完成了，效果不错。 &amp;quot;&amp;quot;&amp;quot;stream data by batch&amp;quot;&amp;quot;&amp;quot; import numpy as np import keras from keras.utils import np_utils from PIL import Image class DataGenerator(keras.utils.Sequence): def __init__(self, data, batch_size=128, dim=(32, 128, 3), n_classes=21000, shuffle=True): &amp;quot;&amp;quot;&amp;quot; :param data: 包括了图片名称，路径，四个标签 :param batch_size: 一批训练128张图片 :param dim: 图片的维度 :param n_classes: 有多少种汉字 :param shuffle: 每个epoch末尾，是否打乱index顺序 &amp;quot;&amp;quot;&amp;quot; self.</description></item><item><title>kaggle | sp-society-camera-model-identification 看图认相机</title><link>https://yyq.github.io/posts/2018/2018-02-24-sp-society-camera-model-identification/</link><pubDate>Sat, 24 Feb 2018 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2018/2018-02-24-sp-society-camera-model-identification/</guid><description>此题目标为根据照片来判断牌照相机的型号
+这件事情的原理是：每一家设备都有自己的数字图像处理算法，总会有属于自己的图像特征
+这件事情的意义在于：警察破案，图片是否有被软件修改等等
+我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+0 自评 自己做的第二个图像类的题目，最大的收获就是体验到了extra data的威力，在论坛区看到有大家讨论说使用额外的一些的数据，50GB的训练集果然效果不错，直接把我的public LB成绩从0.87提升到0.92，后来经过自己的各种transfer learn和fine tune keras里的一些模型，然后组合，在private LB拿到了0.96的分数。看看排名前几的大神的总结里，很多人都使用了比我找的数据集更大的数据集，所以准确率也比我高出几个数量级（第一名0.9896）。
+训练大量图像是一件非常非常消耗时间的事情，优化的方向有这么几个：1)切取大图像中的小块来训练;2)显卡计算能力利用率提高，注意显卡的频率，内存，注意程序中的CPU处理部分，做到及时处理一直给显卡喂数据，别让显卡时忙时闲 3)算法的优化，能并行做计算的部分尽量，不过注意估算好显卡的内存消耗，过大过小都是一种浪费 4)transfer来的不同的模型，参数数量不一样，最小图片像素也不一样 5) 做好pipeline
+1 高分答案集锦 第一名 Pavel Pleskov 模型 参考了Andres的代码，用pyTorch实现了，如下模型有较好的效果
+984_densenet201_antorsaegen_29_0.98624 976_densenet201_antorsaegen_62_0.98271 977_resnet50_antorsaegen_119_val_0.9815 976_DenseNet201_do0.3_doc0.0_avg-epoch072-val_acc0.981250 967_InceptionResNetV2_do0.1_avg-epoch154-val_acc0.965625 962_Xception_do0.3_avg-epoch079-val_acc0.991667 (leaky validation, pls ignore) 所有模型的输入图像都用的512*512，并且都是Test Time Augmentation(测试时也用增强过的数据)。这里是最大败笔，因为后来发现及时用较小size的图片可以更快的训练，然后更多的TTA可以达到相似的准确率
+数据 我服，他另外下载了300GB从flickr和yandex.foto的图片。过滤掉分别率不适合的图片，质量不好的图片（图片质量可以用ImageMagick得到），自己用selenium做爬虫抓来的图片。
+硬件 五个队员，有五个1080ti和一个1070
+提交 平均所有的TTA所有的模型，by power mean powers of 1 2 4.最后有较大的LB overfit, public LB 0.991 private LB 0.985 通过hold-out，融合预测结果。20个xgboost，20个lightGBM，12个Keras，public LB 0.986, private LB 0.989. 关键点 收集尽可能多的图像数据，做好清理 尝试更小的图片切图，尝试所有的架构类型 LB probing是恶魔，相信自己的CV.</description></item><item><title>kaggle | Expert成就达成 社区top1000成就达成</title><link>https://yyq.github.io/posts/2018/2018-02-10-kaggle-expert-top-1000/</link><pubDate>Sat, 10 Feb 2018 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2018/2018-02-10-kaggle-expert-top-1000/</guid><description>Congrats!
+我的kaggle ID: https://www.kaggle.com/yyqing
+半年之前转到机器学习方向时，给自己订的目标是在kaggle比赛获得两枚铜牌，就可以kaggle expert称号了。彼时kaggle上的grand master + master + expert一共约4000人。
+17年11月底，在平台上拿到第一块铜牌（一般比赛top10%就可以获得铜牌）。
+17年12月份，去上海参加谷歌开发者大会，听李飞飞的演讲中，也有提到说kaggle社区前1000名中有65位中国人，心中便埋下了一个目标，我要是能进top1000那也不错。
+18年1月份，在kaggle的几项比赛中越来越顺手，感觉可以在过年前拿下4块铜牌。
+于是2月10号，哈哈~，第4块铜牌到手，rank 872，小目标实现啦！
+从去年秋天开始做第一个题目，参赛了7次，主要目的是通过比赛学习和长见识，所以全是solo，七次有四次获得铜牌，当前rank 872 / 77033.
+参加的四个题目里，先参加的两个是预测回归类的，后两个是图像识别类的，因为工作中的目标将要和图像有关，所以开始做图像类的题目了。四次比赛从public LB到private LB的排名全都是shake up，多次验证了论坛上各位大佬反复强调的&amp;quot;trust your local cv&amp;quot;的名言警句。这么做题实践下来，对自己的理论知识还是有比较扎实的验证了。
+在社区中阅读别人的代码评论，参与讨论，受益匪浅，进步较快，再接再厉。
+p.s. 下一个小目标，先来个银牌吧，再搞个master称号啥啥的
+p.p.s. top 100名也是不错的哟，小伙子要不要试试？</description></item><item><title>kaggle | statoil-iceberg-classifier-challenge 捡到铜牌一个</title><link>https://yyq.github.io/posts/2018/2018-01-25-statoil-iceberg-classifier-challenge/</link><pubDate>Thu, 25 Jan 2018 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2018/2018-01-25-statoil-iceberg-classifier-challenge/</guid><description>此题目标为识别图像中是否有冰山，数据图像均为卫星拍摄海面获得
+我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+0 自评 第一次开始尝试图像的题目，和普通回归类的题目还真是不一样，除了修改一些别人的模型看得懂别人模型之外，自己还没有水平直接改进到10%。coursera的课程知识不够用了，觉得自己有知识瓶颈了，计划把cs231n刷一遍（中文字幕的，编程作业一定自己完成的），目标要至少做到：在不做实验的情况下，增删改查模型的各个地方，对自己的运行结果，得利用先验理论知识进行预判。这样的话，可以在实践各种方案的同时，持续强化自己对理论知识的深刻理解。
+尝试使用了keras，确实好用，方便快捷，生成图像的函数ImageDataGenerator很好用。不过听说pytorch的速度比tensorflow要快啊，keras的底端默认是调用的tensorflow，下次编程实践试试pytorch。
+有几次自己思考过后，改了改模型运行完提交之后，看到public LB得分下降了，就没有继续尝试了，然后赛后才看到那几次在private LB上的得分还升高了呢。所以啊，还是得相信自己的知识，不应该一味的看着public LB然后怀疑自己的知识。
+1 高分答案集锦 第一名 David 画图理解图像很重要,把数据项inc_angle可视化出来很重要,他也发现了
+inc_angle的重要性,不同类型的分类，很重要。
+始终坚信自己的本地cv很重要。
+他有个cnn pipeline，直接先100个模型训练一下看看，惊掉我下巴有没有
+对inc_angle做聚类算法，识别分类，确认此参数非常有效，logloss对于极端值错误惩罚比较严重，设置一个阈值好了
+重新针对另外的类别，训练100多个模型，这下训练效果非常好了，对比其他参赛者，有显著提升
+附上作者原文:So in summary, 200+ CNN models, a handful of clustering algorithms, a few different thresholds, a heavy reliance on inc_angle, don’t push log_loss thresholds to the extreme, trust your local CV, and you have a formula for a winning solution.</description></item><item><title>kaggle | favorita-grocery-sales-forecasting</title><link>https://yyq.github.io/posts/2018/2018-01-17-favorita-grocery-sales-forecasting/</link><pubDate>Wed, 17 Jan 2018 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2018/2018-01-17-favorita-grocery-sales-forecasting/</guid><description>我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+输入数据为某连锁商店的各个店铺各个商品的销量，预测接下来16天的个店铺的各个商品的销量
+在Public LB做到了3%，等privateLB出来之后，掉到了6%，发现提交历史记录里，自己的最好的单模型成绩比自己最后提交的组合模型答案成绩还好，可是最好的但模型成绩在publicLB都没有进入10%,心里慌啊，用尽全力的调整到3%啊。终于，自己对LB做到了overfit了，呵呵，教训啊！我的最好单模型成绩public LB 510, private LB 518, 组合模型成绩public LB 508 private LB 519.
+1 Lessons learned of myself: 特征工程比模型调参更重要，重要性大出一个数量级 模型调参时，学习率先从较大的数字开始，节约时间 有关日期的比赛，本地cv日期的选择很重要，和最终测试日期有相似性才比较好 本地的每一次运行，cv，参数，分数都需要很好的记录下来，供后期对比分析 很多大神都开始在回归类题目里面开始用NN了，确实成绩会比xgb lgb等会有较大提升 2 Lessons learned from others: 总结两个观点先：
+特征工程特别重要 神经网络要胜过决策树boost了 每一段摘要都标记原作者，原文章标题，和原文链接
+2.1 Eureka 1st place solution 借鉴了四个别人的模型，cnn，lstm，lgbm，lgbm
+只用了2017年的数据，训练集，0531-0719 or 0614-0719, 不同的模型用不同的训练集，验证集，0726-0810
+数据处理：把空值和负值都填0
+特征工程：
+基本特征，分类（store,item,family,class,cluseter）,打折否，day_of_week(only for model 3); 统计特征，时间窗口，最近日期:[1,3,5,7,14,30,60,140]；等时间窗口[1] * 16, [7] * 20; 关键特征：store x item， item， store x class, target： promotion, unit_sales, zeros, 方法：mean,median,max,min,std, day since last appearance.</description></item><item><title>第一次kaggle参赛，铜牌一枚</title><link>https://yyq.github.io/posts/2017/2017-11-29-kaggle/</link><pubDate>Wed, 29 Nov 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-11-29-kaggle/</guid><description>https://www.kaggle.com/yyqing/competitions
+巴西的汽车保险公司出的题，根据汽车司机的各种信息，来判断明年出险的概率
+我的排名Top 7%, 名次 335/5169
+在讨论区向诸位大神学习了种种，受益匪浅
+实践中，有两类知识，书本和教材中没有，但是非常有效：
+奇淫巧技，例如：特征工程时用到的奇奇怪怪的常量；读入内存较大的数据的处理方案；有的时候OHE效果非常明显； 有的观点和思路只存在于有关最新的普通论文中，没有得大奖的也没有入选什么顶级会议的；或者github上某些几乎没有star的工程，拿来实践试试都会有奇效 p.s.
+根据某种特定参数下的CV集得出来的答案很有可能对于题目答案过拟合了，这一次考试中你虽然得了高分，然而对实际生活中应用却不会那么具有普适性。他们就像准备考试不是那么充分却考前蒙对了题目而拿了好名次 之前听人说xgboost秒杀很多kaggle题目，可如今就算你拿着最优化的决策树上场，还是会被强大硬件训练出来的神经网络秒的渣都不剩。比如我是xgboost和lgbm组合上场，单次训练个半个小时出来的结果，就是300多名，而第一名的方案就不一样了，5个模型ensemble，一个xgboost，4个神经网络，他的每一个神经网络的训练时间都是好几个小时还都用到了独立显卡，遇到这种强大的对手只能俯首称臣。</description></item><item><title>deeplearning.ai之卷积神经网络课程总结</title><link>https://yyq.github.io/posts/2017/2017-11-13-cnn/</link><pubDate>Mon, 13 Nov 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-11-13-cnn/</guid><description>等了一个月，coursera上的deeplearning.ai的第四门课程终于放出来了，月初忙了几天没空，这两天有空，认认真真刷掉了这门课（看过每一个视频，理解到位每一段视频内容，选择题作业满分，编程作业以及附加作业全部pass）。
+在知乎上看过了https://zhuanlan.zhihu.com/p/21930884，中文版的CS231n(by stanford Li FeiFei)的全部notes，受益匪浅，再补一波吴恩达老师的此课，颇有收获。
+知识点总结如下：
+第一周 卷积神经网络 Understand the convolution operation Understand the pooling operation Remember the vocabulary used in convolutional neural network (padding, stride, filter, ...) Build a convolutional neural network for image multi-class classification 简介计算机视觉 通过简单的矩阵来卷积，进行边缘检测，本科时的数字图像处理课程学过，这个简单 padding, 为了卷积时不把边角的像素忽略掉，得按照卷积核的大小在图像周围一圈补充像素，常用的有两种， valid padding也就是no padding，input: n*n with filter f*f, output: (b-f+1)*(n-f+1) same padding,也就是输出矩阵和输入矩阵一样大，这样来计算的话n+2p-f+1=n,所以p=(f-1)/2,啊哈，所以啊，最好一般你的filter都用奇数，搞了偶数那same padding就不好做了哈 stride,步长，按照字面意思就好理解了，为了卷积的同时做采样 input: n*n with filder f*f padding=p ouput is : round((n+2p-f)/s+1), round为向下取整 三维矩阵的卷积，当时彩色图像的时候，比如一个图像是6*6*3，6乘以6的矩阵是图像大小，3是channel的数量，那么filter不能再是3乘以3了，得用3*3*3了，前面两个3是filer的高度和宽度，第三维的3也是channel数，必须和图像的channel一样匹配好才是.</description></item><item><title>xgboost模型调试攻略</title><link>https://yyq.github.io/posts/2017/2017-10-23-xgboost-tune/</link><pubDate>Mon, 23 Oct 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-10-23-xgboost-tune/</guid><description>最近做题的感受，结合网上看来的资料，总结如下：
+xgboost python api 描述 xgboost.DMatrix, 是个类，存的是数据矩阵，自带内存优化，训练加速，可以从numpy.arrays初始化 xgboost.Booster，是个类，模型所在地，包括了较低层次的routines for training,prediction and evalution xgboost.train，是个函数，给定参数来训练booster，返回一个训练完成的booster xgboost.cv，是个函数，给定参数做交叉验证，返回评估历史，list(string) scikit-learn包装的api, xgboost.XGBRegressor, xgboost.XGBClassifier 画图有关的api, xgboost.plot_importance, 根据fitted trees画出重要性，返回的是matplotlib Axes xgboost.plot_tree，画出指定的树 xgboost.to_graphviz,将指定的树转化成graphviz实例 about parameter tune 选用一个相对高一点的learning rate例如0.1，一般选用0.05到0.3之间对于大部分问题都可以了。定了学习率，然后决定合适数量的树，用cv 调整树的特定参数，比如max_depth,min_child_weight,gamma,subsample,colsample_bytree 调整正则化参数例如lambda和alpha，可以降低模型复杂度和提高性能 降低learning rate，再继续优化参数们 tune step by step 第一步，确定learning rate和estimator的数量 不过我们需要初始化一些基本变量，例如：
+max_depth=5，一般用3到10，456都是不错的starting points min_child_weight=1，选择较小的值是因为数据分类很不对称并且叶子节点有可能具有较小的group size gamma=0，选择0.1或者0.2都可以，稍后一定需要调试 subsample colsample_bytree=0.8, 典型的选择在0.5到0.9之间 scale_pos_weight=1, 数据类别高度不平衡 learning rate就先用0.1，先用cv来寻找最优的estimators
+第二步，max_depth和 min_child_weight 调整着两个是因为它们对模型结果有很大的影响，开始的测试用的范围广泛一点，以后再用较小的范围来确定具体选择为多少。for example: max_depth(3,10,2) min_child_weight(1,6,2)</description></item><item><title>17年9月份机器学习知识进展</title><link>https://yyq.github.io/posts/2017/2017-10-02-machine-learning-ex-progress/</link><pubDate>Mon, 02 Oct 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-10-02-machine-learning-ex-progress/</guid><description>刷课1 coursera：
+machine learning（matlab手动搭建）基本模型，基本参数，基本调优，98分
+deep learning 神经网络，实践调优，来自吴恩达工程实践经验，值得了49美元一个月的票价。前三门课满分拿下，后两门课程还没有出来。
+Andrew老师讲的很好，配套练习也很到位，基本知识有了普及。从大概念来说：机器学习是大于深度学习的，而深度学习中，目前应用较广的是神经网络（在有些教程里看到成为多层感知 maybe Multi-Layer-Perceptron?)，然后较为复杂的神经网络模型有卷积神经网络，卷积神经网络中，有各路大神在各路比赛中获得优异成绩的经典模型。
+刷课2 Stanford cs231n:李飞飞 CNN-4-image processing 卷积神经网络用于图像识别
+她组织收集了ImageNet大量图片的库，并组织了ImageNet比赛，最近几年比赛的冠军成绩识别能力超过人眼，轰动一时，冠军队伍采用了卷积神经网络，因此将深度学习发扬光大，所以很多地方都在讨论”深度学习”，并且将深度学习应用到其他很多场景不仅仅是图像识别 http://image-net.org/index
+实践1 tensorflow：走读实践tutorial，基本了解该计算框架 可以自定义数学模型，矩阵运算 第三方已经实现的流行的模型，可拿来即用
+刷课3 udacity平台, 乔治亚理工学院的课：machine learning for trading 感觉有点扯远了，很多时间用于讲如何对冲基金量化交易了， 然后简单模型描述了强化学习用于股票交易，目前对我用处不大
+实践2 kaggle: 最著名的大数据擂台了，刚入门，学习实践了titanic case 数据预处理，观察数据，简单分析，特征工程处理
+计划进一步学习内容 实践方向：
+kaggle赛题， 积累python使用经验： tensorflow(模型)，pandas(数据处理)，matplotlib(画图) 理论知识：
+等待coursera吴恩达DeepLearning的新课程 coursera Stanford probabilistic-graphical-models 书籍：统计学方法</description></item><item><title>coursera Andrew Ng 机器学习 编程习题总结</title><link>https://yyq.github.io/posts/2017/2017-08-12-machine-learning-exercise/</link><pubDate>Sat, 12 Aug 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-08-12-machine-learning-exercise/</guid><description>学习这些知识不是为了学习而学习，是为了解决问题而学习。所以这些知识所配套的编程练习尤为重要了。这门课程做的作业，可算是让我开了眼界，简单的一些代码和并不是特别大量的数据，就能解决一些简单的问题。受益匪浅！记录下来这些，以供之后解决复杂问题的时候给一个参考思路。
+这门课程的代码我是用的matlab，我的代码参考链接点击这里
+Linear Regression 解决预测房价的问题，已知面积，房间数 写出线性回归的代价函数和梯度下降函数 画图来看，有个直观感受 不同的learning rate有不同的影响，收敛快慢 Logistic Regression 预测某个学生是否通过了某门课程，已知数据包括两次测验的成绩，画出直线决策边界
+预测制造工厂出产的芯片的质量合格与否，根据芯片的两次测试成绩，画出像圆形的决策边界
+sigmoid函数
+代价函数，梯度下降函数
+范化
+Multi-class classification and Neural Network 数字图片的识别，输入图片，输出数字 通过1-vs-N的逻辑回归函数来识别 通过神经网络来识别(这里只实现了前向反馈用来预测)，theta矩阵已知，效果显然比逻辑回归好 Neural Networks Learning 仍然是识别数字 实现了神经网络里的后向反馈，代价函数，梯度下降，随机初始化，泛化，梯度检查等步骤 可视化隐藏层，有个直观感受 Regularized Linear Regression and Bias v.s. Variance 不同的偏差，方差，通过画图观察 画学习曲线，发现了高偏差问题，数据量增多也不管用，那么线性改多项式 多项式回归，画图，调整选择lambda Support Vector Machines 识别垃圾邮件，亲测自己收到的各种广告垃圾邮件，果然有效！ Informally, the C parameter is a positive value that controls the penalty for misclassified training examples SVM with 高斯内核 决策边界，无比扭曲的曲线都可以适应好 垃圾邮件case:邮件单词预处理，词库预处理，提取邮件特征，训练，预测，GoodJob!</description></item><item><title>coursera Andrew Ng 机器学习第十一周笔记 应用举例：photo OCR</title><link>https://yyq.github.io/posts/2017/2017-08-11-machine-learning-week11/</link><pubDate>Fri, 11 Aug 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-08-11-machine-learning-week11/</guid><description>Application example: photo OCR pipeline text detection character segmentation character classification sliding windows too easy to learn Getting more data: artificial data synthesis Discussion on getting more data
+make sure you have a low bias classifier before expending the effort.(Plot learning curves.) keep increasing the nuber of features/number of hidden units in neural network until you have a low bias classifier how much work would it be to get 10x as much data as we currently have?</description></item><item><title>coursera Andrew Ng 机器学习第十周笔记 大数据量的机器学习</title><link>https://yyq.github.io/posts/2017/2017-08-10-machine-learning-week10/</link><pubDate>Thu, 10 Aug 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-08-10-machine-learning-week10/</guid><description>stochastic gradident descent mini-batch gradient descent Batch gradient descent: use all m examples in each iteration
+Stochastic gradient descent: use 1 examples in each iteration
+Mini-batch gradient descent: use b examples in each iteration
+checking for convergence every 1000 iterations, plot cost(theta, xi, yi) averaged over the last 1000 examples processed by algorithm.
+online learning example shiping service website where user comes, specifies origin and destination, you offer to ship their package for some asking price, and user sometimes choose to use your shipping service(y=1), sometimes not(y=0).</description></item><item><title>coursera Andrew Ng 机器学习第九周笔记 异常检测与推荐系统</title><link>https://yyq.github.io/posts/2017/2017-08-09-machine-learning-week9/</link><pubDate>Wed, 09 Aug 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-08-09-machine-learning-week9/</guid><description>Anomaly Detection Density estimation Dataset: x1, x2, x3, &amp;hellip; xm Is X-test anomalous ?
+algorithm anomaly detection vs supervised learning choosing what features to use non-gaussian features, maybe log(x),sqrt(x),x^2 to gaussian-like features
+multivariate G distributon Don&amp;rsquo;t model p(x1) p(x2) separately.
+Modle p(x) all in one go.
+Recommender Systems collaborative filtering algorithm finding related movies smallest|| xi - xj ||
+users who have not rated any movies mean normalization</description></item><item><title>coursera Andrew Ng 机器学习第八周笔记 降低维度</title><link>https://yyq.github.io/posts/2017/2017-08-08-machine-learning-week8/</link><pubDate>Tue, 08 Aug 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-08-08-machine-learning-week8/</guid><description>unsupervised learning k-means altorithm clustering, optimization objective clustering, random initialization should have K &amp;lt; m
+Randomly pick K training examples.
+clustering, choosing the number of clusters, K Please draw a graph. Elbow method
+Dimensionality reduction Motivation I: data compressioni
+Motivation II: Visualization
+Princiapl Component Analysis reduce from n-dimension to k-dimension: find k vectors u1 u2 u3 uk onto which to project the data,so as to minimize the projection error.
+PCA steps</description></item><item><title>coursera Andrew Ng 机器学习第七周笔记 支持向量机</title><link>https://yyq.github.io/posts/2017/2017-08-07-machine-learning-week7/</link><pubDate>Mon, 07 Aug 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-08-07-machine-learning-week7/</guid><description>Support Vector Machines optimization Objective Large Margin Intuition Kernels Using an SVM choice of parameter C
+choice of kernel(similarity function)
+if Gaussian Kernel, need to choose sigma^2
+Not all similarity functions make valid kernels(need to satisfy technical condition called &amp;ldquo;Mercer&amp;rsquo;s Theorem&amp;rdquo; to make sure SVM packages' optimizations run correctly, and do not diverge).
+Polynomial kernel: More esoteric: String kernel, chi-square kernel, histogram intersection kernel
+multi-class calssification
+K SVMs, one to distinguish one from the rest.</description></item><item><title>coursera Andrew Ng 机器学习第六周笔记 系统设计与优化技巧</title><link>https://yyq.github.io/posts/2017/2017-08-06-machine-learning-week6/</link><pubDate>Sun, 06 Aug 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-08-06-machine-learning-week6/</guid><description>Advice for Applying Machine Learning 重要的笔记，必须手写上传 Machine Learning System Design email spam example Given a data set of emails, we could construct a vector for each email. Each entry in this vector represents a word. The vector normally contains 10,000 to 50,000 entries gathered by finding the most frequently used words in our data set. If a word is to be found in the email, we would assign its respective entry a 1, else if it is not found, that entry would be a 0.</description></item><item><title>coursera Andrew Ng 机器学习第五周笔记 神经网络的学习过程</title><link>https://yyq.github.io/posts/2017/2017-08-05-machine-learning-week5/</link><pubDate>Sat, 05 Aug 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-08-05-machine-learning-week5/</guid><description>Neural Networks: Learning cost function L = total number of layers in the network sl = number of units (not counting bias unit) in layer l K = number of output units/classes the double sum simply adds up the logistic regression costs calculated for each cell in the output layer the triple sum simply adds up the squares of all the individual Θs in the entire network. the i in the triple sum does not refer to training example i Backpropagation Algorithm Backpropagation in Practice thetaVector = [ Theta1(:); Theta2(:); Theta3(:); ] deltaVector = [ D1(:); D2(:); D3(:) ] Theta1 = reshape(thetaVector(1:110),10,11) Theta2 = reshape(thetaVector(111:220),10,11) Theta3 = reshape(thetaVector(221:231),1,11) gradient checking Once you have verified once that your backpropagation algorithm is correct, you don&amp;rsquo;t need to compute gradApprox again.</description></item><item><title>coursera Andrew Ng 机器学习第四周笔记 神经网络模型</title><link>https://yyq.github.io/posts/2017/2017-08-04-machine-learning-week4/</link><pubDate>Fri, 04 Aug 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-08-04-machine-learning-week4/</guid><description>Neural Networks:Representation 这个周的课程很简单，就是介绍了神经网络是什么样子的
+introduction examples multi classification example</description></item><item><title>coursera Andrew Ng 机器学习第三周笔记 逻辑回归与泛化</title><link>https://yyq.github.io/posts/2017/2017-08-03-machine-learning-week3/</link><pubDate>Thu, 03 Aug 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-08-03-machine-learning-week3/</guid><description>Logistic Regression Classification The classification problem is just like the regression problem, except that the values y we now want to predict take on only a small number of discrete values. For now, we will focus on the binary classification problem in which y can take on only two values, 0 and 1.
+Logistic Regression Model Decision Boundary The decision boundary is the line that separates the area where y = 0 and where y = 1.</description></item><item><title>coursera Andrew Ng 机器学习第二周笔记 多个变量的线性回归</title><link>https://yyq.github.io/posts/2017/2017-08-02-machine-learning-week2/</link><pubDate>Wed, 02 Aug 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-08-02-machine-learning-week2/</guid><description>Linear Regression with Multiple Variables Multiple Features Gradient Descent for Multiple Variables Feature Scaling We can speed up gradient descent by having each of our input values in roughly the same range.
+feature scaling: involves dividing the input values by the range of the input variable resulting in a new range of just 1. mean normalization: involves subtracting the average value for an input variable from the values for that input variable resulting in a new average value for the input variable of just zero.</description></item><item><title>coursera Andrew Ng 机器学习第一周笔记 线性回归</title><link>https://yyq.github.io/posts/2017/2017-08-01-machine-learning-week1/</link><pubDate>Tue, 01 Aug 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-08-01-machine-learning-week1/</guid><description>machine learning supervised learning, unsupervised learning, others(reinforcement learning, recommender system)
+supervised learning regressing，predict input into continuous result classification, predict input into distract result examples：
+given size, rooms, predict house price, like 1M, 100Grand, 1B house prize is expensive or cheap ? given picture with human, predict his age: 0.1，12.5，78.8 given a patient with tumor, predict it&amp;rsquo;s a malignant or benign unsupervised learning problems with little or no idea what our results should look like</description></item><item><title>学习hadoop和mapreduce</title><link>https://yyq.github.io/posts/2017/2017-05-06-hadoop-mapreduce/</link><pubDate>Sat, 06 May 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-05-06-hadoop-mapreduce/</guid><description>前言 4月底离职了，最近赋闲在家，趁着有空拓宽一下视野，学学大数据有关的基础知识吧。扫了一圈公开课的网站，Udacity网站有了专门的中文网站,不过教学视频还是英文的， 找了Hadoop和MapReduce入门这个课程，链接https://cn.udacity.com/course/intro-to-hadoop-and-mapreduce&amp;ndash;ud617，略有收获。
+Hadoop生态系统 大数据简介 首先对大数据得有一个概念，我理所当然认为，数据量很大，比如有1TB的数据，那么就是大数据。稍加修饰一下，一台单独的电脑无法轻松处理的数据，则是big data。再看看别人的理解：
+大数据概念中重要的的3个V, Volume, Variety, Velocity.
+Volume,特指数据量的大小，比如说1TB,1PB Variety,指数据的类型格式什么的，数据会从很多个不同的来源过来，有很多不同的格式样子 Velocity,生成数据的速度,处理数据的速度, 数据的生产者和消费者都得速度快啊。 Hadoop来源 某工程师有一个还不会太会说话的儿子，他儿子给自己的玩具取了个名字，发音为Hadoop.
+Hadoop工程的核心是两个部分，一个是存储数据，HDFS(Hadoop Distributed File System),另外一个部分是处理数据，MapReduce。
+Hadoop生态系统 底层是HDFS来存储数据的，基于此，有一个默认的MR来处理数据。 其他的开源软件，有的是把数据导入进Hadoop集群的，有的是让Hadoop更加容易使用的。例如Hive和Pig等。
+Hive,不用写麻烦的mapper和reducer的代码，写的和标准SQL比较像就行了。
+Pig也是一种更容易的脚本
+Impala，也是可以使用类似标准SQL的语法，直接访问HDFS里的数据，而不需要经过MapReduce。
+sqoop，把传统数据库的内容导入到HDFS。Flume也类似。
+HBase,实时数据库，基于HDFS的。
+看图学习Hadoop并解决问题 HDFS图解 一个体积较大的文件会被分块存储，例如按照64MB来分割，150MB的就会被分成3块
+集群中有一个namenode节点，会将这三块数据分别存储在不同的数据节点上
+然后每一块数据都会复制两份到其他的数据节点上
+namenode是个非常重要的节点了，一个namenode如果挂了，整个集群就废了。那么一般用什么方法来保障namenode的高可用呢，一个方法是备份，在集群里放入第二个namenode，备用。另外一个方法是，把namenode里的数据通过NFS的方式，存储在另外的存储机器里，namenode节点机器可以坏掉，不过数据没有丢失，可以拿来恢复。
+MapReduce图解 我们通过下面这个具体的问题来学习MR. 我们有一个连锁店的销售数据，数据形式应该是很多本账单。然后我们想统计每个单独的店铺销售总量。
+每一条销售数据的格式大概就是，日期，销售店铺（即城市名称），销售类别，销售价格
+按照MapReduce的思路来做这个事情，先找来三个人作为Mappers，分给他们一些账本，然后他们分别将自己账本里的数据，按照店铺分个类，一类一类分好，然后再找来reducers，他们每个人负责某些特定的店铺，收集Mapper手里的某店铺的所有数据，收集完毕之后，统计，给出结果。
+上面的事例还有几个重要的点没有说明，1. 中间结果都用哈希表的方式来存储，比如某一条销售记录可以存储为，key是销售店铺名称，value是销售额 2. map之后，会有一个shuffle and sort的过程，会将数据按照key的字母顺序排序 3. Hadoop中默认设置reducer的数量是1.
+MapReduce设计模式 用图说话
+有三种情况，是比较合适使用MR的。
+过滤模式 简单过滤 布隆过滤，不懂的请自行谷歌。我记得这是搜索引擎中用到的技术，大量数据的查重，效率很高 采样 随机采样 求值Top N 概括模式 反向索引，也是搜索引擎中用到的技术，根据关键字来检索网页/文章/帖子 数值概括 计数 最小、最大 第一，最后 中位数，平均值，标准差 结构模式 当你要把数据从RDBMS移植到Hadoop后，这种模式就有用了。在对数据集进行分析的时候，MapReduce的过程中，中间数据的格式和内容都可以自己重新定义，就可以免去你的RDBMS中对各个数据集的live join操作，这可是能省下不少时间。</description></item><item><title>Burpsuite实践：iOS app刷点击量</title><link>https://yyq.github.io/posts/2017/2017-03-31-burpsuite-ios10-app/</link><pubDate>Fri, 31 Mar 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-03-31-burpsuite-ios10-app/</guid><description>需求 最近有个做媒体的朋友，她们发表在某app上的文章，有点击量的KPI，问我能不能帮刷一刷阅读量。最近学了burpsuite，正好练习练习。
+分析 稍微一观察，那app还比较简陋，同一个手机里，反复的去点击文章，再退出，就会增加点击量。
+那目标就比较简单了，观察在手机上点击阅读某篇文章的时候，会有什么样的网络请求，再重复就行了。之前想象的不断切换IP的难度也就没有了。
+实践 打开Burpsuite监听 首先在BurpSuite里找到Proxy,把Intercept关掉，这里不需要拦截请求。在option里添加一个新的Listeners，端口号填好，Bind to address选择All interfaces.其他默认。
+设置手机wifi 打开手机WIFI的设置，代理选手动，填上自己电脑的IP地址和刚刚设定的端口号。
+安装CA证书 对于https的请求，这里是最重要的一步，否则你的app里只会显示各种没有网络无法连接等错误
+打开http://burp,按照网页右上角的提示安装CA Certificate
+这还没完！！更重要的一个步骤：如果你的iOS系统是比较新的，比如我手机是iOS10.3，那么你还要到手机的设置=&amp;gt;通用=&amp;gt;关于本机=&amp;gt;证书信任设置里，打开对PortSwigger CA证书的完全信任
+这个步骤花了我足足两个小时有没有，找便了互联网都没有看到有人说要设置手机打开证书完全信任，然后认认真真看官网页面介绍如何安装CA证书，support.portswigger.net。终于，在这个页面正文的后面，很不起眼的一个小提示里说到了这个point，finally my app works fine! WTF! 那里还说了他的这个介绍文档是基于iOS8.1.2的iPad mini.其他版本的iOS可能需要这个操作。
+目测是apple为了提升iOS的安全性，就算被意外安装了证书，也不会默认完全信任。要用app通过代理顺利的请求https的内容的话，需要设置手机完全信任这个代理的CA Certificate才行。
+重放网络请求 这个简单了，手机app里随意点一点，可以发现每次点击一个新的文章，都会有一个post请求和一个get请求。先拿post请求实验，用send to Intruder, 然后clean掉所有潜在的payload positions,在payloads选项里，选择null payloads,然后设置一下循环次数，先来个5000吧。
+我滴乖乖呀，一分钟左右吧，该文章阅读量明显的从2.8万上涨到18.4万。可是我明明只有5000次请求。问了问朋友，这大概是他们统计数据的时候有作假。但是，anyway，我这5000次请求可是货真价实的给该文章增加了不少阅读量。
+lessons learned 实战和看视频学习使用软件是两回事儿，有的细节上的设置和设计，差一点点就是功亏一篑谬以千里 有不懂的知识，google里前5个链接没找到答案的话，那么认真阅读官方文档，哪怕细小的一个提示框都不可以错过</description></item><item><title>《SQL注入攻击与防御》之防御</title><link>https://yyq.github.io/posts/2017/2017-03-29-sql-injection-attacks-defense-3/</link><pubDate>Wed, 29 Mar 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-03-29-sql-injection-attacks-defense-3/</guid><description>代码层防御 领域驱动的安全性 SQL注入之所以发生，是因为我们的应用程序不正确的将数据在不同表示方式之间进行映射 通过将数据封装到有效的值对象中，并限制对原始数据的访问，我们就可以控制对数据的使用 使用过参数化语句 动态SQL（或者将SQL查询组装成包含受用户控制的输入的字符串并提交给数据库）是引发SQL注入漏洞的主要原因 应该使用参数化语句（也叫做预处理语句）而非动态SQL来安全的组装SQL查询 在提供数据时可以只使用参数化语句，但却无法使用参数化语句来提供SQL关键字或标识符（比如表名或者列名） 验证输入 尽可能坚持使用白名单输入验证（只接收期望的已知良好的输入） 确保验证应用受到的所有受用户控制的输入的类型，大小，范围和内容 只有当无法使用白名单输入验证时才能使用黑名单输入验证（拒绝已知不良的或基于签名的输入） 绝不能单独只使用黑名单检验数据。至少应该总是将它与输出编码技术一起结合使用 编码输出 确保对包含用户可控制输入的查询进行正确编码以防止使用单引号或其他字符来修改查询 如果正在使用LIKE子句，请确保对LIKE中的通配符恰当的编码 在使用从数据库接收到的数据之前确保已经对数据中的敏感内容进行了恰当的输入验证和输出编码 规范化 将输入编码或变味规范格式后才能执行输入验证过滤器和输出编码 请注意，任何单个字符都存在多种表示方式以及编码方法 尽可能使用白名单输入验证并拒绝非规范格式的输入 通过设计来避免SQL注入的危险 使用存储过程以便在数据库层拥有较细粒度的许可 可以使用数据访问抽象层来对整个应用施加安全的数据访问 设计时，请考虑对敏感信息进行附加的控制 平台层防御 使用运行时保护 无法修改代码时，运行时保护是应对SQL注入的一种有效技术 如果调整得当，Web应用防火墙可以有效监测，缓和和预防SQL注入 运行时保护可以跨越多层，多级，其中包括网络，web服务器，应用程序框架以及数据库服务器 确保数据库安全 加固数据库虽然无法完全阻止SQL注入，但却可以显著降低其影响 应该只将攻击者沙箱化在应用程序所用数据上。在锁定的数据库服务器中，不应该影响所连接网络上的其他数据库和系统 应该将访问局限在必须的数据库对象上，比如存储过程只授予EXECUTE许可，此外，对敏感数据明智的使用强加密技术可以防止未经验证的数据访问 额外的部署考虑 加固过的web层部署和网络架构无法完全阻止SLQ注入，但却可以显著降低其影响。 面对自动攻击者的威胁（比如SQL注入蠕虫），尽量减少网络，web和应用程序级别上的泄露，将有助于减少被发现的机会 架构得当的网络应该只允许使用验证过的连接来连接数据库服务器，并且数据库服务器自身不应该产生带外连接 确认并从SQL注入攻击中恢复 调查可疑的SQL注入攻击 只能由计算机安全事件响应人员和组织中已授权执行调查的取证专家，来执行SQL注入攻击的调查取证工作。 合理的调差取证实践要求 在调查取证期间，应该对收集到的所有文件做到真正bit-for-bit复制 应该为复制的每一个文件生成哈希值，并与源文件的哈希值进行比较，以验证bit-for-bit复制的完整性 将调查取证期间执行的所有操作记录在文档中，包括对RDBMS执行的所有查询和返回的查询结果 确保所有收集到的文件写入洁净的存储介质中，并保存在一个安全的地方 分析数字化痕迹 数字化痕迹就是相关数据的集合 对于SQL注入攻击的调查取证，下列痕迹非常有用：web服务器的日志文件，数据库执行计划，事务日志和数据库对象的时间戳 识别SQL注入攻击活动 对web服务器的日志文件执行一次广泛的分析，查找异常偏高的web请求数量出现的日期，或者web服务器与客户端计算机之前带宽利用率异常偏高的日期 检查数据库执行计划和相关日志，查找恶意查询 检查食物日志，寻找在攻击时间段内出现的可疑活动，重点关注已执行的INSERT,UPDATE和DELETE语句 检查数据库对象的时间戳，以识别用户账号的创建，权限提升和表的创建操作 确认SQL注入攻击是否成功 如果发现下列情况，就可以确认一次SQL注入攻击已经成功 在数据库的执行计划或相关数据库日志中捕获了SQL注入的活动 在未经授权的情况下，创建或修改了事物或对象 遏制安全事件 拔除受损害数据库和相应web服务器的网线 评估涉及的数据 必须对数据进行评估，以确保组织机构确定适当的监管和法律要求 通知正确的人员 应该由受损害组织机构的高级管理人员和法律顾问对损害通报进行管控 确定攻击者在系统上执行的操作 可以通过对数据库进行取证，确定攻击者在攻击期间执行的具体操作 确定攻击的有效载荷 备份受害的数据库 提取恶意的SQL注入查询 检查并理解恶意查询的逻辑，从而理解攻击载荷企图实现什么目的 搜索对恶意查询的引用 确定已识别的恶意查询是否属于静态或动态攻击载荷的一部分 查找多种漏洞 应该根据承载的是静态载荷还是动态载荷对攻击进行分类 根据攻击载荷确定如何从安全事件中恢复 从SQL注入攻击中恢复 将数据库恢复到已知的良好状态 检验数据库服务器的配置 识别并修复SQL注入漏洞 在线恢复系统并恢复web服务</description></item><item><title>OWASP TOP 10 浅显解读</title><link>https://yyq.github.io/posts/2017/2017-03-27-owasp-top10-go-through/</link><pubDate>Mon, 27 Mar 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-03-27-owasp-top10-go-through/</guid><description>OWASP的全称是Open Web Application Security Project，开放式网络应用安全项目，官网在https://www.owasp.org/index.php/Main_Page
+OWASP组织最近一次正式发布TOP10是在2013年，官网介绍页面是https://www.owasp.org/index.php/Top_10_2013-Top_10
+A1-注入 注入，例如SQL注入，操作系统注入，LDAP注入等等，一般发生在命令或者查询中包括了不可信任的数据，并且被发送到了解释器（解释命令或者查询的软件）。攻击者的攻击数据可以出发解释器来执行一些不怀好意的命令或者访问一些数据而无需正常授权。
+A2-坏授权和会话管理 在web应用中，和授权有关的，会话管理有关的一些功能，通常没有正确的实现，这会让攻击者破坏你的密码，密钥或者会话令牌，或者利用其它 实现的缺陷来伪装其它用户的身份
+A3-跨站脚本 XSS漏洞，通常发生在：应用拿到不可信任的数据并且发送给浏览器而没有做出正确的校验和过滤。XSS会允许攻击者在受害者的浏览器来执行脚本，这可以让攻击者劫持用户会话，修改网站或者把用户重定向到恶意网站
+A4-不安全的直接引用其他对象 这个缺陷一般发生：在当开发人员暴露一个对象给内部功能用，比如某个文件，某个目录或者某个数据库秘钥。如果没有正确的权限控制检查或者其他保护，那么攻击者可以操作利用这个对象来访问未授权的数据。
+A5-安全的错误配置 良好的安全:得有一个安全配置的规则，并且部署到应用，框架，应用服务器，网络服务器，数据库服务器和平台。安全设置应该被妥善的定义，实施和维护，一般来说默认场景都是不安全的。另外，软件要尽量保持更新。
+A6-敏感数据泄露 许多web应用都没有合适的保护好敏感数据，例如信用卡，个人税号和密码等等。攻击者可以偷取或者修改弱保护数据来实施信用卡欺诈，身份盗用或者其他犯罪。敏感的数据应该需要更多的保护，例如存储时和传输时都要进行加密，和浏览器进行交互时也需要特殊的预防泄露。
+A7-缺失的功能分级访问控制 大多数web应用会在把功能展示在界面上之前进行验证访问权限。、，当每一个功能被访问的时候，都要在服务器上执行同样的检查访问权限。如果网络请求没有被验证通过，攻击者将会伪造请求来进行未授权的访问。
+A8-CSRF，跨站伪造请求 CSRF攻击会迫使一个已经登录的受害者的浏览器来发送伪造的http请求，包括受害者的会话cookie，也包括任何其他的身份验证信息，发送到一个脆弱的web应用。这让攻击者可以强迫受害者的浏览器来生成请求,而没有防护的应用会认为这个请求来自于受害者的合法请求
+A9-使用了有已知漏洞的组件 组件，例如库，框架和其他软件模块，他们通常是以拥有所有权限来运行的。如果一个有漏洞的组件暴露了出来，一个攻击者就可以造成严重的数据丢失或者服务器接管。一个有已知漏洞组件的应用可能自己身的防御已经失效并且会引发一系列可能的攻击和影响
+A10-未授权的重定向和转发 web应用频繁的重定向和把用户引导向其他的页面和网站，使用不信任的数据来决定最终的目的地网页。如果没有合适的校验过程，攻击者可以将受害者重定向到钓鱼网站或者恶意网站，或者使用转发来访问未经授权的页面。</description></item><item><title>《SQL注入攻击与防御》之高级攻击</title><link>https://yyq.github.io/posts/2017/2017-03-25-sql-injection-attacks-defense-2/</link><pubDate>Sat, 25 Mar 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-03-25-sql-injection-attacks-defense-2/</guid><description>SQL盲注利用 寻找并确认SQL盲注 无效数据将返回通用错误页面而非详细错误，这时可通过包含副作用比如时间延迟来确认SQL注入，还可以拆分与平衡参数。如果数字字段为5，就提交3+2或者6-1；如果字符串参数中包含&amp;quot;MadBod&amp;quot;,就提交‘Mad’||'Bod' 请思考漏洞的属性：是否强制产生错误以及能否控制无错误页面的内容 可通过在SQL中提问某一位是0或者1来推断某个信息位，有很多推断技术可用于实现该目标 使用基于时间的技术 可使用逐位方法或二分搜索法提取数据并利用延迟表示数据的值，可使用明确的SLEEP类型函数或运行很长的查询类引入延迟 通常在SQL Server和Oracle上采用以时间作为推断的方法，不过这在MySQL上不太可靠，改机制很可能会失败 使用时间作为推断方法在本质上是不可靠的，但却可以通过增加超时或借助其他技巧来进行改进 使用基于响应的技术 可使用逐位方法或二分搜索方法提取数据并利用相应内容表示数据的值。一般来说，现有查询中都包含一条插入子句，它能够根据推断的值来保持查询不变或返回空结果。 基于响应的技术可成功用于多种多样的数据库 某些情况下，一个请求可返回多个信息位 使用非主流通道 带外通信的优点是：可以以块而非位的方式来提取数据，并且在速度上有明显改进 最常用的通道是DNS，攻击者说服数据库执行一次名称查找，该查找包含一个由攻击者控制的域名并在域名前添加了一些要提取的数据。当请求到达DNS名称服务器后，攻击者就可以查看数据。其他通道还包括HTTP和SMTP 不同数据库支持不同的非主流通道，支持非主流通道的工具的数量明显要比支持推断技术的少 自动利用SQL盲注 有一些工具都不是开源的，这里我只记录Sqlmap的好了 Sqlmap将漏洞的发现和利用结合在一款强大的工具中，它既支持基于时间的推断方法，也支持基于响应的推断方法，另外还支持ICMP通道方法。该工具的成长速度和开发也很快 利用操作系统 访问文件系统 读取文件有关：
+在MySQL中，可以使用LOAD DATA INFILE和LOAD_FILE()命令从主机读取任何文件
+在Microsoft SQL Server中，可以使用BULK INSERT或OLE Automation从文件系统读取文件。对于较新的系统（SQL Server 2005以及之后的版本），可以使用CREATE ASSEMBLY方法从文件系统读取文件
+在Oracle中，可以使用Oracle目录，Oracle Text或UTL_FILE方法读取文件
+写入文件有关：
+MySQL,使用select into outfile和select into dumpfile命令向文件系统写文件
+MS SQL,可以使用OLE Automation和简单的重定向（通过命令执行）在目标文件系统中创建文件。可以从命令行使用debug.exe和BCP,进而在目标系统中辅助创建二进制文件</description></item><item><title>继续更新自己的vimrc配置</title><link>https://yyq.github.io/posts/2017/2017-03-24-my-vimrc-config-details/</link><pubDate>Sat, 25 Mar 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-03-24-my-vimrc-config-details/</guid><description>感觉拷贝来一些插件什么的，有的设置和快捷键，自己看的时候知道，但是不常用的话，过些天再一看手生了，也就忘记了。
+有一些很有用的技巧，得写下来，放着，以备自己忘记了，再来查看。
+高亮当前光标的位置，横着的一条，竖着的一条，省的自己满屏幕找光标在哪 mapleader设置为空格，有效利用上大拇指和空格键了，各种快捷键更加飞起 语法高亮得开着 文件夹目录结构插件nerdtree的快捷键ctrl+n,从此不用离开vim即可浏览各级目录 编辑时，tab自动转成两个空格，上大学的时候流行默认四个空格，据说最近湾区都流行两个空格 高亮第80个字符的位置，为啥建议每一行不超过80个字符呢，多年前的IBM punch card宽度就是80，现在呢，大家显示器一行可以显示很多很多字符了，但是仍然建议80字符，因为这样的代码更紧凑，可读性更高。在各个IDE或者编辑器的默认设置里都不用自动折叠代码，就能直接看完一行字 显示行号 连续两个空格，用来执行ctrl+^,可以迅速的在最近使用的两个文件之间来回切换 在多个窗口之间移动，vim默认是ctrl+w，然后在hjkl,此处我直接修改成ctrl+hjkl 在多个tab之间切换，vim默认是gT左标签gt右标签，我直接改成大写字母的H和L tagbar快捷键，空格+tb，tagbar是一个文件内的书签列表，可用于快速导航，切换到某函数啊，类啊，变量啊什么的 我的 :w回车，修改成w，就是空格+w了，再加上空格+q，无比方便的保存当前文件，关闭当前窗口 buffer切换，用[b代替了 :bprevious,用]b代替了:bnext Next：更多学习ctrlp的快捷键，利用好空格即是我的mapleader
+更新：
+参考了YouCompleteMe作者的vimrc(github link)，我自己又重新审视了一下自己的vimrc，做出如下修改：我使用rspec的机会较少，注释掉相关快捷键；窗口切换我之前用的是ctrl加上ghjk，现在改成空格加上ghjk. 搜索字符串的几个命令，都修改成默认的加上zz，这样搜索文字就能每次都居中屏幕显示了，这个确实很有用。 CtrlP不用了暂时，用Command+T来在工程里搜索文件 最后看一眼现在我的vim的样子吧</description></item><item><title>我的vim配置说明</title><link>https://yyq.github.io/posts/2017/2017-03-01-my-vimrc-config/</link><pubDate>Wed, 01 Mar 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-03-01-my-vimrc-config/</guid><description>参考了不少书籍和网站，最终形成一个自己觉得顺手的vim配置文件，存在github的gist了，有兴趣的朋友可以看看，交流交流。 .vimrc .vimrc.bundles
+要相关插件都正常工作的话，需要手动执行的一些操作如下：
+mkdir ~/.vim touch .vimrc touch .vimrc.bundles fill the file content(vimrc, vimrc.bundles) Download Vundle for VIM git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim open vim, and run :BundleInstall The command to install ctags on my mac: brew install ctags
+The command to install YouCompleteMe
+cd ~/.vim/bundle/YouCompleteMe ./install.py --clang-completer 有的插件对VIM有版本要求，版本号不能太低了。我是用的macOS，安装了最近的8.0版本，绝大部分插件都能正常工作
+关于各个插件的详细使用说明和配置说明的话，可以参考vimrc.bundles里面的各个github链接，看他们的readme，或者直接看他们源代码，代码都存在~/.vim/bundle里面了
+我把我的这两个配置文件也贴在这里好了</description></item><item><title>vim中文手册 vimtutor中文版</title><link>https://yyq.github.io/posts/2017/2017-02-22-vimtutor-chinese-summary/</link><pubDate>Wed, 22 Feb 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-02-22-vimtutor-chinese-summary/</guid><description>最近在学习VIM的使用，在命令行里输入vimtutor可以打开基本教程，然后跟着练习一个一个做下来，也算是入门了。不过因为没有时刻都在用，所有有时候有的命令就忘记了。于是把教程中的每一课的summary都翻译成中文，保存下来，供以后查阅。
+第一课 摘要 1. 光标移动使用箭头或者hjkl四个字母 h (左) j (下) k (上) l (右) 2. 从shell开始启动vim的命令是：vim 文件名 &amp;lt;ENTER&amp;gt; 3. 退出VIM: 放弃所有更改退出： &amp;lt;ESC&amp;gt; :q! &amp;lt;ENTER&amp;gt; . 保存更改退出： &amp;lt;ESC&amp;gt; :wq &amp;lt;ENTER&amp;gt; . 4. 删除光标处的字符: x 5. 插入字符： 在光标之前插入字符： i 在行尾添加字符： A 注意：按&amp;lt;ESC&amp;gt;键可以让你回到正常模式或者取消你未完成的命令 第二课 摘要 1. 删除字符，从光标开始直到遇到下一个单词 dw 2. 删除字符，从光标开始直到当前行的末尾 d$ 3. 删除一整行 dd 4. 重复一个动作，可以在动作之前加一个数字： 2w 5. 一些操作的格式是： 操作符 [数字] 移动 操作符：要做什么，例如字母d是用于删除 数字： 你要重复的次数 移动： 你的操作要作用在多少文本内容上，例如w就是一个单词，$是到行尾 6. 把光标移动到行首： 0 7. 撤销之前的动作： u (小写u) 撤销这一行的所有改动： U （大写U） 撤销刚才的”撤销“： CTRL-R 第三课 摘要 1.</description></item><item><title>Go get your tennis ball</title><link>https://yyq.github.io/posts/2017/2017-02-18-dropbox-cto-mit-speaking/</link><pubDate>Sat, 18 Feb 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-02-18-dropbox-cto-mit-speaking/</guid><description>Dropbox创始人在2013年的MIT毕业典礼的演讲 youtube video:
+看完之后，我的一句话评论：Go get your tennis ball.
+大意这么理解：有很多遛狗的人可能都这么玩，用网球遛，当你抓着球做出准备丢的动作的时候，你家狗的双眼会目不转睛的盯着球，然后当你一扔，狗会以最快的速度冲过去追逐那个球，咬着球回来把球交给你，等着你扔下一轮。
+之前去美国出差在Jay的家里玩他的Thomas（他的狗的昵称），他就是这么遛狗的，只是觉得很有趣。
+演讲中的这个部分说到的是工作，有的人毕业了拿着高薪，工作之余还是会抱怨工作如何如何不开心。追求自己想要的工作，应该就像狗去追那个网球一样，全神贯注，全心全意，就算你的网球被无数次抛向不同的地方，不管有多远，你每一次去追寻他的热情都一样。这才是你最真实的追求。想到了另外一个名言: follow your heart
+终究有一天，我也会追求到一份这样的工作。
+从wanqu.co这个网站上看到的这个视频，觉得很励志，看了之后自己也有感而发，遂写下此文。下面引用该网站的几句评论：
+人这一辈子只有3万天；人生不需要完美，人生需要冒险；你这个人是与你常在一起的5个人的平均；24岁时第一次融资，刷新自己银行网站见识到从$60变成$120万，从没逗号变俩逗号。
+&amp;ldquo;&amp;hellip; you&amp;rsquo;re the average of the 5 people you spend the most time with. Think about that for a minute: who would be in your circle of 5?&amp;rdquo; 你可以找机会多跟牛人在一起，或者。。。找机会少跟烂人在一起：）
+在学校你可以追求完美的 GPA，毕业后，人生不可能完美。可以不断尝试，失败许多次，但你只要能成功一次就够了。&amp;ldquo;From now on, failure doesn&amp;rsquo;t matter: you only have to be right once.&amp;rdquo;</description></item><item><title>python scrapy爬虫练手</title><link>https://yyq.github.io/posts/2017/2017-02-16-python-crawler-practice/</link><pubDate>Thu, 16 Feb 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-02-16-python-crawler-practice/</guid><description>简介 初步了解和实践了一下用python写个爬虫，有现成的库，学起来的方便。
+用的爬虫框架是：scrapy 官网链接
+参考的网页是：Segmentfault.com的这篇文章
+我的代码存放在：GitHub link
+新增加的技能点 基本了解scrapy的用法，爬虫的最基本的思路 python 3的语法里，print是一定要有括号的 xpath基础知识掌握和应用，简单的抓取用xpath基本够了，不过以后要来高精专的字符提取，还是得精通正则 python yield关键字的了解，它通常会出现在某个generator函数里，当这个generator函数执行的时候，遇到yield表达式，就会执行这个表达式，并且将其结果当做返回值return yield在某种情况下非常有用：有很多很多的条目，只需要读取一次。可以避免生成超大的数组。当你有很多大量的元素需要访问一次的时候，全部（或者部分）直接存到内存里都不是高效的做法，高效的做法是一次只载入内存一个，用完了之后就等待，当需要访问下一个元素的时候，才启动这个函数，去处理下一个元素。 scrapy工程需要注意一下，project名称和爬虫名称别用同一个单词，不然有些文件里需要引用其他文件夹的class的时候，会出错</description></item><item><title>《SQL注入攻击与防御》之攻击</title><link>https://yyq.github.io/posts/2017/2017-02-11-sql-injection-attacks-defense/</link><pubDate>Sat, 11 Feb 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-02-11-sql-injection-attacks-defense/</guid><description>重点看了攻击方面的内容，防御没怎么看，我觉得在攻击方面的知识没有消化理解的话，可能防御类的知识也会比较糊涂，决定过一段时间，自己实践过sql攻击之后，有了一些理解，再来学习防御，会有收获。
+计划：去ichunqiu学习学习sqlmap的使用，之前简单学习过，这次得找个站练练手，至少成功实践一次
+什么是SQL注入 理解web应用的工作原理 Web应用是一种使用Web浏览器并通过Internet或内部网络访问的程序。它同时还是一种使用浏览器所支持语言（HTML,JavaScript,Java）编写的计算机软件程序，借助不同的web浏览器来呈现应用程序的可执行文件 基本的数据库驱动的动态web应用通常包含一个后台数据库和很多包含服务器端脚本的web页面，这些脚本则是由可从数据库（数据库的选择依不同的交互而定）中提取特定信息的编程语言编写而成的 基本的数据库驱动的动态web应用通常包含三层：表示层（Web浏览器或呈现引擎）、逻辑层（c#,ASP,.Net,PHP,JSP等）和存储层（例如SQL Server,MySQL,Oracle等数据库）。Web浏览器向中间层（逻辑层）发送请求，中间层通过查询，更新数据库（存储层）来响应该请求。 理解SQL注入 SQL注入是一种将SQL代码插入或添加到应用（用户）的输入参数中，之后再将这些参数传递后台的SQL服务器加以解析并执行的攻击 SQL注入的主要方式是直接将代码插入到参数中，这些参数会被值入SQL命令中加以执行 攻击者能够修改SQL语句时，该进程将与执行命令的组件（数据库服务器，应用服务器或者web服务器）拥有相同的权限，该权限通常级别很高 理解SQL注入的产生过程 如果web应用开发人员无法确保在将从web表单，cookie，输入参数等收到的值传递给SQL查询（该查询在数据库服务器上执行）之前已经对其进行过验证，通常就会出现SQL注入漏洞 如果攻击者能够控制发送给SQL查询的输入，并且能操纵该输入将其解析为代码而非数据，那么攻击者就可能有能力在后台数据库上执行该代码 如果应用开发人员无法彻底理解与他们交互的基础数据库或者无法完全理解并意识到所开发代码潜在的安全问题，那么他们编写的应用通常是不安全的，并且容易受到sql注入攻击 SQL注入测试 寻找sql注入 寻找sql注入漏洞存在三个关键点 识别web应用接收的数据输入 修改输入值以包含危险的字符串 检测服务器返回的异常 使用web代理角色扮演工具有助于绕过客户端限制，完全控制发送给服务器的请求，此外，它们还能提高服务器响应的可见度，提供更多检测到细小漏洞的机会 包含数据库错误或http错误代码的服务器响应通常能降低识别sql注入漏洞的难度，不过，sql盲注是一种即使应用不返回明显错误也能利用漏洞的技术 确认sql注入 想要确认一个sql注入漏洞并进一步加以利用，需要构造一条能注入sql代码的请求以便应用程序创建一条语法正确的sql语句，之后由数据库服务器执行该语句且不返回任何错误 创建语法正确的语句时，可以通过注入注释终止该语句，并注释掉剩余的查询。对于这种情况，通常可以毫无约束的连接任意sql代码（假设后台数据库支持执行多条语句），进而提供执行攻击的能力 有时，应用程序对注入操作没有回复任何可见的信息，这时可以通过向来自数据库的回复引入延迟来确认注入，应用服务器将等待数据库回复，我们则可以确认是否存在漏洞，对于这种情况，需要意识到网络和服务器工作负荷可能会对延迟造成轻微干扰 自动发现sql注入 寻找sql注入漏洞所涉及的操作可以被适度自动化。当需要测试大型的web站点时，自动技术非常有用，但需要意识到自动发现工具可能无法识别某些存在的漏洞，不能完全依赖自动化的工具 有多款商业工具可以对web站点的完整安全性进行评估，还可以进行sql注入漏洞测试 利用sql注入 理解常见的漏洞利用技术 select语句中经常出现sql注入漏洞，但不会修改数据。sql注入还会出现在修改数据的语句（insert，update，delete）中，虽然可使用相同的技术，但此时应仔细思考技术对数据库有可能会产生的影响，而对于select语句，则应尽可能使用sql注入，如果不能利用select语句，在攻击期间还可以使用其他的一些技术以减少修改所带来的危害程度 在本地安装一个与用于测试注入语法的数据库完全相同的数据库会非常有用 如果后台数据库和应用架构支持多条语句相连，那么利用漏洞会变得相当容易 识别数据库 在一个成功的攻击中，第一步始终会包含远程数据库的精确跟踪 最直接的方法是强迫远程应用返回一条能揭示数据库服务器技术的消息（通常是一条错误消息） 如果那样做不行，可注入一条只能工作在特定数据库服务器上的查询 使用UINON语句提取数据 要想成功的向现有查询添加数据，就必须保证他们的列数和数据类型均匹配 所有数据类型均接受NULL值，GROUP BY是寻找要注入的准确列数的最快方法 如果远程web应用只返回第一行，那么可通过添加一个永假条件来移除原来的行，然后一次一行的提取想要的行 使用条件语句 使用条件语句，攻击者的每次请求可以提取一个数据位 根据所提取值得不同，可以选择引入延迟，产生错误或强迫应用程序返回一个不同的HTML页面 每种技术都有最适合使用的场景。给予延迟的技术速度虽慢但非常灵活，基于内容的技术相比于错误的技术则会留下更少的痕迹 枚举数据库模式 遵循一种分级的方法，首先枚举数据库，然后是每个数据库的表，之后是每个表的列，最后是每一列的数据 如果远程数据库很大，就不需要提取整个数据库，快速浏览一下表名通常就足以确定想要的数据的位置 注入INSERT查询 如果要在INSERT、UPDATE或者DELETE查询中利用SQL注入漏洞，就必须小心处理，以避免出现垃圾数据填充数据库或者大量修改or删除数据等副作用 安全注入的办法包括：修改INSERTorUPDATE查询以更新一个可以在应用程序的其他地方看到的值；或者修改INSERT、UPDATE、DELETE查询使之在整体上执行失败，但可以返回数据或在结果上产生明显差别，比如时间上的延迟或不同的错误消息。 提升权限 所有主流数据库服务器一直以来都深受权限提升漏洞之苦。我们正在攻击的数据库服务器很可能未升级至最新的安全更新程序 对于其他情况，可以尝试暴力破解管理员账户，例如在SQL Server上使用OPENROWSET 窃取哈希口令 如果拥有管理员权限，请不要错过获取哈希口令的机会。人们都倾向于重用口令，这些哈希可能成为进入整个“新世界”的钥匙 带外通信 如果无法使用前面的方法提取数据，可尝试建立一种完全不同的通道 可能的选项包括email(SMTP)、HTTP、DNS、文件系统或针对特定数据库的连接 移动设备上的sql注入 很多移动设备和嵌入式设备使用本地SQL数据库来存储或缓存信息 虽然在访问方式上存在差异，但在适当的条件下，这些移动应用程序也存在可利用的SQL注入漏洞，就像任何Web应用程序一样 自动利用sql注入 本章分析的大多数攻击都需要发送大量请求以达到目的 幸运的是，有几种工具可以辅助实现自动攻击 这些工具提供了很多不同的攻击模式和选项，从远程数据库服务器跟踪到提取它所包含的数据</description></item><item><title>读完《乔布斯传》《Google未来之境》之后的思考</title><link>https://yyq.github.io/posts/2017/2017-02-07-reading/</link><pubDate>Tue, 07 Feb 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-02-07-reading/</guid><description>一句话总结 About Steve Jobs 做人做事，不为钱，只惟心 高度专注，有所失，为极致
+About Google It&amp;rsquo;s meaningless if not 10x times faster
+对一句话总结的注释如下 看完乔布斯传，被其个人魅力所折服，又去下载了2007年2008年的发布会视频，瞻仰了他的具有魔力的演讲。
+此人职场的简历十分辉煌，我最敬佩的一点是他的固执，当自己决定了目标和想法之后，就一意孤行放心大胆的去做到底，即使大哭大闹（小时候），即使苦口婆心的去说服，即使暴躁的对待周围的同事，再加上一些强迫症的对艺术的理解，最终完成的产品总是能具有艺术的科技。不过同样因为自己对事业完美追求的固执，也让自己的身体遭了罪，即使在身体不健康的情况下，还是不注意身体健康，对治疗方案也采取最最保守的方式，于是去世了。
+Lessons Learned: I want to say something to myself, hey boy, stay focus and keep doing on it, you&amp;rsquo;ll be what you want to be.
+看完google未来之境这本书之后，深深的感受到，那样的软件公司，之所以强大，不是没有原因的。我很欣赏他们公司的一些思想和理念。最欣赏的一个观点是：你现在做的工作内容，能否比之前的快10倍？100倍？我们可以想象的到，如果长期在这样的指导下去完成一些软件开发类的工作，很容易让大家头脑风暴，或者激发大家的突破性的想法，打破现有的条条框框，再加上一些硅谷固有的fast fail fast try，done is better than perfect之类的思想，出现颠覆式创新的软件作品（甚至硬件作品）比其他一般公司要容易的多。
+推及到自己工作中的感受，我负责维护和改进test infrastructure，已经好些年没有重构过，即使满眼看去都是长得像java的ruby代码。每执行一个完整的end2end测试（由于产品的复杂性）需要至少一个小时，还有不少两个小时以上的测试。而我工作的日常里，堆满了各种各样的小的改进意见和改进需求，我想了想，就算你持续的完成这些不断蹦出来的小改进而从来没有跳出条条框框重新设计的话，又怎样，迟早会被计算机软件行业所淘汰，有的行业确实是需要持续的小改进积累多少年才能成功，可是计算机软件行业，从来都是颠覆式的创新，后浪推前浪，前浪死在沙滩上。贵司test infrastructure一切都太陈旧了，需要来一次革命性的重构，不对，不需要重构了，应该直接重新写一个，用最新的软件设计方法和软件框架。
+现状：贵司的那些端到端测试，从代码覆盖率和测试逻辑覆盖率来看，有太多太多的冗余了。举个简单的例子，测试A需要运行一个小时，某个根据产品新功能的新添加的测试B也需要运行一个小时。而A和B的一个小时中，有55分钟都在走着同样的逻辑，测试着一模一样的代码。当有几十个这样规模的端到端测试的时候，可以想象有多少机器时间都是在白白浪费。而现在的测试框架，适应着这样大量的端到端测试，每当要增删改查一些自动化功能，一不小心都会伤筋痛骨，因为代码实在太陈旧了，无法方便的解耦，如果哪一天有了新的测试类型，也将难以适应。
+我认为，一个健康的测试系统里，复杂的端到端测试数量应该比较少，虽然它们执行时间长，但是需要保证核心流程核心功能不会失败，有一定数量的中等复杂度的测试（例如subsystem test），然后应该有大量的复杂度很低执行速度很快的小型测试（单元测试也可算是一种）。在这样的测试用例分布下，才会更加容易让这些测试发挥价值，定位错误，尽早发现小错误，更新容易根据产品新功能添加新测试，去掉老旧测试的时候也更加得心应手。只有在这样的测试系统框架下，才可以做到比现有的测试框架高效10倍100倍。
+看到此处肯定会有人问了，你有这个想法，你有没有去执行和实施呢。呵呵，大概是我的口才不太行无法说服别人，亦或别人思想较固执难以说服。</description></item><item><title>又一次参加hackathon活动</title><link>https://yyq.github.io/posts/2017/2017-02-06-anotherhackathon/</link><pubDate>Mon, 06 Feb 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-02-06-anotherhackathon/</guid><description>又一次参加了hackathon活动,是贵司内部组织的.
+我们队的作品是一个网站，收集了公司的github上最近几个月提交的代码的数据，然后分析大家的编码行为习惯，然后展示在我们的网站上。所谓代码行为习惯，例如变量名称命名的大写小写啦，常量名称全部大写啦，tab和空格啦，操作符前后是否有空格啦等等。我们收集了5中公司里比较主流的编程语言的信息，大概每个语言5个6个编程行为的分析。通俗的说应该是代码风格吧，这东西说重要呢，也不是特别重要，毕竟这个主观的规范见仁见智。说不重要呢，很多大公司都有自己的一套style，例如google。其实，贵司自己也有一个MicroStrategy c++ style guide文档。当拿着公司编码规范文档和我们实际收集来的数据进行分析比较的时候，还是很有趣的。
+比赛结束的时候，我go through了一遍参赛作品，一共23个队伍，绝大部分都是直接和公司产品有关的。我想，我们组的作品的idea在这些作品里算是有创意的了，是对工程师文化的一个方面的诠释，也可以给大家带来思考。很多组的作品仅仅是基于现有产品加了个创意不大的新功能，说创意不大是因为他们的作品或多或少可以看到之前hq比赛作品的影子，亦或互联网上其他产品的影子。所以，我目测我们作品进前10名应该问题不大吧。
+比赛结果出来了，中奖率13/23，并且没有我们组。呵呵了我就，看了一遍那些得奖的作品列表，大都还是公司产品直接相关的. In my opinion, in those 13, only few are cool, others are shit. Sorry I&amp;rsquo;m too rush. Those are not that shit, but definitely NOT creative enough. But this is a hackathon! Right?
+可能我理解错了公司举办hackathon的目的，或许高层领导就是要为了寻找一些新的产品的思路，寻找一些漂亮的可以展示给客户看的产品的卖点。所有的获奖作品列表里，只有一两个是和技术核心的创新。
+这也让我想到了贵司的悲哀，新的产品，怎么说来着，将“科技以换壳为本”体现的淋漓尽致。有着这样基因的，一家软件公司，没有持续的去拓展和强化自己的核心技术优势壁垒，花了不少人才和精力在无用的地方，长期来看我不看好。迟早有一天会被某些互联网创业公司革命。</description></item><item><title>AttackAPI安装教程</title><link>https://yyq.github.io/posts/2017/2017-01-05-attackapi-study-0-copy/</link><pubDate>Thu, 05 Jan 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-01-05-attackapi-study-0-copy/</guid><description>本文用来描述部署AttackAPI环境，网上搜了一些教程和内容，有的描述太简单，有的描述已过时，总有这样那样的问题，自己又是一个小白前端，摸索了好一会儿才搞明白，于是记录此文。
+0x00 AttackAPI简介 AttackAPI是一个基于Web的攻击构造库，开源项目，作者此软件的官网在http://www.gnucitizen.org/blog/attackapi/.
+曾经的源代码放在google code上，不过后来此网站关门了，有很多人将此工程收藏在github上了，在github上搜索attackapi可以得到源代码。
+0x01 配置 为了防止以后代码失传，我fork了一份到我自己账户下，https://github.com/yyq/attackapi.
+下载好代码后，看了看目录，只有一个Tags目录，目测是一个典型的SVN结构，需要自己整理一下文件切换到对应版本号.
+看到build.xml文件，知道此工程需要ant一下
+发现可以ant命令没有错误的最高版本号是2.5.0a
+web服务器，为了省事，用windows环境，下载了https://www.appserv.org/en/按照默认选项一路安装完成，启动apache服务，把attackapi文件夹copy到C:\AppServ\www目录下
+0x02 hell0world 用火狐浏览器打开http://localhost/attackapi/build/tests/firetest-interactive.htm, 然后在firebug的控制台里，输入命令dir(AttackAPI),可以看到如下的信息则证明基本配置成功了： 0x03 踩过的坑 找到正确的代码格式，了解svn apache启动失败，端口被其他程序占用 AppServ的运行会需要各个版本的vc11,vc140,vc10等等.dll文件的支持，好在它都会自动安装 ant编译步骤不能少，不然文件结构不正确，导致htm中一些js文件引用失败 下一个步骤是了解和使用attackapi了，敬请期待下一篇日志吧。
+0x04 两天后的更新： 囧了，按照书上试了半天，attackapi里有些函数已经不顶用了，看了看源代码才知道有的方式过时了。例如访问历史浏览过的网页scanHistory这个功能，attackapi里用的方法是利用a:visited加网址，然后根据display属性来判断，这一招几年前应该还管用。
+近年随着大家对web安全防范的意识越来越高，过去的很多方法都失效，得用新的方法来搞定。</description></item><item><title>XSS跨站脚本攻击剖析与防御-读书笔记</title><link>https://yyq.github.io/posts/2017/2017-01-03-xss-study-0/</link><pubDate>Tue, 03 Jan 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-01-03-xss-study-0/</guid><description>初次了解cross-site scripting, 阅读完第一章第二章，感觉需要精读和理解的知识点不少，先摘抄下来，以供之后查阅。
+什么是xss跨站脚本？ 计算机安全漏洞，web应用程序中的，是由于web应用程序对用户的输入过滤不足而产生的
+xss的分类 反射型：主要用于将恶意脚本附加到URL地址的参数中。特点是用户点击时触发，而且只执行一次，非持久化，所以称为反射型。常出现在搜索栏，用户登入口，常用来窃取客户端Cookies或进行钓鱼欺骗
+持久型：攻击者实现将恶意javascript代码上传或者存储在漏洞服务器中，只要受害者浏览包含此恶意代码的页面，就会被执行。一般出现在网站的留言，评论，博客日志等交互处。
+发掘 用&amp;lt;textarea&amp;gt;来闭合前后的对应的标记，中间写&amp;lt;script&amp;gt;代码，是一个典型的持久型XSS，并且在管理员查看留言时才出发，攻击的对象是后台管理员。
+程序没有过滤任何有害字符，从而导致一个持久型xss的产生
+xss的构造剖析 利用&amp;lt; &amp;gt;标记注射html/javascript, &amp;lt;script&amp;gt;alert('XSS');&amp;lt;/script&amp;gt; 防御：过滤&amp;lt; &amp;gt;和&amp;lt;script&amp;gt;字样 利用HTML标签属性值执行XSS &amp;lt;table background=&amp;quot;javascript:alert(/xss/)&amp;quot;&amp;gt;&amp;lt;/table&amp;gt; &amp;lt;img src=&amp;quot;javascript:alert('xss');&amp;quot; 防御：过滤&amp;lt;javascript&amp;gt;等关键字 空格回车Tab，一类的键位符 原因比较复杂，JavaScript语句通常以分号结尾，如果javascript引擎确定一个语句是完整的，而这一行的结尾有换行符，那么可以省略分号。有时候，引擎没有把换行符解释为语句的终止符，js会继续处理发现内容，直到遇到分号或者完整语句. 拆分关键字的技巧成功执行了跨站脚本代码 &amp;lt;img src=&amp;quot;javas cript: alert(/xss/)&amp;quot; witdth=100&amp;gt; 对标签属性值的转码
+t的ASCII码值是116，可以用&amp;amp;#116来表示，冒号可以用&amp;amp;#58来表示，javascript:alert('xss');转码后可以是javascrip&amp;amp;#116&amp;amp;#58alert(/xss/)
+防范利用HTML标签属性值编码的XSS,最好也过滤&amp;amp;#\等字符
+产生自己的事件
+测试事件型的跨站脚本，还有大量的事件可以运用：
+&amp;lt;input type=&amp;ldquo;button&amp;rdquo; value=&amp;ldquo;click me&amp;rdquo; onclick=&amp;ldquo;alert(&amp;lsquo;click me&amp;rsquo;)&amp;rdquo; onResume onReverse onRowDelete onSeek &amp;hellip; ```
+利用CSS跨站解析
+CSS中的expression执行js代码；HTML标签的style属性执行js代码，如下两个例子
+&amp;lt;dev style=&amp;quot;width: expression(alert('xss'));&amp;quot;&amp;gt;</description></item><item><title>基于ARP协议的攻防</title><link>https://yyq.github.io/posts/2016/2016-12-27-arp-attack-defence/</link><pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2016/2016-12-27-arp-attack-defence/</guid><description>研究了一下ARP攻击和防御，给感兴趣的同学分享一下知识</description></item><item><title>玩魔方</title><link>https://yyq.github.io/posts/2016/2016-12-27-rubikcube/</link><pubDate>Tue, 27 Dec 2016 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2016/2016-12-27-rubikcube/</guid><description>因为自己平常玩魔方嘛，给同事介绍介绍，分享一下</description></item><item><title>JavaScript DOM 编程艺术 读书笔记</title><link>https://yyq.github.io/posts/2016/2016-12-24-javascript-dom/</link><pubDate>Sat, 24 Dec 2016 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2016/2016-12-24-javascript-dom/</guid><description>读后感 第一次认真看完前端的书籍，理解到了网页上的“MVC”，即：结构，样式，行为。
+Model 模型，在此处即结构，DOM树，网页的核心内容，一个网页，可以没有行为，也可以没有样式，但是一定得有结构；在html结构中，可以指定样式，也可以嵌入行为。
+View 样式，网页的外观等，大多用CSS来实现；
+Controller 行为，最灵活的一个部分，让网页上的一切“动”起来的灵魂，大多用JavaScript来实现。在JavaScript中，可以修改结构，也可以修改样式。
+写网站的时候，一定要注意的一点就是：平稳退化。
+摘抄笔记 这本书的重点是JavaScript，笔记中如果没有特别描述，都是在讲JavaScript.
+全局变量，可以在脚本的任何位置被引用。 var关键字可以明确的为函数变量设定作用域。如果在某个函数中使用了var，那么变量就将被视为一个局部变量，反之，如果没有使用var，那个变量就将被视为一个全局变量。 在定义一个函数时，我们一定要把它内部的变量全部明确地声明为局部变量。总是使用var关键字，就能避免任何形式的二义性隐患 DOM===Document Object Model JavaScript里的对象可以分为三种类型。 用户定义对象：程序员自己创建的。 内建对象：内建在JavaScript语言里的对象，Array,Math,Date等 宿主对象：由浏览器提供的对象。例如：window DOM的原子是元素节点 元素节点的nodeType === 1 属性节点的nodeType === 2 文本节点的nodeType === 3 &amp;lt;p&amp;gt; id=&amp;#39;x&amp;#39;&amp;gt;Hello Motor!&amp;lt;/p&amp;gt; 包含在p元素里的文本是另一种节点，他是p元素的第一个子节点。文本的内容可以用alert(x.childNodes[0].nodeValue);显示出来 如果使用JavaScript，就要确认，这么做会对用户的浏览体验产生怎样的影响，还有个更重要的问题，如果用户的浏览器不支持JavaScript该怎么办？所谓的平稳退化，就是虽然某些功能无法使用，但是最基本的操作仍能顺利完成 接上一条，把链接类节点里，href属性设置为真实存在的URL地址后，即使JavaScript被禁用，这个链接也是可用的，这是一个经典的平稳退化的例子 if(!document.getElementsByTagName) return false,具有良好的向后兼容性。 出于可读性的考虑，把return false的语句尽量全部集中到函数的开头部分。 共享onload事件 function addLoadEvent(func){ var oldonload = window.onload; if (typeof window.onload != &amp;#39;function&amp;#39;){ window.onload =func; }else{ window.onload = function(){ oldonload(); func(); } } } 千万不要忘记并非所有的用户都使用鼠标。比如视力残疾的用户往往无法看清屏幕，更喜欢使用键盘 结构与行为的分离程度，越大越好 JavaScript通过创建新元素和修改现有元素来改变网页结构 把结构，行为和样式分开永远都是一个好主意，避免在&amp;lt;body&amp;gt;部分乱用&amp;lt;script&amp;gt;标签，避免使用document.</description></item><item><title>I'm back</title><link>https://yyq.github.io/posts/2016/2016-08-22-i-m-back/</link><pubDate>Mon, 22 Aug 2016 15:02:55 +0000</pubDate><guid>https://yyq.github.io/posts/2016/2016-08-22-i-m-back/</guid><description>许久没更新博客了，装修房子这事儿实在是太忙了，比上班还累，劳神劳心费时间。不多废话，Let&amp;rsquo;s see the checkpoint and milestones：
+生活 新房，装修 工作 L1签证办好了，可以出差美帝了，可以有本事带老婆出国生小孩了。读小学时候总是有听说那些移民美国的中国人，读大学了还羡慕那些去美国读书在美国上班的别人家的孩子。Right now，我这也算是具备申请绿卡的第一步条件了，却没有了太多的想法，杭州的工作生活也挺好的，最重要的是家人都还在中国呢 业余 给三个github上的repo贡献了代码，一个10000多星的(fastlane)，一个1000多星的(berkshelf)，还有一个10星的(chef-osx/xcode，不是为了贡献代码而贡献，工作中有用到这几个ruby的库，遇到有错或者不合理的地方，顺手就改了，贡献社区这种感觉蛮爽的，利人利己 自己写了个flickrBackup来把自己所有保存在flickr上的照片原图下载来，主要是因为flickr相关官方政策改了，要收钱，然而我的15000多张的照片，手动点原图下载是不可能的，还好flickr有api文档，不然要哭晕在厕所 自己写了个ServerSelector来自动连接VPN服务器，花钱买的vpn服务，服务器世界各地有一票，连哪个最快，写了个程序自动查，查好了哪个最快然后自动连接。以后不用像中奖一样随机选服务器了，有程序一键搞定，也算是懒人有懒人的福气，DevOps Engineer总是想着automation everything</description></item><item><title>新琴首秀之《梦中的婚礼》MARIAGE D'AMOUR</title><link>https://yyq.github.io/posts/2016/2016-06-11-mariage-damour/</link><pubDate>Sat, 11 Jun 2016 21:31:02 +0000</pubDate><guid>https://yyq.github.io/posts/2016/2016-06-11-mariage-damour/</guid><description/></item><item><title>在乌云提交一个漏洞成功并注册成为白帽子</title><link>https://yyq.github.io/posts/2015/2015-07-26-commit-a-bug-to-wooyun/</link><pubDate>Sun, 26 Jul 2015 22:45:55 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-07-26-commit-a-bug-to-wooyun/</guid><description>厂商确认了，并且给评价等级为中，给了rank10。
+从去年我想开始注册乌云帐号开始，终于自己有能力提交一个简单的漏洞了，YES！</description></item><item><title>参加ArchSummit2015有感</title><link>https://yyq.github.io/posts/2015/2015-07-19-archsummit2015/</link><pubDate>Sun, 19 Jul 2015 22:37:52 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-07-19-archsummit2015/</guid><description>作为一个才上班一年多的新人，可以和公司的高级领导，architect，principalSE一起参加架构师峰会，深感荣幸，感谢一下我司MSTR出的门票钱和我的leader对我的信任。
+简介 为期两天的会终于结束了，内容非常丰富，很多很多有价值的分享，听都听不过来，时间上略紧，两天结束了，人也有些疲劳。
+这次代表公司来参加这个会议，我最大的收获就是这个词：微服务
+微服务 微服务这个概念：AWS，JavaChampion，青云，七牛等等都重点提到了若干次。并且很多创业公司都在使用docker（或者其他虚拟化，资源隔离）来做自己的微服务，土豪公司都花钱从aws买各种微服务。
+请自行google各种微服务的概念以及实践，我就不赘述了。
+个人观点1：把服务（或者产品）很好的解耦合，做成很多个拥有独立功能集合的微服务（或者模块），将会很有利于将来各种扩展和复用，具体到DevOps这方面的话，微服务可以做到更好的持续集成和敏捷开发。
+个人观点2：微服务是方法，而不是目的。不要为了使用微服务而去「微」。解耦一个产品或者服务，需要有较好的架构观念，如果解耦好了，微服务会非常有利于将来的发展，如果解耦出的架构有缺陷或者某个东西本身就很不适合解耦，那么微服务也会给开发运维带来灾难。
+PS. The two-piaaz team这个概念也在好几个session被提到，我理解下来的意思就是，什么样大小的团队开发一个微服务比较合适呢？当该团队吃两个12寸的pizza能吃饱的时候。In the US, eight people is perfect for a microservice team. 美国人挺能吃的哈。
+其他印象深刻的session 360的开源：360的工程师那个讲开源的session给我留下了深刻的印象。主要分享的不是开源的概念，分享的是他们团队怎么做的，他们自己实践的方式，very impressive to me.</description></item><item><title>iOS逆向工程学习日记3--实践</title><link>https://yyq.github.io/posts/2015/2015-07-11-ios-security-learn-3/</link><pubDate>Sat, 11 Jul 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-07-11-ios-security-learn-3/</guid><description>Results： 学会了使用反汇编工具hopper，找了一些个程序，试了试，有的二进制文件还是比较容易分析的，有的比较难，我暂时还不会。我搞定的成果如下：
+Mac OS X，迅雷，VIP离线下载权限
+Mac OS X，iExplorer，免注册
+iOS，搜狐视频，跳过所有广告，解除美剧下载限制
+update:
+iOS PPTV，乐视视频，可以观看VIP影片
+ Key： 改掉几个函数的返回值就好了，类似isRegister这个函数或者isVIP这样的函数，看看逻辑，分析分析代码流程，再把关键位置的汇编代码改掉，即可。
+x86汇编指令，mov eax, 0x1，把数字1放到eax寄存器，通常函数的返回值存在eax中，然后用ret指令
+arm汇编指令，movs r0, #0x1，寄存器用r0
+ Thinking： 想要改变一个iOS软件的行为，可以从三个层次去着手：
+改掉汇编代码，重新生成新的可执行文件，替换
+hook一些函数，例如Theos的常用手法
+拦截并且修改网络请求
+ </description></item><item><title>iOS逆向-学习日记2-Mac OS X上的工具</title><link>https://yyq.github.io/posts/2015/2015-07-07-ios-security-learn-2/</link><pubDate>Tue, 07 Jul 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-07-07-ios-security-learn-2/</guid><description>&lt;p>这一次，主要是按照别人的教程，把Mac上逆向工程有关的工具挨个试了个遍。先说几个重点的：Charles，Reveal，TheOS，IDA，Hopper。其中Charles，Reveal，IDA和Hopper都是收费的，且都有demo版本可以下载适用，TheOS是免费。&lt;/p>
+&lt;h2 id="简介四个收费工具">简介四个收费工具&lt;/h2>
+&lt;p>Charles用于分析网络流量，模拟器，mac os x，device都可以搞定各种get post connect，header cookie分门别类一目了然。价格不贵。&lt;/p>
+&lt;p>Reveal主攻iOS UI，模拟器和device都行，对于越狱的设备可在cydia里装个插件，然后查看并且临时修改UI，利器。&lt;/p>
+&lt;p>IDA和Hopper，算作一类了，主要功能是二进制文件到汇编代码，和进一步的汇编代码到C语言代码。我亲自使用过后，着实感觉到工具的强大，十分的强大。再加上工具里各种代码块和控制流的显示，就算我只是一个逆向工程的外行，也知道这样的信息会带来多么恐怖的分析成果。IDA是各个平台的产品都有，价格上千美刀了。Hopper是只有Mac平台上的，价格几百块的样子。据学习过逆向工程的同事说，IDA还是很强大很流行的。&lt;/p>
+&lt;p>这四个工具的使用难度，Charles比较简单，Reveal略复杂一点。反汇编工具就超级复杂了。不过都有UI，自己可以一个个试着玩玩。&lt;/p>
+&lt;h2 id="详细介绍theos越狱开发工具">详细介绍Theos越狱开发工具&lt;/h2>
+&lt;p>接下来说说花了我很多时间用来实践的Theos吧。一个跨平台的development kit，用于开发编译iOS软件的，without Xcode。越狱后的iOS所用的插件，Cydia上的那些工具，大都基于Theos开发的。&lt;/p></description></item><item><title>Python爬糗百热门20条并邮件分发+wxPython简易GUI+py2app转成可执行文件</title><link>https://yyq.github.io/posts/2015/2015-06-24-python_spider/</link><pubDate>Wed, 24 Jun 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-06-24-python_spider/</guid><description>&lt;p>学了一阵子Python，拿来做个什么有意思的东西呢？爬糗百好了，爬到的内容，邮件分发出去。&lt;/p>
+&lt;p>然后又啃了两天的wxpython，做了个简易的邮件管理界面，可以在这里增加或者删除邮件，并且一键爬虫发送。&lt;/p>
+&lt;p>最后，索性封装成APP吧，又试了一把py2app，简单好用。&lt;/p>
+&lt;p>由于是让用户自行添加和删除邮箱，所以程序一定要兼顾到各种情况：比如输入的邮箱格式不合法，输入的邮箱里包含中文字符，分隔符不对，删除了全部邮箱然后又要发邮件等问题。&lt;/p></description></item><item><title>Python @property装饰器</title><link>https://yyq.github.io/posts/2015/2015-06-14-python-property/</link><pubDate>Sun, 14 Jun 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-06-14-python-property/</guid><description>廖老师的博客链接如下，一开始没看懂，搜罗了一大堆，有点感觉了
+点击打开链接其实@property装饰器就是把class的方法变成属性，见下面这个class，它有两个私有属性。
+通过第一个@property和第二个@score.setter，我们可以像访问属性一样来调用类里面的方法，例如：
+s=Student(“David”,99)
+s.score = 100
+至于用这种装饰器的原因，我想，就是为了简洁吧，直接用属性赋值的方式，执行了方法。Python 肯定是个懒人发明的。
+ </description></item><item><title>Python装饰器有趣实例探究</title><link>https://yyq.github.io/posts/2015/2015-06-05-python-decorator-research/</link><pubDate>Fri, 05 Jun 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-06-05-python-decorator-research/</guid><description>&lt;p>廖老师的教程实在太高深，没弄懂，&lt;!-- raw HTML omitted -->点击打开链接&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">deco_functionNeedDoc&lt;/span>(func):
+&lt;span style="color:#66d9ef">if&lt;/span> func&lt;span style="color:#f92672">.&lt;/span>__doc__ &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span> :
+print func, &lt;span style="color:#e6db74">&amp;#34;has no __doc__, it&amp;#39;s a bad habit.&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">else&lt;/span>:
+print func, &lt;span style="color:#e6db74">&amp;#39;:&amp;#39;&lt;/span>, func&lt;span style="color:#f92672">.&lt;/span>__doc__, &lt;span style="color:#e6db74">&amp;#39;.&amp;#39;&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> func
+&lt;span style="color:#a6e22e">@deco_functionNeedDoc&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">f&lt;/span>():
+print &lt;span style="color:#e6db74">&amp;#39;f() Do something&amp;#39;&lt;/span>
+&lt;span style="color:#a6e22e">@deco_functionNeedDoc&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">g&lt;/span>():
+&lt;span style="color:#e6db74">&amp;#39;I have a __doc__&amp;#39;&lt;/span>
+print &lt;span style="color:#e6db74">&amp;#39;g() Do something&amp;#39;&lt;/span>
+f()
+g()
+print f
+print g&lt;span style="color:#f92672">&amp;lt;/&lt;/span>pre&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>这段代码打印结果如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">&amp;lt;&lt;/span>function f at &lt;span style="color:#ae81ff">0x0238F930&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span> has no&lt;span style="color:#f92672">**&lt;/span>doc&lt;span style="color:#f92672">**&lt;/span>, it&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#75715e">#8217;s a bad habit.&lt;/span>
+&lt;span style="color:#f92672">&amp;lt;&lt;/span>function g at &lt;span style="color:#ae81ff">0x0238F8B0&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span> : I have a &lt;span style="color:#f92672">**&lt;/span>doc&lt;span style="color:#f92672">**&lt;/span> &lt;span style="color:#f92672">.&lt;/span>f() Do somethingg() Do something
+&lt;span style="color:#f92672">&amp;lt;&lt;/span>function f at &lt;span style="color:#ae81ff">0x0238F930&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;span style="color:#f92672">&amp;lt;&lt;/span>function g at &lt;span style="color:#ae81ff">0x0238F8B0&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>当时我就晕菜了，想了很久，原来在@装饰器函数的时候就会调用装饰器，装饰器函数return func，而func就是传进去的参数f。这个时候把代码改改。&lt;/p></description></item><item><title>That Cloud Services of CI</title><link>https://yyq.github.io/posts/2015/2015-05-14-that-cloud-services-of-ci/</link><pubDate>Thu, 14 May 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-05-14-that-cloud-services-of-ci/</guid><description>&lt;p>When we find some open source projects on github( e.g. &lt;!-- raw HTML omitted -->ruby-cucumber&lt;!-- raw HTML omitted -->). We can found some green icon to display the status of the project on the README.md file. Like these:&lt;/p>
+&lt;p>&lt;img src="2015-05-14-10.18.58.png" alt="x">&lt;/p>
+&lt;p>, it looks very attractive to me. Especially the build passing status and the code coverage. Even I’m not working for the CI in our company, I’m still interested in it.&lt;/p>
+&lt;p>When push some code to my code base, then automatically building the code, running tests, and showing the build status &amp;amp; code coverage real-time on the readme page, That’s COOL! When I look into more, the &lt;a href="https://travis-ci.org">travis-ci.org&lt;/a> and the &lt;a href="https://coveralls.io">coveralls.io&lt;/a> are free for open source project on github.&lt;/p>
+&lt;p>Let me have a try.&lt;/p>
+&lt;p>Since recently I’m learning python. First, I created a &lt;a href="https://github.com/yyq/HelloWorldPython">helloworldpython&lt;/a> project on my github.&lt;/p>
+&lt;h1 id="the-travis-ci">The Travis-CI&lt;/h1>
+&lt;p>it supports most popular languages. After signing in it with github account, open the service for my helloworld project. After the authentication for travis-ci, it will add an service for the project, we can found that on the setting of the project:&lt;/p></description></item><item><title>svn转git简单实践</title><link>https://yyq.github.io/posts/2015/2015-04-29-svn-transfer2-git/</link><pubDate>Wed, 29 Apr 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-04-29-svn-transfer2-git/</guid><description>前言 涉及公司内部的名词，就用abc来代替好了。
+我负责的C工程，代码之前一直是用SVN来管理代码版本。为了响应党的号召，改Git，公司还花钱买了github企业版，这年头花钱买github而不是自己搭gitlab，良心企业啊。上网搜搜教程，试了一试，便成功了。关键操作记录在此了。
+需求一：svn转git git svn init http://svn_address git svn fetch&amp;lt;/pre&amp;gt; or using git svn fetch -r 1:HEAD, 从revision 1开始fetch 去趟厕所，再喝杯咖啡，看stdout的信息可以看到正在从svn server上一个revision一个revision的内容往下拖，C工程（java代码为主，三万多行代码，引用的jar包10来个，其他的引用的jar包都用maven配置好了，所以不用把jar包存在工程里，SVN 的revision 700个左右），耗时大概10分钟，便转换完毕了。
+然后本地的git project已经建立好了。往远端push就好了。
+git remote add origin git@git_address git push -u origin master&amp;lt;/pre&amp;gt; 需求二：将svn的改动同步到git 由于IDE使用的不熟悉，不是立马用IDE git clone过来工程就能直接用，没空来折腾。所以最近几天仍然只用svn来commit，但是想要更新svn project上的内容到git。
+怎么搞。上网一搜，挺好搞。
+git svn fetch git svn rebase git svn fetch git push -u origin master&amp;lt;/pre&amp;gt; 不要问我为什么用这几句话，我也就是临时上网搜一下拿来用了。需要知道这命令干什么用的话，用help命令好了。
+产出 之后用git来管理C工程源代码了，托github企业版的福，可以更加方便的在网页上show给别人看了，哪天我改了多少代码，代码量啦，多少个新的feature啦，release note啦，issue track啦，都可以统统的放在一个网站上搞定了。
+还有，github pages的功能，给C工程建了一个宣传网页，瞬间高大上了有没有。
+by the way, 我参考的网页
+http://www.blogjava.net/lishunli/archive/2012/01/15/368562.html</description></item><item><title>小猫洋芋</title><link>https://yyq.github.io/posts/2015/2015-04-27-kitty/</link><pubDate>Mon, 27 Apr 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-04-27-kitty/</guid><description>&lt;p>每逢长假，最头疼的就是小猫寄养问题，送过两次到宠物店，接回来的时候小家伙的嗓子都是哑的——她在店里叫个不停，可能害怕店里的狗。&lt;/p>
+&lt;p>后来索性不送去宠物店，放家里，然后找朋友上门添食倒水铲屎。听朋友说，她状态极差，原本蹲在床上一角发呆冥想，很久之后确认家里进来人了，一个箭步冲出去，围着我朋友前后打转，叫个不停。最后朋友都关门下楼了，还能听见楼上她凄惨的叫声。所以，放家里，最后她的嗓子还是哑的。&lt;/p>
+&lt;p>不仅是长假，每天下班回到家，洋芋都会一个箭步从她的’王位’上冲到门边，围着我们（主要是围着我=.=），用脑袋蹭腿，求爱抚。甚至有时候，她会叼着一只拖鞋，坐在门边，等着我们开门的动静。&lt;/p>
+&lt;p>洋芋没事儿就爱跟着我转悠，我去厨房，她去厨房，我去厕所，她就坐在厕所门口等着。她爹地笑称，洋芋是我最忠实的小粉丝。&lt;/p>
+&lt;p>卧室的木地板比较轻薄，我在前面走，她在后面追，追到身后伸出两个前爪从后环抱我的小腿——她总以为我走路的双腿在跟她嬉戏。肉肉的爪子落在地板上，声音好似小马驹奔跑在青石板道上，然后我跟她爹地就笑的不行——猫太胖，才能在木地板上发出这种声音。&lt;/p></description></item><item><title>清明节回乡祭祖</title><link>https://yyq.github.io/posts/2015/2015-04-12-tomb-sweeping-day/</link><pubDate>Sun, 12 Apr 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-04-12-tomb-sweeping-day/</guid><description>从情节人那篇之后很久未更，因为琐事缠身。先是婚纱照，去门店预约到拍照。然后是换房找房搬家，老房东各种找茬克扣押金，新房东目前来看倒是清爽人。
+婚纱照其实是我比较鄙夷的一种陋习，尤其对于白纱无感，不知道小说里女主角披上白纱之后那种神圣感是从哪里来的，反正我是没感受到。抹胸婚纱的束腰和别针，反而让我胸闷。所幸除了抹胸白纱和传统大鱼尾婚纱，另外三套衣服是我自己挑的，颇为满意。在造型师、摄影师的一番摆弄下，拍出来的效果、气场倒是大大超过我的预期。
+拍完婚纱照没多久就开始搬家。木易先森说，这是倒数第二次搬家了，下次就直接搬到自己的新家里。可能正是因为如此，这次搬家把人折腾的精疲力竭。眼看胜利就在眼前，以后再来一次就再也不用保持每年一搬的频率了，可打包、搬运、拆包装、摆放、清扫还是把人的精气神儿全都吸走了。这种劳累，到骨子里了，出去全身按摩+足疗也解不了乏。
+搬完家，紧接着，就着清明节的假期回乡。20多个小时的火车，于我反倒是休息，回到家与各路亲戚相聚，热闹非凡，跟过年一样。可是天气却一直不见明朗，雨下个没完，田地里一脚踩进去，就拔不出来了。这样的话，我根本没办法去给婆上坟。
+等到临走前一天，还是没见晴，我跟妈说，不行，不能等了，今天一定要去上坟。在楼下英子姐那里买了火纸、冥币和鞭炮之后，找到老爸，让他打火纸。所谓打火纸，就是用工具和木头棒子在火纸表面敲出来一排排整齐的铜钱印子。据说只能男孩子敲。
+婆的坟在我家一块田地里，田在山上，那块地里现在种满了杉树，长的郁郁葱葱。雨下了太久，从家里上山的路十分不好走。哥在前面各种拉拽着我俩。婆的坟就在这一片杉树后面，坟前一颗桂花树。最后一次来，桂花树和杉树都没有这么高，而现在，它们已经完全遮盖住了婆的坟冢。这就是我梦中挂念的地方啊，好几次，都没能到婆的坟冢前来，要么走到一半找不到路，要么就是差几节台阶，但就是迈不过去，一直到梦醒，都迈不过去。
+一边烧纸，一边跟哥打趣，这冥币面值真大，8千亿一张，烧多了，那边会不会通货膨胀？冥币上还写着天地通用，咋个通用法？烧完纸，我心里念念叨叨，婆啊，快来捡钱吧，在那边打个小麻将啥的，没有病痛，没有烦扰，好好安享乐日，还有，婆啊，今儿把孙女婿带来了，你好好看看啊。
+一不小心，香灰掉到手上，烫起一个泡。我迷信的认为，因为我很多年都没来看婆，这是神明对我的惩罚。
+一切完毕后，我扶着坟冢侧边，看坟冢后面那个突起的土堆，这里埋着我们家族里最辛苦最伟大的婆，不晓得她在这里面好不好玩，寂不寂寞，虽然旁边有爷，还有老太（爷的母亲，婆的婆婆）。最后，我执意要把坟前后的垃圾收集起来（所谓垃圾，不过是之前来上坟的亲人带上来的塑料袋、饮料瓶、酒盒等）带下山，算是临走前为婆尽最后一点孝心。
+其实我很胆小，这是我唯一一次敢自己绕着坟冢转的。别人家的坟，我独自一人时是决然不敢靠近，更别提绕着坟冢前前后后转悠。因为这个坟冢里埋的是我的婆啊。
+下到半山腰，再回头看看婆的坟冢，其实什么也看不到，都被杉树挡住了。但就在那个位置，有袅袅雾气升起，婆大概是感知到了吧。就这样，以后回乡再去看你。</description></item><item><title>Java访问https网页时证书问题</title><link>https://yyq.github.io/posts/2015/2015-03-30-java-install-ssl-certification/</link><pubDate>Mon, 30 Mar 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-03-30-java-install-ssl-certification/</guid><description>&lt;p>报错信息：&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>内部工具开发中，有一个步骤要去一个https的网页上抓取内容，然后该网站的证书没有被本机认可，于是乎拒绝了抓取内容。我本来的想法是，检测到证书问题之后，安装证书好了。上网搜了搜，解决方案大致两类：一是自己手动改改这里那里添加证书完事。二是在java代码中设定忽略所有证书问题。&lt;/p>
+&lt;p>如果是用第一种方案，那我的工具在所有其他工程师电脑上运行的时候，都需要它们自己去手动添加证书，那也太麻烦我的customer们了，虽然这种手动添加证书的事情只用干一次，但是他们都那么娇生惯养的，估计耽误他们工作时间来做这样的事情肯定不妥的。遂放弃的第一种思路，来看第二种，忽略所有，呵呵，代码能搞定。不过会有安全问题是吧。不过这又是内部工具，就把安全问题忽略好了。&lt;/p></description></item><item><title>我要用python把leetcodeOJ算法题刷一遍。</title><link>https://yyq.github.io/posts/2015/2015-03-30-python-through-leetcodeoj/</link><pubDate>Mon, 30 Mar 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-03-30-python-through-leetcodeoj/</guid><description>给自己挖下一个坑，看看多久能摆平，平常吧，对算法有些兴趣，却总是没有持续的投入时间去学习。这次为了考验自己，看看到底有多强的执行力。leetcodeOJ难度对我来说刚刚好，不会难到我根本搞不定，也不会容易到每道题都能一次切过。在github上建立一个工程，https://github.com/yyq/LeetCodeOJ-python，看看多少时间能完成。完成顺序，就按照人家网站上的题号从小到大来吧。
+这里写下这篇文章，也顺便记录一下，在切题过程中遇到的坑，以及学习心得，感想。
+第四题。两个有序数组找中位数问题，时间复杂度log(n), 注意考虑奇偶性的情况，因为这个重复提交了好几遍才AC.
+第五题：找回文字符串，思路好说，边界问题坑了我两三把。
+第八题：字符串转数字的方法，各种特殊情况都需要考虑周全。</description></item><item><title>iOS安全-学习日记1</title><link>https://yyq.github.io/posts/2015/2015-03-08-ios-security-learn-1/</link><pubDate>Sun, 08 Mar 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-03-08-ios-security-learn-1/</guid><description>&lt;h1 id="前fei言hua">前(fei)言(hua)&lt;/h1>
+&lt;p>上班之余，自学一些计算机安全一类的知识。有相关经验的同学给了我几个建议：1.计算机安全范围很广，有web啦，sql啦，移动端啦balabala，自己选择一个自己感兴趣的较窄的学习就好。2. 社区，乌云，看雪&lt;/p>
+&lt;p>我自己对iOS还有些兴趣，遂决定开始自学iOS安全。乌云我是连注册都没资格，需要提交漏洞才行，我这什么相关知识都不会，只先看看好了。在谷歌上搜了搜，很容易搜到CSDN上念茜的《iOS安全攻防》这个看上去知识比较浅一点，应该会适合我。那么就一课一课开始学。她写的相关博文是一两年前了，不一定百分之百能适用于当前的环境，不过正好是增加学习难度的机会。也可以用自己的博文来更新和更加详细的注释一下她的博客，更容易让初学者学习到。&lt;/p>
+&lt;h1 id="ios安全攻防一hack必备的命令与工具"> iOS安全攻防（一）：Hack必备的命令与工具&lt;/h1>
+&lt;p>&lt;a href="http://blog.csdn.net/yiyaaixuexi/article/details/8288077">念茜博客原文地址&lt;/a>&lt;/p>
+&lt;p>先是一些操作系统的基本的命令，我用过并且略有了解的如下：ps, netstat, route, ifconfig, tcpdump, gdb, ssh&lt;/p>
+&lt;p>然后我没有接触过的：&lt;/p>
+&lt;p>sysctl：检查设定Kernel配置；renice：调整程序运行的优先级；lsof：列出当前系统打开的文件列表，一切皆文件包括网络，硬件设备；patch：补丁工具。&lt;/p>
+&lt;p>然后她有特意注释的三个工具，otool，可以查看可执行程序都链接了哪些库，nm，显示符号表，ldid，用于给需要运行在iOS上的程序签名用。otool和nm在自己的mac电脑上有，os x上我没找到ldid，于是在ipad上用cydia装了ldid。不过之后的实验中好像不签名也能运行来着。&lt;/p></description></item><item><title>论在程序中写log的重要性</title><link>https://yyq.github.io/posts/2015/2015-03-05-the-importance-of-writing-log/</link><pubDate>Thu, 05 Mar 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-03-05-the-importance-of-writing-log/</guid><description>&lt;p>别人开发的工具，没几个人用，然后别人比较忙不管这摊子了，然后没人弄，组织上说，需要我来维护。正好碰上某leader推广这工具，这下完了，一堆bug，必须摆平。基本上一天一个到两个的速度，两三个礼拜的时间，紧急的bug都搞定了。之后心中最大最大的感受就是关于在代码中写Log。&lt;/p>
+&lt;p>从前自己写写小程序自己怎么折腾都没所谓，错了大不了就调试呗，从来没有写log的习惯，偶尔就在控制台输出输出就完事儿。这一轮忙碌的修bug事件，让我彻底改变了写log存log读log的看法。&lt;/p>
+&lt;p>我感受到的写log的好处有三点：&lt;/p></description></item><item><title>7块8的情人节也很快乐 ;-)</title><link>https://yyq.github.io/posts/2015/2015-02-14-valentine-day/</link><pubDate>Sat, 14 Feb 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-02-14-valentine-day/</guid><description>大学的时候，没有一起过过西洋情人节，因为一般都是春节寒假前后，各自在家。今年我们结婚了，也都在同一个城市上班了，情人节终于在一起了，可是却没有了小年轻过节的激情了。
+早晨出门办完各种事情，回家的路上，杨说，回去给你做你爱吃的酸辣土豆丝，剁椒鸡蛋，算是情人节的礼物了！
+中午快1点钟，终于吃上了我的情人节礼物。土豆丝粗的能去炸薯条了，剁椒鸡蛋也略显糊焦，但是味道很好，两个人风卷残云般把饭菜消灭的干干净净！仍记得，只花了7.8元买菜，赞！
+下午饱睡一觉，晚上去看了《狼图腾》电影，惨烈，震撼，心塞。
+快乐情人节 :-）</description></item><item><title>用行走丈量世界之暴走15公里</title><link>https://yyq.github.io/posts/2015/2015-02-10-walking/</link><pubDate>Tue, 10 Feb 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-02-10-walking/</guid><description>2015-2-7日，天气晴好，星期六，不是很开心。
+感谢木易先森，拉着我来到室外。一看阳光这么好，岂能浪费？！
+从文二路西湖国际大厦出发，雄赳赳地赶赴天目路，去看天目山。最后实在没有在地图上找到天目山，那，为什么天目山路叫做天目山路呢？倒是在临安市搜到了天目山。。。
+走过支付宝大楼，拐到玉古路上，没多久就走到浙大玉泉校区东门，真是个有品的学校，她的之江校区简直美呆了，安安静静的坐落在半山腰上，注目着钱塘江和六和塔。
+快到西湖边的时候，发现一家星巴克，价钱竟然和外面一样，并且没有景区的人满为患，果断坐下，烤箱稍稍加热下巧克力麦芬，将化未化的巧克力颗粒在舌尖尽情绽放香甜。
+吃饱喝足之际，被隔壁的小工艺品店吸睛，再次坐下，给外地友人们寄去新年的明信片。
+终于是走到西湖边了，北山路的老房子比较原汁原味，落了叶的法国梧桐也尽显年代感。路边是一大片枯萎的荷花枝叶，远处是断桥。杭州就是这么任性这么美，只消看一眼，便可以赶走一切心中的阴霾。杭州的人们也这么任性这么享受，在断桥边的亭台里唱歌跳舞，小朋友舞蹈班在西湖边学跳拉丁。。。来杭州真是来对了！
+走久了还是蛮累的，但只要走过一次，从此以后便心心水水，念念不忘。但凡天气爽朗宜人，就想拔腿出去走走T^T。年轻人，还木有任性的资本呢！技能值太低，撑不起任性。</description></item><item><title>艳阳天绕杭城骑行45公里</title><link>https://yyq.github.io/posts/2015/2015-01-29-riding/</link><pubDate>Thu, 29 Jan 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-01-29-riding/</guid><description>看新闻说，2015-1-24是年前最后一个艳阳天，之后就是雨雪天气了。事实证明果然如此。还好抓住了这个机会，绕着杭州城走走看看。
+这次骑行路途之远，史上之最。第一次跟我们骑行的小伙伴“爱美亲”，第二天直接感觉不到双腿了。
+先是穿越浙大玉泉校区，然后是植物园，杨公堤，之江大桥，阿里巴巴滨江园区，最后从复兴桥返回。
+南方的冬天是北方不能比拟的，有很多常青植物，深绿的山茶花也开了，很是养眼。
+杨公堤上游人不多，拱桥很多。
+上拱桥前卯足了劲儿冲到桥顶，然后停车，驻足观望，大大小小的湖泊、池塘散落一路，亭台楼阁，牌坊，小桥，安静又美好。尤其是水中小桥的倒影，美极了。
+如果不骑车的话，去西湖玩儿，杨公堤的公交车是一定要坐的，过山车一般刺激！
+虎跑路上，有很多笔直的树木，肃穆挺立，查了很久，貌似是水杉树。
+阿里巴巴滨江园区很紧凑，不过大楼主体风格比较特异，园区内躶体雕像大叔和裸体男女真性感 返回的时候已近薄暮，江面上烟波茫茫，停下单车，看着江边的烟火一盏盏、一排排亮起，空气清冷湿润，心目神怡。
+这估计也是年前估计最后一次骑行了 😉</description></item><item><title>《黑客与画家》</title><link>https://yyq.github.io/posts/2015/2015-01-18-hackers-and-painters/</link><pubDate>Sun, 18 Jan 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-01-18-hackers-and-painters/</guid><description>文二路上有一家博库书城，是我周末常去的地方。如果天气晴好，抹点防晒ＢＢ霜，就直接走着去了。
+书城三楼西北角是计算机书籍，《黑客与画家》静静地摆在那里的畅销书架上，而这本书的译者阮一峰前一阵子入职支付宝，新人报道邮件引起大家一阵骚动。
+前几章十分深刻而且颠覆，尤其言论自由那章。原来极客们如此痛恨“版权保护”，他们热爱分享，所以才会不遗余力的建设开源社区。
+很多现在看来是理所当然的事情回溯几个世纪可能就变成不可思议、大逆不道的事情。或者现在正常的事情在未来会被彻彻底底颠覆。
+“大公司为了避免设计上的灾难选择了减少设计结果的标准差。但是当你排斥差异的时候，你不仅将失败的可能性排除在外，也将获得高利润的可能性排除在外。”
+“不受传统观念束缚的人，往往也不会穿流行的衣服。”
+“所谓流行，本质上就是自己看不见自己的样子，否则就不会有流行了。”
+“一个公司是否健康运作，可以用一个指标衡量，那就是对负面评价的容忍程序！”
+“唯一有效的外部考核是时间，不过这种考核需要的时间可能比一个人的生命还长。人们对一个作家的评需要100年才能达成一致。你必须先等他的那些有影响力的朋友都死了，然后再等他的追随者都死了，才能对他有一个公正的评价。”
+关于贫富差距，如果获得钱财的手段是垄断、贪污、偷盗、掠夺，这种贫富差距会阻碍社会的发展。但如果是由新技术变革带来的贫富差距拉大，对社会而言，是好事。
+而实际上，我认为新技术变革顶多拉大了技术掌握者、相关者与其他不相关人士的贫富差距，总体而言，受益的还是大多数人。比如农夫利用新技术提高了耕种效率，从而降低了粮食成本，因此粮食出口和酿酒企业成本降低，利润增加。所以技术变革会让增加社会平均财富。
+这本书还没读完，下周末接着去:-)</description></item><item><title>上班路上</title><link>https://yyq.github.io/posts/2015/2015-01-18-on-the-way-work/</link><pubDate>Sun, 18 Jan 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-01-18-on-the-way-work/</guid><description>手机里设置的闹钟，名为“美好的一天开始啦”
+早晨7:30它会准时叫醒我
+8:00一切收拾妥当,走去小区西门
+那里的两个早点摊位香气四溢
+一切顺利的话8:15会到第二个十字路口
+咦，每次都要两块钱的那个小乞丐呢？睡懒觉去了吧
+8:25，走在我前面的人群会扑通扑通往旁边的大厦里奔跑
+怕是要赶在迟到前打卡
+继续往前，迎面走来这个鼻子冻得通红，双手缩在兜里的外国女孩
+她总是低着头快步行走，仿佛在思索哲学命题
+过了益乐桥就是公交一公司了，我也该排队上班车了:-)</description></item><item><title>最好吃的小吃在民间</title><link>https://yyq.github.io/posts/2015/2015-01-18-chi-huo-chu-men/</link><pubDate>Sun, 18 Jan 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-01-18-chi-huo-chu-men/</guid><description>今天中午从文二路博库书城出来的时候，见好多人都捧着个小碗，用牙签戳着一块裹着芝麻面儿的什么东西往嘴里送。而且不分老少男女。
+这是个什么新奇玩意儿？
+出了书城，就看到大门口偏东边，一位老奶奶佝偻着，从一个类似烤红薯的大桶底部绞出雪白的糯米条，边绞边用刀切，然后糯米团呈丸子状滚落到旁边的芝麻面儿里。
+沾均匀了，老奶奶又用刀尖娴熟地将丸子挑出来放到塑料小碗里，再用刀尖挖一块儿芝麻面儿盖在丸子上。
+看的我呆了，赶紧拿下，5元10个。
+“这是什么吖？”
+“**汤圆”
+“啥？啥汤圆？”，杭州话我一向都听不大懂。
+“麻子汤圆，这吃的，现如今在别地儿都没有的卖的，找不到的”
+赶紧用牙签叉一块送到嘴里，妈呀，这个香啊，先是芝麻面儿的香甜，然后是糯米团的温热柔软，甜而不腻，余味不绝。
+下周过去还会有麻子汤圆么？</description></item><item><title>ClearCase2Git，git-cc的使用</title><link>https://yyq.github.io/posts/2015/2015-01-11-clearcase2git-usage-of-git-cc/</link><pubDate>Sun, 11 Jan 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-01-11-clearcase2git-usage-of-git-cc/</guid><description>&lt;h1 id="简介">简介&lt;/h1>
+&lt;!-- raw HTML omitted -->
+&lt;h1 id="基本环境">基本环境&lt;/h1>
+&lt;p>一个linuxVM，有cleartool，git，python。其中较为棘手的应该是在一个linux机器上安装clearcase的一系列工具了，cleartool是命令行版本的CC。总之安装Clearcase不是一件简单的事情，我是从公司要了个自带clearcase的RHEL的模板就开始了。&lt;/p>
+&lt;h1 id="了解git-cc">了解git-cc&lt;/h1>
+&lt;p>关于git，看完过PRO GIT那本书(&lt;!-- raw HTML omitted -->it’s free here&lt;!-- raw HTML omitted -->)，有些认识。对clearcase，不熟悉，问了同事也告诉我只能通过man来快速了解cleartool的各个命令。好像没有别的办法来速成了，git-cc这工具是网上看着免费的比较流行的cc2git的工具了。拿来直接用，报错一堆堆，搞不定，没接触过python，然后把codecademy上的python教程学完，之后再看git-cc源代码，能理解一些了。&lt;/p>
+&lt;p>这个工具做的主要的事情就是：下载一个snapshot view，新建一个空的git repository，cleartool lsh列出view的历史活动信息，处理好新建文件和checkin代码以及各个文件的版本号信息，然后按照从开始到现在的时间顺序，做若干次把cc中某个文件的某个版本copy到git中，然后git commit。然后结束了。&lt;/p></description></item><item><title>那些年，我参加过的笔试面试</title><link>https://yyq.github.io/posts/2014/2014-03-15-na-xie-nian-wo-can-jia-guo-de-bi-shi-mian-shi/</link><pubDate>Sat, 15 Mar 2014 16:24:01 +0000</pubDate><guid>https://yyq.github.io/posts/2014/2014-03-15-na-xie-nian-wo-can-jia-guo-de-bi-shi-mian-shi/</guid><description>&lt;p>这是一篇本该在去年年底发出的文章，之前在是学校内网的论坛发出来了，现在才抽空刊登出来。&lt;/p>
+&lt;p>这一篇算是上个学期的的找工作总结吧，之后再写一篇研究生生涯的总结。&lt;/p>
+&lt;h3 id="basic-info">Basic Info&lt;/h3>
+&lt;p>背景简介：计算机，理工本硕。&lt;/p>
+&lt;p>擅长技术：C,linux&lt;/p>
+&lt;p>了解技术：Android,iOS&lt;/p>
+&lt;p>目标职位：研发类啊，手机开发类，游戏策划类找。仅限互联网，知名IT类公司。&lt;/p>
+&lt;p>目标地理位置：深圳&amp;gt;杭州&amp;gt;上海&amp;gt;北京&lt;/p>
+&lt;p>基本发现自己C++和java实在太次了，9月10月算是累趴下了，研发类工作没找到，最后运气好11月初有一个测试开发的offer。&lt;/p>
+&lt;p>流水账如下：&lt;/p></description></item><item><title>暑假小结</title><link>https://yyq.github.io/posts/2013/2013-09-05-shu-jia-xiao-jie/</link><pubDate>Thu, 05 Sep 2013 21:12:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-09-05-shu-jia-xiao-jie/</guid><description>已经9月5日了，很久没有写博客了，其实这个暑假没有休息，一直在忙。
+8月初回家休息了一个礼拜，剩下的时间一点也没闲着了。原本回家后预计能加紧时间看书的，结果一回到家里，感觉是有越来越多的时间不属于自己了，而属于家人。看到家里的人都身体健康，每天平淡无奇的生活，我好像宁愿放弃自己的学业或者工作，花更多的时间陪陪爷爷奶奶，在楼顶浇菜，在电脑上打扑克，或者花更多的时间陪爸爸妈妈，自己洗车，和他们聊聊我将来找工作的目标方向等等。还有其他的亲戚，外婆，姑姑叔叔，阿姨，舅舅，多陪他们说说话。和快要上高中的妹妹看电影，顺带侃一下学习，她将要去我曾经读高中的地方去上高中。唯一略有遗憾是，当空姐的妹妹也回家了几天，但是我没有抽出时间去陪她。
+剩下的时间我没有偷懒了，做了这么几件事情。
+看完了《我编程，我快乐》这本书，主要是说程序员的职业生涯规划和一些程序员基本素养。比较欣慰的是，书里面还是有不少观点和方式和我自己平常的做法不谋而合，看上去自己还像是一个正牌程序员。
+看完了《剑指offer》，这本书是之前很多同学有推荐看但是我一直没看的书，可以认为是直接导致我实习笔试失败的根本原因之一吧。很多找到实习的同学都直接告诉我，很多笔试面试题目就来自这本书上的例子。所以暑假的时间把这本书上的50个例子，一个不落从头看到尾了。之后还得写篇日志来总结各种陷阱和巧妙的思维方式。
+学完了一门网上公开课。6weeks，在coursera网站上的standford的一门算法课Algorithms:Design and Analysis Part 1。课程网址如下：https://www.coursera.org/course/algo，这门课程完成之后，还有个证书，
+学这门课的主要目的吧，一个是提高英语能力，听力和读写，水论坛和老外们讨论算法还是没有压力，有时候觉得，在这门课程中论坛里学到的东西比老师的视频里学到的还多。学这门课的第二个目的，也是为了巩固自己的算法基本功吧。老师的视频教程对几种关键的算法进行了论证，证明可靠性，然后还说明了这些算法的应用场景，最最重要的是，课后习题包括有理论性的选择题和编程实践题目。我印象最深刻的是，某一个计算强连通图的测试用例，输入节点信息有八十MB，这个时候，C语言比其他语言的优势就显示出来了。我用的C语言十多秒钟的事情，论坛上其他java python之类的需要若干分钟才能算出来。六次作业，code实践了6个算法（存放在github上了）：归并排序，快速排序，随机收缩算法计算最小割，两次深度优先搜索计算scc，利用最小堆来实现迪杰斯特拉最短路径算法，简单的哈希表的应用。
+学校里老师项目相关的东西了，内核分析的方法准备写个专利，基本稿完毕，等待老师的进步意见和继续修改，估计9月份能投出去了。
+自己的毕业设计，在路由算法中加入多路径算法，现在还没摆平，实现了算是一半了吧。
+参加了几个公司的面试，我主要投的是ios开发相关的，投了几个创业公司，但是都被拒了，个人觉得吧，原因在于自己这方面积累的知识还不够吧。暑假刚刚开始的时候，也有过阿里和腾讯的电话面试，有几个问题没有答得不够好，我记得比较清楚的几个是，线程进程的区别，进程间通信的方式，哈希表的实现。之前以为这类题目我不用太在意，平常学习研究中没有用到过，所以我也没去了解，只能随意说个大概。之后听起同学说这是笔试面试最最经典的题目。anyway，吃过一次亏了，就算自己平时没用过的这些基本概念，还是多了解一些，以备笔试面试之需吧。抑或，人家没有继续睬我也是因为我ios实践太少吧。争取9月份再出一个自己感兴趣的app demo来？以后面试的时候带着自己的pad和作品去，估计会有说服力一些吧。
+即将来临的一大波笔试面试，快来吧，我已经准备好了!</description></item><item><title>剑指offer--读后总结</title><link>https://yyq.github.io/posts/2013/2013-09-05-jian-zhi-offer-du-hou-zong-jie/</link><pubDate>Thu, 05 Sep 2013 21:08:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-09-05-jian-zhi-offer-du-hou-zong-jie/</guid><description>&lt;h2 id="记录一下看完这本书后自己需要改进的地方算法的技巧等等">记录一下，看完这本书后，自己需要改进的地方。算法的技巧等等。&lt;/h2>
+&lt;h3 id="项目经验">项目经验：&lt;/h3>
+&lt;ul>
+&lt;li>简短的项目背景&lt;/li>
+&lt;li>自己完成的任务&lt;/li>
+&lt;li>为了完成任务做了哪些工作，怎么做的&lt;/li>
+&lt;li>自己的贡献&lt;/li>
+&lt;/ul>
+&lt;h3 id="技术环节">技术环节&lt;/h3>
+&lt;ul>
+&lt;li>扎实的基础知识：编程语言，数据结构，算法&lt;/li>
+&lt;li>高质量的代码：代码鲁棒性，越简单的题目考官期望越高，各种特殊情形的处理考虑（边界条件，空指针，空字串，error）&lt;/li>
+&lt;li>清晰的思路，解决复杂问题的3个方式（画图形象化，举例具体化，分解简单化）&lt;/li>
+&lt;li>优化程序：空间优化，时间优化&lt;/li>
+&lt;/ul>
+&lt;h3 id="应聘者提问">应聘者提问&lt;/h3>
+&lt;ul>
+&lt;li>必须提前做好准备，招聘的职位或者项目&lt;/li>
+&lt;li>网上收集，主要业务，职位要求，需求（或者请面试官讲讲他在哪个组，做什么样的工作，常用的开发工具，语言）&lt;/li>
+&lt;li>留心面试官说过的话。然后提问&lt;/li>
+&lt;/ul>
+&lt;h3 id="例题">例题&lt;/h3>
+&lt;ul>
+&lt;li>第4题，替换空格，输入“we are happy”,输出“we%20are%20happy”&lt;/li>
+&lt;li>solution:先扫描一遍旧的char数组，数一下有多少个空格，新数组长度就出来了。然后从末尾向前复制。时间，空间都是O(n);&lt;/li>
+&lt;/ul></description></item><item><title>cs193p HW1 所做所看所想</title><link>https://yyq.github.io/posts/2013/2013-06-28-cs193p-hw1-suo-zuo-suo-kan-suo-xiang/</link><pubDate>Fri, 28 Jun 2013 18:37:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-06-28-cs193p-hw1-suo-zuo-suo-kan-suo-xiang/</guid><description>&lt;p>花了两个礼拜的时间，看完了cs193p的前面三堂课，并且做完了作业。没搞明白的东西，在piazza上发问，很快有人回答我解决的问题，感觉真好。&lt;/p>
+&lt;p>做完hw1之后，平时总是喜欢招人讨论的我，这下好像在周围找不到同学讨论了。于是就在piazza上闲逛，看看别人的问题和别人的回答。&lt;/p>
+&lt;p>论坛中，有加粗的&lt;strong>I&lt;/strong>字母标记的都是有被导师回答的问题。于是我就挨个把导师参与过的讨论都看了一遍。看到某一个，觉得很赞，一定要在博客中写下来。&lt;/p>
+&lt;h2 id="收获1关于思想">收获1：关于思想&lt;/h2>
+&lt;p>不是关于某种技术方案，也不是关于某个细节技巧。而是关于思想。&lt;/p></description></item><item><title>小心加法的溢出</title><link>https://yyq.github.io/posts/2013/2013-06-18-xiao-xin-jia-fa-hui-yi-chu/</link><pubDate>Tue, 18 Jun 2013 00:06:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-06-18-xiao-xin-jia-fa-hui-yi-chu/</guid><description>过几天又有一次微软的笔试了，还是把手头上ios的进度缓一缓。随意翻翻编程之美吧。今天看了一到题目，如何写出正确的二分查找。想起来，看上去不会很难。但是一上来就错了。。。。。
+mid = (smalll + big) /2; 这个句子中的加法，是有可能溢出造成结果不对。所以推荐用
+mid = small + ( big - small ) / 2;
+对for循环或者while 或者递归等，每当自己写完之后，观察边界：初始条件，转化，终止条件
+突然想到的代码，到底能不能正常运行： {% codeblock %} #include &amp;lt;stdio.h&amp;gt; int main(int argc, char *argv[]) { int a[3] = {1,2,3};
+int *b = a; int *c = &amp;amp;a[2]; int *d; d = (int *)((int)b / 2 + (int)c / 2); printf(&amp;quot;%d %d %d\n&amp;quot;, *b , *c, d); return 0; } {% endcodeblock %}</description></item><item><title>C Traps and Pitfalls</title><link>https://yyq.github.io/posts/2013/2013-05-29-c-traps-and-pitfalls/</link><pubDate>Wed, 29 May 2013 07:49:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-05-29-c-traps-and-pitfalls/</guid><description>&lt;p>了解到一本很经典的C语言的书，我没有读过，《C陷阱与缺陷》，此书不厚，但是经典。这片博客用来做读书笔记吧。&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>printf(&amp;quot;%d&amp;quot;,010);&lt;/p>
+&lt;p>输出是8。平常一不小心就错了。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>词法分析中的贪心法：a&amp;mdash;b的意思是 (a&amp;ndash;)-b,而不是a-(&amp;ndash;b);因为编译器从左到右扫描，最长的一个有意义的字符是 &amp;ndash;；&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;em>a=b/&lt;em>p&lt;/em>&lt;/em> 肯定会报错，因为 &lt;strong>/&lt;/strong>&lt;/em> 会被解析成注释的前缀。&lt;/p>
+&lt;p>正确的表达方式应该是*&lt;em>a= b / &lt;em>p&lt;/em>&lt;/em> 或者 *&lt;em>a = b /(&lt;em>p)&lt;/em>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>printf('\n');&lt;/strong> 是错误的；&lt;strong>printf(&amp;quot;\n&amp;quot;)&lt;/strong> 是正确的；&lt;/p>
+&lt;p>char Hello[]={&amp;lsquo;h&amp;rsquo;,&amp;lsquo;e&amp;rsquo;,&amp;lsquo;l&amp;rsquo;,&amp;lsquo;l&amp;rsquo;,&amp;lsquo;o&amp;rsquo;,&amp;lsquo;w&amp;rsquo;,&amp;lsquo;o&amp;rsquo;,&amp;lsquo;r&amp;rsquo;,&amp;lsquo;l&amp;rsquo;,&amp;rsquo;d','\n',&amp;lsquo;0&amp;rsquo;};
+printf(Hello);&lt;/p>
+&lt;/li>
+&lt;/ol></description></item><item><title>xcode自动排版快捷键</title><link>https://yyq.github.io/posts/2013/2013-05-28-xcodezi-dong-pai-ban-kuai-jie-jian/</link><pubDate>Tue, 28 May 2013 10:29:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-05-28-xcodezi-dong-pai-ban-kuai-jie-jian/</guid><description>囧，搞了半天xcode编程，一直不知道自动排版的快捷键。今天在看别人代码的时候，终于受不了了，记录一下：
+command + A 代码全选； control + I 代码排版； 或者选中代码以后，顶部菜单Editor → Structure → Re-Indent</description></item><item><title>第一次参加Hackthon的活动:2013 Yahoo China HackDay</title><link>https://yyq.github.io/posts/2013/2013-05-21-ya-hu-hei-ke-ri-zong-jie/</link><pubDate>Tue, 21 May 2013 15:38:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-05-21-ya-hu-hei-ke-ri-zong-jie/</guid><description>&lt;p>上个周末，得瑟了整整30多个小时吧。周六早8点集合，12点正式开始比赛。周日12点比赛结束，下午2点开始展示，5点钟颁奖。200来自全国各地的同学参赛，45个队伍。6个获奖队伍，可惜没有我。&lt;/p>
+&lt;p>认识了新的朋友（北邮的李博洋，郭冰，清华的刘李洋），参观了雅虎北京研发中心的办公室，体验了雅虎公司的丰富的早饭中饭晚饭和自助餐&lt;/p>
+&lt;p>第一次参加通宵编程的比赛，人生又更加完美了一些！&lt;/p>
+&lt;p>哦，对了，我还收获了一个纪念奖（证书，瓷杯，T-shirt）。&lt;/p>
+&lt;p>完后还给YQL在github上的table提交了一个pull request:&lt;a href="https://github.com/yql/yql-tables/pull/367">Link&lt;/a>&lt;/p>
+&lt;h3 id="请注意以下内容为意识流">请注意：以下内容为意识流&lt;/h3></description></item><item><title>Something about Yahoo Hack Day</title><link>https://yyq.github.io/posts/2013/2013-05-12-something-about-yahoo-hack-day/</link><pubDate>Sun, 12 May 2013 21:18:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-05-12-something-about-yahoo-hack-day/</guid><description>好些天没写日志了，最近的空闲一直忙着各种计算机基础知识的复习，参加各种笔试面试，来为下半年的找工作做一个warming up
+参加了一个雅虎黑客日，下个周末比赛。这里也是我第一次接触一些相关hackthon的东西，从yahoo推荐的链接看到的，总结如下了。不过看了yahoo的这个介绍，后面有一半是在给yahoo自己打广告了。
+To reach hackvana you need three things:access,dada and an interface Access is granted to you via feeds,web services and SDKs. Feeds are data in a predictable format, for example RSS. Web services are quite similar, only they allow you to filter down the data you want.
+They also allow you to get the data in other formats to easily re-use it
+The idea of hacking is to use this data, mix it up with other ideas and other data to provide a better service for the end user.</description></item><item><title>MacTex中文乱码解决方法</title><link>https://yyq.github.io/posts/2013/2013-03-19-wo-xue-tex/</link><pubDate>Tue, 19 Mar 2013 00:40:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-03-19-wo-xue-tex/</guid><description>今儿开周会的时候有同学又介绍Latex了。
+第一次接触Latex是在大三弄数学建模的时候，据说用Latex写文档如何如何XXX。后来是在写本科毕业设计的时候有老师说Latex如何如何好，不过那个时候也就混个毕业论文了，随意就对付过去了。
+终于，自己得开始着手准备写研究生的毕业设计了。正好又有同学用过，可以交流，决定开始好好写研究生的论文。也得用一用最牛逼的写文档的工具了。
+废话那么多，其实今儿实际上和tex有关的东西就一点点。
+Mac上使用tex是很方便滴！Macx系统有个专用的tex，MacTex，下载地址
+下载之后，安装很简单，目前遇到的小问题是中文输入，不过在同学的指点和google一下，轻松解决。
+打开TexShop，模式用XeLatex，字体用SimSun。
+具体操作，先选择模板，点一下XeLatex模板，然后把代码中描述字体的那一行改掉。
+%\setromanfont[Mapping=tex-text]{Hoefler Text} 这一行是被我注释掉的模板中的字体描述 \setromanfont{SimSun} %这一行是我自己添加的字体描述 然后随意在Title里面改成中文，点一下排版，有中文标题的文章，就出来了。</description></item><item><title>学习obj-c笔记</title><link>https://yyq.github.io/posts/2013/2013-03-11-xue-xi-obj-cbi-ji/</link><pubDate>Mon, 11 Mar 2013 00:24:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-03-11-xue-xi-obj-cbi-ji/</guid><description>&lt;p>It took me sometime to finish the chapter nine. This chapter is about Dynamic Typing and Dynamic Binding and so on.&lt;/p></description></item><item><title>Learn the obj-c:Inheritance</title><link>https://yyq.github.io/posts/2013/2013-03-07-xue-xi-objbi-ji-di-ba-zhang-ji-cheng/</link><pubDate>Thu, 07 Mar 2013 22:03:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-03-07-xue-xi-objbi-ji-di-ba-zhang-ji-cheng/</guid><description>&lt;p>Finally , i&amp;rsquo;ve done the 8th chapter of the book PROGRAMMING in Obj-C,and i have already written all the samples to test what i&amp;rsquo;ve leaned。&lt;/p>
+&lt;p>As always , i put the code on a project in &lt;a href="https://github.com/yyq/learn-obj-c">github&lt;/a>.&lt;/p>
+&lt;p>When I am reading the book on kindle, I highlight something when I think they are very important。&lt;/p>
+&lt;p>Herer, I&amp;rsquo;ll show you the sentences I marked.&lt;/p></description></item><item><title>eclispe+qemu+gdb调试linux kernel全过程</title><link>https://yyq.github.io/posts/2013/2013-03-06-eclisep-plus-qemu-plus-gdbdiao-shi-linux-kernelquan-guo-cheng/</link><pubDate>Wed, 06 Mar 2013 22:52:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-03-06-eclisep-plus-qemu-plus-gdbdiao-shi-linux-kernelquan-guo-cheng/</guid><description>&lt;h1 id="单步调试kernel说明">单步调试kernel说明&lt;/h1>
+&lt;p>恩，这个文档的目标是单步调试内核，从每一个工具软件的版本号到每一个命令，都有一个说明&lt;/p></description></item><item><title>kernel国内镜像地址</title><link>https://yyq.github.io/posts/2013/2013-02-28-kernelguo-nei-jing-xiang-di-zhi/</link><pubDate>Thu, 28 Feb 2013 10:15:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-02-28-kernelguo-nei-jing-xiang-di-zhi/</guid><description>这段时间弄kernel比较多，长期需要去下载不同版本的kernel，自己又不喜欢本地备份。遂找到了国内下载kernel最快的地方，在北京交通大学的官方镜像。
+http://mirror.bjtu.edu.cn/kernel/linux/kernel/</description></item><item><title>学习obj-c笔记2:有关class</title><link>https://yyq.github.io/posts/2013/2013-02-11-xue-xi-obj-cbi-ji-2-you-guan-class/</link><pubDate>Mon, 11 Feb 2013 11:11:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-02-11-xue-xi-obj-cbi-ji-2-you-guan-class/</guid><description>&lt;p>在obj-c中的类，主要包含以下两个部分：&lt;/p>
+&lt;ul>
+&lt;li>@interface:classname&lt;/li>
+&lt;li>@implementation:classname&lt;/li>
+&lt;/ul>
+&lt;p>如果是一个程序而不是一个单独的类时，还得包括一个&lt;/p>
+&lt;ul>
+&lt;li>program section，也即main函数等等&lt;/li>
+&lt;/ul>
+&lt;p>在interface section中，应该包括有property和Method的声明，关于property的使用，暂时还没注意到，不过看到了对于method的描述，简单的说就是，+开头的方法，都是类方法，-开头的方法，都是实例方法。不过我觉得自己的表述还是缺乏精确性。摘抄原文如下：&lt;/p></description></item><item><title>学习obj-c笔记1</title><link>https://yyq.github.io/posts/2013/2013-01-25-xue-xi-obj-cbi-ji-1/</link><pubDate>Fri, 25 Jan 2013 00:16:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-01-25-xue-xi-obj-cbi-ji-1/</guid><description>&lt;p>想上来就直接干ios编程，自己也写了一点代码，不过都是连蒙带猜，再直接fork别人的工程来看，发现自己对于obj-c基本语法这里还是有短板，在kindle上找了一本书，&lt;strong>Programming in Objective-C(4th EDITION)&lt;/strong>,据说这本书不错，觉得应该花一到两个礼拜恶补一下obj-c的语法再开始干。&lt;/p></description></item><item><title>Gprof使用方法</title><link>https://yyq.github.io/posts/2013/2013-01-23-gprofshi-yong-fang-fa/</link><pubDate>Wed, 23 Jan 2013 11:44:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-01-23-gprofshi-yong-fang-fa/</guid><description>&lt;h3 id="简介">简介&lt;/h3>
+&lt;p>调研能够动态分析代码的工具，了解了一点Gprof。&lt;/p>
+&lt;p>简短总结：&lt;/p>
+&lt;ul>
+&lt;li>必须完整执行一遍可执行文件，才可进行Gprof分析。&lt;/li>
+&lt;li>各个函数相互调用次数描述很到位，无调用的具体代码行号等信息，有助于分析流程。&lt;/li>
+&lt;li>各个函数时间消耗统计，有利于改进程序效率。&lt;/li>
+&lt;/ul></description></item><item><title>apple iOS MobileHIG 摘要</title><link>https://yyq.github.io/posts/2013/2013-01-18-apple-ios-mobilehig-review/</link><pubDate>Fri, 18 Jan 2013 17:01:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-01-18-apple-ios-mobilehig-review/</guid><description>&lt;p>一直想开发一个自己的app放在app store上，想先做一个有关数独的app。一个是因为我身边有不少人都喜欢玩这个游戏，还有一个是因为这个东西算法不是很难，之前用java和c#在android和windowsphone平台实现过。&lt;/p>
+&lt;p>等我idp申请下来，开始能上机调试，自己把数独的基本功能都搞定了之后，发现问题来了。我这程序吧，能够正常运行，仅仅能用。但是发现这界面啊，颜色啊，操作方式啊，都TMD烂透了。就开始琢磨这个事儿，这么样的程序提交app store铁定不会通过，自己已经为程序设计好一个图标，让同学和女友都看过，还过得去。但是点开图标之后的程序，那个实在是，我不知道该怎么下手来改进了。遂想起apple好像有个什么指南，告诉你移动开发者如何设计程序的人机交互的。在网上找了找，终于找到了这个资料,官网地址：&lt;a href="http://developer.apple.com/library/ios/#documentation/UserExperience/Conceptual/MobileHIG/Introduction/Introduction.html">iOS Human Interface Guidelines&lt;/a>&lt;/p>
+&lt;p>此文用来记录我从该文档中摘抄的我觉得现阶段对我有用处的东西。&lt;/p></description></item><item><title>学习linux启动过程</title><link>https://yyq.github.io/posts/2013/2013-01-15-xue-xi-linuxqi-dong-guo-cheng/</link><pubDate>Tue, 15 Jan 2013 09:50:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-01-15-xue-xi-linuxqi-dong-guo-cheng/</guid><description>&lt;p>下一步需要学习动态的linux函数调用关系，所以得先从启动过程开始了解。从一本书&lt;strong>linux内核设计的艺术&lt;/strong>中了解到的资料，以下内容如果不做特别注释的话，均为Linux0.11中的方式，可能新版本的kernel的函数名和这个会不一样，但是处理流程，我想应该每个操作系统都是一样的吧。&lt;/p></description></item><item><title>阅读文摘：打造facebook，亲历facebook爆发的5年</title><link>https://yyq.github.io/posts/2013/2013-01-13-yue-du-wen-zhai-da-zao-facebookqin-li-facebookbao-fa-de-5nian/</link><pubDate>Sun, 13 Jan 2013 22:44:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-01-13-yue-du-wen-zhai-da-zao-facebookqin-li-facebookbao-fa-de-5nian/</guid><description>&lt;p>最近，在看一本书，是一名facebook的中国籍员工写的。王淮。那本书由李开复作序什么的，王淮也是facebook第一名中国籍的项目经理，现已离开facebook做天使投资。对这些很有兴趣，遂第一时间买了这本书，了解了解最先进的公司。&lt;/p></description></item><item><title>something wrong with my blog</title><link>https://yyq.github.io/posts/2013/2013-01-11-what-the-hell-is-happening/</link><pubDate>Fri, 11 Jan 2013 10:44:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-01-11-what-the-hell-is-happening/</guid><description>if there is some chinese in the picture name like 你好.jpg
+then ,the rake generate breaks.</description></item><item><title>Ios开发Xcode中storyboard自动调整界面，autolayout等</title><link>https://yyq.github.io/posts/2013/2013-01-08-ioskai-fa-xcodezhong-storyboardzi-dong-diao-zheng-jie-mian/</link><pubDate>Tue, 08 Jan 2013 11:39:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-01-08-ioskai-fa-xcodezhong-storyboardzi-dong-diao-zheng-jie-mian/</guid><description>&lt;p>这个应该是很大一堆条条框框的使用策略。今儿只遇到了一点点问题，就记录一点点问题。&lt;/p>
+&lt;p>另外，值得参考的网址：&lt;a href="http://www.raywenderlich.com/20881/beginning-auto-layout-part-1-of-2">http://www.raywenderlich.com/20881/beginning-auto-layout-part-1-of-2&lt;/a>&lt;/p>
+&lt;p>笔记：&lt;/p></description></item><item><title>ios 数字键盘自定义done按钮</title><link>https://yyq.github.io/posts/2013/2013-01-08-ios-shu-zi-jian-pan-zi-ding-yi-donean-niu/</link><pubDate>Tue, 08 Jan 2013 11:36:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-01-08-ios-shu-zi-jian-pan-zi-ding-yi-donean-niu/</guid><description>&lt;p>总体逻辑，监听系统数字键盘的弹出和消失，在系统键盘弹出时，show my self-defined &lt;em>done key&lt;/em>,在系统键盘消失时，hide it&lt;/p></description></item><item><title>xcode调试，在模拟器运行正常，在设备运行失败</title><link>https://yyq.github.io/posts/2013/2013-01-06-xcode-will-run-app-on-simulator-but-not-on-device/</link><pubDate>Sun, 06 Jan 2013 20:56:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-01-06-xcode-will-run-app-on-simulator-but-not-on-device/</guid><description>&lt;h3 id="xcode-will-run-app-on-simulator-but-not-on-device">Xcode will run app on simulator but not on device&lt;/h3>
+&lt;p>在把学校项目的季度报告提交给软件所之后，今儿终于有空来弄一下我的ios编程了。今儿刚刚学会了真机调试，然后就不断的run啊，之前只会在模拟器调试实在略感憋屈啊。&lt;/p>
+&lt;p>不出一会，立马就有报错了，立马就上网查查，发现google真是好，搜索的时候用英文，google立马就能精确的给我定位，前三个链接中都来自stackoverflow，进去浏览一番，果然就能解决我的问题啊。&lt;/p></description></item><item><title>Doxygen使用说明（个人总结）</title><link>https://yyq.github.io/posts/2012/2012-12-26-doxygenshi-yong-shuo-ming-ge-ren-zong-jie-/</link><pubDate>Wed, 26 Dec 2012 13:10:01 +0000</pubDate><guid>https://yyq.github.io/posts/2012/2012-12-26-doxygenshi-yong-shuo-ming-ge-ren-zong-jie-/</guid><description>&lt;h2 id="doxygen是什么">Doxygen是什么&lt;/h2>
+&lt;p>简单的说，在我看来，这就是一个生成注释的工具，跨平台，很好用。输入一个工程的源代码，它可以很好的把所有文档里的注释等信息挑出来。然后结合工程组织成html或者tex等。方便对我们对工程的了解。
+可以参考&lt;a href="http://zh.wikipedia.org/wiki/Doxygen">wikipedia&lt;/a>&lt;/p>
+&lt;p>正好项目里有这样的需求，我就做个这么一个使用记录吧。&lt;/p></description></item><item><title>Why COMPLICATE Life?</title><link>https://yyq.github.io/posts/2012/2012-12-23-why-complicate-life/</link><pubDate>Sun, 23 Dec 2012 01:22:01 +0000</pubDate><guid>https://yyq.github.io/posts/2012/2012-12-23-why-complicate-life/</guid><description>&lt;p>这个音乐控件的有效性，取决于网速哈&lt;/p>
+&lt;p>随意乱逛，无意间看到了这个短文&lt;/p>
+&lt;p>很简单呢，恩，简单好，摘录下来&lt;/p></description></item><item><title>重拾APUE</title><link>https://yyq.github.io/posts/2012/2012-12-21-zhong-shi-apue/</link><pubDate>Fri, 21 Dec 2012 23:52:01 +0000</pubDate><guid>https://yyq.github.io/posts/2012/2012-12-21-zhong-shi-apue/</guid><description>&lt;p>&lt;strong>APUE→Advanced Programming in the UNIX Environment&lt;/strong>&lt;/p>
+&lt;p>&lt;strong>UNIX环境高级编程&lt;/strong>&lt;/p>
+&lt;h3 id="为什么说是重拾呢">为什么说是重拾呢&lt;/h3>
+&lt;p>第一次接触这本书是在大三的那个暑假，在ibm aix技术支持的组实习。正式报到之前，Tao给发邮件说了我们入门需要参考的数据，首推了这两本书：&lt;/p>
+&lt;p>&lt;a href="http://www.apuebook.com/">Advanced Programming in the UNIX Environment, Second Edition&lt;/a>&lt;/p>
+&lt;p>&lt;a href="http://www.amazon.com/Design-UNIX-Operating-System-Maurice/dp/0132017997">Design of the UNIX Operating System&lt;/a>&lt;/p></description></item><item><title>数据结构cpuinfo_mips分析</title><link>https://yyq.github.io/posts/2012/2012-12-20-shu-ju-jie-gou-cpuinfo-mipsfen-xi/</link><pubDate>Thu, 20 Dec 2012 14:10:01 +0000</pubDate><guid>https://yyq.github.io/posts/2012/2012-12-20-shu-ju-jie-gou-cpuinfo-mipsfen-xi/</guid><description>&lt;p>有关代码中的cpuinfo_mips数据结构和对该数据结构填充赋值的代码。&lt;/p>
+&lt;p>kernel3.5.4&lt;/p></description></item><item><title>SMP结构在MIPS中的体现</title><link>https://yyq.github.io/posts/2012/2012-12-20-smpjie-gou-zai-mipszhong-de-ti-xian/</link><pubDate>Thu, 20 Dec 2012 14:05:01 +0000</pubDate><guid>https://yyq.github.io/posts/2012/2012-12-20-smpjie-gou-zai-mipszhong-de-ti-xian/</guid><description>&lt;p>囧了哎，前面分析完x86的一堆代码，这会儿又得找到在内核源码中，有关mips架构和smp有关的代码&lt;/p>
+&lt;p>恩，一句话评论：mips的smp结构就是x86的smp的一种精简&lt;/p>
+&lt;p>依旧是kernel 3.5.4 ，主要在目录/arch/mips下&lt;/p></description></item><item><title>SMP有关的数据结构和函数</title><link>https://yyq.github.io/posts/2012/2012-12-20-smpyou-guan-de-shu-ju-jie-gou-he-han-shu/</link><pubDate>Thu, 20 Dec 2012 13:54:01 +0000</pubDate><guid>https://yyq.github.io/posts/2012/2012-12-20-smpyou-guan-de-shu-ju-jie-gou-he-han-shu/</guid><description>&lt;h3 id="这些代码和函数都是在kernel354版本里面找到的使用工具understandhttpwwwscitoolscom和lxrhttplxrlinuxno">这些代码和函数都是在kernel3.5.4版本里面找到的，使用工具&lt;a href="http://www.scitools.com/">understand&lt;/a>和&lt;a href="http://lxr.linux.no/">lxr&lt;/a>&lt;/h3>
+&lt;p>实验室的项目要求分析来着，上网找了一通资料，看到了这些有用的信息&lt;/p></description></item><item><title>自己总结git常用命令手册</title><link>https://yyq.github.io/posts/2012/2012-12-16-zi-ji-zong-jie-gitshi-yong-jian-yao-shuo-ming/</link><pubDate>Sun, 16 Dec 2012 17:01:01 +0000</pubDate><guid>https://yyq.github.io/posts/2012/2012-12-16-zi-ji-zong-jie-gitshi-yong-jian-yao-shuo-ming/</guid><description>&lt;h2 id="引言">引言&lt;/h2>
+&lt;p>之前偶尔也用git来存自己的代码，也fork别人的代码看看，还用什么github的图形界面来搞，后来那个图形界面实在是把我搞崩溃了，彻底决定不用GUI来操作github了，再加上学校的项目也得用这个东西，老师还让我调研清楚git各种协同合作的使用方法等等。我自己还想在github这上面弄了个博客（尽管借用的是别人用ruby写的octopress），后来自己还是决定从海量的书籍里先总结出，自己到底最常用的命令是哪些，记录在这个地方，以后自己要是忘记怎么用git了，就来这里看看&lt;/p></description></item><item><title>Analyzing Big Data with Twitter</title><link>https://yyq.github.io/posts/2012/2012-12-16-analyzing-big-data-with-twitter/</link><pubDate>Sun, 16 Dec 2012 10:33:01 +0000</pubDate><guid>https://yyq.github.io/posts/2012/2012-12-16-analyzing-big-data-with-twitter/</guid><description>&lt;p>今儿在浏览新闻的时候，发现了AllThingsD的一篇文章（&lt;a href="http://allthingsd.com/20121214/twitter-takes-big-data-to-school/">原文链接&lt;/a>）介绍伯克利大学请twitter的一帮工程师来给他们学校开的一门课程，讲的是如何每天处理twitter的大量数据。还给出了这门课程的相关视频等等。&lt;/p></description></item><item><title>第一篇博文，抱怨</title><link>https://yyq.github.io/posts/2012/2012-12-13-new-test/</link><pubDate>Thu, 13 Dec 2012 23:03:01 +0000</pubDate><guid>https://yyq.github.io/posts/2012/2012-12-13-new-test/</guid><description>实验室的项目竟然是分析内核，哎 前些天吧，让我编译给3个平台编译kernel，x86,arm,mips；因为这三个平台目前最火
+然后最近，分给我的这一块儿是，调查mips CPU和x86cpu的区别和联系东西，真心奇怪
+在arch/mips/目录下面，浏览每一个文件，看别人的注释，看函数的名字，搜索每一个cpu字符串。
+偶尔还能看到大师linus的在注释中的调侃，可是，我一头乱啊。晕啊。毫无头绪
+好吧，在现在看来这些编译的工作啦，分析内核啦，都没什么用处，希望在将来的某一天能够用上吧，阿门
+test some web:http://10064645.42qu.com,咦？这个看上去不管用？</description></item></channel></rss>

@@ -1,0 +1,147 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>Learn the obj-c:Inheritance | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="Finally , i&rsquo;ve done the 8th chapter of the book PROGRAMMING in Obj-C,and i have already written all the samples to test what i&rsquo;ve leaned。
+As always , i put the code on a project in github.
+When I am reading the book on kindle, I highlight something when I think  they are very important。
+Herer, I&rsquo;ll show you the sentences I marked.">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="Learn the obj-c:Inheritance">
+<meta property="og:description" content="Finally , i&rsquo;ve done the 8th chapter of the book PROGRAMMING in Obj-C,and i have already written all the samples to test what i&rsquo;ve leaned。
+As always , i put the code on a project in github.
+When I am reading the book on kindle, I highlight something when I think  they are very important。
+Herer, I&rsquo;ll show you the sentences I marked.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2013/2013-03-07-xue-xi-objbi-ji-di-ba-zhang-ji-cheng/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2013-03-07T22:03:01+00:00">
+<meta property="article:modified_time" content="2013-03-07T22:03:01+00:00">
+<meta itemprop=name content="Learn the obj-c:Inheritance">
+<meta itemprop=description content="Finally , i&rsquo;ve done the 8th chapter of the book PROGRAMMING in Obj-C,and i have already written all the samples to test what i&rsquo;ve leaned。
+As always , i put the code on a project in github.
+When I am reading the book on kindle, I highlight something when I think  they are very important。
+Herer, I&rsquo;ll show you the sentences I marked."><meta itemprop=datePublished content="2013-03-07T22:03:01+00:00">
+<meta itemprop=dateModified content="2013-03-07T22:03:01+00:00">
+<meta itemprop=wordCount content="403">
+<meta itemprop=keywords content="objective-c,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="Learn the obj-c:Inheritance">
+<meta name=twitter:description content="Finally , i&rsquo;ve done the 8th chapter of the book PROGRAMMING in Obj-C,and i have already written all the samples to test what i&rsquo;ve leaned。
+As always , i put the code on a project in github.
+When I am reading the book on kindle, I highlight something when I think  they are very important。
+Herer, I&rsquo;ll show you the sentences I marked.">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">Learn the obj-c:Inheritance</h1>
+<time class="f6 mv4 dib tracked" datetime=2013-03-07T22:03:01Z>March 7, 2013</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Finally , i&rsquo;ve done the 8th chapter of the book PROGRAMMING in Obj-C,and i have already written all the samples to test what i&rsquo;ve leaned。</p>
+<p>As always , i put the code on a project in <a href=https://github.com/yyq/learn-obj-c>github</a>.</p>
+<p>When I am reading the book on kindle, I highlight something when I think they are very important。</p>
+<p>Herer, I&rsquo;ll show you the sentences I marked.</p>
+<ol>
+<li>
+<blockquote>
+<p>Instance variables declared or <strong>synthesized</strong> in the implementation section are <strong>private</strong> variables and are not directly accessible by subclass.</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>Note that the side method does not have direct access to the Rectangle&rsquo;s width instance variable; it&rsquo;s private and therefore not accessible by the Square class. However,the <strong>getter method is inherited</strong> from the parent class and can be used to access the value of the width.</p>
+</blockquote>
+<pre><code> @implementation Square:Rectangle
+ -(void) setSide:(int) s{
+ .....
+ }
+ -(int) side
+ {
+ 	return self.width.
+ }
+</code></pre>
+</li>
+<li>
+<p>the <em>@class</em> Directive</p>
+<p>When you are writing the ClassA.h，but you want to use the ClassB.Just type the <em>@class ClassB</em> instead of the traditional import"class" something in other languages. But when you are writing the ClassA.m ,you want to use the methods of the ClassB something, you must use the <em>import"ClassB.h"</em>.</p>
+<p>But WHY? here is the original words in the book:</p>
+<blockquote>
+<p>Using the <em>@class</em> directive is more efficient because the compiler doesn&rsquo;t need to import and therefore process the entire XYPoing.h file(even though it is quite small);it just needs to know that XYPoint is the name of a class.If you needed to reference one of the XYPoint class methods(say in the implementation section),the <em>@class</em> directive would not suffice because the compiler would need more information;it would need to know how many arguments the method takes,what their types are,and what the method&rsquo;s return type is.</p>
+</blockquote>
+</li>
+<li>
+<p>I think here are things talking about <strong>memory copy or reference copy?</strong>,kindle position 3931/11270</p>
+<blockquote>
+<p>That is,by default,the action of a synthesized setter is to simply copy the object pointer, not the object itself.
+For this reason,the safest way to write a getter that returns an object is to actually make a copy of the object and to return that copy.</p>
+</blockquote>
+</li>
+<li>
+<p>Here are three reasons to create a subclass:</p>
+<blockquote>
+<ol>
+<li>You want to extend the functionality of a class,perhaps by adding some new methods and/or instance variables.</li>
+<li>You want to make a specialized version of a class(e.g. a particular type of graphic object)</li>
+<li>You need to change the default behavior of a class by overriding one or more of its methods</li>
+</ol>
+</blockquote>
+</li>
+</ol><ul class=pa0>
+<li class=list>
+<a href=/tags/objective-c class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">objective-c</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2013/2013-02-11-xue-xi-obj-cbi-ji-2-you-guan-class/>学习obj-c笔记2:有关class</a>
+</li>
+<li class=mb2>
+<a href=/posts/2013/2013-01-25-xue-xi-obj-cbi-ji-1/>学习obj-c笔记1</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>装饰器 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<link href=/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/index.xml rel=alternate type=application/rss+xml title="Young Story">
+<link href=/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/index.xml rel=feed type=application/rss+xml title="Young Story">
+<meta property="og:title" content="装饰器">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yyq.github.io/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/">
+<meta itemprop=name content="装饰器">
+<meta itemprop=description content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="装饰器">
+<meta name=twitter:description content>
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class="pb3-m pb6-l bg-black">
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+<div class="tc-l pv3 ph3 ph4-ns">
+<h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+装饰器
+</h1>
+</div>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="cf pa3 pa4-m pa4-l">
+<div class="measure-wide-l center f4 lh-copy nested-copy-line-height nested-links nested-img mid-gray">
+<p>Below you will find pages that utilize the taxonomy term “装饰器”</p>
+</div>
+</article>
+<div class="mw8 center">
+<section class="flex-ns flex-wrap justify-around mt5">
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-06-14-python-property/ class="link black dim">
+Python @property装饰器
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+廖老师的博客链接如下，一开始没看懂，搜罗了一大堆，有点感觉了
+点击打开链接其实@property装饰器就是把class的方法变成属性，见下面这个class，它有两个私有属性。
+通过第一个@property和第二个@score.setter，我们可以像访问属性一样来调用类里面的方法，例如：
+s=Student(“David”,99)
+s.score = 100
+至于用这种装饰器的原因，我想，就是为了简洁吧，直接用属性赋值的方式，执行了方法。Python 肯定是个懒人发明的。
+ 
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-06-05-python-decorator-research/ class="link black dim">
+Python装饰器有趣实例探究
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+<p>廖老师的教程实在太高深，没弄懂，点击打开链接</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>deco_functionNeedDoc</span>(func):
+    <span style=color:#66d9ef>if</span> func<span style=color:#f92672>.</span>__doc__ <span style=color:#f92672>==</span> <span style=color:#66d9ef>None</span> :
+        print func, <span style=color:#e6db74>&#34;has no __doc__, it&#39;s a bad habit.&#34;</span>
+    <span style=color:#66d9ef>else</span>:
+        print func, <span style=color:#e6db74>&#39;:&#39;</span>, func<span style=color:#f92672>.</span>__doc__, <span style=color:#e6db74>&#39;.&#39;</span>
+    <span style=color:#66d9ef>return</span> func
+<span style=color:#a6e22e>@deco_functionNeedDoc</span>
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>f</span>():
+    print <span style=color:#e6db74>&#39;f() Do something&#39;</span>
+<span style=color:#a6e22e>@deco_functionNeedDoc</span>
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>g</span>():
+    <span style=color:#e6db74>&#39;I have a __doc__&#39;</span>
+    print <span style=color:#e6db74>&#39;g() Do something&#39;</span>
+f()
+g()
+print f
+print g<span style=color:#f92672>&lt;/</span>pre<span style=color:#f92672>&gt;</span>
+</code></pre></div><p>这段代码打印结果如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&lt;</span>function f at <span style=color:#ae81ff>0x0238F930</span><span style=color:#f92672>&gt;</span> has no<span style=color:#f92672>**</span>doc<span style=color:#f92672>**</span>, it<span style=color:#f92672>&amp;</span><span style=color:#75715e>#8217;s a bad habit.</span>
+
+<span style=color:#f92672>&lt;</span>function g at <span style=color:#ae81ff>0x0238F8B0</span><span style=color:#f92672>&gt;</span> : I have a <span style=color:#f92672>**</span>doc<span style=color:#f92672>**</span> <span style=color:#f92672>.</span>f() Do somethingg() Do something
+
+<span style=color:#f92672>&lt;</span>function f at <span style=color:#ae81ff>0x0238F930</span><span style=color:#f92672>&gt;</span>
+
+<span style=color:#f92672>&lt;</span>function g at <span style=color:#ae81ff>0x0238F8B0</span><span style=color:#f92672>&gt;</span>
+</code></pre></div><p>当时我就晕菜了，想了很久，原来在@装饰器函数的时候就会调用装饰器，装饰器函数return func，而func就是传进去的参数f。这个时候把代码改改。</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<link href=/posts/index.xml rel=alternate type=application/rss+xml title="Young Story">
+<link href=/posts/index.xml rel=feed type=application/rss+xml title="Young Story">
+<meta property="og:title" content="Posts">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yyq.github.io/posts/">
+<meta itemprop=name content="Posts">
+<meta itemprop=description content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="Posts">
+<meta name=twitter:description content>
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class="pb3-m pb6-l bg-black">
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+<div class="tc-l pv3 ph3 ph4-ns">
+<h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+Posts
+</h1>
+</div>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="pa3 pa4-ns nested-copy-line-height nested-img">
+<section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray"></section>
+<section class="flex-ns flex-wrap justify-around mt5">
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-03-27-owasp-top10-go-through/ class="link black dim">
+OWASP TOP 10 浅显解读
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+OWASP的全称是Open Web Application Security Project，开放式网络应用安全项目，官网在https://www.owasp.org/index.php/Main_Page
+OWASP组织最近一次正式发布TOP10是在2013年，官网介绍页面是https://www.owasp.org/index.php/Top_10_2013-Top_10
+A1-注入 注入，例如SQL注入，操作系统注入，LDAP注入等等，一般发生在命令或者查询中包括了不可信任的数据，并且被发送到了解释器（解释命令或者查询的软件）。攻击者的攻击数据可以出发解释器来执行一些不怀好意的命令或者访问一些数据而无需正常授权。
+A2-坏授权和会话管理 在web应用中，和授权有关的，会话管理有关的一些功能，通常没有正确的实现，这会让攻击者破坏你的密码，密钥或者会话令牌，或者利用其它 实现的缺陷来伪装其它用户的身份
+A3-跨站脚本 XSS漏洞，通常发生在：应用拿到不可信任的数据并且发送给浏览器而没有做出正确的校验和过滤。XSS会允许攻击者在受害者的浏览器来执行脚本，这可以让攻击者劫持用户会话，修改网站或者把用户重定向到恶意网站
+A4-不安全的直接引用其他对象 这个缺陷一般发生：在当开发人员暴露一个对象给内部功能用，比如某个文件，某个目录或者某个数据库秘钥。如果没有正确的权限控制检查或者其他保护，那么攻击者可以操作利用这个对象来访问未授权的数据。
+A5-安全的错误配置 良好的安全:得有一个安全配置的规则，并且部署到应用，框架，应用服务器，网络服务器，数据库服务器和平台。安全设置应该被妥善的定义，实施和维护，一般来说默认场景都是不安全的。另外，软件要尽量保持更新。
+A6-敏感数据泄露 许多web应用都没有合适的保护好敏感数据，例如信用卡，个人税号和密码等等。攻击者可以偷取或者修改弱保护数据来实施信用卡欺诈，身份盗用或者其他犯罪。敏感的数据应该需要更多的保护，例如存储时和传输时都要进行加密，和浏览器进行交互时也需要特殊的预防泄露。
+A7-缺失的功能分级访问控制 大多数web应用会在把功能展示在界面上之前进行验证访问权限。、，当每一个功能被访问的时候，都要在服务器上执行同样的检查访问权限。如果网络请求没有被验证通过，攻击者将会伪造请求来进行未授权的访问。
+A8-CSRF，跨站伪造请求 CSRF攻击会迫使一个已经登录的受害者的浏览器来发送伪造的http请求，包括受害者的会话cookie，也包括任何其他的身份验证信息，发送到一个脆弱的web应用。这让攻击者可以强迫受害者的浏览器来生成请求,而没有防护的应用会认为这个请求来自于受害者的合法请求
+A9-使用了有已知漏洞的组件 组件，例如库，框架和其他软件模块，他们通常是以拥有所有权限来运行的。如果一个有漏洞的组件暴露了出来，一个攻击者就可以造成严重的数据丢失或者服务器接管。一个有已知漏洞组件的应用可能自己身的防御已经失效并且会引发一系列可能的攻击和影响
+A10-未授权的重定向和转发 web应用频繁的重定向和把用户引导向其他的页面和网站，使用不信任的数据来决定最终的目的地网页。如果没有合适的校验过程，攻击者可以将受害者重定向到钓鱼网站或者恶意网站，或者使用转发来访问未经授权的页面。
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-03-25-sql-injection-attacks-defense-2/ class="link black dim">
+《SQL注入攻击与防御》之高级攻击
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+SQL盲注利用 寻找并确认SQL盲注 无效数据将返回通用错误页面而非详细错误，这时可通过包含副作用比如时间延迟来确认SQL注入，还可以拆分与平衡参数。如果数字字段为5，就提交3+2或者6-1；如果字符串参数中包含"MadBod",就提交‘Mad’||'Bod' 请思考漏洞的属性：是否强制产生错误以及能否控制无错误页面的内容 可通过在SQL中提问某一位是0或者1来推断某个信息位，有很多推断技术可用于实现该目标 使用基于时间的技术 可使用逐位方法或二分搜索法提取数据并利用延迟表示数据的值，可使用明确的SLEEP类型函数或运行很长的查询类引入延迟 通常在SQL Server和Oracle上采用以时间作为推断的方法，不过这在MySQL上不太可靠，改机制很可能会失败 使用时间作为推断方法在本质上是不可靠的，但却可以通过增加超时或借助其他技巧来进行改进 使用基于响应的技术 可使用逐位方法或二分搜索方法提取数据并利用相应内容表示数据的值。一般来说，现有查询中都包含一条插入子句，它能够根据推断的值来保持查询不变或返回空结果。 基于响应的技术可成功用于多种多样的数据库 某些情况下，一个请求可返回多个信息位 使用非主流通道 带外通信的优点是：可以以块而非位的方式来提取数据，并且在速度上有明显改进 最常用的通道是DNS，攻击者说服数据库执行一次名称查找，该查找包含一个由攻击者控制的域名并在域名前添加了一些要提取的数据。当请求到达DNS名称服务器后，攻击者就可以查看数据。其他通道还包括HTTP和SMTP 不同数据库支持不同的非主流通道，支持非主流通道的工具的数量明显要比支持推断技术的少 自动利用SQL盲注 有一些工具都不是开源的，这里我只记录Sqlmap的好了 Sqlmap将漏洞的发现和利用结合在一款强大的工具中，它既支持基于时间的推断方法，也支持基于响应的推断方法，另外还支持ICMP通道方法。该工具的成长速度和开发也很快 利用操作系统 访问文件系统 读取文件有关：
+在MySQL中，可以使用LOAD DATA INFILE和LOAD_FILE()命令从主机读取任何文件
+在Microsoft SQL Server中，可以使用BULK INSERT或OLE Automation从文件系统读取文件。对于较新的系统（SQL Server 2005以及之后的版本），可以使用CREATE ASSEMBLY方法从文件系统读取文件
+在Oracle中，可以使用Oracle目录，Oracle Text或UTL_FILE方法读取文件
+写入文件有关：
+MySQL,使用select into outfile和select into dumpfile命令向文件系统写文件
+MS SQL,可以使用OLE Automation和简单的重定向（通过命令执行）在目标文件系统中创建文件。可以从命令行使用debug.exe和BCP,进而在目标系统中辅助创建二进制文件
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-03-24-my-vimrc-config-details/ class="link black dim">
+继续更新自己的vimrc配置
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+感觉拷贝来一些插件什么的，有的设置和快捷键，自己看的时候知道，但是不常用的话，过些天再一看手生了，也就忘记了。
+有一些很有用的技巧，得写下来，放着，以备自己忘记了，再来查看。
+高亮当前光标的位置，横着的一条，竖着的一条，省的自己满屏幕找光标在哪 mapleader设置为空格，有效利用上大拇指和空格键了，各种快捷键更加飞起 语法高亮得开着 文件夹目录结构插件nerdtree的快捷键ctrl+n,从此不用离开vim即可浏览各级目录 编辑时，tab自动转成两个空格，上大学的时候流行默认四个空格，据说最近湾区都流行两个空格 高亮第80个字符的位置，为啥建议每一行不超过80个字符呢，多年前的IBM punch card宽度就是80，现在呢，大家显示器一行可以显示很多很多字符了，但是仍然建议80字符，因为这样的代码更紧凑，可读性更高。在各个IDE或者编辑器的默认设置里都不用自动折叠代码，就能直接看完一行字 显示行号 连续两个空格，用来执行ctrl+^,可以迅速的在最近使用的两个文件之间来回切换 在多个窗口之间移动，vim默认是ctrl+w，然后在hjkl,此处我直接修改成ctrl+hjkl 在多个tab之间切换，vim默认是gT左标签gt右标签，我直接改成大写字母的H和L tagbar快捷键，空格+tb，tagbar是一个文件内的书签列表，可用于快速导航，切换到某函数啊，类啊，变量啊什么的 我的 :w回车，修改成w，就是空格+w了，再加上空格+q，无比方便的保存当前文件，关闭当前窗口 buffer切换，用[b代替了 :bprevious,用]b代替了:bnext Next：更多学习ctrlp的快捷键，利用好空格即是我的mapleader
+更新：
+参考了YouCompleteMe作者的vimrc(github link)，我自己又重新审视了一下自己的vimrc，做出如下修改：我使用rspec的机会较少，注释掉相关快捷键；窗口切换我之前用的是ctrl加上ghjk，现在改成空格加上ghjk. 搜索字符串的几个命令，都修改成默认的加上zz，这样搜索文字就能每次都居中屏幕显示了，这个确实很有用。 CtrlP不用了暂时，用Command+T来在工程里搜索文件 最后看一眼现在我的vim的样子吧
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-03-01-my-vimrc-config/ class="link black dim">
+我的vim配置说明
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+参考了不少书籍和网站，最终形成一个自己觉得顺手的vim配置文件，存在github的gist了，有兴趣的朋友可以看看，交流交流。 .vimrc .vimrc.bundles
+要相关插件都正常工作的话，需要手动执行的一些操作如下：
+mkdir ~/.vim touch .vimrc touch .vimrc.bundles fill the file content(vimrc, vimrc.bundles) Download Vundle for VIM git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim open vim, and run :BundleInstall The command to install ctags on my mac: brew install ctags
+The command to install YouCompleteMe
+cd ~/.vim/bundle/YouCompleteMe ./install.py --clang-completer 有的插件对VIM有版本要求，版本号不能太低了。我是用的macOS，安装了最近的8.0版本，绝大部分插件都能正常工作
+关于各个插件的详细使用说明和配置说明的话，可以参考vimrc.bundles里面的各个github链接，看他们的readme，或者直接看他们源代码，代码都存在~/.vim/bundle里面了
+我把我的这两个配置文件也贴在这里好了
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-02-22-vimtutor-chinese-summary/ class="link black dim">
+vim中文手册 vimtutor中文版
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+最近在学习VIM的使用，在命令行里输入vimtutor可以打开基本教程，然后跟着练习一个一个做下来，也算是入门了。不过因为没有时刻都在用，所有有时候有的命令就忘记了。于是把教程中的每一课的summary都翻译成中文，保存下来，供以后查阅。
+第一课 摘要 1. 光标移动使用箭头或者hjkl四个字母 h (左) j (下) k (上) l (右) 2. 从shell开始启动vim的命令是：vim 文件名 &lt;ENTER> 3. 退出VIM: 放弃所有更改退出： &lt;ESC> :q! &lt;ENTER> . 保存更改退出： &lt;ESC> :wq &lt;ENTER> . 4. 删除光标处的字符: x 5. 插入字符： 在光标之前插入字符： i 在行尾添加字符： A 注意：按&lt;ESC>键可以让你回到正常模式或者取消你未完成的命令 第二课 摘要 1. 删除字符，从光标开始直到遇到下一个单词 dw 2. 删除字符，从光标开始直到当前行的末尾 d$ 3. 删除一整行 dd 4. 重复一个动作，可以在动作之前加一个数字： 2w 5. 一些操作的格式是： 操作符 [数字] 移动 操作符：要做什么，例如字母d是用于删除 数字： 你要重复的次数 移动： 你的操作要作用在多少文本内容上，例如w就是一个单词，$是到行尾 6. 把光标移动到行首： 0 7. 撤销之前的动作： u (小写u) 撤销这一行的所有改动： U （大写U） 撤销刚才的”撤销“： CTRL-R 第三课 摘要 1.
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-02-18-dropbox-cto-mit-speaking/ class="link black dim">
+Go get your tennis ball
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+Dropbox创始人在2013年的MIT毕业典礼的演讲 youtube video:
+看完之后，我的一句话评论：Go get your tennis ball.
+大意这么理解：有很多遛狗的人可能都这么玩，用网球遛，当你抓着球做出准备丢的动作的时候，你家狗的双眼会目不转睛的盯着球，然后当你一扔，狗会以最快的速度冲过去追逐那个球，咬着球回来把球交给你，等着你扔下一轮。
+之前去美国出差在Jay的家里玩他的Thomas（他的狗的昵称），他就是这么遛狗的，只是觉得很有趣。
+演讲中的这个部分说到的是工作，有的人毕业了拿着高薪，工作之余还是会抱怨工作如何如何不开心。追求自己想要的工作，应该就像狗去追那个网球一样，全神贯注，全心全意，就算你的网球被无数次抛向不同的地方，不管有多远，你每一次去追寻他的热情都一样。这才是你最真实的追求。想到了另外一个名言: follow your heart
+终究有一天，我也会追求到一份这样的工作。
+从wanqu.co这个网站上看到的这个视频，觉得很励志，看了之后自己也有感而发，遂写下此文。下面引用该网站的几句评论：
+人这一辈子只有3万天；人生不需要完美，人生需要冒险；你这个人是与你常在一起的5个人的平均；24岁时第一次融资，刷新自己银行网站见识到从$60变成$120万，从没逗号变俩逗号。
+&ldquo;&mldr; you&rsquo;re the average of the 5 people you spend the most time with. Think about that for a minute: who would be in your circle of 5?&rdquo; 你可以找机会多跟牛人在一起，或者。。。找机会少跟烂人在一起：）
+在学校你可以追求完美的 GPA，毕业后，人生不可能完美。可以不断尝试，失败许多次，但你只要能成功一次就够了。&ldquo;From now on, failure doesn&rsquo;t matter: you only have to be right once.&rdquo;
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-02-16-python-crawler-practice/ class="link black dim">
+python scrapy爬虫练手
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+简介 初步了解和实践了一下用python写个爬虫，有现成的库，学起来的方便。
+用的爬虫框架是：scrapy 官网链接
+参考的网页是：Segmentfault.com的这篇文章
+我的代码存放在：GitHub link
+新增加的技能点 基本了解scrapy的用法，爬虫的最基本的思路 python 3的语法里，print是一定要有括号的 xpath基础知识掌握和应用，简单的抓取用xpath基本够了，不过以后要来高精专的字符提取，还是得精通正则 python yield关键字的了解，它通常会出现在某个generator函数里，当这个generator函数执行的时候，遇到yield表达式，就会执行这个表达式，并且将其结果当做返回值return yield在某种情况下非常有用：有很多很多的条目，只需要读取一次。可以避免生成超大的数组。当你有很多大量的元素需要访问一次的时候，全部（或者部分）直接存到内存里都不是高效的做法，高效的做法是一次只载入内存一个，用完了之后就等待，当需要访问下一个元素的时候，才启动这个函数，去处理下一个元素。 scrapy工程需要注意一下，project名称和爬虫名称别用同一个单词，不然有些文件里需要引用其他文件夹的class的时候，会出错
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-02-11-sql-injection-attacks-defense/ class="link black dim">
+《SQL注入攻击与防御》之攻击
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+重点看了攻击方面的内容，防御没怎么看，我觉得在攻击方面的知识没有消化理解的话，可能防御类的知识也会比较糊涂，决定过一段时间，自己实践过sql攻击之后，有了一些理解，再来学习防御，会有收获。
+计划：去ichunqiu学习学习sqlmap的使用，之前简单学习过，这次得找个站练练手，至少成功实践一次
+什么是SQL注入 理解web应用的工作原理 Web应用是一种使用Web浏览器并通过Internet或内部网络访问的程序。它同时还是一种使用浏览器所支持语言（HTML,JavaScript,Java）编写的计算机软件程序，借助不同的web浏览器来呈现应用程序的可执行文件 基本的数据库驱动的动态web应用通常包含一个后台数据库和很多包含服务器端脚本的web页面，这些脚本则是由可从数据库（数据库的选择依不同的交互而定）中提取特定信息的编程语言编写而成的 基本的数据库驱动的动态web应用通常包含三层：表示层（Web浏览器或呈现引擎）、逻辑层（c#,ASP,.Net,PHP,JSP等）和存储层（例如SQL Server,MySQL,Oracle等数据库）。Web浏览器向中间层（逻辑层）发送请求，中间层通过查询，更新数据库（存储层）来响应该请求。 理解SQL注入 SQL注入是一种将SQL代码插入或添加到应用（用户）的输入参数中，之后再将这些参数传递后台的SQL服务器加以解析并执行的攻击 SQL注入的主要方式是直接将代码插入到参数中，这些参数会被值入SQL命令中加以执行 攻击者能够修改SQL语句时，该进程将与执行命令的组件（数据库服务器，应用服务器或者web服务器）拥有相同的权限，该权限通常级别很高 理解SQL注入的产生过程 如果web应用开发人员无法确保在将从web表单，cookie，输入参数等收到的值传递给SQL查询（该查询在数据库服务器上执行）之前已经对其进行过验证，通常就会出现SQL注入漏洞 如果攻击者能够控制发送给SQL查询的输入，并且能操纵该输入将其解析为代码而非数据，那么攻击者就可能有能力在后台数据库上执行该代码 如果应用开发人员无法彻底理解与他们交互的基础数据库或者无法完全理解并意识到所开发代码潜在的安全问题，那么他们编写的应用通常是不安全的，并且容易受到sql注入攻击 SQL注入测试 寻找sql注入 寻找sql注入漏洞存在三个关键点 识别web应用接收的数据输入 修改输入值以包含危险的字符串 检测服务器返回的异常 使用web代理角色扮演工具有助于绕过客户端限制，完全控制发送给服务器的请求，此外，它们还能提高服务器响应的可见度，提供更多检测到细小漏洞的机会 包含数据库错误或http错误代码的服务器响应通常能降低识别sql注入漏洞的难度，不过，sql盲注是一种即使应用不返回明显错误也能利用漏洞的技术 确认sql注入 想要确认一个sql注入漏洞并进一步加以利用，需要构造一条能注入sql代码的请求以便应用程序创建一条语法正确的sql语句，之后由数据库服务器执行该语句且不返回任何错误 创建语法正确的语句时，可以通过注入注释终止该语句，并注释掉剩余的查询。对于这种情况，通常可以毫无约束的连接任意sql代码（假设后台数据库支持执行多条语句），进而提供执行攻击的能力 有时，应用程序对注入操作没有回复任何可见的信息，这时可以通过向来自数据库的回复引入延迟来确认注入，应用服务器将等待数据库回复，我们则可以确认是否存在漏洞，对于这种情况，需要意识到网络和服务器工作负荷可能会对延迟造成轻微干扰 自动发现sql注入 寻找sql注入漏洞所涉及的操作可以被适度自动化。当需要测试大型的web站点时，自动技术非常有用，但需要意识到自动发现工具可能无法识别某些存在的漏洞，不能完全依赖自动化的工具 有多款商业工具可以对web站点的完整安全性进行评估，还可以进行sql注入漏洞测试 利用sql注入 理解常见的漏洞利用技术 select语句中经常出现sql注入漏洞，但不会修改数据。sql注入还会出现在修改数据的语句（insert，update，delete）中，虽然可使用相同的技术，但此时应仔细思考技术对数据库有可能会产生的影响，而对于select语句，则应尽可能使用sql注入，如果不能利用select语句，在攻击期间还可以使用其他的一些技术以减少修改所带来的危害程度 在本地安装一个与用于测试注入语法的数据库完全相同的数据库会非常有用 如果后台数据库和应用架构支持多条语句相连，那么利用漏洞会变得相当容易 识别数据库 在一个成功的攻击中，第一步始终会包含远程数据库的精确跟踪 最直接的方法是强迫远程应用返回一条能揭示数据库服务器技术的消息（通常是一条错误消息） 如果那样做不行，可注入一条只能工作在特定数据库服务器上的查询 使用UINON语句提取数据 要想成功的向现有查询添加数据，就必须保证他们的列数和数据类型均匹配 所有数据类型均接受NULL值，GROUP BY是寻找要注入的准确列数的最快方法 如果远程web应用只返回第一行，那么可通过添加一个永假条件来移除原来的行，然后一次一行的提取想要的行 使用条件语句 使用条件语句，攻击者的每次请求可以提取一个数据位 根据所提取值得不同，可以选择引入延迟，产生错误或强迫应用程序返回一个不同的HTML页面 每种技术都有最适合使用的场景。给予延迟的技术速度虽慢但非常灵活，基于内容的技术相比于错误的技术则会留下更少的痕迹 枚举数据库模式 遵循一种分级的方法，首先枚举数据库，然后是每个数据库的表，之后是每个表的列，最后是每一列的数据 如果远程数据库很大，就不需要提取整个数据库，快速浏览一下表名通常就足以确定想要的数据的位置 注入INSERT查询 如果要在INSERT、UPDATE或者DELETE查询中利用SQL注入漏洞，就必须小心处理，以避免出现垃圾数据填充数据库或者大量修改or删除数据等副作用 安全注入的办法包括：修改INSERTorUPDATE查询以更新一个可以在应用程序的其他地方看到的值；或者修改INSERT、UPDATE、DELETE查询使之在整体上执行失败，但可以返回数据或在结果上产生明显差别，比如时间上的延迟或不同的错误消息。 提升权限 所有主流数据库服务器一直以来都深受权限提升漏洞之苦。我们正在攻击的数据库服务器很可能未升级至最新的安全更新程序 对于其他情况，可以尝试暴力破解管理员账户，例如在SQL Server上使用OPENROWSET 窃取哈希口令 如果拥有管理员权限，请不要错过获取哈希口令的机会。人们都倾向于重用口令，这些哈希可能成为进入整个“新世界”的钥匙 带外通信 如果无法使用前面的方法提取数据，可尝试建立一种完全不同的通道 可能的选项包括email(SMTP)、HTTP、DNS、文件系统或针对特定数据库的连接 移动设备上的sql注入 很多移动设备和嵌入式设备使用本地SQL数据库来存储或缓存信息 虽然在访问方式上存在差异，但在适当的条件下，这些移动应用程序也存在可利用的SQL注入漏洞，就像任何Web应用程序一样 自动利用sql注入 本章分析的大多数攻击都需要发送大量请求以达到目的 幸运的是，有几种工具可以辅助实现自动攻击 这些工具提供了很多不同的攻击模式和选项，从远程数据库服务器跟踪到提取它所包含的数据
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-02-07-reading/ class="link black dim">
+读完《乔布斯传》《Google未来之境》之后的思考
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+一句话总结 About Steve Jobs 做人做事，不为钱，只惟心 高度专注，有所失，为极致
+About Google It&rsquo;s meaningless if not 10x times faster
+对一句话总结的注释如下 看完乔布斯传，被其个人魅力所折服，又去下载了2007年2008年的发布会视频，瞻仰了他的具有魔力的演讲。
+此人职场的简历十分辉煌，我最敬佩的一点是他的固执，当自己决定了目标和想法之后，就一意孤行放心大胆的去做到底，即使大哭大闹（小时候），即使苦口婆心的去说服，即使暴躁的对待周围的同事，再加上一些强迫症的对艺术的理解，最终完成的产品总是能具有艺术的科技。不过同样因为自己对事业完美追求的固执，也让自己的身体遭了罪，即使在身体不健康的情况下，还是不注意身体健康，对治疗方案也采取最最保守的方式，于是去世了。
+Lessons Learned: I want to say something to myself, hey boy, stay focus and keep doing on it, you&rsquo;ll be what you want to be.
+看完google未来之境这本书之后，深深的感受到，那样的软件公司，之所以强大，不是没有原因的。我很欣赏他们公司的一些思想和理念。最欣赏的一个观点是：你现在做的工作内容，能否比之前的快10倍？100倍？我们可以想象的到，如果长期在这样的指导下去完成一些软件开发类的工作，很容易让大家头脑风暴，或者激发大家的突破性的想法，打破现有的条条框框，再加上一些硅谷固有的fast fail fast try，done is better than perfect之类的思想，出现颠覆式创新的软件作品（甚至硬件作品）比其他一般公司要容易的多。
+推及到自己工作中的感受，我负责维护和改进test infrastructure，已经好些年没有重构过，即使满眼看去都是长得像java的ruby代码。每执行一个完整的end2end测试（由于产品的复杂性）需要至少一个小时，还有不少两个小时以上的测试。而我工作的日常里，堆满了各种各样的小的改进意见和改进需求，我想了想，就算你持续的完成这些不断蹦出来的小改进而从来没有跳出条条框框重新设计的话，又怎样，迟早会被计算机软件行业所淘汰，有的行业确实是需要持续的小改进积累多少年才能成功，可是计算机软件行业，从来都是颠覆式的创新，后浪推前浪，前浪死在沙滩上。贵司test infrastructure一切都太陈旧了，需要来一次革命性的重构，不对，不需要重构了，应该直接重新写一个，用最新的软件设计方法和软件框架。
+现状：贵司的那些端到端测试，从代码覆盖率和测试逻辑覆盖率来看，有太多太多的冗余了。举个简单的例子，测试A需要运行一个小时，某个根据产品新功能的新添加的测试B也需要运行一个小时。而A和B的一个小时中，有55分钟都在走着同样的逻辑，测试着一模一样的代码。当有几十个这样规模的端到端测试的时候，可以想象有多少机器时间都是在白白浪费。而现在的测试框架，适应着这样大量的端到端测试，每当要增删改查一些自动化功能，一不小心都会伤筋痛骨，因为代码实在太陈旧了，无法方便的解耦，如果哪一天有了新的测试类型，也将难以适应。
+我认为，一个健康的测试系统里，复杂的端到端测试数量应该比较少，虽然它们执行时间长，但是需要保证核心流程核心功能不会失败，有一定数量的中等复杂度的测试（例如subsystem test），然后应该有大量的复杂度很低执行速度很快的小型测试（单元测试也可算是一种）。在这样的测试用例分布下，才会更加容易让这些测试发挥价值，定位错误，尽早发现小错误，更新容易根据产品新功能添加新测试，去掉老旧测试的时候也更加得心应手。只有在这样的测试系统框架下，才可以做到比现有的测试框架高效10倍100倍。
+看到此处肯定会有人问了，你有这个想法，你有没有去执行和实施呢。呵呵，大概是我的口才不太行无法说服别人，亦或别人思想较固执难以说服。
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-02-06-anotherhackathon/ class="link black dim">
+又一次参加hackathon活动
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+又一次参加了hackathon活动,是贵司内部组织的.
+我们队的作品是一个网站，收集了公司的github上最近几个月提交的代码的数据，然后分析大家的编码行为习惯，然后展示在我们的网站上。所谓代码行为习惯，例如变量名称命名的大写小写啦，常量名称全部大写啦，tab和空格啦，操作符前后是否有空格啦等等。我们收集了5中公司里比较主流的编程语言的信息，大概每个语言5个6个编程行为的分析。通俗的说应该是代码风格吧，这东西说重要呢，也不是特别重要，毕竟这个主观的规范见仁见智。说不重要呢，很多大公司都有自己的一套style，例如google。其实，贵司自己也有一个MicroStrategy c++ style guide文档。当拿着公司编码规范文档和我们实际收集来的数据进行分析比较的时候，还是很有趣的。
+比赛结束的时候，我go through了一遍参赛作品，一共23个队伍，绝大部分都是直接和公司产品有关的。我想，我们组的作品的idea在这些作品里算是有创意的了，是对工程师文化的一个方面的诠释，也可以给大家带来思考。很多组的作品仅仅是基于现有产品加了个创意不大的新功能，说创意不大是因为他们的作品或多或少可以看到之前hq比赛作品的影子，亦或互联网上其他产品的影子。所以，我目测我们作品进前10名应该问题不大吧。
+比赛结果出来了，中奖率13/23，并且没有我们组。呵呵了我就，看了一遍那些得奖的作品列表，大都还是公司产品直接相关的. In my opinion, in those 13, only few are cool, others are shit. Sorry I&rsquo;m too rush. Those are not that shit, but definitely NOT creative enough. But this is a hackathon! Right?
+可能我理解错了公司举办hackathon的目的，或许高层领导就是要为了寻找一些新的产品的思路，寻找一些漂亮的可以展示给客户看的产品的卖点。所有的获奖作品列表里，只有一两个是和技术核心的创新。
+这也让我想到了贵司的悲哀，新的产品，怎么说来着，将“科技以换壳为本”体现的淋漓尽致。有着这样基因的，一家软件公司，没有持续的去拓展和强化自己的核心技术优势壁垒，花了不少人才和精力在无用的地方，长期来看我不看好。迟早有一天会被某些互联网创业公司革命。
+</div>
+</div>
+</div>
+</div>
+</section>
+<ul class="pagination pagination-default">
+<li class=page-item>
+<a href=/posts/ aria-label=First class=page-link role=button><span aria-hidden=true>&#171;&#171;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/page/3/ aria-label=Previous class=page-link role=button><span aria-hidden=true>&#171;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/page/2/ aria-label="Page 2" class=page-link role=button>2</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/3/ aria-label="Page 3" class=page-link role=button>3</a>
+</li>
+<li class="page-item active">
+<a aria-current=page aria-label="Page 4" class=page-link role=button>4</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/5/ aria-label="Page 5" class=page-link role=button>5</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/6/ aria-label="Page 6" class=page-link role=button>6</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/5/ aria-label=Next class=page-link role=button><span aria-hidden=true>&#187;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/page/11/ aria-label=Last class=page-link role=button><span aria-hidden=true>&#187;&#187;</span></a>
+</li>
+</ul></article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

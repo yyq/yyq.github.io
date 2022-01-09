@@ -1,0 +1,221 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>xgboost模型调试攻略 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="最近做题的感受，结合网上看来的资料，总结如下：
+xgboost python api 描述  xgboost.DMatrix, 是个类，存的是数据矩阵，自带内存优化，训练加速，可以从numpy.arrays初始化 xgboost.Booster，是个类，模型所在地，包括了较低层次的routines for training,prediction and evalution xgboost.train，是个函数，给定参数来训练booster，返回一个训练完成的booster xgboost.cv，是个函数，给定参数做交叉验证，返回评估历史，list(string) scikit-learn包装的api,  xgboost.XGBRegressor, xgboost.XGBClassifier   画图有关的api,  xgboost.plot_importance, 根据fitted trees画出重要性，返回的是matplotlib Axes xgboost.plot_tree，画出指定的树 xgboost.to_graphviz,将指定的树转化成graphviz实例    about parameter tune  选用一个相对高一点的learning rate例如0.1，一般选用0.05到0.3之间对于大部分问题都可以了。定了学习率，然后决定合适数量的树，用cv 调整树的特定参数，比如max_depth,min_child_weight,gamma,subsample,colsample_bytree 调整正则化参数例如lambda和alpha，可以降低模型复杂度和提高性能 降低learning rate，再继续优化参数们  tune step by step 第一步，确定learning rate和estimator的数量 不过我们需要初始化一些基本变量，例如：
+ max_depth=5，一般用3到10，456都是不错的starting points min_child_weight=1，选择较小的值是因为数据分类很不对称并且叶子节点有可能具有较小的group size gamma=0，选择0.1或者0.2都可以，稍后一定需要调试 subsample colsample_bytree=0.8, 典型的选择在0.5到0.9之间 scale_pos_weight=1, 数据类别高度不平衡  learning rate就先用0.1，先用cv来寻找最优的estimators
+第二步，max_depth和 min_child_weight 调整着两个是因为它们对模型结果有很大的影响，开始的测试用的范围广泛一点，以后再用较小的范围来确定具体选择为多少。for example: max_depth(3,10,2) min_child_weight(1,6,2)">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="xgboost模型调试攻略">
+<meta property="og:description" content="最近做题的感受，结合网上看来的资料，总结如下：
+xgboost python api 描述  xgboost.DMatrix, 是个类，存的是数据矩阵，自带内存优化，训练加速，可以从numpy.arrays初始化 xgboost.Booster，是个类，模型所在地，包括了较低层次的routines for training,prediction and evalution xgboost.train，是个函数，给定参数来训练booster，返回一个训练完成的booster xgboost.cv，是个函数，给定参数做交叉验证，返回评估历史，list(string) scikit-learn包装的api,  xgboost.XGBRegressor, xgboost.XGBClassifier   画图有关的api,  xgboost.plot_importance, 根据fitted trees画出重要性，返回的是matplotlib Axes xgboost.plot_tree，画出指定的树 xgboost.to_graphviz,将指定的树转化成graphviz实例    about parameter tune  选用一个相对高一点的learning rate例如0.1，一般选用0.05到0.3之间对于大部分问题都可以了。定了学习率，然后决定合适数量的树，用cv 调整树的特定参数，比如max_depth,min_child_weight,gamma,subsample,colsample_bytree 调整正则化参数例如lambda和alpha，可以降低模型复杂度和提高性能 降低learning rate，再继续优化参数们  tune step by step 第一步，确定learning rate和estimator的数量 不过我们需要初始化一些基本变量，例如：
+ max_depth=5，一般用3到10，456都是不错的starting points min_child_weight=1，选择较小的值是因为数据分类很不对称并且叶子节点有可能具有较小的group size gamma=0，选择0.1或者0.2都可以，稍后一定需要调试 subsample colsample_bytree=0.8, 典型的选择在0.5到0.9之间 scale_pos_weight=1, 数据类别高度不平衡  learning rate就先用0.1，先用cv来寻找最优的estimators
+第二步，max_depth和 min_child_weight 调整着两个是因为它们对模型结果有很大的影响，开始的测试用的范围广泛一点，以后再用较小的范围来确定具体选择为多少。for example: max_depth(3,10,2) min_child_weight(1,6,2)">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2017/2017-10-23-xgboost-tune/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-10-23T00:00:00+00:00">
+<meta property="article:modified_time" content="2017-10-23T00:00:00+00:00">
+<meta itemprop=name content="xgboost模型调试攻略">
+<meta itemprop=description content="最近做题的感受，结合网上看来的资料，总结如下：
+xgboost python api 描述  xgboost.DMatrix, 是个类，存的是数据矩阵，自带内存优化，训练加速，可以从numpy.arrays初始化 xgboost.Booster，是个类，模型所在地，包括了较低层次的routines for training,prediction and evalution xgboost.train，是个函数，给定参数来训练booster，返回一个训练完成的booster xgboost.cv，是个函数，给定参数做交叉验证，返回评估历史，list(string) scikit-learn包装的api,  xgboost.XGBRegressor, xgboost.XGBClassifier   画图有关的api,  xgboost.plot_importance, 根据fitted trees画出重要性，返回的是matplotlib Axes xgboost.plot_tree，画出指定的树 xgboost.to_graphviz,将指定的树转化成graphviz实例    about parameter tune  选用一个相对高一点的learning rate例如0.1，一般选用0.05到0.3之间对于大部分问题都可以了。定了学习率，然后决定合适数量的树，用cv 调整树的特定参数，比如max_depth,min_child_weight,gamma,subsample,colsample_bytree 调整正则化参数例如lambda和alpha，可以降低模型复杂度和提高性能 降低learning rate，再继续优化参数们  tune step by step 第一步，确定learning rate和estimator的数量 不过我们需要初始化一些基本变量，例如：
+ max_depth=5，一般用3到10，456都是不错的starting points min_child_weight=1，选择较小的值是因为数据分类很不对称并且叶子节点有可能具有较小的group size gamma=0，选择0.1或者0.2都可以，稍后一定需要调试 subsample colsample_bytree=0.8, 典型的选择在0.5到0.9之间 scale_pos_weight=1, 数据类别高度不平衡  learning rate就先用0.1，先用cv来寻找最优的estimators
+第二步，max_depth和 min_child_weight 调整着两个是因为它们对模型结果有很大的影响，开始的测试用的范围广泛一点，以后再用较小的范围来确定具体选择为多少。for example: max_depth(3,10,2) min_child_weight(1,6,2)"><meta itemprop=datePublished content="2017-10-23T00:00:00+00:00">
+<meta itemprop=dateModified content="2017-10-23T00:00:00+00:00">
+<meta itemprop=wordCount content="194">
+<meta itemprop=keywords content="machine learning,xgboost,tune,parameters,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="xgboost模型调试攻略">
+<meta name=twitter:description content="最近做题的感受，结合网上看来的资料，总结如下：
+xgboost python api 描述  xgboost.DMatrix, 是个类，存的是数据矩阵，自带内存优化，训练加速，可以从numpy.arrays初始化 xgboost.Booster，是个类，模型所在地，包括了较低层次的routines for training,prediction and evalution xgboost.train，是个函数，给定参数来训练booster，返回一个训练完成的booster xgboost.cv，是个函数，给定参数做交叉验证，返回评估历史，list(string) scikit-learn包装的api,  xgboost.XGBRegressor, xgboost.XGBClassifier   画图有关的api,  xgboost.plot_importance, 根据fitted trees画出重要性，返回的是matplotlib Axes xgboost.plot_tree，画出指定的树 xgboost.to_graphviz,将指定的树转化成graphviz实例    about parameter tune  选用一个相对高一点的learning rate例如0.1，一般选用0.05到0.3之间对于大部分问题都可以了。定了学习率，然后决定合适数量的树，用cv 调整树的特定参数，比如max_depth,min_child_weight,gamma,subsample,colsample_bytree 调整正则化参数例如lambda和alpha，可以降低模型复杂度和提高性能 降低learning rate，再继续优化参数们  tune step by step 第一步，确定learning rate和estimator的数量 不过我们需要初始化一些基本变量，例如：
+ max_depth=5，一般用3到10，456都是不错的starting points min_child_weight=1，选择较小的值是因为数据分类很不对称并且叶子节点有可能具有较小的group size gamma=0，选择0.1或者0.2都可以，稍后一定需要调试 subsample colsample_bytree=0.8, 典型的选择在0.5到0.9之间 scale_pos_weight=1, 数据类别高度不平衡  learning rate就先用0.1，先用cv来寻找最优的estimators
+第二步，max_depth和 min_child_weight 调整着两个是因为它们对模型结果有很大的影响，开始的测试用的范围广泛一点，以后再用较小的范围来确定具体选择为多少。for example: max_depth(3,10,2) min_child_weight(1,6,2)">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">xgboost模型调试攻略</h1>
+<p class=tracked>
+By <strong>
+Young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2017-10-23T00:00:00Z>October 23, 2017</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>最近做题的感受，结合网上看来的资料，总结如下：</p>
+<h2 id=xgboost-python-api-描述>xgboost python api 描述</h2>
+<ul>
+<li>xgboost.DMatrix, 是个类，存的是数据矩阵，自带内存优化，训练加速，可以从numpy.arrays初始化</li>
+<li>xgboost.Booster，是个类，模型所在地，包括了较低层次的routines for training,prediction and evalution</li>
+<li>xgboost.train，是个函数，给定参数来训练booster，返回一个训练完成的booster</li>
+<li>xgboost.cv，是个函数，给定参数做交叉验证，返回评估历史，list(string)</li>
+<li>scikit-learn包装的api,
+<ul>
+<li>xgboost.XGBRegressor,</li>
+<li>xgboost.XGBClassifier</li>
+</ul>
+</li>
+<li>画图有关的api,
+<ul>
+<li>xgboost.plot_importance, 根据fitted trees画出重要性，返回的是matplotlib Axes</li>
+<li>xgboost.plot_tree，画出指定的树</li>
+<li>xgboost.to_graphviz,将指定的树转化成graphviz实例</li>
+</ul>
+</li>
+</ul>
+<h2 id=about-parameter-tune>about parameter tune</h2>
+<ul>
+<li>选用一个相对高一点的learning rate例如0.1，一般选用0.05到0.3之间对于大部分问题都可以了。定了学习率，然后决定合适数量的树，用cv</li>
+<li>调整树的特定参数，比如max_depth,min_child_weight,gamma,subsample,colsample_bytree</li>
+<li>调整正则化参数例如lambda和alpha，可以降低模型复杂度和提高性能</li>
+<li>降低learning rate，再继续优化参数们</li>
+</ul>
+<h2 id=tune-step-by-step>tune step by step</h2>
+<h5 id=第一步确定learning-rate和estimator的数量>第一步，确定learning rate和estimator的数量</h5>
+<p>不过我们需要初始化一些基本变量，例如：</p>
+<ul>
+<li>max_depth=5，一般用3到10，456都是不错的starting points</li>
+<li>min_child_weight=1，选择较小的值是因为数据分类很不对称并且叶子节点有可能具有较小的group size</li>
+<li>gamma=0，选择0.1或者0.2都可以，稍后一定需要调试</li>
+<li>subsample colsample_bytree=0.8, 典型的选择在0.5到0.9之间</li>
+<li>scale_pos_weight=1, 数据类别高度不平衡</li>
+</ul>
+<p>learning rate就先用0.1，先用cv来寻找最优的estimators</p>
+<h5 id=第二步max_depth和-min_child_weight>第二步，max_depth和 min_child_weight</h5>
+<p>调整着两个是因为它们对模型结果有很大的影响，开始的测试用的范围广泛一点，以后再用较小的范围来确定具体选择为多少。for example: max_depth(3,10,2) min_child_weight(1,6,2)</p>
+<h5 id=第三步gamma>第三步，gamma</h5>
+<p>check from 0.1 to 0.5</p>
+<h5 id=第四步subsample-colsample_bytree>第四步，subsample, colsample_bytree</h5>
+<p>both check from 0.6 to 0.9</p>
+<h5 id=第五步正则化参数>第五步，正则化参数</h5>
+<p>reg_alpha try 1e-5, 1e-2, 0.1, 1, 100
+reg_lambda try</p>
+<h5 id=第六步降低学习率>第六步，降低学习率</h5>
+<p>降低学习率的同时增加树的数量</p>
+<h5 id=last-tips>last tips</h5>
+<p>It is difficult to get a very big leap in performance by just using parameter tuning or slightly better models. The max score for GBM was 0.8487 while XGBoost gave 0.8494. This is a decent improvement but not something very substantial.</p>
+<p><strong>A significant jump can be obtained by other methods like feature engineering, creating ensemble of models, stacking</strong></p>
+<p>神马？评论区看到的，该文章的作者说：For instance, I generally do some parameter tuning and then run 10 different models on same parameters but different seeds. Averaging their results generally gives a good boost to the performance of the model.</p>
+<h2 id=overfitting-process>overfitting process</h2>
+<p>第一是考虑调整模型的复杂度，max_depth, min_child_weight, gamma</p>
+<p>第二是在训练过程中增加随机性，抗噪音，比如subsample,solsample_bytree</p>
+<h2 id=处理不均衡的数据集>处理不均衡的数据集</h2>
+<p>对于不平衡的数据集，例如鼠标点击通过的日志，肯定是极其不平衡的，这对xgb肯定有影响，有两种方法来提高</p>
+<p>第一种，如果你在意auc，用auc来做eval，通过scale_pos_weight来平衡正面样本和反面样本的权重</p>
+<p>第二种，如果你在意概率，你不可以重新平衡数据集，应该设置max_delta_step为一个有限数字来帮助收敛</p>
+<h2 id=主要参考的链接>主要参考的链接</h2>
+<ul>
+<li>
+<p>官网描述的参数列表:<a href=http://xgboost.readthedocs.io/en/latest/parameter.html#general-parameters>http://xgboost.readthedocs.io/en/latest/parameter.html#general-parameters</a></p>
+</li>
+<li>
+<p>官网python api描述:<a href=https://xgboost.readthedocs.io/en/latest/python/python_api.html>https://xgboost.readthedocs.io/en/latest/python/python_api.html</a></p>
+</li>
+<li>
+<p>官网描述的过拟合处理:<a href=http://xgboost.readthedocs.io/en/latest/how_to/param_tuning.html#control-overfitting>http://xgboost.readthedocs.io/en/latest/how_to/param_tuning.html#control-overfitting</a></p>
+</li>
+<li>
+<p>google搜索的第一篇文章:<a href=https://www.analyticsvidhya.com/blog/2016/03/complete-guide-parameter-tuning-xgboost-with-codes-python/>https://www.analyticsvidhya.com/blog/2016/03/complete-guide-parameter-tuning-xgboost-with-codes-python/</a></p>
+</li>
+</ul>
+<ul class=pa0>
+<li class=list>
+<a href=/tags/machine-learning class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">machine learning</a>
+</li>
+<li class=list>
+<a href=/tags/xgboost class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">xgboost</a>
+</li>
+<li class=list>
+<a href=/tags/tune class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">tune</a>
+</li>
+<li class=list>
+<a href=/tags/parameters class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">parameters</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2017/2017-10-02-machine-learning-ex-progress/>17年9月份机器学习知识进展</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-12-machine-learning-exercise/>coursera Andrew Ng 机器学习 编程习题总结</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-11-machine-learning-week11/>coursera Andrew Ng 机器学习第十一周笔记 应用举例：photo OCR</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-10-machine-learning-week10/>coursera Andrew Ng 机器学习第十周笔记 大数据量的机器学习</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-09-machine-learning-week9/>coursera Andrew Ng 机器学习第九周笔记 异常检测与推荐系统</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-08-machine-learning-week8/>coursera Andrew Ng 机器学习第八周笔记 降低维度</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-07-machine-learning-week7/>coursera Andrew Ng 机器学习第七周笔记 支持向量机</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-06-machine-learning-week6/>coursera Andrew Ng 机器学习第六周笔记 系统设计与优化技巧</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-05-machine-learning-week5/>coursera Andrew Ng 机器学习第五周笔记 神经网络的学习过程</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-04-machine-learning-week4/>coursera Andrew Ng 机器学习第四周笔记 神经网络模型</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-03-machine-learning-week3/>coursera Andrew Ng 机器学习第三周笔记 逻辑回归与泛化</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-02-machine-learning-week2/>coursera Andrew Ng 机器学习第二周笔记 多个变量的线性回归</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-01-machine-learning-week1/>coursera Andrew Ng 机器学习第一周笔记 线性回归</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

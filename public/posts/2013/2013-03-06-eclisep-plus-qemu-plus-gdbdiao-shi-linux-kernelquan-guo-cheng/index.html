@@ -1,0 +1,233 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>eclispe+qemu+gdb调试linux kernel全过程 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="单步调试kernel说明
+恩，这个文档的目标是单步调试内核，从每一个工具软件的版本号到每一个命令，都有一个说明">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="eclispe+qemu+gdb调试linux kernel全过程">
+<meta property="og:description" content="单步调试kernel说明
+恩，这个文档的目标是单步调试内核，从每一个工具软件的版本号到每一个命令，都有一个说明">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2013/2013-03-06-eclisep-plus-qemu-plus-gdbdiao-shi-linux-kernelquan-guo-cheng/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2013-03-06T22:52:01+00:00">
+<meta property="article:modified_time" content="2013-03-06T22:52:01+00:00">
+<meta itemprop=name content="eclispe+qemu+gdb调试linux kernel全过程">
+<meta itemprop=description content="单步调试kernel说明
+恩，这个文档的目标是单步调试内核，从每一个工具软件的版本号到每一个命令，都有一个说明"><meta itemprop=datePublished content="2013-03-06T22:52:01+00:00">
+<meta itemprop=dateModified content="2013-03-06T22:52:01+00:00">
+<meta itemprop=wordCount content="212">
+<meta itemprop=keywords content="debug,eclipse,gdb,kernel,linux,qemu,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="eclispe+qemu+gdb调试linux kernel全过程">
+<meta name=twitter:description content="单步调试kernel说明
+恩，这个文档的目标是单步调试内核，从每一个工具软件的版本号到每一个命令，都有一个说明">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">eclispe+qemu+gdb调试linux kernel全过程</h1>
+<time class="f6 mv4 dib tracked" datetime=2013-03-06T22:52:01Z>March 6, 2013</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h1 id=单步调试kernel说明>单步调试kernel说明</h1>
+<p>恩，这个文档的目标是单步调试内核，从每一个工具软件的版本号到每一个命令，都有一个说明</p>
+<h2 id=ubuntu120432位>ubuntu1204,32位</h2>
+<p><a href=http://www.ubuntu.org.cn/download/desktop>http://www.ubuntu.org.cn/download/desktop</a></p>
+<p>用vmware虚拟机安装该系统。</p>
+<p>用64位系统时，gdb有bug。报错信息为：xxx太长。所以建议用32位系统</p>
+<h2 id=编译kernel-354>编译kernel 3.5.4</h2>
+<p>下载内核的地址,北京交通大学的映像地址：<a href=http://mirror.bjtu.edu.cn/kernel/linux/kernel/v3.x/>http://mirror.bjtu.edu.cn/kernel/linux/kernel/v3.x/</a></p>
+<p>我下载的内核源码版本号3.5.4</p>
+<p>为防止系统有些组件版本号较低，考虑如下两个命令更新系统：</p>
+<pre><code>sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install build-essential
+</code></pre>
+<p>编译步骤：进入kernel的根目录后，命令如下：</p>
+<ol>
+<li>make menuconfig<br>
+//提示没有找到ncurses 安装一下:sudo apt-get install libncurses
+//贾迪提示：可以用libncurses*
+//Kernel Hacking -> 找到Compile the kernel with debug info” and “Compile the kernel with frame pointers” 这两个选项，必须是选中的。其他，不用改设置，按照默认就行，直接按两下esc，选择保存并退出</li>
+<li>make</li>
+</ol>
+<h2 id=qemu-140>qemu 1.4.0</h2>
+<p><a href=http://wiki.qemu.org/Download>http://wiki.qemu.org/Download</a></p>
+<h3 id=安装>安装</h3>
+<p>按照官网的说明，编译，安装:<a href=http://qemu.weilnetz.de/qemu-doc.html#compilation>http://qemu.weilnetz.de/qemu-doc.html#compilation</a></p>
+<p>编译qemu报错</p>
+<ol>
+<li>
+<p>缺glib,解决方法：sudo apt-get install libglib2.0-dev</p>
+</li>
+<li>
+<p>缺autoconf,解决方法：sudo apt-get install autoconf automake libtool</p>
+</li>
+</ol>
+<p>用较老版本qemu时，或者直接用ubuntu source中的qemu时，单步调试失败。</p>
+<h3 id=使用验证编译的内核已经可以通过qemu运行起来>使用:验证编译的内核已经可以通过qemu运行起来</h3>
+<p>qemu-system-i386 -kernel (kernel根目录)/arch/x86/boot/bzImage -initrd /boot/initrd.img-3.5.0-25-generic</p>
+<p>注意：kernel后的参数为自己编译的内核，initrd参数为系统自带的文件，不同系统可能版本号不同
+开始运行后，它会提示在vnc 102.0.0.1:5900 启动了。</p>
+<p>然后在ubuntu桌面界面下，按下键盘中windows键（mac按command键），输入remote，找到“Remmina Remote Desktop Client”软件，打开后，新建一个远程连接，注意 协议用VNC，server填写127.0.0.1:5900</p>
+<p><img src=2013-03-07-1.png alt=x></p>
+<p>在进入系统之后，输入uname -a或者uname -r来检验该系统是不是正在运行自己编译内核，看到3.5.4即可。</p>
+<p><img src=2013-03-07-2.png alt=x></p>
+<h2 id=jdk运行eclipse需要的java环境>JDK(运行eclipse需要的java环境)</h2>
+<p><a href=http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html>http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html</a>
+版本号，7u15。一般情况下，采用最新的版本号即可。</p>
+<ol>
+<li>
+<p>下载了文件：jdk-7u9-linux-i586.gz</p>
+</li>
+<li>
+<p>解压缩：</p>
+<pre><code> tar -xzf jdk-7u15-linux-i586.gz
+</code></pre>
+</li>
+<li>
+<p>移动解压缩后的文件夹到目标位置</p>
+<pre><code> sudo mkdir /usr/lib/jvm;     
+ mv jdk1.7.0_15/ /usr/lib/jvm
+</code></pre>
+</li>
+<li>
+<p>设置符号链接：（注意更改为自己的版本号，install参数前面是两个短横）</p>
+<p>sudo update-alternatives –install /usr/bin/javac javac /usr/lib/jvm/jdk1.7.0_09/bin/javac 1</p>
+<p>sudo update-alternatives –install /usr/bin/java java /usr/lib/jvm/jdk1.7.0_09/bin/java 1</p>
+<p>sudo update-alternatives –install /usr/bin/jar jar /usr/lib/jvm/jdk1.7.0_09/bin/jar 1</p>
+<p>sudo update-alternatives –install /usr/bin/javadoc javadoc /usr/lib/jvm/jdk1.7.0_09/bin/javadoc 1</p>
+</li>
+</ol>
+<h2 id=eclipse-juno>eclipse JUNO</h2>
+<p><a href=http://www.eclipse.org/downloads/packages/eclipse-ide-cc-developers/junosr2>http://www.eclipse.org/downloads/packages/eclipse-ide-cc-developers/junosr2</a>
+下载来解压缩即可。</p>
+<h2 id=eclipse插件cdt>eclipse插件：CDT</h2>
+<p><a href=http://download.eclipse.org/tools/cdt/builds/>http://download.eclipse.org/tools/cdt/builds/</a></p>
+<p>我下载的版本号：cdt-master-7.0.1-I201009241320</p>
+<p>下载到的zip压缩包。不用解压缩，安装方式：打开eclipse，</p>
+<p>Help按钮 -> Install New Software -> Add按钮
+在弹出的对话框中，Name随便填一个就行，Location，点右侧的Archive按钮，选择刚下载的zip文件。
+安装即可。</p>
+<h2 id=qemueclipsegdb调试kernel>qemu+eclipse+gdb调试kernel</h2>
+<p></p>
+<ol>
+<li>
+<p>启动qemu，命令如下：</p>
+<p>qemu-system-i386 -s -S -kernel ~/Desktop/linux-3.5.4/arch/x86/boot/bzImage -initrd /boot/initrd.img-3.5.0-25-generic</p>
+<p>-s 为默认远程调试，端口号1234</p>
+<p>-S 为启动调试时，停止，等待gdb</p>
+<p>-kernel 为自己编译出的bzimage，一般放在内核根目录的arch/x86/boot/</p>
+<p>-initrd 后面为自己ubuntu的某个镜像。</p>
+</li>
+<li>
+<p>Window ->Preferences -> General -> Workspace，将“build automatically”去掉
+<img src=2013-03-06-1.png alt=x></p>
+</li>
+<li>
+<p>Window -> Preferences -> c/c++ -> Indexer中，将Enable indexer取消
+<img src=2013-03-06-2.png alt=x></p>
+</li>
+<li>
+<p>File->New->Project&mldr;->c/c++ -> C project</p>
+<p>Location处：选择自己的内核根目录文件夹</p>
+<p>工程类型选择Makefile Project,EmptyProject</p>
+<p>工具链选择，LinuxGCC</p>
+<p><img src=2013-03-06-3.png alt=x></p>
+</li>
+<li>
+<p>在Project Explorer中，右键自己的工程，选择Debug As -> Debug Configurations,在弹出的对话框中双击“GDB Hardware Debugging”,将会让你设置调试参数等。随意写一个Name，这个Name应该是这个调试配置文件的名字。
+<img src=2013-03-06-4.png alt=x></p>
+</li>
+<li>
+<p>配置调试参数：在<strong>Main</strong>标签中，c/c++Application的框里，选择自己编译出来的vmlinux文件，该文件位置应该就在源码的根目录下。选中Disable auto build.
+<img src=2013-03-06-5.png alt=x></p>
+<p>在<strong>Debugger</strong>标签中，GDB Command处填gdb，勾选use remote target，port number处填1234，因为qemu模拟器默认的远程端口就是1234.
+<img src=2013-03-06-6.png alt=x></p>
+<p>在<strong>Startup</strong>标签中，去掉三个勾。
+<img src=2013-03-06-7.png alt=x></p>
+<p>点击<strong>Debug</strong>，开始调试。</p>
+</li>
+<li>
+<p>验证调试
+我在init/main.c的第486行设置一个断点。</p>
+<p>Window -> Show View -> Expressions，打开后，输入我要观测的变量名字，early_boot_irqs_disabled，等运行到该断点时，看到其值从false变为true，验证了基本调试功能正常。
+<img src=2013-03-06-8.png alt=x></p>
+</li>
+</ol><ul class=pa0>
+<li class=list>
+<a href=/tags/debug class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">debug</a>
+</li>
+<li class=list>
+<a href=/tags/eclipse class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">eclipse</a>
+</li>
+<li class=list>
+<a href=/tags/gdb class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">gdb</a>
+</li>
+<li class=list>
+<a href=/tags/kernel class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">kernel</a>
+</li>
+<li class=list>
+<a href=/tags/linux class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+</li>
+<li class=list>
+<a href=/tags/qemu class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">qemu</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2013/2013-01-15-xue-xi-linuxqi-dong-guo-cheng/>学习linux启动过程</a>
+</li>
+<li class=mb2>
+<a href=/posts/2013/2013-02-28-kernelguo-nei-jing-xiang-di-zhi/>kernel国内镜像地址</a>
+</li>
+<li class=mb2>
+<a href=/posts/2012/2012-12-26-doxygenshi-yong-shuo-ming-ge-ren-zong-jie-/>Doxygen使用说明（个人总结）</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

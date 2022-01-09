@@ -1,0 +1,284 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<link href=/posts/index.xml rel=alternate type=application/rss+xml title="Young Story">
+<link href=/posts/index.xml rel=feed type=application/rss+xml title="Young Story">
+<meta property="og:title" content="Posts">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yyq.github.io/posts/">
+<meta itemprop=name content="Posts">
+<meta itemprop=description content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="Posts">
+<meta name=twitter:description content>
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class="pb3-m pb6-l bg-black">
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+<div class="tc-l pv3 ph3 ph4-ns">
+<h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+Posts
+</h1>
+</div>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="pa3 pa4-ns nested-copy-line-height nested-img">
+<section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray"></section>
+<section class="flex-ns flex-wrap justify-around mt5">
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2018/2018-01-17-favorita-grocery-sales-forecasting/ class="link black dim">
+kaggle | favorita-grocery-sales-forecasting
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+输入数据为某连锁商店的各个店铺各个商品的销量，预测接下来16天的个店铺的各个商品的销量
+在Public LB做到了3%，等privateLB出来之后，掉到了6%，发现提交历史记录里，自己的最好的单模型成绩比自己最后提交的组合模型答案成绩还好，可是最好的但模型成绩在publicLB都没有进入10%,心里慌啊，用尽全力的调整到3%啊。终于，自己对LB做到了overfit了，呵呵，教训啊！我的最好单模型成绩public LB 510, private LB 518, 组合模型成绩public LB 508 private LB 519.
+1 Lessons learned of myself: 特征工程比模型调参更重要，重要性大出一个数量级 模型调参时，学习率先从较大的数字开始，节约时间 有关日期的比赛，本地cv日期的选择很重要，和最终测试日期有相似性才比较好 本地的每一次运行，cv，参数，分数都需要很好的记录下来，供后期对比分析 很多大神都开始在回归类题目里面开始用NN了，确实成绩会比xgb lgb等会有较大提升 2 Lessons learned from others: 总结两个观点先：
+特征工程特别重要 神经网络要胜过决策树boost了 每一段摘要都标记原作者，原文章标题，和原文链接
+2.1 Eureka 1st place solution 借鉴了四个别人的模型，cnn，lstm，lgbm，lgbm
+只用了2017年的数据，训练集，0531-0719 or 0614-0719, 不同的模型用不同的训练集，验证集，0726-0810
+数据处理：把空值和负值都填0
+特征工程：
+基本特征，分类（store,item,family,class,cluseter）,打折否，day_of_week(only for model 3); 统计特征，时间窗口，最近日期:[1,3,5,7,14,30,60,140]；等时间窗口[1] * 16, [7] * 20; 关键特征：store x item， item， store x class, target： promotion, unit_sales, zeros, 方法：mean,median,max,min,std, day since last appearance.
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-11-29-kaggle/ class="link black dim">
+第一次kaggle参赛，铜牌一枚
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+https://www.kaggle.com/yyqing/competitions
+巴西的汽车保险公司出的题，根据汽车司机的各种信息，来判断明年出险的概率
+我的排名Top 7%, 名次 335/5169
+在讨论区向诸位大神学习了种种，受益匪浅
+实践中，有两类知识，书本和教材中没有，但是非常有效：
+奇淫巧技，例如：特征工程时用到的奇奇怪怪的常量；读入内存较大的数据的处理方案；有的时候OHE效果非常明显； 有的观点和思路只存在于有关最新的普通论文中，没有得大奖的也没有入选什么顶级会议的；或者github上某些几乎没有star的工程，拿来实践试试都会有奇效 p.s.
+根据某种特定参数下的CV集得出来的答案很有可能对于题目答案过拟合了，这一次考试中你虽然得了高分，然而对实际生活中应用却不会那么具有普适性。他们就像准备考试不是那么充分却考前蒙对了题目而拿了好名次 之前听人说xgboost秒杀很多kaggle题目，可如今就算你拿着最优化的决策树上场，还是会被强大硬件训练出来的神经网络秒的渣都不剩。比如我是xgboost和lgbm组合上场，单次训练个半个小时出来的结果，就是300多名，而第一名的方案就不一样了，5个模型ensemble，一个xgboost，4个神经网络，他的每一个神经网络的训练时间都是好几个小时还都用到了独立显卡，遇到这种强大的对手只能俯首称臣。
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-11-13-cnn/ class="link black dim">
+deeplearning.ai之卷积神经网络课程总结
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+等了一个月，coursera上的deeplearning.ai的第四门课程终于放出来了，月初忙了几天没空，这两天有空，认认真真刷掉了这门课（看过每一个视频，理解到位每一段视频内容，选择题作业满分，编程作业以及附加作业全部pass）。
+在知乎上看过了https://zhuanlan.zhihu.com/p/21930884，中文版的CS231n(by stanford Li FeiFei)的全部notes，受益匪浅，再补一波吴恩达老师的此课，颇有收获。
+知识点总结如下：
+第一周 卷积神经网络 Understand the convolution operation Understand the pooling operation Remember the vocabulary used in convolutional neural network (padding, stride, filter, ...) Build a convolutional neural network for image multi-class classification 简介计算机视觉 通过简单的矩阵来卷积，进行边缘检测，本科时的数字图像处理课程学过，这个简单 padding, 为了卷积时不把边角的像素忽略掉，得按照卷积核的大小在图像周围一圈补充像素，常用的有两种， valid padding也就是no padding，input: n*n with filter f*f, output: (b-f+1)*(n-f+1) same padding,也就是输出矩阵和输入矩阵一样大，这样来计算的话n+2p-f+1=n,所以p=(f-1)/2,啊哈，所以啊，最好一般你的filter都用奇数，搞了偶数那same padding就不好做了哈 stride,步长，按照字面意思就好理解了，为了卷积的同时做采样 input: n*n with filder f*f padding=p ouput is : round((n+2p-f)/s+1), round为向下取整 三维矩阵的卷积，当时彩色图像的时候，比如一个图像是6*6*3，6乘以6的矩阵是图像大小，3是channel的数量，那么filter不能再是3乘以3了，得用3*3*3了，前面两个3是filer的高度和宽度，第三维的3也是channel数，必须和图像的channel一样匹配好才是.
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-10-23-xgboost-tune/ class="link black dim">
+xgboost模型调试攻略
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+最近做题的感受，结合网上看来的资料，总结如下：
+xgboost python api 描述 xgboost.DMatrix, 是个类，存的是数据矩阵，自带内存优化，训练加速，可以从numpy.arrays初始化 xgboost.Booster，是个类，模型所在地，包括了较低层次的routines for training,prediction and evalution xgboost.train，是个函数，给定参数来训练booster，返回一个训练完成的booster xgboost.cv，是个函数，给定参数做交叉验证，返回评估历史，list(string) scikit-learn包装的api, xgboost.XGBRegressor, xgboost.XGBClassifier 画图有关的api, xgboost.plot_importance, 根据fitted trees画出重要性，返回的是matplotlib Axes xgboost.plot_tree，画出指定的树 xgboost.to_graphviz,将指定的树转化成graphviz实例 about parameter tune 选用一个相对高一点的learning rate例如0.1，一般选用0.05到0.3之间对于大部分问题都可以了。定了学习率，然后决定合适数量的树，用cv 调整树的特定参数，比如max_depth,min_child_weight,gamma,subsample,colsample_bytree 调整正则化参数例如lambda和alpha，可以降低模型复杂度和提高性能 降低learning rate，再继续优化参数们 tune step by step 第一步，确定learning rate和estimator的数量 不过我们需要初始化一些基本变量，例如：
+max_depth=5，一般用3到10，456都是不错的starting points min_child_weight=1，选择较小的值是因为数据分类很不对称并且叶子节点有可能具有较小的group size gamma=0，选择0.1或者0.2都可以，稍后一定需要调试 subsample colsample_bytree=0.8, 典型的选择在0.5到0.9之间 scale_pos_weight=1, 数据类别高度不平衡 learning rate就先用0.1，先用cv来寻找最优的estimators
+第二步，max_depth和 min_child_weight 调整着两个是因为它们对模型结果有很大的影响，开始的测试用的范围广泛一点，以后再用较小的范围来确定具体选择为多少。for example: max_depth(3,10,2) min_child_weight(1,6,2)
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-10-02-machine-learning-ex-progress/ class="link black dim">
+17年9月份机器学习知识进展
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+刷课1 coursera：
+machine learning（matlab手动搭建）基本模型，基本参数，基本调优，98分
+deep learning 神经网络，实践调优，来自吴恩达工程实践经验，值得了49美元一个月的票价。前三门课满分拿下，后两门课程还没有出来。
+Andrew老师讲的很好，配套练习也很到位，基本知识有了普及。从大概念来说：机器学习是大于深度学习的，而深度学习中，目前应用较广的是神经网络（在有些教程里看到成为多层感知 maybe Multi-Layer-Perceptron?)，然后较为复杂的神经网络模型有卷积神经网络，卷积神经网络中，有各路大神在各路比赛中获得优异成绩的经典模型。
+刷课2 Stanford cs231n:李飞飞 CNN-4-image processing 卷积神经网络用于图像识别
+她组织收集了ImageNet大量图片的库，并组织了ImageNet比赛，最近几年比赛的冠军成绩识别能力超过人眼，轰动一时，冠军队伍采用了卷积神经网络，因此将深度学习发扬光大，所以很多地方都在讨论”深度学习”，并且将深度学习应用到其他很多场景不仅仅是图像识别 http://image-net.org/index
+实践1 tensorflow：走读实践tutorial，基本了解该计算框架 可以自定义数学模型，矩阵运算 第三方已经实现的流行的模型，可拿来即用
+刷课3 udacity平台, 乔治亚理工学院的课：machine learning for trading 感觉有点扯远了，很多时间用于讲如何对冲基金量化交易了， 然后简单模型描述了强化学习用于股票交易，目前对我用处不大
+实践2 kaggle: 最著名的大数据擂台了，刚入门，学习实践了titanic case 数据预处理，观察数据，简单分析，特征工程处理
+计划进一步学习内容 实践方向：
+kaggle赛题， 积累python使用经验： tensorflow(模型)，pandas(数据处理)，matplotlib(画图) 理论知识：
+等待coursera吴恩达DeepLearning的新课程 coursera Stanford probabilistic-graphical-models 书籍：统计学方法
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-08-12-machine-learning-exercise/ class="link black dim">
+coursera Andrew Ng 机器学习 编程习题总结
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+学习这些知识不是为了学习而学习，是为了解决问题而学习。所以这些知识所配套的编程练习尤为重要了。这门课程做的作业，可算是让我开了眼界，简单的一些代码和并不是特别大量的数据，就能解决一些简单的问题。受益匪浅！记录下来这些，以供之后解决复杂问题的时候给一个参考思路。
+这门课程的代码我是用的matlab，我的代码参考链接点击这里
+Linear Regression 解决预测房价的问题，已知面积，房间数 写出线性回归的代价函数和梯度下降函数 画图来看，有个直观感受 不同的learning rate有不同的影响，收敛快慢 Logistic Regression 预测某个学生是否通过了某门课程，已知数据包括两次测验的成绩，画出直线决策边界
+预测制造工厂出产的芯片的质量合格与否，根据芯片的两次测试成绩，画出像圆形的决策边界
+sigmoid函数
+代价函数，梯度下降函数
+范化
+Multi-class classification and Neural Network 数字图片的识别，输入图片，输出数字 通过1-vs-N的逻辑回归函数来识别 通过神经网络来识别(这里只实现了前向反馈用来预测)，theta矩阵已知，效果显然比逻辑回归好 Neural Networks Learning 仍然是识别数字 实现了神经网络里的后向反馈，代价函数，梯度下降，随机初始化，泛化，梯度检查等步骤 可视化隐藏层，有个直观感受 Regularized Linear Regression and Bias v.s. Variance 不同的偏差，方差，通过画图观察 画学习曲线，发现了高偏差问题，数据量增多也不管用，那么线性改多项式 多项式回归，画图，调整选择lambda Support Vector Machines 识别垃圾邮件，亲测自己收到的各种广告垃圾邮件，果然有效！ Informally, the C parameter is a positive value that controls the penalty for misclassified training examples SVM with 高斯内核 决策边界，无比扭曲的曲线都可以适应好 垃圾邮件case:邮件单词预处理，词库预处理，提取邮件特征，训练，预测，GoodJob!
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-08-11-machine-learning-week11/ class="link black dim">
+coursera Andrew Ng 机器学习第十一周笔记 应用举例：photo OCR
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+Application example: photo OCR pipeline text detection character segmentation character classification sliding windows too easy to learn Getting more data: artificial data synthesis Discussion on getting more data
+make sure you have a low bias classifier before expending the effort.(Plot learning curves.) keep increasing the nuber of features/number of hidden units in neural network until you have a low bias classifier how much work would it be to get 10x as much data as we currently have?
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-08-10-machine-learning-week10/ class="link black dim">
+coursera Andrew Ng 机器学习第十周笔记 大数据量的机器学习
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+stochastic gradident descent mini-batch gradient descent Batch gradient descent: use all m examples in each iteration
+Stochastic gradient descent: use 1 examples in each iteration
+Mini-batch gradient descent: use b examples in each iteration
+checking for convergence every 1000 iterations, plot cost(theta, xi, yi) averaged over the last 1000 examples processed by algorithm.
+online learning example shiping service website where user comes, specifies origin and destination, you offer to ship their package for some asking price, and user sometimes choose to use your shipping service(y=1), sometimes not(y=0).
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-08-09-machine-learning-week9/ class="link black dim">
+coursera Andrew Ng 机器学习第九周笔记 异常检测与推荐系统
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+Anomaly Detection Density estimation Dataset: x1, x2, x3, &mldr; xm Is X-test anomalous ?
+algorithm anomaly detection vs supervised learning choosing what features to use non-gaussian features, maybe log(x),sqrt(x),x^2 to gaussian-like features
+multivariate G distributon Don&rsquo;t model p(x1) p(x2) separately.
+Modle p(x) all in one go.
+Recommender Systems collaborative filtering algorithm finding related movies smallest|| xi - xj ||
+users who have not rated any movies mean normalization
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-08-08-machine-learning-week8/ class="link black dim">
+coursera Andrew Ng 机器学习第八周笔记 降低维度
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+unsupervised learning k-means altorithm clustering, optimization objective clustering, random initialization should have K &lt; m
+Randomly pick K training examples.
+clustering, choosing the number of clusters, K Please draw a graph. Elbow method
+Dimensionality reduction Motivation I: data compressioni
+Motivation II: Visualization
+Princiapl Component Analysis reduce from n-dimension to k-dimension: find k vectors u1 u2 u3 uk onto which to project the data,so as to minimize the projection error.
+PCA steps
+</div>
+</div>
+</div>
+</div>
+</section>
+<ul class="pagination pagination-default">
+<li class=page-item>
+<a href=/posts/ aria-label=First class=page-link role=button><span aria-hidden=true>&#171;&#171;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/ aria-label=Previous class=page-link role=button><span aria-hidden=true>&#171;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/ aria-label="Page 1" class=page-link role=button>1</a>
+</li>
+<li class="page-item active">
+<a aria-current=page aria-label="Page 2" class=page-link role=button>2</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/3/ aria-label="Page 3" class=page-link role=button>3</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/4/ aria-label="Page 4" class=page-link role=button>4</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/5/ aria-label="Page 5" class=page-link role=button>5</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/3/ aria-label=Next class=page-link role=button><span aria-hidden=true>&#187;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/page/11/ aria-label=Last class=page-link role=button><span aria-hidden=true>&#187;&#187;</span></a>
+</li>
+</ul></article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

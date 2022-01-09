@@ -1,0 +1,197 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>Gprof使用方法 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="简介
+调研能够动态分析代码的工具，了解了一点Gprof。
+简短总结：
+
+必须完整执行一遍可执行文件，才可进行Gprof分析。
+各个函数相互调用次数描述很到位，无调用的具体代码行号等信息，有助于分析流程。
+各个函数时间消耗统计，有利于改进程序效率。
+">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="Gprof使用方法">
+<meta property="og:description" content="简介
+调研能够动态分析代码的工具，了解了一点Gprof。
+简短总结：
+
+必须完整执行一遍可执行文件，才可进行Gprof分析。
+各个函数相互调用次数描述很到位，无调用的具体代码行号等信息，有助于分析流程。
+各个函数时间消耗统计，有利于改进程序效率。
+">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2013/2013-01-23-gprofshi-yong-fang-fa/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2013-01-23T11:44:01+00:00">
+<meta property="article:modified_time" content="2013-01-23T11:44:01+00:00">
+<meta itemprop=name content="Gprof使用方法">
+<meta itemprop=description content="简介
+调研能够动态分析代码的工具，了解了一点Gprof。
+简短总结：
+
+必须完整执行一遍可执行文件，才可进行Gprof分析。
+各个函数相互调用次数描述很到位，无调用的具体代码行号等信息，有助于分析流程。
+各个函数时间消耗统计，有利于改进程序效率。
+"><meta itemprop=datePublished content="2013-01-23T11:44:01+00:00">
+<meta itemprop=dateModified content="2013-01-23T11:44:01+00:00">
+<meta itemprop=wordCount content="121">
+<meta itemprop=keywords content="gprof,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="Gprof使用方法">
+<meta name=twitter:description content="简介
+调研能够动态分析代码的工具，了解了一点Gprof。
+简短总结：
+
+必须完整执行一遍可执行文件，才可进行Gprof分析。
+各个函数相互调用次数描述很到位，无调用的具体代码行号等信息，有助于分析流程。
+各个函数时间消耗统计，有利于改进程序效率。
+">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">Gprof使用方法</h1>
+<time class="f6 mv4 dib tracked" datetime=2013-01-23T11:44:01Z>January 23, 2013</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h3 id=简介>简介</h3>
+<p>调研能够动态分析代码的工具，了解了一点Gprof。</p>
+<p>简短总结：</p>
+<ul>
+<li>必须完整执行一遍可执行文件，才可进行Gprof分析。</li>
+<li>各个函数相互调用次数描述很到位，无调用的具体代码行号等信息，有助于分析流程。</li>
+<li>各个函数时间消耗统计，有利于改进程序效率。</li>
+</ul>
+<p>主要功能：打印出程序运行中各个函数消耗的时间。找出众多函数中耗时最多的函数。产生程序运行时候的函数调用关系，包括调用次数，帮助分析程序的运行流程。</p>
+<h3 id=实现原理这一段内容为摘抄>实现原理（这一段内容为摘抄）</h3>
+<p>通过在编译和链接你的程序的时候（使用 -pg 编译和链接选项），gcc 在你应用程序的每个函数中都加入了一个名为mcount ( or “_mcount” , or “__mcount” , 依赖于编译器或操作系统)的函数，也就是说你的应用程序里的每一个函数都会调用mcount, 而mcount 会在内存中保存一张函数调用图，并通过函数调用堆栈的形式查找子函数和父函数的地址。这张调用图也保存了所有与函数相关的调用时间，调用次数等等的所有信息。</p>
+<h3 id=基本用法>基本用法</h3>
+<ol>
+<li>编译的时候加上-pg的参数</li>
+<li>执行应用程序，使之生成供gprof分析的数据</li>
+<li>使用gprof程序分析数据</li>
+</ol>
+<h3 id=simple-example>Simple Example</h3>
+<ol>
+<li>
+<p>新建一个c文件test.c</p>
+<pre><code>#include &quot;stdio.h&quot;
+#include &quot;stdlib.h&quot;
+
+void a(){
+	printf(&quot;\t\t+---call a() function\n&quot;);
+}
+
+void c(){
+	printf(&quot;\t\t+---call c() function\n&quot;);
+}
+
+int b(){
+	printf(&quot;\t+--- call b() function\n&quot;);
+	a();
+	c();
+	return 0;
+}
+int main(){
+	printf(&quot; main() function()\n&quot;);
+	b()；
+}
+</code></pre>
+</li>
+<li>
+<p>编译，不加-c选项，会默认进行编译并链接生成a.out</p>
+<pre><code>gcc -pg test.c
+</code></pre>
+<p>如果没有编译错误，gcc会在当前目录下生成一个a.out文件，当然你也可以使用 –o 选项给生成的文件起一个别的名字，像 gcc –pg test.c –o test , 则gcc会生成一个名为test的可执行文件,在命令行下输入[linux /home/test]$./test , 就可以执行该程序了，记住一定要加上 ./ 否则程序看上去可能是执行，可是什么输出都没有。</p>
+</li>
+<li>
+<p>执行程序，得到给gprof分析的数据</p>
+<pre><code>./a.out
+</code></pre>
+<p>会生成一个gmon.out文件，这个文件就是供gprof分析使用的</p>
+</li>
+<li>
+<p>使用gprof程序分析你的应用程序生成(在linux下有效，在mac下用了此命令无结果，奇怪)</p>
+<pre><code>gprof -b a.out gmon.out
+</code></pre>
+<p><img src=/images/20130123-1145gprof-test.png alt=result></p>
+</li>
+<li>
+<p>其他常用Gprof命令选项,请参考<a href=http://os.51cto.com/art/200703/41426_1.htm>link</a></p>
+</li>
+</ol>
+<h3 id=complex-example>Complex Example</h3>
+<p>这里做的操作是将其应用到工程CFlow.</p>
+<ol>
+<li>
+<p>下载源码的链接：<a href=http://www.gnu.org/software/cflow/>http://www.gnu.org/software/cflow/</a>,我随意下载了一个1.0版本的</p>
+</li>
+<li>
+<p>解压缩等命令</p>
+<pre><code>tar zxvf cflow-1.0.tar.gz
+./configure
+cd src
+make CFLAGS=-pg LDFLAGS=-pg
+</code></pre>
+<p>如果没有出错,会在/home/cflow-1.0/src 目录下有一个名为cflow的可执行文件，这就是我们加入-pg编译选项后编译出来的可以产生供gprof提取信息的可执行文件。</p>
+<p><strong>记住一定要在编译和链接的时候都使用-pg选项</strong>，否则可能不会产生gmon.out文件。对于cflow项目，CFLAGS=-pg 是设置它的编译选项，LDFLAGS=-pg是设置它的链接选项。</p>
+<p>当然你<strong>也可以直接修改它的Makefile</strong>来达到上述相同的目的，不过一定要记住编译和链接都要使用-pg选项。</p>
+</li>
+<li>
+<p>执行这个程序,当前的src目录就有一个parser.c的c文件</p>
+<pre><code>cflow parser.c
+</code></pre>
+<p>在当前目录会出现一个gmon.out文件。</p>
+</li>
+<li>
+<p>看结果</p>
+<pre><code>gporf -b cflow gmon.out | less
+</code></pre>
+</li>
+</ol><ul class=pa0>
+<li class=list>
+<a href=/tags/gprof class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">gprof</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

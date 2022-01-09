@@ -1,0 +1,612 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>apple iOS MobileHIG 摘要 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="一直想开发一个自己的app放在app store上，想先做一个有关数独的app。一个是因为我身边有不少人都喜欢玩这个游戏，还有一个是因为这个东西算法不是很难，之前用java和c#在android和windowsphone平台实现过。
+等我idp申请下来，开始能上机调试，自己把数独的基本功能都搞定了之后，发现问题来了。我这程序吧，能够正常运行，仅仅能用。但是发现这界面啊，颜色啊，操作方式啊，都TMD烂透了。就开始琢磨这个事儿，这么样的程序提交app store铁定不会通过，自己已经为程序设计好一个图标，让同学和女友都看过，还过得去。但是点开图标之后的程序，那个实在是，我不知道该怎么下手来改进了。遂想起apple好像有个什么指南，告诉你移动开发者如何设计程序的人机交互的。在网上找了找，终于找到了这个资料,官网地址：iOS Human Interface Guidelines
+此文用来记录我从该文档中摘抄的我觉得现阶段对我有用处的东西。">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="apple iOS MobileHIG 摘要">
+<meta property="og:description" content="一直想开发一个自己的app放在app store上，想先做一个有关数独的app。一个是因为我身边有不少人都喜欢玩这个游戏，还有一个是因为这个东西算法不是很难，之前用java和c#在android和windowsphone平台实现过。
+等我idp申请下来，开始能上机调试，自己把数独的基本功能都搞定了之后，发现问题来了。我这程序吧，能够正常运行，仅仅能用。但是发现这界面啊，颜色啊，操作方式啊，都TMD烂透了。就开始琢磨这个事儿，这么样的程序提交app store铁定不会通过，自己已经为程序设计好一个图标，让同学和女友都看过，还过得去。但是点开图标之后的程序，那个实在是，我不知道该怎么下手来改进了。遂想起apple好像有个什么指南，告诉你移动开发者如何设计程序的人机交互的。在网上找了找，终于找到了这个资料,官网地址：iOS Human Interface Guidelines
+此文用来记录我从该文档中摘抄的我觉得现阶段对我有用处的东西。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2013/2013-01-18-apple-ios-mobilehig-review/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2013-01-18T17:01:01+00:00">
+<meta property="article:modified_time" content="2013-01-18T17:01:01+00:00">
+<meta itemprop=name content="apple iOS MobileHIG 摘要">
+<meta itemprop=description content="一直想开发一个自己的app放在app store上，想先做一个有关数独的app。一个是因为我身边有不少人都喜欢玩这个游戏，还有一个是因为这个东西算法不是很难，之前用java和c#在android和windowsphone平台实现过。
+等我idp申请下来，开始能上机调试，自己把数独的基本功能都搞定了之后，发现问题来了。我这程序吧，能够正常运行，仅仅能用。但是发现这界面啊，颜色啊，操作方式啊，都TMD烂透了。就开始琢磨这个事儿，这么样的程序提交app store铁定不会通过，自己已经为程序设计好一个图标，让同学和女友都看过，还过得去。但是点开图标之后的程序，那个实在是，我不知道该怎么下手来改进了。遂想起apple好像有个什么指南，告诉你移动开发者如何设计程序的人机交互的。在网上找了找，终于找到了这个资料,官网地址：iOS Human Interface Guidelines
+此文用来记录我从该文档中摘抄的我觉得现阶段对我有用处的东西。"><meta itemprop=datePublished content="2013-01-18T17:01:01+00:00">
+<meta itemprop=dateModified content="2013-01-18T17:01:01+00:00">
+<meta itemprop=wordCount content="3096">
+<meta itemprop=keywords content="apple,iOS,HIG,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="apple iOS MobileHIG 摘要">
+<meta name=twitter:description content="一直想开发一个自己的app放在app store上，想先做一个有关数独的app。一个是因为我身边有不少人都喜欢玩这个游戏，还有一个是因为这个东西算法不是很难，之前用java和c#在android和windowsphone平台实现过。
+等我idp申请下来，开始能上机调试，自己把数独的基本功能都搞定了之后，发现问题来了。我这程序吧，能够正常运行，仅仅能用。但是发现这界面啊，颜色啊，操作方式啊，都TMD烂透了。就开始琢磨这个事儿，这么样的程序提交app store铁定不会通过，自己已经为程序设计好一个图标，让同学和女友都看过，还过得去。但是点开图标之后的程序，那个实在是，我不知道该怎么下手来改进了。遂想起apple好像有个什么指南，告诉你移动开发者如何设计程序的人机交互的。在网上找了找，终于找到了这个资料,官网地址：iOS Human Interface Guidelines
+此文用来记录我从该文档中摘抄的我觉得现阶段对我有用处的东西。">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">apple iOS MobileHIG 摘要</h1>
+<time class="f6 mv4 dib tracked" datetime=2013-01-18T17:01:01Z>January 18, 2013</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>一直想开发一个自己的app放在app store上，想先做一个有关数独的app。一个是因为我身边有不少人都喜欢玩这个游戏，还有一个是因为这个东西算法不是很难，之前用java和c#在android和windowsphone平台实现过。</p>
+<p>等我idp申请下来，开始能上机调试，自己把数独的基本功能都搞定了之后，发现问题来了。我这程序吧，能够正常运行，仅仅能用。但是发现这界面啊，颜色啊，操作方式啊，都TMD烂透了。就开始琢磨这个事儿，这么样的程序提交app store铁定不会通过，自己已经为程序设计好一个图标，让同学和女友都看过，还过得去。但是点开图标之后的程序，那个实在是，我不知道该怎么下手来改进了。遂想起apple好像有个什么指南，告诉你移动开发者如何设计程序的人机交互的。在网上找了找，终于找到了这个资料,官网地址：<a href=http://developer.apple.com/library/ios/#documentation/UserExperience/Conceptual/MobileHIG/Introduction/Introduction.html>iOS Human Interface Guidelines</a></p>
+<p>此文用来记录我从该文档中摘抄的我觉得现阶段对我有用处的东西。</p>
+<h1 id=platform-characteristics>Platform Characteristics</h1>
+<ul>
+<li>When people return to a suspended app, it can instantly resume running from the point where it went to the background, without having to reload its UI.</li>
+<li>Two Types of Software Run in iOS
+<ul>
+<li>iOS apps:is an app you develop using the iOS SDK to run natively on iOS device.</li>
+<li>Web content:is hosted by a website that people visit using their iOS devices.
+<ul>
+<li>Web apps</li>
+<li>Optimized webpages</li>
+<li>Compatible webpages</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>当人们从睡眠状态的app启动时，能马上恢复，从哪个状态进入后台的，要能立马重现那个状态，不需要重新载入界面。</li>
+<li>iOS设备上有两类app
+<ul>
+<li>一类是本地app，只通过iOS SDK在本地运行在ios设备就ok</li>
+<li>一类是网络app，这类程序又可以有三种
+<ul>
+<li>纯网页浏览，隐藏safari的按钮界面什么的，用户在操作的是网页上的元素</li>
+<li>优化过的网页：专门为iOS优化过的网页，例如不用flash插件等，网页上的图片能根据ios设备的不同而进行不同的缩放</li>
+<li>兼容并存的网页：和ios的safari兼容的网页和操作。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id=human-interface-principles>Human Interface Principles</h1>
+<ul>
+<li>Direct Manipulation
+<ul>
+<li>Rotate or otherwise move the device to affect onscreen objects</li>
+<li>Use gestures to manipulate onscreen objects</li>
+<li>Can see that their actions have immediate,visible results</li>
+</ul>
+</li>
+<li>Feedback
+<ul>
+<li>Feedback acknowledges people&rsquo;s actions and asssures them that processing is occurring.</li>
+<li>The built-in iOS apps respond to every user action with some perceptible change.</li>
+<li>Subtle animation can give people meaningful feedback that helps clarify the results of their action.</li>
+<li>Sound can also give people useful feedback</li>
+</ul>
+</li>
+<li>User Control
+<ul>
+<li>The best apps find the correct balance between giving people the capabilities they need while helping them avoid dangerous outcomes.</li>
+</ul>
+</li>
+<li>直接操作，能让人们直接的动作在ios设备上得到反馈或者响应，如下几种典型的操作：
+<ul>
+<li>旋转或者移动设备，来影响屏幕上的物体</li>
+<li>用手势来直接操作屏幕上的物体</li>
+<li>可以看到我们的操作有直接的可视化的结果</li>
+</ul>
+</li>
+<li>反馈
+<ul>
+<li>反馈可以ack人们的操作和告诉人们某个处理过程is doing now</li>
+<li>内置iOS app对于每一个用户操作都会有一个某种类型的可感觉的反馈</li>
+<li>一些微秒的动画，可以给人们有意义的反馈，来让人们更加明确他们操作的结果</li>
+<li>声音的反馈也很重要</li>
+</ul>
+</li>
+<li>用户控制
+<ul>
+<li>那些很好的app找到了一个很好的平衡点，来告诉人们该做什么操作，从而避免出现错误的结果</li>
+</ul>
+</li>
+</ul>
+<h1 id=app-design-strategies>App Design Strategies</h1>
+<h2 id=create-an-app-definition-statement>Create an App Definition Statement</h2>
+<ol>
+<li>List All the Features You Think Users Might Like</li>
+<li>Determine Who Your Users Are</li>
+<li>Filter the Feature List Through the Audience Definition
+<ul>
+<li>Now you can craft your app definition statement, concretely summarizing what the app does and for whom.</li>
+</ul>
+</li>
+<li>Dont stop there
+<ul>
+<li>As you consider whether to add a new feature,ask yourself whether it is essential to the main purpose of your app and to your target audience.</li>
+<li>As you consider the look and behavior of the UI,ask yourself whether your users appreciate a simple,streamlined style or a more overtly thmeatic style.</li>
+<li>As you consider the terminology to use,strive to match your audience&rsquo;s expertise with the subject.</li>
+</ul>
+</li>
+</ol>
+<h2 id=design-the-app-for-the-device>Design the App for the Device</h2>
+<p>make sure that your app looks and feels like it was designed expressly for an iOS device</p>
+<h3 id=embrace-ios-ui-paradigms>Embrace iOS UI Paradigms</h3>
+<ul>
+<li>controls should look tappable</li>
+<li>app structure should be clean and easy to navigate</li>
+<li>user feedback should be subtle,but clear</li>
+</ul>
+<h3 id=reconsider-web-based-designs>Reconsider Web-Based Designs</h3>
+<p>if you&rsquo;re coming from the web,you need to make sure that you give people an iOS app experience,not a web experience.</p>
+<ul>
+<li>Focus your app</li>
+<li>Make sure your app lets people do something</li>
+<li>design for touch</li>
+<li>let people scroll</li>
+<li>relocate the homepage icon</li>
+</ul>
+<h2 id=tailor-customization-to-the-task>Tailor Customization to the Task</h2>
+<ul>
+<li>
+<p>be sure to consider customization early in the design process</p>
+</li>
+<li>
+<p>you need to determine how customization might affect the task your app enables.As you consider the tasks in your app,think about how ofter users perform them and under waht circumstances.</p>
+<ul>
+<li>For example, imagine an app that enables phone calls. Now imagine that instead of a keypad, the app displays a beautiful, realistic rotary dial. The dial is meticulously rendered, so users both appreciate its quality and instantly know how to use it. The dial behaves realistically, so users delight in making the dialing gesture and hearing the distinctive sounds. But for users who often need to call numbers that are not in Contacts, initial appreciation of the experience soon gives way to frustration, because using a rotary dial is much less efficient than using a keypad. In an app that is designed to help people make phone calls, this beautiful custom UI is a hindrance.</li>
+<li>In this case,the custom UI not only shows people how to use the app,it also makes the task easire to accomplish.</li>
+</ul>
+</li>
+<li>
+<p>Always have a reason for customization**</p>
+</li>
+<li>
+<p>As much as possible, avoid increasing the user’s cognitive burden</p>
+</li>
+<li>
+<p>Be internally consistent</p>
+</li>
+<li>
+<p>Think twice before you redesign a standard control</p>
+</li>
+<li>
+<p>Be sure to thoroughly user-test custom UI elements</p>
+</li>
+</ul>
+<h1 id=transition-case-studies>Transition Case Studies</h1>
+<ul>
+<li>这一段的大部分内容主要就说的是如何从desktop app转换到ios app要注意的一些方法，两者的区别等等。我就不怎么关注了。只摘抄了一句话：</li>
+<li>Most iOS apps don’t need to provide all the features that only power users need.</li>
+</ul>
+<h1 id=user-experience-guidelines>User Experience Guidelines</h1>
+<h3 id=focus-on-the-promary-task>Focus on the Promary Task</h3>
+<h3 id=elevate-the-content-that-people-care-about>Elevate the Content that People Care About</h3>
+<h3 id=give-people-a-logical-path-to-follow>Give People a Logical Path to Follow</h3>
+<ul>
+<li>Make the path through the information you present logical and easy for users to predict.</li>
+<li>In most cases,give users only one path to a screen.</li>
+</ul>
+<h3 id=make-usage-easy-and-obvious>Make Usage Easy and Obvious</h3>
+<ul>
+<li>Make the main function of your app immediately apparent.</li>
+<li>Be consistent with the usage paradigms of the built-in apps.</li>
+</ul>
+<h3 id=minimize-the-effort-required-for-user-input>Minimize the Effort Required for User Input</h3>
+<ul>
+<li>Make it easy for users to make choices. For example.you can use a table view or a picker instead of a text field, because it&rsquo;s usually easier for people to select an item from a list than to type words</li>
+</ul>
+<h3 id=downplay-file-handling-operations>Downplay File-Handling Operations</h3>
+<ul>
+<li>although iOS apps can allow people to create and manipulate files,this does not mean that people should have an awareness of a file system on an iOS device.</li>
+<li>As much as possible, allow people to manage documents without opening iTunes on their computer.</li>
+</ul>
+<h3 id=enable-collaboration-and-connectedness>Enable Collaboration and Connectedness</h3>
+<ul>
+<li>When appropriate, make it easy for people to interact with others and share things like their location, opinions, and high scores.</li>
+</ul>
+<h3 id=de-emphasize-settings>De-emphasize Settings</h3>
+<ul>
+<li>Avoid including settings in your app if you can.</li>
+<li>Let users set the behavior they want by using configuration options in your app. Configuration options let your app react dynamically to changes, because people don’t have to leave your app to set them.
+<ul>
+<li>In the main UI, put options that provide primary functionality or that people want to change frequently.</li>
+<li>In iPhone apps, you can put options that people don’t need to change frequently on the back of a view.</li>
+</ul>
+</li>
+</ul>
+<h3 id=brand-appropriately>Brand Appropriately</h3>
+<ul>
+<li>Incorporate a brand’s colors or images in a refined, unobtrusive way</li>
+<li>Avoid taking space away from the content people care about.</li>
+</ul>
+<h3 id=make-search-quick-and-rewarding>Make Search Quick and Rewarding</h3>
+<p>if you need to provide search in your app, follow these guidelines to ensure that it performs well.</p>
+<ul>
+<li>Build indexes of your data so that you are always prepared for search.</li>
+<li>Live-filter local data so that you can display results more quickly</li>
+<li>When possible, also filter remote data while users type</li>
+<li>Display a search bar above a list or the index in a list</li>
+<li>Use a tab for search only in special circumstances.</li>
+<li>If necessary, display placeholder content right away and partial results as they become available.</li>
+<li>Consider providing a scope bar if the data sorts naturally into different categories.</li>
+</ul>
+<h3 id=entice-and-inform-with-a-well-written-description>Entice and Inform with a Well-Written Description</h3>
+<p>Your App Store description is a great opportunity to communicate with potential users. In addition to describing your app accurately and highlighting the qualities you think people might appreciate the most, follow these guidelines:</p>
+<ul>
+<li>Be sure to correct all spelling, grammatical, and punctuation errors</li>
+<li>Keep all-capital words to a minimum</li>
+<li>Consider describing specific bug fixes</li>
+</ul>
+<h3 id=be-succinct>Be Succinct</h3>
+<ul>
+<li>Think like a newspaper editor,and strive to convey information in a condensed,headline style.</li>
+<li>Give controls short labels,or use well-understood symbols</li>
+</ul>
+<h3 id=use-ui-elements-consistently>Use UI Elements Consistently</h3>
+<ul>
+<li>Avoid radically changing the appearance of a control that performs a standard action.</li>
+</ul>
+<h3 id=consider-adding-physicality-and-realism>Consider Adding Physicality and Realism</h3>
+<ul>
+<li>Example:Contacts on iPad,Voice Memos app on iPhone</li>
+</ul>
+<h3 id=delight-people-with-stunning-graphics>Delight People with Stunning Graphics</h3>
+<ul>
+<li>Consider replicating the look of high-quality or precious materials</li>
+<li>Create high-resolution artwork.</li>
+<li>Spend the time to design a beautiful,memorable app icon.</li>
+</ul>
+<h3 id=handle-orientation-changes>Handle Orientation Changes</h3>
+<ul>
+<li>In all orientations,maintain focus on the primary content</li>
+<li>Think twice before preventing your app from running in all orientations
+<ul>
+<li>Launch your app in your supported orientation,regardless of the current device orientation</li>
+<li>Avoid displaying a UI element that tells people to rotate the device.</li>
+<li>Support both variants of an orientation.</li>
+</ul>
+</li>
+</ul>
+<h3 id=make-targets-fingertip-size>Make Targets Fingertip-Size</h3>
+<ul>
+<li>Give tappable elements in your app a target area of about 44X44 pointx</li>
+<li>Use animation consistently throughout your app.</li>
+</ul>
+<h3 id=ask-people-to-save-only-when-necessary>Ask People to Save Only When Necessary</h3>
+<h3 id=start-instantly>Start Instantly</h3>
+<ul>
+<li>Display a lunch image</li>
+<li>Avoid displaying an About window or a splash screen</li>
+<li>Launch in the appropriate default orientation</li>
+<li>Avoid asking people to supply setup information
+<ul>
+<li>Focus your solution on the needs of 80 percent of your users</li>
+<li>Get as much information as possible from other sources.</li>
+<li>If you must ask for setup information,prompt people to enter it within your app</li>
+</ul>
+</li>
+<li>Delay a login requirement for as long as possible</li>
+<li>When your app restarts,restore its state so that users can continue what they were doing.</li>
+</ul>
+<h3 id=always-be-prepared-to-stop>Always Be Prepared to Stop</h3>
+<ul>
+<li>Save user data as soon as possible and as often as reasonable</li>
+<li>Save the current state when stopping.</li>
+</ul>
+<h1 id=ios-technology-usage-guidelines>iOS Technology Usage Guidelines</h1>
+<h3 id=routing>Routing</h3>
+<p>讲地图的起点和终点切换的那个控件，估计我短期内用不到。</p>
+<h3 id=passbook>Passbook</h3>
+<p>好吧，作为个人开发者，短期也不会用这个东西。</p>
+<h3 id=social-media>Social Media</h3>
+<ul>
+<li>Give users a convenient way to compose a post without leaving your app</li>
+<li>When possible,avoid asking users to sign into a social media account</li>
+<li>Consider using an activity view controller to helop users choose one of their social media accounts.</li>
+</ul>
+<h3 id=icloud>iCloud</h3>
+<h3 id=in-app-purchase>In-App Purchase</h3>
+<h3 id=game-center>Game Center</h3>
+<h3 id=multitasking>Multitasking</h3>
+<p>To support this experience,multitasking allows an app to enter a suspended state in the background when users switch away from it.When users switch back to the app,the app can resume quickly because it doesn&rsquo;t have to reload its UI.</p>
+<ul>
+<li>At a high level, this means that all apps should:
+<ul>
+<li>Handle interruptions or audio from other apps gracefully</li>
+<li>Stop and restart&ndash;that is,transition to and from the background&ndash;quickly and smoothly</li>
+<li>Behave responsibly when not in the foreground.</li>
+</ul>
+</li>
+<li>Be prepared for interruptions,and be ready to resume</li>
+<li>Make sure your UI can handle the double-high status bar.</li>
+<li>Be ready to pause activities that require people&rsquo;s attention or active participation</li>
+<li>Ensure that your audio behaves appropriately.</li>
+<li>Use local notifications aparingly,</li>
+<li>When appropriate,finish user-initiated tasks in the background.</li>
+</ul>
+<h3 id=notification-center>Notification Center</h3>
+<h3 id=printing>Printing</h3>
+<h3 id=iad-rich-media-ads>iAd Rich Media Ads</h3>
+<h3 id=location-services-and-data-privacy>Location Services and Data Privacy</h3>
+<h3 id=quick-look-document-preview>Quick Look Document Preview</h3>
+<h3 id=sound>Sound</h3>
+<h4 id=define-the-audio-behavior-of-your-app>Define the Audio Behavior of Your App</h4>
+<ul>
+<li>if necessary,you can adjust relative,independent volume levels to produce the best mix in your app&rsquo;s audio output</li>
+<li>Ensure that your app can display the audio route picker,if appropriate</li>
+<li>if your app produces only UI sound effects that are incidental to its functionality,use System Sound Services.</li>
+<li>If sound plays an important role in your app,use Audio Session Services</li>
+</ul>
+<h3 id=manage-audio-interruptions>Manage Audio Interruptions</h3>
+<h3 id=handle-media-remote-control-eventsif-appropriate>Handle Media Remote Control Events,if Appropriate</h3>
+<h3 id=voiceover-and-accessibility>VoiceOver and Accessibility</h3>
+<h3 id=edit-menu>Edit Menu</h3>
+<p>在文本处理的时候可以用到</p>
+<h3 id=undo-and-redo>Undo and Redo</h3>
+<h3 id=keyboards-and-input-views>Keyboards and Input Views</h3>
+<p>In iOS 4.2 and later,you can use the standard keyboard click sound to provide audible feedback when people tap the custom controls in your input view.To learn how to enable this sound in your code,see the documentation for <em>playInputClick</em> in UIDevice Class Reference.</p>
+<h1 id=ios-ui-element-usage-guidelines>iOS UI Element Usage Guidelines</h1>
+<p>If you create custom UI elements to replicate standard UI elements in all but appearance, you should instead consider using the appearance customization programming interfaces available in iOS 5 and later.</p>
+<h3 id=bars>Bars</h3>
+<p>The UIStatusBarStyle constant, described in UIApplication Class Reference , controls the status bar style. To specify the status bar style, you set a value in your Info.plist file.</p>
+<ul>
+<li>Don&rsquo;t create a custom status bar.</li>
+<li>When appropriate,display the network activity indicator</li>
+<li>On iphone,specify the color of the status bar</li>
+</ul>
+<h3 id=navigation-bar>Navigation Bar</h3>
+<ul>
+<li>Use the title of the current view as the title of the navigation bar</li>
+<li>Make sure it&rsquo;s easy to read the text in the navigation bar</li>
+<li>Consider putting a segmented control in a navigation bar at the top level of an app.</li>
+<li>Make sure it&rsquo;s easy to read the text in the navigation bar</li>
+<li>Consider putting a segmented control in a navigation bar at the top level of an app.</li>
+<li>Avoid crowding a navigation bar with additional controls, even if there appears to be enough space.</li>
+<li>Use system-provided buttons according to their documented meaning.</li>
+<li>If appropriate, customize the appearance of a navigation bar to coordinate with the look of your app.</li>
+<li>If appropriate,customize the appearance of navigation-bar contrls.</li>
+<li>On iPhone, be prepared for the change in navigation bar height that occurs on device rotation.</li>
+</ul>
+<h3 id=toolbar>Toolbar</h3>
+<ul>
+<li>Use a toolbar to give people a selection of frequently used commands that make sense in the current context.</li>
+<li>If appropriate, customize the appearance of a toolbar to coordinate with the overall look of your app.</li>
+<li>Maintain a hit target area of at least 44 x 44 points for each toolbar item</li>
+<li>Use system-provided toolbar items according to their documented meaning.</li>
+<li>If appropriate, customize the appearance of toolbar items.</li>
+<li>Try to avoid mixing plain style (borderless) and bordered toolbar items in the same toolbar.</li>
+</ul>
+<h3 id=tab-bar>Tab Bar</h3>
+<ul>
+<li>Don’t use a tab bar to give users controls that act on elements in the current mode or screen.</li>
+<li>In general, use a tab bar to organize information at the app level</li>
+<li>Don’t remove a tab when its function is unavailable.</li>
+<li>On iPad, you might use a tab bar in a split view pane or a popover</li>
+<li>Consider badging a tab bar icon to communicate unobtrusively.</li>
+<li>Use system-provided tab bar icons according to their documented meaning.</li>
+<li>If necessary, provide a custom selection indicator image.</li>
+</ul>
+<h2 id=content-views>Content Views</h2>
+<h3 id=activity>Activity</h3>
+<h3 id=collection-view>Collection View</h3>
+<p>To learn more about defining a collection view in your code, see Collection View Programming Guide for iOS.</p>
+<ul>
+<li>Don’t use a collection view when a table view is a better choice.</li>
+<li>Make it easy for people to select an item.</li>
+<li>Use caution if you make dynamic layout changes.</li>
+</ul>
+<h3 id=container-view-controller>Container View Controller</h3>
+<h3 id=image-view>Image View</h3>
+<h3 id=map-view>Map View</h3>
+<h3 id=page-view-controller>Page View Controller</h3>
+<h3 id=popoveripad-only>Popover(iPad Only)</h3>
+<h3 id=scroll-view>Scroll View</h3>
+<h3 id=split-viewipad-only>Split View(iPad Only)</h3>
+<h3 id=table-view>Table View</h3>
+<p>a table view presents data in a single-column list of multiple rows.</p>
+<p>If you want to lay out your table rows in a nonstandard way, it’s better to create a custom table-‐cell style than to significantly alter a standard one. To learn how to create your own cells, see “Customizing Cells” in Table View Programming Guide for iOS .</p>
+<h3 id=text-view>Text View</h3>
+<p>it accepts and displays multiple lines of text</p>
+<h3 id=web-view>Web View</h3>
+<h3 id=alerts-action-sheets-and-modal-views>Alerts, Action Sheets, and Modal Views</h3>
+<ul>
+<li>
+<p>When possible, use a sentence fragment. A short, informative statement is often easier to understand than
+a complete sentence.</p>
+</li>
+<li>
+<p>Be sure to test the appearance of your alert in both orientations.</p>
+</li>
+<li>
+<p><strong>Generally, use a two-button alert.</strong> A two-‐button alert is often the most useful, because it’s easiest for people to choose between two alternatives. A single button alert is rarely helpful because it informs without giving people any control over the situation. An alert that contains three or more buttons is significantly more complex than a two-‐button alert and should be avoided if possible.</p>
+</li>
+<li>
+<p>On iPad, an action sheet is always displayed within a popover;</p>
+</li>
+<li>
+<p>On both devices, use the red button color if a potentially destructive action can be performed.</p>
+</li>
+</ul>
+<h3 id=modal-view>Modal View</h3>
+<ul>
+<li>On iPad, don’t display a modal view on top of a popover.</li>
+<li>On iPhone, coordinate the overall look of a modal view with the appearance of your app.</li>
+<li>On both devices, display a title that identifies the task, if appropriate:For example, the Messages app on iPhone presents a modal view when users want to compose a text message.</li>
+</ul>
+<h2 id=controls>Controls</h2>
+<h3 id=activity-indicator>Activity Indicator</h3>
+<p>An activity indicator shows that a task or process is progressing</p>
+<ul>
+<li>Don’t display a stationary activity indicator, because users associate this with a stalled process.</li>
+<li>If appropriate, customize the size and color of an activity indicator</li>
+</ul>
+<h3 id=date-picker>Date Picker</h3>
+<p>Countdown timer. The countdown timer mode displays wheels for the hour and minute. You can specify the total duration of a countdown, up to a maximum of 23 hours and 59 minutes.</p>
+<h3 id=contack-add-button>Contack Add Button</h3>
+<p>A Contact Add button lets the user add an existing contact to a text field or other text-‐based view (shown here in the To field of Messages).</p>
+<h3 id=detail-disclosure-button>Detail Disclosure Button</h3>
+<h3 id=info-button>Info Button</h3>
+<h3 id=label>Label</h3>
+<h3 id=network-activity-indicator>Network Activity Indicator</h3>
+<p>A network activity indicator appears in the status bar and shows that network activity is occurring</p>
+<h3 id=page-control>Page Control</h3>
+<p>A page control indicates how many views are open and which one is currently visible.</p>
+<h3 id=picker>Picker</h3>
+<h3 id=progress-view>Progress View</h3>
+<h3 id=refresh-control>Refresh Control</h3>
+<p>To learn more about defining a refresh control in your code, see UIRefreshControl Class Reference.(恩，这是个新东西，应该是iOS6才出现)</p>
+<h3 id=rounded-rectangle-button>Rounded Rectangle Button</h3>
+<h3 id=scope-bar>Scope Bar</h3>
+<h3 id=search-bar>Search Bar</h3>
+<h3 id=segmented-control>Segmented Control</h3>
+<h3 id=slider>Slider</h3>
+<p>If appropriate, customize the appearance of a slider.</p>
+<h3 id=stepper>Stepper</h3>
+<h3 id=switch>Switch</h3>
+<h3 id=text-field>Text Field</h3>
+<p>A text field accepts a single line of user input.</p>
+<ul>
+<li>Display the Clear button in the right end of a text field when appropriate.</li>
+<li>Display a hint in the text field if it helps users understand its purpose</li>
+<li>Specify a keyboard type that’s appropriate for the type of content you expect users to enter.</li>
+</ul>
+<h3 id=system-provided-buttons-and-icons>System-Provided Buttons and Icons</h3>
+<ul>
+<li>Use the system-provided items correctly</li>
+<li>Avoid designing a custom icon that looks too similar to a system-provided icon</li>
+</ul>
+<h3 id=standard-buttons-for-use-in-toolbars-and-navigation-bars>Standard Buttons for Use in Toolbars and Navigation Bars</h3>
+<h3 id=standard-icons-for-use-in-tab-bars>Standard Icons for Use in Tab Bars</h3>
+<p>恩，意思是这里有一堆专用的图标，自己不用去创造新图标了</p>
+<h3 id=standard-buttons-for-use-in-table-rows-and-other-ui-elements>Standard Buttons for Use in Table Rows and Other UI Elements</h3>
+<p>同前面一条。</p>
+<h1 id=custom-icon-and-image-creation-guidelines>Custom Icon and Image Creation Guidelines</h1>
+<h3 id=tips-for-designing-great-icons-and-images>Tips for Designing Great Icons and Images</h3>
+<ul>
+<li>For the best results,enlist the help of a professional graphic designer.</li>
+<li>Use universal imagery that people will easily recognize</li>
+<li>Embrace simplicity</li>
+<li>Use color and shadow judiciously to help the icon tell its story.</li>
+<li>In general, avoid using “greek” text or wavy lines to suggest text</li>
+<li>In general, create an idealized version of the subject rather than using a photo</li>
+<li>Portray real substances accurately</li>
+<li>Use transparency when it makes sense.</li>
+</ul>
+<h3 id=tips-for-creating-great-artwork-for-the-retina-display>Tips for Creating Great Artwork for the Retina Display</h3>
+<ul>
+<li>
+<p>Richer in texture.</p>
+</li>
+<li>
+<p>More detailed</p>
+</li>
+<li>
+<p>More realistic</p>
+</li>
+<li>
+<p>Start by scaling up your original artwork and then redraw it.</p>
+</li>
+<li>
+<p>Add detail and depth.</p>
+</li>
+<li>
+<p>Consider adding blur for better results in effects such as engravings and drop shadows.</p>
+</li>
+</ul>
+<h3 id=tips-for-creating-resizable-images>Tips for Creating Resizable Images</h3>
+<p>Tiling is less performant than stretching, but it&rsquo;s the only way to achieve a textured or patterned effect.</p>
+<h3 id=app-icons>App Icons</h3>
+<p>YoucanpreventiOSfromaddingtheshinetoyourappicon.Todothis,youneedtoaddthe UIPrerenderedIcon key to your app’s Info.plist file (to learn about this file, see “The Information Property List” in iOS App Programming Guide ).</p>
+<ul>
+<li>Ensure that your icon is eligible for the visual enhancements iOS provides.You should provide an image that:
+<ul>
+<li>Has 90° corners (it’s important to avoid cropping the corners of your icon—iOS does that for you when it applies the corner-‐rounding mask)</li>
+<li>Does not include a drop shadow</li>
+<li>Does not have any shine or gloss (unless you’ve chosen to prevent the addition of the reflective shine)</li>
+<li>Does not use alpha transparency</li>
+</ul>
+</li>
+<li>Create a large version of your app icon for display in the App Store
+<ul>
+<li>512 X 512 pixels, 1024 X 1024 pixels</li>
+<li>Be sure to name this version of your app icon iTunesArtwork and iTunesArtwork@2x, respectively.</li>
+</ul>
+</li>
+</ul>
+<h3 id=launch-images>Launch Images</h3>
+<ul>
+<li>Generally, design a launch image that is identical to the first screen of the app.
+<ul>
+<li>Exceptions:</li>
+<li>Text. The launch image is static, so any text you display in it will not be localized.</li>
+<li>UI elements that might change.</li>
+</ul>
+</li>
+<li>For iPhone and iPod touch launch images, include the status bar region.</li>
+<li>For iPad launch images, do not include the status bar region.</li>
+<li>Examples：
+<ul>
+<li>Settings的那个软件的启动界面，好吧，我就不放在我博客里了，自己去apple官网看吧</li>
+<li>还有股票那个软件的</li>
+</ul>
+</li>
+</ul>
+<h3 id=small-icons>Small Icons</h3>
+<p>You can name your icon anything you want as long as you use the CFBundleIcons key to declare the names</p>
+<h3 id=document-icons>Document Icons</h3>
+<h3 id=web-clip-icons>Web Clip Icons</h3>
+<ul>
+<li>If necessary, include custom pressed or selected appearances for your icons.</li>
+</ul>
+<h3 id=newsstand-icons>Newsstand Icons</h3><ul class=pa0>
+<li class=list>
+<a href=/tags/apple class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">apple</a>
+</li>
+<li class=list>
+<a href=/tags/ios class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">iOS</a>
+</li>
+<li class=list>
+<a href=/tags/hig class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">HIG</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

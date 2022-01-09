@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>python on Young Story</title><link>https://yyq.github.io/tags/python/</link><description>Recent content in python on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 16 Feb 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/python/index.xml" rel="self" type="application/rss+xml"/><item><title>python scrapy爬虫练手</title><link>https://yyq.github.io/posts/2017/2017-02-16-python-crawler-practice/</link><pubDate>Thu, 16 Feb 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-02-16-python-crawler-practice/</guid><description>简介 初步了解和实践了一下用python写个爬虫，有现成的库，学起来的方便。
+用的爬虫框架是：scrapy 官网链接
+参考的网页是：Segmentfault.com的这篇文章
+我的代码存放在：GitHub link
+新增加的技能点 基本了解scrapy的用法，爬虫的最基本的思路 python 3的语法里，print是一定要有括号的 xpath基础知识掌握和应用，简单的抓取用xpath基本够了，不过以后要来高精专的字符提取，还是得精通正则 python yield关键字的了解，它通常会出现在某个generator函数里，当这个generator函数执行的时候，遇到yield表达式，就会执行这个表达式，并且将其结果当做返回值return yield在某种情况下非常有用：有很多很多的条目，只需要读取一次。可以避免生成超大的数组。当你有很多大量的元素需要访问一次的时候，全部（或者部分）直接存到内存里都不是高效的做法，高效的做法是一次只载入内存一个，用完了之后就等待，当需要访问下一个元素的时候，才启动这个函数，去处理下一个元素。 scrapy工程需要注意一下，project名称和爬虫名称别用同一个单词，不然有些文件里需要引用其他文件夹的class的时候，会出错</description></item><item><title>Python爬糗百热门20条并邮件分发+wxPython简易GUI+py2app转成可执行文件</title><link>https://yyq.github.io/posts/2015/2015-06-24-python_spider/</link><pubDate>Wed, 24 Jun 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-06-24-python_spider/</guid><description>&lt;p>学了一阵子Python，拿来做个什么有意思的东西呢？爬糗百好了，爬到的内容，邮件分发出去。&lt;/p>
+&lt;p>然后又啃了两天的wxpython，做了个简易的邮件管理界面，可以在这里增加或者删除邮件，并且一键爬虫发送。&lt;/p>
+&lt;p>最后，索性封装成APP吧，又试了一把py2app，简单好用。&lt;/p>
+&lt;p>由于是让用户自行添加和删除邮箱，所以程序一定要兼顾到各种情况：比如输入的邮箱格式不合法，输入的邮箱里包含中文字符，分隔符不对，删除了全部邮箱然后又要发邮件等问题。&lt;/p></description></item><item><title>Python @property装饰器</title><link>https://yyq.github.io/posts/2015/2015-06-14-python-property/</link><pubDate>Sun, 14 Jun 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-06-14-python-property/</guid><description>廖老师的博客链接如下，一开始没看懂，搜罗了一大堆，有点感觉了
+点击打开链接其实@property装饰器就是把class的方法变成属性，见下面这个class，它有两个私有属性。
+通过第一个@property和第二个@score.setter，我们可以像访问属性一样来调用类里面的方法，例如：
+s=Student(“David”,99)
+s.score = 100
+至于用这种装饰器的原因，我想，就是为了简洁吧，直接用属性赋值的方式，执行了方法。Python 肯定是个懒人发明的。
+ </description></item><item><title>Python装饰器有趣实例探究</title><link>https://yyq.github.io/posts/2015/2015-06-05-python-decorator-research/</link><pubDate>Fri, 05 Jun 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-06-05-python-decorator-research/</guid><description>&lt;p>廖老师的教程实在太高深，没弄懂，&lt;!-- raw HTML omitted -->点击打开链接&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">deco_functionNeedDoc&lt;/span>(func):
+&lt;span style="color:#66d9ef">if&lt;/span> func&lt;span style="color:#f92672">.&lt;/span>__doc__ &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span> :
+print func, &lt;span style="color:#e6db74">&amp;#34;has no __doc__, it&amp;#39;s a bad habit.&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">else&lt;/span>:
+print func, &lt;span style="color:#e6db74">&amp;#39;:&amp;#39;&lt;/span>, func&lt;span style="color:#f92672">.&lt;/span>__doc__, &lt;span style="color:#e6db74">&amp;#39;.&amp;#39;&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> func
+&lt;span style="color:#a6e22e">@deco_functionNeedDoc&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">f&lt;/span>():
+print &lt;span style="color:#e6db74">&amp;#39;f() Do something&amp;#39;&lt;/span>
+&lt;span style="color:#a6e22e">@deco_functionNeedDoc&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">g&lt;/span>():
+&lt;span style="color:#e6db74">&amp;#39;I have a __doc__&amp;#39;&lt;/span>
+print &lt;span style="color:#e6db74">&amp;#39;g() Do something&amp;#39;&lt;/span>
+f()
+g()
+print f
+print g&lt;span style="color:#f92672">&amp;lt;/&lt;/span>pre&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>这段代码打印结果如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">&amp;lt;&lt;/span>function f at &lt;span style="color:#ae81ff">0x0238F930&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span> has no&lt;span style="color:#f92672">**&lt;/span>doc&lt;span style="color:#f92672">**&lt;/span>, it&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#75715e">#8217;s a bad habit.&lt;/span>
+&lt;span style="color:#f92672">&amp;lt;&lt;/span>function g at &lt;span style="color:#ae81ff">0x0238F8B0&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span> : I have a &lt;span style="color:#f92672">**&lt;/span>doc&lt;span style="color:#f92672">**&lt;/span> &lt;span style="color:#f92672">.&lt;/span>f() Do somethingg() Do something
+&lt;span style="color:#f92672">&amp;lt;&lt;/span>function f at &lt;span style="color:#ae81ff">0x0238F930&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;span style="color:#f92672">&amp;lt;&lt;/span>function g at &lt;span style="color:#ae81ff">0x0238F8B0&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>当时我就晕菜了，想了很久，原来在@装饰器函数的时候就会调用装饰器，装饰器函数return func，而func就是传进去的参数f。这个时候把代码改改。&lt;/p></description></item><item><title>That Cloud Services of CI</title><link>https://yyq.github.io/posts/2015/2015-05-14-that-cloud-services-of-ci/</link><pubDate>Thu, 14 May 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-05-14-that-cloud-services-of-ci/</guid><description>&lt;p>When we find some open source projects on github( e.g. &lt;!-- raw HTML omitted -->ruby-cucumber&lt;!-- raw HTML omitted -->). We can found some green icon to display the status of the project on the README.md file. Like these:&lt;/p>
+&lt;p>&lt;img src="2015-05-14-10.18.58.png" alt="x">&lt;/p>
+&lt;p>, it looks very attractive to me. Especially the build passing status and the code coverage. Even I’m not working for the CI in our company, I’m still interested in it.&lt;/p>
+&lt;p>When push some code to my code base, then automatically building the code, running tests, and showing the build status &amp;amp; code coverage real-time on the readme page, That’s COOL! When I look into more, the &lt;a href="https://travis-ci.org">travis-ci.org&lt;/a> and the &lt;a href="https://coveralls.io">coveralls.io&lt;/a> are free for open source project on github.&lt;/p>
+&lt;p>Let me have a try.&lt;/p>
+&lt;p>Since recently I’m learning python. First, I created a &lt;a href="https://github.com/yyq/HelloWorldPython">helloworldpython&lt;/a> project on my github.&lt;/p>
+&lt;h1 id="the-travis-ci">The Travis-CI&lt;/h1>
+&lt;p>it supports most popular languages. After signing in it with github account, open the service for my helloworld project. After the authentication for travis-ci, it will add an service for the project, we can found that on the setting of the project:&lt;/p></description></item><item><title>我要用python把leetcodeOJ算法题刷一遍。</title><link>https://yyq.github.io/posts/2015/2015-03-30-python-through-leetcodeoj/</link><pubDate>Mon, 30 Mar 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-03-30-python-through-leetcodeoj/</guid><description>给自己挖下一个坑，看看多久能摆平，平常吧，对算法有些兴趣，却总是没有持续的投入时间去学习。这次为了考验自己，看看到底有多强的执行力。leetcodeOJ难度对我来说刚刚好，不会难到我根本搞不定，也不会容易到每道题都能一次切过。在github上建立一个工程，https://github.com/yyq/LeetCodeOJ-python，看看多少时间能完成。完成顺序，就按照人家网站上的题号从小到大来吧。
+这里写下这篇文章，也顺便记录一下，在切题过程中遇到的坑，以及学习心得，感想。
+第四题。两个有序数组找中位数问题，时间复杂度log(n), 注意考虑奇偶性的情况，因为这个重复提交了好几遍才AC.
+第五题：找回文字符串，思路好说，边界问题坑了我两三把。
+第八题：字符串转数字的方法，各种特殊情况都需要考虑周全。</description></item></channel></rss>

@@ -1,0 +1,223 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>SMP结构在MIPS中的体现 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="囧了哎，前面分析完x86的一堆代码，这会儿又得找到在内核源码中，有关mips架构和smp有关的代码
+恩，一句话评论：mips的smp结构就是x86的smp的一种精简
+依旧是kernel 3.5.4 ，主要在目录/arch/mips下">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="SMP结构在MIPS中的体现">
+<meta property="og:description" content="囧了哎，前面分析完x86的一堆代码，这会儿又得找到在内核源码中，有关mips架构和smp有关的代码
+恩，一句话评论：mips的smp结构就是x86的smp的一种精简
+依旧是kernel 3.5.4 ，主要在目录/arch/mips下">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2012/2012-12-20-smpjie-gou-zai-mipszhong-de-ti-xian/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2012-12-20T14:05:01+00:00">
+<meta property="article:modified_time" content="2012-12-20T14:05:01+00:00">
+<meta itemprop=name content="SMP结构在MIPS中的体现">
+<meta itemprop=description content="囧了哎，前面分析完x86的一堆代码，这会儿又得找到在内核源码中，有关mips架构和smp有关的代码
+恩，一句话评论：mips的smp结构就是x86的smp的一种精简
+依旧是kernel 3.5.4 ，主要在目录/arch/mips下"><meta itemprop=datePublished content="2012-12-20T14:05:01+00:00">
+<meta itemprop=dateModified content="2012-12-20T14:05:01+00:00">
+<meta itemprop=wordCount content="243">
+<meta itemprop=keywords content="cpu,mips,smp,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="SMP结构在MIPS中的体现">
+<meta name=twitter:description content="囧了哎，前面分析完x86的一堆代码，这会儿又得找到在内核源码中，有关mips架构和smp有关的代码
+恩，一句话评论：mips的smp结构就是x86的smp的一种精简
+依旧是kernel 3.5.4 ，主要在目录/arch/mips下">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">SMP结构在MIPS中的体现</h1>
+<time class="f6 mv4 dib tracked" datetime=2012-12-20T14:05:01Z>December 20, 2012</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>囧了哎，前面分析完x86的一堆代码，这会儿又得找到在内核源码中，有关mips架构和smp有关的代码</p>
+<p>恩，一句话评论：mips的smp结构就是x86的smp的一种精简</p>
+<p>依旧是kernel 3.5.4 ，主要在目录/arch/mips下</p>
+<h1 id=和mips有关的smp数据结构和函数>和MIPS有关的SMP数据结构和函数</h1>
+<h2 id=xchg指令cpu锁总线>xchg指令，CPU锁总线</h2>
+<p><strong>spinlock_t</strong>数据结构</p>
+<p>include/linux/spinlock_types.h, line 76</p>
+<pre><code>struct {
+	u8 __padding[LOCK_PADSIZE];
+	struct lockdep_map dep_map;
+};
+</code></pre>
+<p>**spin_trylock()<strong>和</strong>spin_unlock()**之间是需要保证互斥，同一时间中，只有一个CPU在里面执行的临界区。</p>
+<h2 id=内存路障memory-barrier>内存路障Memory Barrier</h2>
+<p>高速缓存的使用可能会使实际的内存操作改变次序。从访问内存的角度看，CPU可能会有一些路基操作已经完成，但是物理上尚未实现。“内存路障”就是使得某些操作之前，把之前的物理操作完成，才能开始新的。函数<strong>mb(),rmb(),wmb()</strong>
+arch/mips/include/asm/barrier.h, line 132</p>
+<pre><code>#define wmb()           fast_wmb()
+#define rmb()           fast_rmb()
+#define mb()            fast_mb()
+</code></pre>
+<h2 id=知道当前进程在哪个cpu上运行>知道当前进程在哪个cpu上运行</h2>
+<p><strong>smp_processor_id()</strong>,include/linux/smp.h, line 218</p>
+<pre><code># define smp_processor_id() debug_smp_processor_id()
+</code></pre>
+<p><strong>smp_processor_id()</strong>,include/linux/smp.h, line 220</p>
+<pre><code># define smp_processor_id() raw_smp_processor_id()
+</code></pre>
+<p><strong>hard_smp_processor_id()</strong>,arch/mips/include/asm/netlogic/mips-extns.h, line 71</p>
+<pre><code>static inline int hard_smp_processor_id(void)
+{
+    return __read_32bit_c0_register($15, 1) &amp; 0x3ff;
+}
+</code></pre>
+<h2 id=一cpu应系统中另一cpu的请求而进行一次进程调度>一CPU应系统中另一CPU的请求而进行一次进程调度</h2>
+<p>当一个CPU需要另一个CPU进行一次进程调度时，就可以通过调用一个函数smp_send_reschedule()向目标CPU发出一个RESCHEDULE_VECTOR中断请求。</p>
+<p><strong>smp_send_reschedule()</strong>,arch/mips/include/asm/smp.h, line 53</p>
+<pre><code>static inline void smp_send_reschedule(int cpu)
+{
+    extern struct plat_smp_ops *mp_ops;     /* private */ 
+    mp_ops-&gt;send_ipi_single(cpu, SMP_RESCHEDULE_YOURSELF);
+}
+</code></pre>
+<h2 id=处理器间某种中断向量call_function_vector>处理器间某种中断向量：CALL_FUNCTION_VECTOR</h2>
+<p>还有一个处理器间中断向量是CALL_FUNCTION_VECTOR，用来请求目标CPU执行一个指定的函数。
+(x86才找到这个，mips没找到)发送者先设置好一个全局的call_data_struct数据结构，然后向目标发出请求。</p>
+<p>该向量的中断服务程序是<strong>smp_call_function_interrupt()</strong></p>
+<p>arch/mips/kernel/smp.c, line 146</p>
+<pre><code>void __irq_entry smp_call_function_interrupt(void)
+{
+    irq_enter();
+    generic_smp_call_function_single_interrupt();
+    generic_smp_call_function_interrupt();
+    irq_exit();
+}
+</code></pre>
+<h2 id=smp结构中的进程调度>SMP结构中的进程调度</h2>
+<p>cpu会通过**schedule()**从系统的就绪队列中挑选了一个进程作为运行的下一个进程。</p>
+<p>kernel/sched/core.c, line 3462</p>
+<pre><code>asmlinkage void __sched schedule(void)
+{
+     struct task_struct *tsk = current; 
+     sched_submit_work(tsk);
+     __schedule();
+}
+EXPORT_SYMBOL(schedule);
+</code></pre>
+<p>__schedule()中，区分了smp和单CPU。</p>
+<h2 id=smp系统的引导>SMP系统的引导</h2>
+<p>系统刚刚加电时或者reset后，系统中暂时只有一个处理器运行：“引导处理器”BP，其余暂停状态的是“应用处理器”AP。</p>
+<p>BP完成自身初始化，进入保护模式，开启页式存储管理机制，完成内存的初始化，然后**start_kernel()<strong>会调用</strong>smp_init()**SMP结构初始化</p>
+<p>init/main.c, line 322</p>
+<pre><code>static void __init smp_init(void)
+{
+	APIC_init_uniprocessor();	//其中内容很多
+}
+//2.6代码如下：
+smp_boot_cpus();
+smp_threads_read=1
+smp_commence()
+</code></pre>
+<p>在某处注释发现：<strong>smp_boot_cpus()/smp_commence() is replaced by smp_prepare_cpus()/__cpu_up()/smp_cpus_done()</strong></p>
+<p>依次启动系统中的各个CPU。各自初始化后都停下来等待统一的“起跑”命令。smp_commence（）</p>
+<p><strong>smp_prepare_boot_cpu</strong>，arch/mips/kernel/smp.c, line 189</p>
+<pre><code>/* preload SMP state for boot cpu */
+void __devinit smp_prepare_boot_cpu(void)
+{
+    set_cpu_possible(0, true);
+    set_cpu_online(0, true);
+    cpu_set(0, cpu_callin_map);
+}
+</code></pre>
+<p><strong>smp_prepare_cpus</strong>，arch/mips/kernel/smp.c, line 178</p>
+<pre><code>void __init smp_prepare_cpus(unsigned int max_cpus)
+{
+    init_new_context(current, &amp;init_mm);
+    current_thread_info()-&gt;cpu = 0;
+    mp_ops-&gt;prepare_cpus(max_cpus);
+    set_cpu_sibling_map(0);
+#ifndef CONFIG_HOTPLUG_CPU
+    init_cpu_present(cpu_possible_mask);
+#endif
+}
+</code></pre>
+<p><strong>__cpu_up</strong>，arch/mips/kernel/smp.c, line 197</p>
+<pre><code>int __cpuinit __cpu_up(unsigned int cpu, struct task_struct *tidle)
+{
+    mp_ops-&gt;boot_secondary(cpu, tidle); 
+    /*
+     * Trust is futile.  We should really have timeouts ...
+     */
+    while (!cpu_isset(cpu, cpu_callin_map))
+            udelay(100);
+
+    return 0;
+}
+</code></pre>
+<p><strong>smp_cpus_done</strong>，arch/mips/kernel/smp.c, line 171</p>
+<pre><code>void __init smp_cpus_done(unsigned int max_cpus)
+{
+    mp_ops-&gt;cpus_done();
+    synchronise_count_master();
+}
+</code></pre>
+<p>内核中的全局变量，<strong>max_cpus</strong>，表示系统中有多少个CPU。也可以指定。</p>
+<p>arch/mips/kernel/smp-bmips.c, line 39</p>
+<pre><code>static int __maybe_unused max_cpus = 1;
+</code></pre><ul class=pa0>
+<li class=list>
+<a href=/tags/cpu class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">cpu</a>
+</li>
+<li class=list>
+<a href=/tags/mips class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">mips</a>
+</li>
+<li class=list>
+<a href=/tags/smp class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">smp</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2012/2012-12-20-smpyou-guan-de-shu-ju-jie-gou-he-han-shu/>SMP有关的数据结构和函数</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

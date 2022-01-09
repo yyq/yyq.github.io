@@ -1,0 +1,168 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>第一次kaggle参赛，铜牌一枚 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="https://www.kaggle.com/yyqing/competitions
+巴西的汽车保险公司出的题，根据汽车司机的各种信息，来判断明年出险的概率
+我的排名Top 7%, 名次 335/5169
+在讨论区向诸位大神学习了种种，受益匪浅
+实践中，有两类知识，书本和教材中没有，但是非常有效：
+ 奇淫巧技，例如：特征工程时用到的奇奇怪怪的常量；读入内存较大的数据的处理方案；有的时候OHE效果非常明显； 有的观点和思路只存在于有关最新的普通论文中，没有得大奖的也没有入选什么顶级会议的；或者github上某些几乎没有star的工程，拿来实践试试都会有奇效  p.s.
+ 根据某种特定参数下的CV集得出来的答案很有可能对于题目答案过拟合了，这一次考试中你虽然得了高分，然而对实际生活中应用却不会那么具有普适性。他们就像准备考试不是那么充分却考前蒙对了题目而拿了好名次 之前听人说xgboost秒杀很多kaggle题目，可如今就算你拿着最优化的决策树上场，还是会被强大硬件训练出来的神经网络秒的渣都不剩。比如我是xgboost和lgbm组合上场，单次训练个半个小时出来的结果，就是300多名，而第一名的方案就不一样了，5个模型ensemble，一个xgboost，4个神经网络，他的每一个神经网络的训练时间都是好几个小时还都用到了独立显卡，遇到这种强大的对手只能俯首称臣。  ">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="第一次kaggle参赛，铜牌一枚">
+<meta property="og:description" content="https://www.kaggle.com/yyqing/competitions
+巴西的汽车保险公司出的题，根据汽车司机的各种信息，来判断明年出险的概率
+我的排名Top 7%, 名次 335/5169
+在讨论区向诸位大神学习了种种，受益匪浅
+实践中，有两类知识，书本和教材中没有，但是非常有效：
+ 奇淫巧技，例如：特征工程时用到的奇奇怪怪的常量；读入内存较大的数据的处理方案；有的时候OHE效果非常明显； 有的观点和思路只存在于有关最新的普通论文中，没有得大奖的也没有入选什么顶级会议的；或者github上某些几乎没有star的工程，拿来实践试试都会有奇效  p.s.
+ 根据某种特定参数下的CV集得出来的答案很有可能对于题目答案过拟合了，这一次考试中你虽然得了高分，然而对实际生活中应用却不会那么具有普适性。他们就像准备考试不是那么充分却考前蒙对了题目而拿了好名次 之前听人说xgboost秒杀很多kaggle题目，可如今就算你拿着最优化的决策树上场，还是会被强大硬件训练出来的神经网络秒的渣都不剩。比如我是xgboost和lgbm组合上场，单次训练个半个小时出来的结果，就是300多名，而第一名的方案就不一样了，5个模型ensemble，一个xgboost，4个神经网络，他的每一个神经网络的训练时间都是好几个小时还都用到了独立显卡，遇到这种强大的对手只能俯首称臣。  ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2017/2017-11-29-kaggle/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-11-29T00:00:00+00:00">
+<meta property="article:modified_time" content="2017-11-29T00:00:00+00:00">
+<meta itemprop=name content="第一次kaggle参赛，铜牌一枚">
+<meta itemprop=description content="https://www.kaggle.com/yyqing/competitions
+巴西的汽车保险公司出的题，根据汽车司机的各种信息，来判断明年出险的概率
+我的排名Top 7%, 名次 335/5169
+在讨论区向诸位大神学习了种种，受益匪浅
+实践中，有两类知识，书本和教材中没有，但是非常有效：
+ 奇淫巧技，例如：特征工程时用到的奇奇怪怪的常量；读入内存较大的数据的处理方案；有的时候OHE效果非常明显； 有的观点和思路只存在于有关最新的普通论文中，没有得大奖的也没有入选什么顶级会议的；或者github上某些几乎没有star的工程，拿来实践试试都会有奇效  p.s.
+ 根据某种特定参数下的CV集得出来的答案很有可能对于题目答案过拟合了，这一次考试中你虽然得了高分，然而对实际生活中应用却不会那么具有普适性。他们就像准备考试不是那么充分却考前蒙对了题目而拿了好名次 之前听人说xgboost秒杀很多kaggle题目，可如今就算你拿着最优化的决策树上场，还是会被强大硬件训练出来的神经网络秒的渣都不剩。比如我是xgboost和lgbm组合上场，单次训练个半个小时出来的结果，就是300多名，而第一名的方案就不一样了，5个模型ensemble，一个xgboost，4个神经网络，他的每一个神经网络的训练时间都是好几个小时还都用到了独立显卡，遇到这种强大的对手只能俯首称臣。  "><meta itemprop=datePublished content="2017-11-29T00:00:00+00:00">
+<meta itemprop=dateModified content="2017-11-29T00:00:00+00:00">
+<meta itemprop=wordCount content="13">
+<meta itemprop=keywords content="kaggle,machine learning,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="第一次kaggle参赛，铜牌一枚">
+<meta name=twitter:description content="https://www.kaggle.com/yyqing/competitions
+巴西的汽车保险公司出的题，根据汽车司机的各种信息，来判断明年出险的概率
+我的排名Top 7%, 名次 335/5169
+在讨论区向诸位大神学习了种种，受益匪浅
+实践中，有两类知识，书本和教材中没有，但是非常有效：
+ 奇淫巧技，例如：特征工程时用到的奇奇怪怪的常量；读入内存较大的数据的处理方案；有的时候OHE效果非常明显； 有的观点和思路只存在于有关最新的普通论文中，没有得大奖的也没有入选什么顶级会议的；或者github上某些几乎没有star的工程，拿来实践试试都会有奇效  p.s.
+ 根据某种特定参数下的CV集得出来的答案很有可能对于题目答案过拟合了，这一次考试中你虽然得了高分，然而对实际生活中应用却不会那么具有普适性。他们就像准备考试不是那么充分却考前蒙对了题目而拿了好名次 之前听人说xgboost秒杀很多kaggle题目，可如今就算你拿着最优化的决策树上场，还是会被强大硬件训练出来的神经网络秒的渣都不剩。比如我是xgboost和lgbm组合上场，单次训练个半个小时出来的结果，就是300多名，而第一名的方案就不一样了，5个模型ensemble，一个xgboost，4个神经网络，他的每一个神经网络的训练时间都是好几个小时还都用到了独立显卡，遇到这种强大的对手只能俯首称臣。  ">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">第一次kaggle参赛，铜牌一枚</h1>
+<p class=tracked>
+By <strong>
+Young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2017-11-29T00:00:00Z>November 29, 2017</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><a href=https://www.kaggle.com/yyqing/competitions>https://www.kaggle.com/yyqing/competitions</a></p>
+<p>巴西的汽车保险公司出的题，根据汽车司机的各种信息，来判断明年出险的概率</p>
+<p>我的排名Top 7%, 名次 335/5169</p>
+<p>在讨论区向诸位大神学习了种种，受益匪浅</p>
+<p>实践中，有两类知识，书本和教材中没有，但是非常有效：</p>
+<ol>
+<li>奇淫巧技，例如：特征工程时用到的奇奇怪怪的常量；读入内存较大的数据的处理方案；有的时候OHE效果非常明显；</li>
+<li>有的观点和思路只存在于有关最新的普通论文中，没有得大奖的也没有入选什么顶级会议的；或者github上某些几乎没有star的工程，拿来实践试试都会有奇效</li>
+</ol>
+<p>p.s.</p>
+<ol>
+<li>根据某种特定参数下的CV集得出来的答案很有可能对于题目答案过拟合了，这一次考试中你虽然得了高分，然而对实际生活中应用却不会那么具有普适性。他们就像准备考试不是那么充分却考前蒙对了题目而拿了好名次</li>
+<li>之前听人说xgboost秒杀很多kaggle题目，可如今就算你拿着最优化的决策树上场，还是会被强大硬件训练出来的神经网络秒的渣都不剩。比如我是xgboost和lgbm组合上场，单次训练个半个小时出来的结果，就是300多名，而第一名的方案就不一样了，5个模型ensemble，一个xgboost，4个神经网络，他的每一个神经网络的训练时间都是好几个小时还都用到了独立显卡，遇到这种强大的对手只能俯首称臣。</li>
+</ol>
+<ul class=pa0>
+<li class=list>
+<a href=/tags/kaggle class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">kaggle</a>
+</li>
+<li class=list>
+<a href=/tags/machine-learning class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">machine learning</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2017/2017-10-23-xgboost-tune/>xgboost模型调试攻略</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-10-02-machine-learning-ex-progress/>17年9月份机器学习知识进展</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-12-machine-learning-exercise/>coursera Andrew Ng 机器学习 编程习题总结</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-11-machine-learning-week11/>coursera Andrew Ng 机器学习第十一周笔记 应用举例：photo OCR</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-10-machine-learning-week10/>coursera Andrew Ng 机器学习第十周笔记 大数据量的机器学习</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-09-machine-learning-week9/>coursera Andrew Ng 机器学习第九周笔记 异常检测与推荐系统</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-08-machine-learning-week8/>coursera Andrew Ng 机器学习第八周笔记 降低维度</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-07-machine-learning-week7/>coursera Andrew Ng 机器学习第七周笔记 支持向量机</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-06-machine-learning-week6/>coursera Andrew Ng 机器学习第六周笔记 系统设计与优化技巧</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-05-machine-learning-week5/>coursera Andrew Ng 机器学习第五周笔记 神经网络的学习过程</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-04-machine-learning-week4/>coursera Andrew Ng 机器学习第四周笔记 神经网络模型</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-03-machine-learning-week3/>coursera Andrew Ng 机器学习第三周笔记 逻辑回归与泛化</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-02-machine-learning-week2/>coursera Andrew Ng 机器学习第二周笔记 多个变量的线性回归</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-01-machine-learning-week1/>coursera Andrew Ng 机器学习第一周笔记 线性回归</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

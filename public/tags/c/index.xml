@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>c on Young Story</title><link>https://yyq.github.io/tags/c/</link><description>Recent content in c on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 29 May 2013 07:49:01 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/c/index.xml" rel="self" type="application/rss+xml"/><item><title>C Traps and Pitfalls</title><link>https://yyq.github.io/posts/2013/2013-05-29-c-traps-and-pitfalls/</link><pubDate>Wed, 29 May 2013 07:49:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-05-29-c-traps-and-pitfalls/</guid><description>&lt;p>了解到一本很经典的C语言的书，我没有读过，《C陷阱与缺陷》，此书不厚，但是经典。这片博客用来做读书笔记吧。&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>printf(&amp;quot;%d&amp;quot;,010);&lt;/p>
+&lt;p>输出是8。平常一不小心就错了。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>词法分析中的贪心法：a&amp;mdash;b的意思是 (a&amp;ndash;)-b,而不是a-(&amp;ndash;b);因为编译器从左到右扫描，最长的一个有意义的字符是 &amp;ndash;；&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;em>a=b/&lt;em>p&lt;/em>&lt;/em> 肯定会报错，因为 &lt;strong>/&lt;/strong>&lt;/em> 会被解析成注释的前缀。&lt;/p>
+&lt;p>正确的表达方式应该是*&lt;em>a= b / &lt;em>p&lt;/em>&lt;/em> 或者 *&lt;em>a = b /(&lt;em>p)&lt;/em>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>printf('\n');&lt;/strong> 是错误的；&lt;strong>printf(&amp;quot;\n&amp;quot;)&lt;/strong> 是正确的；&lt;/p>
+&lt;p>char Hello[]={&amp;lsquo;h&amp;rsquo;,&amp;lsquo;e&amp;rsquo;,&amp;lsquo;l&amp;rsquo;,&amp;lsquo;l&amp;rsquo;,&amp;lsquo;o&amp;rsquo;,&amp;lsquo;w&amp;rsquo;,&amp;lsquo;o&amp;rsquo;,&amp;lsquo;r&amp;rsquo;,&amp;lsquo;l&amp;rsquo;,&amp;rsquo;d','\n',&amp;lsquo;0&amp;rsquo;};
+printf(Hello);&lt;/p>
+&lt;/li>
+&lt;/ol></description></item></channel></rss>

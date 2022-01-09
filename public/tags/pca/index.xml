@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>PCA on Young Story</title><link>https://yyq.github.io/tags/pca/</link><description>Recent content in PCA on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 08 Aug 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/pca/index.xml" rel="self" type="application/rss+xml"/><item><title>coursera Andrew Ng 机器学习第八周笔记 降低维度</title><link>https://yyq.github.io/posts/2017/2017-08-08-machine-learning-week8/</link><pubDate>Tue, 08 Aug 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-08-08-machine-learning-week8/</guid><description>unsupervised learning k-means altorithm clustering, optimization objective clustering, random initialization should have K &amp;lt; m
+Randomly pick K training examples.
+clustering, choosing the number of clusters, K Please draw a graph. Elbow method
+Dimensionality reduction Motivation I: data compressioni
+Motivation II: Visualization
+Princiapl Component Analysis reduce from n-dimension to k-dimension: find k vectors u1 u2 u3 uk onto which to project the data,so as to minimize the projection error.
+PCA steps</description></item></channel></rss>

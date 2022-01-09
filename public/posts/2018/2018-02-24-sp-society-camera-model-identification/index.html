@@ -1,0 +1,226 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>kaggle | sp-society-camera-model-identification 看图认相机 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="此题目标为根据照片来判断牌照相机的型号
+这件事情的原理是：每一家设备都有自己的数字图像处理算法，总会有属于自己的图像特征
+这件事情的意义在于：警察破案，图片是否有被软件修改等等
+我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+0 自评 自己做的第二个图像类的题目，最大的收获就是体验到了extra data的威力，在论坛区看到有大家讨论说使用额外的一些的数据，50GB的训练集果然效果不错，直接把我的public LB成绩从0.87提升到0.92，后来经过自己的各种transfer learn和fine tune keras里的一些模型，然后组合，在private LB拿到了0.96的分数。看看排名前几的大神的总结里，很多人都使用了比我找的数据集更大的数据集，所以准确率也比我高出几个数量级（第一名0.9896）。
+训练大量图像是一件非常非常消耗时间的事情，优化的方向有这么几个：1)切取大图像中的小块来训练;2)显卡计算能力利用率提高，注意显卡的频率，内存，注意程序中的CPU处理部分，做到及时处理一直给显卡喂数据，别让显卡时忙时闲 3)算法的优化，能并行做计算的部分尽量，不过注意估算好显卡的内存消耗，过大过小都是一种浪费 4)transfer来的不同的模型，参数数量不一样，最小图片像素也不一样 5) 做好pipeline
+1 高分答案集锦 第一名 Pavel Pleskov 模型 参考了Andres的代码，用pyTorch实现了，如下模型有较好的效果
+984_densenet201_antorsaegen_29_0.98624 976_densenet201_antorsaegen_62_0.98271 977_resnet50_antorsaegen_119_val_0.9815 976_DenseNet201_do0.3_doc0.0_avg-epoch072-val_acc0.981250 967_InceptionResNetV2_do0.1_avg-epoch154-val_acc0.965625 962_Xception_do0.3_avg-epoch079-val_acc0.991667 (leaky validation, pls ignore) 所有模型的输入图像都用的512*512，并且都是Test Time Augmentation(测试时也用增强过的数据)。这里是最大败笔，因为后来发现及时用较小size的图片可以更快的训练，然后更多的TTA可以达到相似的准确率
+数据 我服，他另外下载了300GB从flickr和yandex.foto的图片。过滤掉分别率不适合的图片，质量不好的图片（图片质量可以用ImageMagick得到），自己用selenium做爬虫抓来的图片。
+硬件 五个队员，有五个1080ti和一个1070
+提交  平均所有的TTA所有的模型，by power mean powers of 1 2 4.最后有较大的LB overfit, public LB 0.991 private LB 0.985 通过hold-out，融合预测结果。20个xgboost，20个lightGBM，12个Keras，public LB 0.986, private LB 0.989.  关键点  收集尽可能多的图像数据，做好清理 尝试更小的图片切图，尝试所有的架构类型 LB probing是恶魔，相信自己的CV.">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="kaggle | sp-society-camera-model-identification 看图认相机">
+<meta property="og:description" content="此题目标为根据照片来判断牌照相机的型号
+这件事情的原理是：每一家设备都有自己的数字图像处理算法，总会有属于自己的图像特征
+这件事情的意义在于：警察破案，图片是否有被软件修改等等
+我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+0 自评 自己做的第二个图像类的题目，最大的收获就是体验到了extra data的威力，在论坛区看到有大家讨论说使用额外的一些的数据，50GB的训练集果然效果不错，直接把我的public LB成绩从0.87提升到0.92，后来经过自己的各种transfer learn和fine tune keras里的一些模型，然后组合，在private LB拿到了0.96的分数。看看排名前几的大神的总结里，很多人都使用了比我找的数据集更大的数据集，所以准确率也比我高出几个数量级（第一名0.9896）。
+训练大量图像是一件非常非常消耗时间的事情，优化的方向有这么几个：1)切取大图像中的小块来训练;2)显卡计算能力利用率提高，注意显卡的频率，内存，注意程序中的CPU处理部分，做到及时处理一直给显卡喂数据，别让显卡时忙时闲 3)算法的优化，能并行做计算的部分尽量，不过注意估算好显卡的内存消耗，过大过小都是一种浪费 4)transfer来的不同的模型，参数数量不一样，最小图片像素也不一样 5) 做好pipeline
+1 高分答案集锦 第一名 Pavel Pleskov 模型 参考了Andres的代码，用pyTorch实现了，如下模型有较好的效果
+984_densenet201_antorsaegen_29_0.98624 976_densenet201_antorsaegen_62_0.98271 977_resnet50_antorsaegen_119_val_0.9815 976_DenseNet201_do0.3_doc0.0_avg-epoch072-val_acc0.981250 967_InceptionResNetV2_do0.1_avg-epoch154-val_acc0.965625 962_Xception_do0.3_avg-epoch079-val_acc0.991667 (leaky validation, pls ignore) 所有模型的输入图像都用的512*512，并且都是Test Time Augmentation(测试时也用增强过的数据)。这里是最大败笔，因为后来发现及时用较小size的图片可以更快的训练，然后更多的TTA可以达到相似的准确率
+数据 我服，他另外下载了300GB从flickr和yandex.foto的图片。过滤掉分别率不适合的图片，质量不好的图片（图片质量可以用ImageMagick得到），自己用selenium做爬虫抓来的图片。
+硬件 五个队员，有五个1080ti和一个1070
+提交  平均所有的TTA所有的模型，by power mean powers of 1 2 4.最后有较大的LB overfit, public LB 0.991 private LB 0.985 通过hold-out，融合预测结果。20个xgboost，20个lightGBM，12个Keras，public LB 0.986, private LB 0.989.  关键点  收集尽可能多的图像数据，做好清理 尝试更小的图片切图，尝试所有的架构类型 LB probing是恶魔，相信自己的CV.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2018/2018-02-24-sp-society-camera-model-identification/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2018-02-24T00:00:00+00:00">
+<meta property="article:modified_time" content="2018-02-24T00:00:00+00:00">
+<meta itemprop=name content="kaggle | sp-society-camera-model-identification 看图认相机">
+<meta itemprop=description content="此题目标为根据照片来判断牌照相机的型号
+这件事情的原理是：每一家设备都有自己的数字图像处理算法，总会有属于自己的图像特征
+这件事情的意义在于：警察破案，图片是否有被软件修改等等
+我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+0 自评 自己做的第二个图像类的题目，最大的收获就是体验到了extra data的威力，在论坛区看到有大家讨论说使用额外的一些的数据，50GB的训练集果然效果不错，直接把我的public LB成绩从0.87提升到0.92，后来经过自己的各种transfer learn和fine tune keras里的一些模型，然后组合，在private LB拿到了0.96的分数。看看排名前几的大神的总结里，很多人都使用了比我找的数据集更大的数据集，所以准确率也比我高出几个数量级（第一名0.9896）。
+训练大量图像是一件非常非常消耗时间的事情，优化的方向有这么几个：1)切取大图像中的小块来训练;2)显卡计算能力利用率提高，注意显卡的频率，内存，注意程序中的CPU处理部分，做到及时处理一直给显卡喂数据，别让显卡时忙时闲 3)算法的优化，能并行做计算的部分尽量，不过注意估算好显卡的内存消耗，过大过小都是一种浪费 4)transfer来的不同的模型，参数数量不一样，最小图片像素也不一样 5) 做好pipeline
+1 高分答案集锦 第一名 Pavel Pleskov 模型 参考了Andres的代码，用pyTorch实现了，如下模型有较好的效果
+984_densenet201_antorsaegen_29_0.98624 976_densenet201_antorsaegen_62_0.98271 977_resnet50_antorsaegen_119_val_0.9815 976_DenseNet201_do0.3_doc0.0_avg-epoch072-val_acc0.981250 967_InceptionResNetV2_do0.1_avg-epoch154-val_acc0.965625 962_Xception_do0.3_avg-epoch079-val_acc0.991667 (leaky validation, pls ignore) 所有模型的输入图像都用的512*512，并且都是Test Time Augmentation(测试时也用增强过的数据)。这里是最大败笔，因为后来发现及时用较小size的图片可以更快的训练，然后更多的TTA可以达到相似的准确率
+数据 我服，他另外下载了300GB从flickr和yandex.foto的图片。过滤掉分别率不适合的图片，质量不好的图片（图片质量可以用ImageMagick得到），自己用selenium做爬虫抓来的图片。
+硬件 五个队员，有五个1080ti和一个1070
+提交  平均所有的TTA所有的模型，by power mean powers of 1 2 4.最后有较大的LB overfit, public LB 0.991 private LB 0.985 通过hold-out，融合预测结果。20个xgboost，20个lightGBM，12个Keras，public LB 0.986, private LB 0.989.  关键点  收集尽可能多的图像数据，做好清理 尝试更小的图片切图，尝试所有的架构类型 LB probing是恶魔，相信自己的CV."><meta itemprop=datePublished content="2018-02-24T00:00:00+00:00">
+<meta itemprop=dateModified content="2018-02-24T00:00:00+00:00">
+<meta itemprop=wordCount content="310">
+<meta itemprop=keywords content="kaggle,deep learning,neural networks,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="kaggle | sp-society-camera-model-identification 看图认相机">
+<meta name=twitter:description content="此题目标为根据照片来判断牌照相机的型号
+这件事情的原理是：每一家设备都有自己的数字图像处理算法，总会有属于自己的图像特征
+这件事情的意义在于：警察破案，图片是否有被软件修改等等
+我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+0 自评 自己做的第二个图像类的题目，最大的收获就是体验到了extra data的威力，在论坛区看到有大家讨论说使用额外的一些的数据，50GB的训练集果然效果不错，直接把我的public LB成绩从0.87提升到0.92，后来经过自己的各种transfer learn和fine tune keras里的一些模型，然后组合，在private LB拿到了0.96的分数。看看排名前几的大神的总结里，很多人都使用了比我找的数据集更大的数据集，所以准确率也比我高出几个数量级（第一名0.9896）。
+训练大量图像是一件非常非常消耗时间的事情，优化的方向有这么几个：1)切取大图像中的小块来训练;2)显卡计算能力利用率提高，注意显卡的频率，内存，注意程序中的CPU处理部分，做到及时处理一直给显卡喂数据，别让显卡时忙时闲 3)算法的优化，能并行做计算的部分尽量，不过注意估算好显卡的内存消耗，过大过小都是一种浪费 4)transfer来的不同的模型，参数数量不一样，最小图片像素也不一样 5) 做好pipeline
+1 高分答案集锦 第一名 Pavel Pleskov 模型 参考了Andres的代码，用pyTorch实现了，如下模型有较好的效果
+984_densenet201_antorsaegen_29_0.98624 976_densenet201_antorsaegen_62_0.98271 977_resnet50_antorsaegen_119_val_0.9815 976_DenseNet201_do0.3_doc0.0_avg-epoch072-val_acc0.981250 967_InceptionResNetV2_do0.1_avg-epoch154-val_acc0.965625 962_Xception_do0.3_avg-epoch079-val_acc0.991667 (leaky validation, pls ignore) 所有模型的输入图像都用的512*512，并且都是Test Time Augmentation(测试时也用增强过的数据)。这里是最大败笔，因为后来发现及时用较小size的图片可以更快的训练，然后更多的TTA可以达到相似的准确率
+数据 我服，他另外下载了300GB从flickr和yandex.foto的图片。过滤掉分别率不适合的图片，质量不好的图片（图片质量可以用ImageMagick得到），自己用selenium做爬虫抓来的图片。
+硬件 五个队员，有五个1080ti和一个1070
+提交  平均所有的TTA所有的模型，by power mean powers of 1 2 4.最后有较大的LB overfit, public LB 0.991 private LB 0.985 通过hold-out，融合预测结果。20个xgboost，20个lightGBM，12个Keras，public LB 0.986, private LB 0.989.  关键点  收集尽可能多的图像数据，做好清理 尝试更小的图片切图，尝试所有的架构类型 LB probing是恶魔，相信自己的CV.">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">kaggle | sp-society-camera-model-identification 看图认相机</h1>
+<p class=tracked>
+By <strong>
+Young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2018-02-24T00:00:00Z>February 24, 2018</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>此题目标为根据照片来判断牌照相机的型号</p>
+<p>这件事情的原理是：每一家设备都有自己的数字图像处理算法，总会有属于自己的图像特征</p>
+<p>这件事情的意义在于：警察破案，图片是否有被软件修改等等</p>
+<p>我的kaggle账号:<a href=https://www.kaggle.com/yyqing/competitions>https://www.kaggle.com/yyqing/competitions</a></p>
+<h2 id=0-自评>0 自评</h2>
+<p>自己做的第二个图像类的题目，最大的收获就是体验到了extra data的威力，在论坛区看到有大家讨论说使用额外的一些的数据，50GB的训练集果然效果不错，直接把我的public LB成绩从0.87提升到0.92，后来经过自己的各种transfer learn和fine tune keras里的一些模型，然后组合，在private LB拿到了0.96的分数。看看排名前几的大神的总结里，很多人都使用了比我找的数据集更大的数据集，所以准确率也比我高出几个数量级（第一名0.9896）。</p>
+<p>训练大量图像是一件非常非常消耗时间的事情，优化的方向有这么几个：1)切取大图像中的小块来训练;2)显卡计算能力利用率提高，注意显卡的频率，内存，注意程序中的CPU处理部分，做到及时处理一直给显卡喂数据，别让显卡时忙时闲 3)算法的优化，能并行做计算的部分尽量，不过注意估算好显卡的内存消耗，过大过小都是一种浪费 4)transfer来的不同的模型，参数数量不一样，最小图片像素也不一样 5) 做好pipeline</p>
+<h2 id=1-高分答案集锦>1 高分答案集锦</h2>
+<h3 id=第一名-pavel-pleskovhttpswwwkagglecomcsp-society-camera-model-identificationdiscussion49367>第一名 <a href=https://www.kaggle.com/c/sp-society-camera-model-identification/discussion/49367>Pavel Pleskov</a></h3>
+<h5 id=模型>模型</h5>
+<p>参考了Andres的代码，用pyTorch实现了，如下模型有较好的效果</p>
+<pre tabindex=0><code>984_densenet201_antorsaegen_29_0.98624
+976_densenet201_antorsaegen_62_0.98271
+977_resnet50_antorsaegen_119_val_0.9815
+976_DenseNet201_do0.3_doc0.0_avg-epoch072-val_acc0.981250
+967_InceptionResNetV2_do0.1_avg-epoch154-val_acc0.965625
+962_Xception_do0.3_avg-epoch079-val_acc0.991667 (leaky validation, pls ignore)
+</code></pre><p>所有模型的输入图像都用的512*512，并且都是Test Time Augmentation(测试时也用增强过的数据)。这里是最大败笔，因为后来发现及时用较小size的图片可以更快的训练，然后更多的TTA可以达到相似的准确率</p>
+<h5 id=数据>数据</h5>
+<p>我服，他另外下载了300GB从flickr和yandex.foto的图片。过滤掉分别率不适合的图片，质量不好的图片（图片质量可以用ImageMagick得到），自己用selenium做爬虫抓来的图片。</p>
+<h5 id=硬件>硬件</h5>
+<p>五个队员，有五个1080ti和一个1070</p>
+<h5 id=提交>提交</h5>
+<ul>
+<li>平均所有的TTA所有的模型，by power mean powers of 1 2 4.最后有较大的LB overfit, public LB 0.991 private LB 0.985</li>
+<li>通过hold-out，融合预测结果。20个xgboost，20个lightGBM，12个Keras，public LB 0.986, private LB 0.989.</li>
+</ul>
+<h5 id=关键点>关键点</h5>
+<ul>
+<li>收集尽可能多的图像数据，做好清理</li>
+<li>尝试更小的图片切图，尝试所有的架构类型</li>
+<li>LB probing是恶魔，相信自己的CV. (哈哈哈，完全同意,我本人就是按照自己最好的cv提交的，然后从public LB shake up从110名上升到64名的)</li>
+</ul>
+<h3 id=第二名-n01z3httpswwwkagglecomcsp-society-camera-model-identificationdiscussion49299>第二名 <a href=https://www.kaggle.com/c/sp-society-camera-model-identification/discussion/49299>n01z3</a></h3>
+<p>这货直接搞来了500GB图片，不服不行，9个imagenet类似的模型，3个版本的pipeline。最后，几个平均了27个checkpoints。</p>
+<p>关键点，按重要性先后排名：</p>
+<ul>
+<li>large and clean extra data</li>
+<li>consistant local validation</li>
+<li>classic competitive approach to learning models</li>
+<li>diverse models</li>
+</ul>
+<h5 id=data-mining>data mining</h5>
+<p>下载了500多GB的数据，来自flickr，yandex，wikipedia commons, movile reviews.另外，最后一晚，我们还下载了另外的22k张图片，Andres提供的flickr图片</p>
+<h5 id=filtering-data>filtering data</h5>
+<p>lightroom photoshop 处理会抹掉相机的信息。我们过滤图片的条件有：相机类型，分辨率，jpeg压缩质量，软件处理。</p>
+<h5 id=训练模型不想翻译了直接看原文比较合适>训练模型,不想翻译了，直接看原文比较合适</h5>
+<pre tabindex=0><code> Our code is based on pytorch version of Andres solution. For all the models, the binary flag is_manip was used as an additional feature for the classifier of a net. All models had an input of 480. For the majority of our models, five crops + flip photo orientation (10TTA) was applied to the pictures, for D4 models five crops + the whole group of D4 were applied (40TTA); then geometric mean was applied to the predictions. Useful tricks: 1. Adam, reducing LR on plateau with patience 2-4 2. Cyclic LR with SGD 3. Pseudo-labeling 4. Averaging 3 checkpoints with the best loss for validation
+</code></pre><p>然后他贴了一张图，说明他用了哪9个模型，数据是，多少个ckp，然后LB得分</p>
+<p>比较新奇的是，他除了用到其他帖子都用的resnet和densenet之外，还用了dpn，我上网查了查，dual path network：<a href=https://arxiv.org/pdf/1707.01629v1.pdf>https://arxiv.org/pdf/1707.01629v1.pdf</a></p>
+<pre tabindex=0><code>DPN是一种结合了ResNet和DenseNet优势的新型卷积网络结构。
+在ImagNet-1k数据集上，浅DPN超过了最好的ResNeXt-101（64×4d），具有26％更小的模型尺寸，25％的计算成本和8％的更低的内存消耗
+</code></pre><p>在评论区，第二名的作者也说道了，<strong>DPN is fantastic! Our best single model: dpn92 with pseudo labeling, TTA, 3 checkpoints TTA: 0.987 (private) and 0.984 (public).</strong></p>
+<h5 id=what-did-not-work--demosizing>what did not work ? Demosizing</h5>
+<h5 id=硬件-1>硬件</h5>
+<pre tabindex=0><code>i7 7700k, 64gb, 2x 1080 (just for development)
+i7 6700k, 32gb, 2x Titan X (Maxwell)
+i7 5930K, 32GB, 3x1080Ti
+Xeon 2696v3, 64gb, 4x1080Ti
+i7 3770k, 16gb, 2x 1080Ti
+</code></pre><h3 id=第三名-luisa-verdolivahttpswwwkagglecomcsp-society-camera-model-identificationdiscussion49602>第三名 <a href=https://www.kaggle.com/c/sp-society-camera-model-identification/discussion/49602>Luisa Verdoliva</a></h3>
+<p>竟然是个妹子！意大利妹子！浪漫豪放的意大利妹子，竟然还有做机器学习的，服</p>
+<h5 id=数据-1>数据</h5>
+<p>每个相机类别，只用了450张图哎，400个训练，50个cv</p>
+<h5 id=训练>训练</h5>
+<h5 id=方案总结>方案总结</h5>
+<h5 id=硬件-2>硬件</h5>
+<h5 id=特别提要>特别提要</h5>
+<h5 id=lessons-learnt>lessons learnt</h5>
+<h2 id=2-评论区精华摘抄>2 评论区精华摘抄</h2>
+<p><a href=https://www.kaggle.com/devm2024/keras-model-for-beginners-0-210-on-lb-eda-r-d/notebook>https://www.kaggle.com/devm2024/keras-model-for-beginners-0-210-on-lb-eda-r-d/notebook</a> 这里的3D图像画的很棒，让人肉眼直接看出一艘船和一个冰山的区别。</p>
+<p><a href=https://www.kaggle.com/muonneutrino/exploration-transforming-images-in-python/notebook>https://www.kaggle.com/muonneutrino/exploration-transforming-images-in-python/notebook</a></p>
+<ol>
+<li>统计了图像上的像素的max,maxpos,min,minpos,med,std,mean等，有效的特征工程，</li>
+<li>先画了各种各样的图，图像的题目嘛，先看图比先分析会更加有效</li>
+<li>做了smooth等等各种图像操作，能肉眼看出一些端倪，然后可以让机器做的更好</li>
+</ol>
+<p><a href=https://www.kaggle.com/devm2024/transfer-learning-with-vgg-16-cnn-aug-lb-0-1712>https://www.kaggle.com/devm2024/transfer-learning-with-vgg-16-cnn-aug-lb-0-1712</a> transfer learning from VGG16, skill point get.</p>
+<p><a href=https://www.kaggle.com/supersp1234/best-single-model-lb-0-1400/code>Best Single Model LB1400</a>确实是我看到的最好的单模型了。 基于torch，对图片有进行随机水平翻转，随机竖直翻转</p>
+<p><a href=https://www.kaggle.com/c/statoil-iceberg-classifier-challenge/discussion/44849#273821>Open sourcing my PyTorch CNN Ensembler</a></p>
+<ul class=pa0>
+<li class=list>
+<a href=/tags/kaggle class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">kaggle</a>
+</li>
+<li class=list>
+<a href=/tags/deep-learning class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">deep learning</a>
+</li>
+<li class=list>
+<a href=/tags/neural-networks class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">neural networks</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2018/2018-01-25-statoil-iceberg-classifier-challenge/>kaggle | statoil-iceberg-classifier-challenge 捡到铜牌一个</a>
+</li>
+<li class=mb2>
+<a href=/posts/2018/2018-02-10-kaggle-expert-top-1000/>kaggle | Expert成就达成 社区top1000成就达成</a>
+</li>
+<li class=mb2>
+<a href=/posts/2018/2018-01-17-favorita-grocery-sales-forecasting/>kaggle | favorita-grocery-sales-forecasting</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-11-29-kaggle/>第一次kaggle参赛，铜牌一枚</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-11-13-cnn/>deeplearning.ai之卷积神经网络课程总结</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

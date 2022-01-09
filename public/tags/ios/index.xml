@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ios on Young Story</title><link>https://yyq.github.io/tags/ios/</link><description>Recent content in ios on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 31 Mar 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/ios/index.xml" rel="self" type="application/rss+xml"/><item><title>Burpsuite实践：iOS app刷点击量</title><link>https://yyq.github.io/posts/2017/2017-03-31-burpsuite-ios10-app/</link><pubDate>Fri, 31 Mar 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-03-31-burpsuite-ios10-app/</guid><description>需求 最近有个做媒体的朋友，她们发表在某app上的文章，有点击量的KPI，问我能不能帮刷一刷阅读量。最近学了burpsuite，正好练习练习。
+分析 稍微一观察，那app还比较简陋，同一个手机里，反复的去点击文章，再退出，就会增加点击量。
+那目标就比较简单了，观察在手机上点击阅读某篇文章的时候，会有什么样的网络请求，再重复就行了。之前想象的不断切换IP的难度也就没有了。
+实践 打开Burpsuite监听 首先在BurpSuite里找到Proxy,把Intercept关掉，这里不需要拦截请求。在option里添加一个新的Listeners，端口号填好，Bind to address选择All interfaces.其他默认。
+设置手机wifi 打开手机WIFI的设置，代理选手动，填上自己电脑的IP地址和刚刚设定的端口号。
+安装CA证书 对于https的请求，这里是最重要的一步，否则你的app里只会显示各种没有网络无法连接等错误
+打开http://burp,按照网页右上角的提示安装CA Certificate
+这还没完！！更重要的一个步骤：如果你的iOS系统是比较新的，比如我手机是iOS10.3，那么你还要到手机的设置=&amp;gt;通用=&amp;gt;关于本机=&amp;gt;证书信任设置里，打开对PortSwigger CA证书的完全信任
+这个步骤花了我足足两个小时有没有，找便了互联网都没有看到有人说要设置手机打开证书完全信任，然后认认真真看官网页面介绍如何安装CA证书，support.portswigger.net。终于，在这个页面正文的后面，很不起眼的一个小提示里说到了这个point，finally my app works fine! WTF! 那里还说了他的这个介绍文档是基于iOS8.1.2的iPad mini.其他版本的iOS可能需要这个操作。
+目测是apple为了提升iOS的安全性，就算被意外安装了证书，也不会默认完全信任。要用app通过代理顺利的请求https的内容的话，需要设置手机完全信任这个代理的CA Certificate才行。
+重放网络请求 这个简单了，手机app里随意点一点，可以发现每次点击一个新的文章，都会有一个post请求和一个get请求。先拿post请求实验，用send to Intruder, 然后clean掉所有潜在的payload positions,在payloads选项里，选择null payloads,然后设置一下循环次数，先来个5000吧。
+我滴乖乖呀，一分钟左右吧，该文章阅读量明显的从2.8万上涨到18.4万。可是我明明只有5000次请求。问了问朋友，这大概是他们统计数据的时候有作假。但是，anyway，我这5000次请求可是货真价实的给该文章增加了不少阅读量。
+lessons learned 实战和看视频学习使用软件是两回事儿，有的细节上的设置和设计，差一点点就是功亏一篑谬以千里 有不懂的知识，google里前5个链接没找到答案的话，那么认真阅读官方文档，哪怕细小的一个提示框都不可以错过</description></item><item><title>iOS逆向-学习日记2-Mac OS X上的工具</title><link>https://yyq.github.io/posts/2015/2015-07-07-ios-security-learn-2/</link><pubDate>Tue, 07 Jul 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-07-07-ios-security-learn-2/</guid><description>&lt;p>这一次，主要是按照别人的教程，把Mac上逆向工程有关的工具挨个试了个遍。先说几个重点的：Charles，Reveal，TheOS，IDA，Hopper。其中Charles，Reveal，IDA和Hopper都是收费的，且都有demo版本可以下载适用，TheOS是免费。&lt;/p>
+&lt;h2 id="简介四个收费工具">简介四个收费工具&lt;/h2>
+&lt;p>Charles用于分析网络流量，模拟器，mac os x，device都可以搞定各种get post connect，header cookie分门别类一目了然。价格不贵。&lt;/p>
+&lt;p>Reveal主攻iOS UI，模拟器和device都行，对于越狱的设备可在cydia里装个插件，然后查看并且临时修改UI，利器。&lt;/p>
+&lt;p>IDA和Hopper，算作一类了，主要功能是二进制文件到汇编代码，和进一步的汇编代码到C语言代码。我亲自使用过后，着实感觉到工具的强大，十分的强大。再加上工具里各种代码块和控制流的显示，就算我只是一个逆向工程的外行，也知道这样的信息会带来多么恐怖的分析成果。IDA是各个平台的产品都有，价格上千美刀了。Hopper是只有Mac平台上的，价格几百块的样子。据学习过逆向工程的同事说，IDA还是很强大很流行的。&lt;/p>
+&lt;p>这四个工具的使用难度，Charles比较简单，Reveal略复杂一点。反汇编工具就超级复杂了。不过都有UI，自己可以一个个试着玩玩。&lt;/p>
+&lt;h2 id="详细介绍theos越狱开发工具">详细介绍Theos越狱开发工具&lt;/h2>
+&lt;p>接下来说说花了我很多时间用来实践的Theos吧。一个跨平台的development kit，用于开发编译iOS软件的，without Xcode。越狱后的iOS所用的插件，Cydia上的那些工具，大都基于Theos开发的。&lt;/p></description></item><item><title>iOS安全-学习日记1</title><link>https://yyq.github.io/posts/2015/2015-03-08-ios-security-learn-1/</link><pubDate>Sun, 08 Mar 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-03-08-ios-security-learn-1/</guid><description>&lt;h1 id="前fei言hua">前(fei)言(hua)&lt;/h1>
+&lt;p>上班之余，自学一些计算机安全一类的知识。有相关经验的同学给了我几个建议：1.计算机安全范围很广，有web啦，sql啦，移动端啦balabala，自己选择一个自己感兴趣的较窄的学习就好。2. 社区，乌云，看雪&lt;/p>
+&lt;p>我自己对iOS还有些兴趣，遂决定开始自学iOS安全。乌云我是连注册都没资格，需要提交漏洞才行，我这什么相关知识都不会，只先看看好了。在谷歌上搜了搜，很容易搜到CSDN上念茜的《iOS安全攻防》这个看上去知识比较浅一点，应该会适合我。那么就一课一课开始学。她写的相关博文是一两年前了，不一定百分之百能适用于当前的环境，不过正好是增加学习难度的机会。也可以用自己的博文来更新和更加详细的注释一下她的博客，更容易让初学者学习到。&lt;/p>
+&lt;h1 id="ios安全攻防一hack必备的命令与工具"> iOS安全攻防（一）：Hack必备的命令与工具&lt;/h1>
+&lt;p>&lt;a href="http://blog.csdn.net/yiyaaixuexi/article/details/8288077">念茜博客原文地址&lt;/a>&lt;/p>
+&lt;p>先是一些操作系统的基本的命令，我用过并且略有了解的如下：ps, netstat, route, ifconfig, tcpdump, gdb, ssh&lt;/p>
+&lt;p>然后我没有接触过的：&lt;/p>
+&lt;p>sysctl：检查设定Kernel配置；renice：调整程序运行的优先级；lsof：列出当前系统打开的文件列表，一切皆文件包括网络，硬件设备；patch：补丁工具。&lt;/p>
+&lt;p>然后她有特意注释的三个工具，otool，可以查看可执行程序都链接了哪些库，nm，显示符号表，ldid，用于给需要运行在iOS上的程序签名用。otool和nm在自己的mac电脑上有，os x上我没找到ldid，于是在ipad上用cydia装了ldid。不过之后的实验中好像不签名也能运行来着。&lt;/p></description></item><item><title>cs193p HW1 所做所看所想</title><link>https://yyq.github.io/posts/2013/2013-06-28-cs193p-hw1-suo-zuo-suo-kan-suo-xiang/</link><pubDate>Fri, 28 Jun 2013 18:37:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-06-28-cs193p-hw1-suo-zuo-suo-kan-suo-xiang/</guid><description>&lt;p>花了两个礼拜的时间，看完了cs193p的前面三堂课，并且做完了作业。没搞明白的东西，在piazza上发问，很快有人回答我解决的问题，感觉真好。&lt;/p>
+&lt;p>做完hw1之后，平时总是喜欢招人讨论的我，这下好像在周围找不到同学讨论了。于是就在piazza上闲逛，看看别人的问题和别人的回答。&lt;/p>
+&lt;p>论坛中，有加粗的&lt;strong>I&lt;/strong>字母标记的都是有被导师回答的问题。于是我就挨个把导师参与过的讨论都看了一遍。看到某一个，觉得很赞，一定要在博客中写下来。&lt;/p>
+&lt;h2 id="收获1关于思想">收获1：关于思想&lt;/h2>
+&lt;p>不是关于某种技术方案，也不是关于某个细节技巧。而是关于思想。&lt;/p></description></item><item><title>apple iOS MobileHIG 摘要</title><link>https://yyq.github.io/posts/2013/2013-01-18-apple-ios-mobilehig-review/</link><pubDate>Fri, 18 Jan 2013 17:01:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-01-18-apple-ios-mobilehig-review/</guid><description>&lt;p>一直想开发一个自己的app放在app store上，想先做一个有关数独的app。一个是因为我身边有不少人都喜欢玩这个游戏，还有一个是因为这个东西算法不是很难，之前用java和c#在android和windowsphone平台实现过。&lt;/p>
+&lt;p>等我idp申请下来，开始能上机调试，自己把数独的基本功能都搞定了之后，发现问题来了。我这程序吧，能够正常运行，仅仅能用。但是发现这界面啊，颜色啊，操作方式啊，都TMD烂透了。就开始琢磨这个事儿，这么样的程序提交app store铁定不会通过，自己已经为程序设计好一个图标，让同学和女友都看过，还过得去。但是点开图标之后的程序，那个实在是，我不知道该怎么下手来改进了。遂想起apple好像有个什么指南，告诉你移动开发者如何设计程序的人机交互的。在网上找了找，终于找到了这个资料,官网地址：&lt;a href="http://developer.apple.com/library/ios/#documentation/UserExperience/Conceptual/MobileHIG/Introduction/Introduction.html">iOS Human Interface Guidelines&lt;/a>&lt;/p>
+&lt;p>此文用来记录我从该文档中摘抄的我觉得现阶段对我有用处的东西。&lt;/p></description></item><item><title>Ios开发Xcode中storyboard自动调整界面，autolayout等</title><link>https://yyq.github.io/posts/2013/2013-01-08-ioskai-fa-xcodezhong-storyboardzi-dong-diao-zheng-jie-mian/</link><pubDate>Tue, 08 Jan 2013 11:39:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-01-08-ioskai-fa-xcodezhong-storyboardzi-dong-diao-zheng-jie-mian/</guid><description>&lt;p>这个应该是很大一堆条条框框的使用策略。今儿只遇到了一点点问题，就记录一点点问题。&lt;/p>
+&lt;p>另外，值得参考的网址：&lt;a href="http://www.raywenderlich.com/20881/beginning-auto-layout-part-1-of-2">http://www.raywenderlich.com/20881/beginning-auto-layout-part-1-of-2&lt;/a>&lt;/p>
+&lt;p>笔记：&lt;/p></description></item><item><title>ios 数字键盘自定义done按钮</title><link>https://yyq.github.io/posts/2013/2013-01-08-ios-shu-zi-jian-pan-zi-ding-yi-donean-niu/</link><pubDate>Tue, 08 Jan 2013 11:36:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-01-08-ios-shu-zi-jian-pan-zi-ding-yi-donean-niu/</guid><description>&lt;p>总体逻辑，监听系统数字键盘的弹出和消失，在系统键盘弹出时，show my self-defined &lt;em>done key&lt;/em>,在系统键盘消失时，hide it&lt;/p></description></item><item><title>xcode调试，在模拟器运行正常，在设备运行失败</title><link>https://yyq.github.io/posts/2013/2013-01-06-xcode-will-run-app-on-simulator-but-not-on-device/</link><pubDate>Sun, 06 Jan 2013 20:56:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-01-06-xcode-will-run-app-on-simulator-but-not-on-device/</guid><description>&lt;h3 id="xcode-will-run-app-on-simulator-but-not-on-device">Xcode will run app on simulator but not on device&lt;/h3>
+&lt;p>在把学校项目的季度报告提交给软件所之后，今儿终于有空来弄一下我的ios编程了。今儿刚刚学会了真机调试，然后就不断的run啊，之前只会在模拟器调试实在略感憋屈啊。&lt;/p>
+&lt;p>不出一会，立马就有报错了，立马就上网查查，发现google真是好，搜索的时候用英文，google立马就能精确的给我定位，前三个链接中都来自stackoverflow，进去浏览一番，果然就能解决我的问题啊。&lt;/p></description></item></channel></rss>

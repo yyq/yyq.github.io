@@ -1,0 +1,191 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>iOS逆向-学习日记2-Mac OS X上的工具 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="这一次，主要是按照别人的教程，把Mac上逆向工程有关的工具挨个试了个遍。先说几个重点的：Charles，Reveal，TheOS，IDA，Hopper。其中Charles，Reveal，IDA和Hopper都是收费的，且都有demo版本可以下载适用，TheOS是免费。
+简介四个收费工具
+Charles用于分析网络流量，模拟器，mac os x，device都可以搞定各种get post connect，header cookie分门别类一目了然。价格不贵。
+Reveal主攻iOS UI，模拟器和device都行，对于越狱的设备可在cydia里装个插件，然后查看并且临时修改UI，利器。
+IDA和Hopper，算作一类了，主要功能是二进制文件到汇编代码，和进一步的汇编代码到C语言代码。我亲自使用过后，着实感觉到工具的强大，十分的强大。再加上工具里各种代码块和控制流的显示，就算我只是一个逆向工程的外行，也知道这样的信息会带来多么恐怖的分析成果。IDA是各个平台的产品都有，价格上千美刀了。Hopper是只有Mac平台上的，价格几百块的样子。据学习过逆向工程的同事说，IDA还是很强大很流行的。
+这四个工具的使用难度，Charles比较简单，Reveal略复杂一点。反汇编工具就超级复杂了。不过都有UI，自己可以一个个试着玩玩。
+详细介绍Theos越狱开发工具
+接下来说说花了我很多时间用来实践的Theos吧。一个跨平台的development kit，用于开发编译iOS软件的，without Xcode。越狱后的iOS所用的插件，Cydia上的那些工具，大都基于Theos开发的。">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="iOS逆向-学习日记2-Mac OS X上的工具">
+<meta property="og:description" content="这一次，主要是按照别人的教程，把Mac上逆向工程有关的工具挨个试了个遍。先说几个重点的：Charles，Reveal，TheOS，IDA，Hopper。其中Charles，Reveal，IDA和Hopper都是收费的，且都有demo版本可以下载适用，TheOS是免费。
+简介四个收费工具
+Charles用于分析网络流量，模拟器，mac os x，device都可以搞定各种get post connect，header cookie分门别类一目了然。价格不贵。
+Reveal主攻iOS UI，模拟器和device都行，对于越狱的设备可在cydia里装个插件，然后查看并且临时修改UI，利器。
+IDA和Hopper，算作一类了，主要功能是二进制文件到汇编代码，和进一步的汇编代码到C语言代码。我亲自使用过后，着实感觉到工具的强大，十分的强大。再加上工具里各种代码块和控制流的显示，就算我只是一个逆向工程的外行，也知道这样的信息会带来多么恐怖的分析成果。IDA是各个平台的产品都有，价格上千美刀了。Hopper是只有Mac平台上的，价格几百块的样子。据学习过逆向工程的同事说，IDA还是很强大很流行的。
+这四个工具的使用难度，Charles比较简单，Reveal略复杂一点。反汇编工具就超级复杂了。不过都有UI，自己可以一个个试着玩玩。
+详细介绍Theos越狱开发工具
+接下来说说花了我很多时间用来实践的Theos吧。一个跨平台的development kit，用于开发编译iOS软件的，without Xcode。越狱后的iOS所用的插件，Cydia上的那些工具，大都基于Theos开发的。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2015/2015-07-07-ios-security-learn-2/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2015-07-07T00:00:00+00:00">
+<meta property="article:modified_time" content="2015-07-07T00:00:00+00:00">
+<meta itemprop=name content="iOS逆向-学习日记2-Mac OS X上的工具">
+<meta itemprop=description content="这一次，主要是按照别人的教程，把Mac上逆向工程有关的工具挨个试了个遍。先说几个重点的：Charles，Reveal，TheOS，IDA，Hopper。其中Charles，Reveal，IDA和Hopper都是收费的，且都有demo版本可以下载适用，TheOS是免费。
+简介四个收费工具
+Charles用于分析网络流量，模拟器，mac os x，device都可以搞定各种get post connect，header cookie分门别类一目了然。价格不贵。
+Reveal主攻iOS UI，模拟器和device都行，对于越狱的设备可在cydia里装个插件，然后查看并且临时修改UI，利器。
+IDA和Hopper，算作一类了，主要功能是二进制文件到汇编代码，和进一步的汇编代码到C语言代码。我亲自使用过后，着实感觉到工具的强大，十分的强大。再加上工具里各种代码块和控制流的显示，就算我只是一个逆向工程的外行，也知道这样的信息会带来多么恐怖的分析成果。IDA是各个平台的产品都有，价格上千美刀了。Hopper是只有Mac平台上的，价格几百块的样子。据学习过逆向工程的同事说，IDA还是很强大很流行的。
+这四个工具的使用难度，Charles比较简单，Reveal略复杂一点。反汇编工具就超级复杂了。不过都有UI，自己可以一个个试着玩玩。
+详细介绍Theos越狱开发工具
+接下来说说花了我很多时间用来实践的Theos吧。一个跨平台的development kit，用于开发编译iOS软件的，without Xcode。越狱后的iOS所用的插件，Cydia上的那些工具，大都基于Theos开发的。"><meta itemprop=datePublished content="2015-07-07T00:00:00+00:00">
+<meta itemprop=dateModified content="2015-07-07T00:00:00+00:00">
+<meta itemprop=wordCount content="81">
+<meta itemprop=keywords content="iOS,security,theos,tools,tweak,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="iOS逆向-学习日记2-Mac OS X上的工具">
+<meta name=twitter:description content="这一次，主要是按照别人的教程，把Mac上逆向工程有关的工具挨个试了个遍。先说几个重点的：Charles，Reveal，TheOS，IDA，Hopper。其中Charles，Reveal，IDA和Hopper都是收费的，且都有demo版本可以下载适用，TheOS是免费。
+简介四个收费工具
+Charles用于分析网络流量，模拟器，mac os x，device都可以搞定各种get post connect，header cookie分门别类一目了然。价格不贵。
+Reveal主攻iOS UI，模拟器和device都行，对于越狱的设备可在cydia里装个插件，然后查看并且临时修改UI，利器。
+IDA和Hopper，算作一类了，主要功能是二进制文件到汇编代码，和进一步的汇编代码到C语言代码。我亲自使用过后，着实感觉到工具的强大，十分的强大。再加上工具里各种代码块和控制流的显示，就算我只是一个逆向工程的外行，也知道这样的信息会带来多么恐怖的分析成果。IDA是各个平台的产品都有，价格上千美刀了。Hopper是只有Mac平台上的，价格几百块的样子。据学习过逆向工程的同事说，IDA还是很强大很流行的。
+这四个工具的使用难度，Charles比较简单，Reveal略复杂一点。反汇编工具就超级复杂了。不过都有UI，自己可以一个个试着玩玩。
+详细介绍Theos越狱开发工具
+接下来说说花了我很多时间用来实践的Theos吧。一个跨平台的development kit，用于开发编译iOS软件的，without Xcode。越狱后的iOS所用的插件，Cydia上的那些工具，大都基于Theos开发的。">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">iOS逆向-学习日记2-Mac OS X上的工具</h1>
+<p class=tracked>
+By <strong>
+young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2015-07-07T00:00:00Z>July 7, 2015</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>这一次，主要是按照别人的教程，把Mac上逆向工程有关的工具挨个试了个遍。先说几个重点的：Charles，Reveal，TheOS，IDA，Hopper。其中Charles，Reveal，IDA和Hopper都是收费的，且都有demo版本可以下载适用，TheOS是免费。</p>
+<h2 id=简介四个收费工具>简介四个收费工具</h2>
+<p>Charles用于分析网络流量，模拟器，mac os x，device都可以搞定各种get post connect，header cookie分门别类一目了然。价格不贵。</p>
+<p>Reveal主攻iOS UI，模拟器和device都行，对于越狱的设备可在cydia里装个插件，然后查看并且临时修改UI，利器。</p>
+<p>IDA和Hopper，算作一类了，主要功能是二进制文件到汇编代码，和进一步的汇编代码到C语言代码。我亲自使用过后，着实感觉到工具的强大，十分的强大。再加上工具里各种代码块和控制流的显示，就算我只是一个逆向工程的外行，也知道这样的信息会带来多么恐怖的分析成果。IDA是各个平台的产品都有，价格上千美刀了。Hopper是只有Mac平台上的，价格几百块的样子。据学习过逆向工程的同事说，IDA还是很强大很流行的。</p>
+<p>这四个工具的使用难度，Charles比较简单，Reveal略复杂一点。反汇编工具就超级复杂了。不过都有UI，自己可以一个个试着玩玩。</p>
+<h2 id=详细介绍theos越狱开发工具>详细介绍Theos越狱开发工具</h2>
+<p>接下来说说花了我很多时间用来实践的Theos吧。一个跨平台的development kit，用于开发编译iOS软件的，without Xcode。越狱后的iOS所用的插件，Cydia上的那些工具，大都基于Theos开发的。</p>
+<p>主要参考的两个网页，<a href=http://security.ios-wiki.com/issue-3-6/>http://security.ios-wiki.com/issue-3-6/</a>和<a href=http://iphonedevwiki.net/index.php/Theos/Setup>http://iphonedevwiki.net/index.php/Theos/Setup</a></p>
+<p>第一个链接中是简单的中文教程，估计可能有个别描述比较老了不适用现在的环境，那就看第二个官网链接了，那个比较准确一点。</p>
+<h3 id=第一步ready>第一步，ready</h3>
+<p>我用的是mac电脑，装个Xcode，就会自带SDK了，然后command line tools for Xcode也下载好，电脑上就会有其他的小工具软件了。</p>
+<h3 id=第二步-theos>第二步, $THEOS</h3>
+<p>定义一个环境变量$THEOS，这个关键的环境变量将一直会用到。所以写在.bash_profile里吧。</p>
+<p>为了之后省事，我把这一行也添加到.bash_profile了：</p>
+<h3 id=第三步下载theos和ldid>第三步，下载Theos和ldid</h3>
+<p>然后从设备上拷贝/Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate文件到电脑的<code>$THEOS/lib文件夹，命名为libsubstrate.dylib</code></p>
+<h3 id=第四步安装dpkg>第四步，安装dpkg</h3>
+<h3 id=第五步创建一个jailbroken-app>第五步，创建一个jailbroken app</h3>
+<p>然后就问你几个选项，随意填几个字符串就行</p>
+<p>然后他会创建如下的一个目录：</p>
+<ol>
+<li>control: 包含applicaton/tweak的信息，当你从Cydia安装时，你可以看到这些信息，包括名字，作者，版本，等等。</li>
+<li>main.m，这个不用多说。</li>
+<li>[applicationName]Application.mm:appdelegate文件。</li>
+<li>Makefile：包含必要的编译命令</li>
+<li>Resources：包含info.plist文件等</li>
+<li>RootViewController.h/mm</li>
+</ol>
+<p>以上六行字，摘抄自：<a href=http://security.ios-wiki.com/issue-3-6/>link</a></p>
+<h3 id=第六步设置环境和编译>第六步，设置环境和编译</h3>
+<p>设置一下自己的SDK版本号，我的版本号是8.4，在目录</p>
+<p>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs找到的。</p>
+<p>然后</p>
+<p>会出现报错，什么internal-install error来着，解决方法是把$THEOS/makefiles/package/deb.mk文件中的</p>
+<p>替换为：</p>
+<p>至于为什么这么替换，我也不明白，参考的教程。</p>
+<h2 id=我的第一个tweak程序>我的第一个Tweak程序</h2>
+<p>教程链接：<a href=http://security.ios-wiki.com/issue-3-6/>http://security.ios-wiki.com/issue-3-6/</a></p>
+<p>这个demo hook了springboard的init方法，多添加了一个UIAlertView。学会此方法，可以应用于任何class的任何method打补丁了。</p>
+<h3 id=第一步ready-1>第一步，ready</h3>
+<p>/opt/theos/lib目录下的libsubstrate.dylib文件不可少</p>
+<h3 id=第二步头文件>第二步，头文件</h3>
+<p>copy iPhone的一些头文件，万一编译的时候有点头文件错误，估计就是这一步的文件有点问题了。教程中的参考的头文件获取方法是：</p>
+<p>然后把OSX library中IOSurfaceAPI.h拷贝到theos/include/IOSurface目录下，在Xcode.app下面搜索这个文件好了，估计不同版本的mac系统，这文件位置略有不同，我的此文件路径是在：</p>
+<p>两个文件中随意copy一个过来好了，然后在这个头文件中注释掉IOSurfaceCreateXPCObject 和IOSurfaceLookupFromXPCObject。</p>
+<h3 id=第三步添加工程代码修改make-file>第三步，添加工程代码，修改make file</h3>
+<p>用$THEOS/bin/nic.pl创建工程，工程类型选5.iphone/tweak.</p>
+<p>在生成的目录中会有文件Tweak.xm，添加自己的代码进去，如下：</p>
+<p>在makefile文件中添加我们用到了的framework，在demo_FILES=Tweak.xm那一行的下面添加demo_FRAMEWORKS = UIKit</p>
+<h3 id=第四步make>第四步，make</h3>
+<p>三个命令喽，make; make package; make install.</p>
+<p>make命令的时候有报错信息，大概是说iOS 8.0  UISearchDisplayController 改成UISearchController了，有三个地方都报这个错，根据报错信息中提示的三个报错的位置，把UISearchDisplayController直接改成UISearchController就能顺利make出东西了。</p>
+<p>产品出来了，就是在设备每次重启的时候，springboard会执行init函数，也就会弹出我们写的alert对话框了。</p>
+<p> </p><ul class=pa0>
+<li class=list>
+<a href=/tags/ios class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">iOS</a>
+</li>
+<li class=list>
+<a href=/tags/security class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">security</a>
+</li>
+<li class=list>
+<a href=/tags/theos class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">theos</a>
+</li>
+<li class=list>
+<a href=/tags/tools class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">tools</a>
+</li>
+<li class=list>
+<a href=/tags/tweak class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">tweak</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2015/2015-03-08-ios-security-learn-1/>iOS安全-学习日记1</a>
+</li>
+<li class=mb2>
+<a href=/posts/2013/2013-06-28-cs193p-hw1-suo-zuo-suo-kan-suo-xiang/>cs193p HW1 所做所看所想</a>
+</li>
+<li class=mb2>
+<a href=/posts/2013/2013-01-18-apple-ios-mobilehig-review/>apple iOS MobileHIG 摘要</a>
+</li>
+<li class=mb2>
+<a href=/posts/2012/2012-12-26-doxygenshi-yong-shuo-ming-ge-ren-zong-jie-/>Doxygen使用说明（个人总结）</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

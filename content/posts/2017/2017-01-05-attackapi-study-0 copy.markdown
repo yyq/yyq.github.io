@@ -1,0 +1,42 @@
+---
+Title: AttackAPI安装教程
+author: Young
+date: 2017-01-05
+tags: [JavaScript, AttackAPI, Security, web,]
+Status: public
+---
+
+本文用来描述部署AttackAPI环境，网上搜了一些教程和内容，有的描述太简单，有的描述已过时，总有这样那样的问题，自己又是一个小白前端，摸索了好一会儿才搞明白，于是记录此文。
+
+### 0x00 AttackAPI简介
+AttackAPI是一个基于Web的攻击构造库，开源项目，作者此软件的官网在[http://www.gnucitizen.org/blog/attackapi/](http://www.gnucitizen.org/blog/attackapi/). 
+
+曾经的源代码放在google code上，不过后来此网站关门了，有很多人将此工程收藏在github上了，在github上搜索**attackapi**可以得到源代码。
+
+### 0x01 配置
+为了防止以后代码失传，我fork了一份到我自己账户下，[https://github.com/yyq/attackapi](https://github.com/yyq/attackapi).
+
+下载好代码后，看了看目录，只有一个Tags目录，目测是一个典型的SVN结构，需要自己整理一下文件切换到对应版本号.
+
+看到build.xml文件，知道此工程需要ant一下
+
+发现可以ant命令没有错误的最高版本号是2.5.0a
+
+web服务器，为了省事，用windows环境，下载了[https://www.appserv.org/en/](https://www.appserv.org/en/)按照默认选项一路安装完成，启动apache服务，把attackapi文件夹copy到**C:\\AppServ\\www**目录下
+
+### 0x02 hell0world
+用火狐浏览器打开[http://localhost/attackapi/build/tests/firetest-interactive.htm](http://127.0.0.1/attackapi/build/tests/firetest-interactive.htm), 然后在firebug的控制台里，输入命令```dir(AttackAPI)```,可以看到如下的信息则证明基本配置成功了：
+![x](2017-01-05/0.png)
+
+### 0x03 踩过的坑
+* 找到正确的代码格式，了解svn
+* apache启动失败，端口被其他程序占用
+* AppServ的运行会需要各个版本的vc11,vc140,vc10等等.dll文件的支持，好在它都会自动安装
+* ant编译步骤不能少，不然文件结构不正确，导致htm中一些js文件引用失败
+
+下一个步骤是了解和使用attackapi了，敬请期待下一篇日志吧。
+
+### 0x04 两天后的更新：
+囧了，按照书上试了半天，attackapi里有些函数已经不顶用了，看了看源代码才知道有的方式过时了。例如访问历史浏览过的网页scanHistory这个功能，attackapi里用的方法是利用```a:visited```加网址，然后根据display属性来判断，这一招几年前应该还管用。
+
+近年随着大家对web安全防范的意识越来越高，过去的很多方法都失效，得用新的方法来搞定。

@@ -1,0 +1,4 @@
+baseURL = 'https://yyq.github.io/'
+languageCode = 'en-us'
+title = 'Young Story'
+theme = 'ananke'

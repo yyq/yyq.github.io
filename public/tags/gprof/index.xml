@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>gprof on Young Story</title><link>https://yyq.github.io/tags/gprof/</link><description>Recent content in gprof on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 23 Jan 2013 11:44:01 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/gprof/index.xml" rel="self" type="application/rss+xml"/><item><title>Gprof使用方法</title><link>https://yyq.github.io/posts/2013/2013-01-23-gprofshi-yong-fang-fa/</link><pubDate>Wed, 23 Jan 2013 11:44:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-01-23-gprofshi-yong-fang-fa/</guid><description>&lt;h3 id="简介">简介&lt;/h3>
+&lt;p>调研能够动态分析代码的工具，了解了一点Gprof。&lt;/p>
+&lt;p>简短总结：&lt;/p>
+&lt;ul>
+&lt;li>必须完整执行一遍可执行文件，才可进行Gprof分析。&lt;/li>
+&lt;li>各个函数相互调用次数描述很到位，无调用的具体代码行号等信息，有助于分析流程。&lt;/li>
+&lt;li>各个函数时间消耗统计，有利于改进程序效率。&lt;/li>
+&lt;/ul></description></item></channel></rss>

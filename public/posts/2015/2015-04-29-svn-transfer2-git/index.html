@@ -1,0 +1,143 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>svn转git简单实践 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="前言 涉及公司内部的名词，就用abc来代替好了。
+我负责的C工程，代码之前一直是用SVN来管理代码版本。为了响应党的号召，改Git，公司还花钱买了github企业版，这年头花钱买github而不是自己搭gitlab，良心企业啊。上网搜搜教程，试了一试，便成功了。关键操作记录在此了。
+需求一：svn转git git svn init http://svn_address git svn fetch</pre> or using git svn fetch -r 1:HEAD, 从revision 1开始fetch 去趟厕所，再喝杯咖啡，看stdout的信息可以看到正在从svn server上一个revision一个revision的内容往下拖，C工程（java代码为主，三万多行代码，引用的jar包10来个，其他的引用的jar包都用maven配置好了，所以不用把jar包存在工程里，SVN 的revision 700个左右），耗时大概10分钟，便转换完毕了。
+然后本地的git project已经建立好了。往远端push就好了。
+git remote add origin git@git_address git push -u origin master</pre> 需求二：将svn的改动同步到git 由于IDE使用的不熟悉，不是立马用IDE git clone过来工程就能直接用，没空来折腾。所以最近几天仍然只用svn来commit，但是想要更新svn project上的内容到git。
+怎么搞。上网一搜，挺好搞。
+git svn fetch git svn rebase git svn fetch git push -u origin master</pre> 不要问我为什么用这几句话，我也就是临时上网搜一下拿来用了。需要知道这命令干什么用的话，用help命令好了。
+产出 之后用git来管理C工程源代码了，托github企业版的福，可以更加方便的在网页上show给别人看了，哪天我改了多少代码，代码量啦，多少个新的feature啦，release note啦，issue track啦，都可以统统的放在一个网站上搞定了。
+还有，github pages的功能，给C工程建了一个宣传网页，瞬间高大上了有没有。
+by the way, 我参考的网页
+http://www.blogjava.net/lishunli/archive/2012/01/15/368562.html">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="svn转git简单实践">
+<meta property="og:description" content="前言 涉及公司内部的名词，就用abc来代替好了。
+我负责的C工程，代码之前一直是用SVN来管理代码版本。为了响应党的号召，改Git，公司还花钱买了github企业版，这年头花钱买github而不是自己搭gitlab，良心企业啊。上网搜搜教程，试了一试，便成功了。关键操作记录在此了。
+需求一：svn转git git svn init http://svn_address git svn fetch</pre> or using git svn fetch -r 1:HEAD, 从revision 1开始fetch 去趟厕所，再喝杯咖啡，看stdout的信息可以看到正在从svn server上一个revision一个revision的内容往下拖，C工程（java代码为主，三万多行代码，引用的jar包10来个，其他的引用的jar包都用maven配置好了，所以不用把jar包存在工程里，SVN 的revision 700个左右），耗时大概10分钟，便转换完毕了。
+然后本地的git project已经建立好了。往远端push就好了。
+git remote add origin git@git_address git push -u origin master</pre> 需求二：将svn的改动同步到git 由于IDE使用的不熟悉，不是立马用IDE git clone过来工程就能直接用，没空来折腾。所以最近几天仍然只用svn来commit，但是想要更新svn project上的内容到git。
+怎么搞。上网一搜，挺好搞。
+git svn fetch git svn rebase git svn fetch git push -u origin master</pre> 不要问我为什么用这几句话，我也就是临时上网搜一下拿来用了。需要知道这命令干什么用的话，用help命令好了。
+产出 之后用git来管理C工程源代码了，托github企业版的福，可以更加方便的在网页上show给别人看了，哪天我改了多少代码，代码量啦，多少个新的feature啦，release note啦，issue track啦，都可以统统的放在一个网站上搞定了。
+还有，github pages的功能，给C工程建了一个宣传网页，瞬间高大上了有没有。
+by the way, 我参考的网页
+http://www.blogjava.net/lishunli/archive/2012/01/15/368562.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2015/2015-04-29-svn-transfer2-git/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2015-04-29T00:00:00+00:00">
+<meta property="article:modified_time" content="2015-04-29T00:00:00+00:00">
+<meta itemprop=name content="svn转git简单实践">
+<meta itemprop=description content="前言 涉及公司内部的名词，就用abc来代替好了。
+我负责的C工程，代码之前一直是用SVN来管理代码版本。为了响应党的号召，改Git，公司还花钱买了github企业版，这年头花钱买github而不是自己搭gitlab，良心企业啊。上网搜搜教程，试了一试，便成功了。关键操作记录在此了。
+需求一：svn转git git svn init http://svn_address git svn fetch</pre> or using git svn fetch -r 1:HEAD, 从revision 1开始fetch 去趟厕所，再喝杯咖啡，看stdout的信息可以看到正在从svn server上一个revision一个revision的内容往下拖，C工程（java代码为主，三万多行代码，引用的jar包10来个，其他的引用的jar包都用maven配置好了，所以不用把jar包存在工程里，SVN 的revision 700个左右），耗时大概10分钟，便转换完毕了。
+然后本地的git project已经建立好了。往远端push就好了。
+git remote add origin git@git_address git push -u origin master</pre> 需求二：将svn的改动同步到git 由于IDE使用的不熟悉，不是立马用IDE git clone过来工程就能直接用，没空来折腾。所以最近几天仍然只用svn来commit，但是想要更新svn project上的内容到git。
+怎么搞。上网一搜，挺好搞。
+git svn fetch git svn rebase git svn fetch git push -u origin master</pre> 不要问我为什么用这几句话，我也就是临时上网搜一下拿来用了。需要知道这命令干什么用的话，用help命令好了。
+产出 之后用git来管理C工程源代码了，托github企业版的福，可以更加方便的在网页上show给别人看了，哪天我改了多少代码，代码量啦，多少个新的feature啦，release note啦，issue track啦，都可以统统的放在一个网站上搞定了。
+还有，github pages的功能，给C工程建了一个宣传网页，瞬间高大上了有没有。
+by the way, 我参考的网页
+http://www.blogjava.net/lishunli/archive/2012/01/15/368562.html"><meta itemprop=datePublished content="2015-04-29T00:00:00+00:00">
+<meta itemprop=dateModified content="2015-04-29T00:00:00+00:00">
+<meta itemprop=wordCount content="68">
+<meta itemprop=keywords content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="svn转git简单实践">
+<meta name=twitter:description content="前言 涉及公司内部的名词，就用abc来代替好了。
+我负责的C工程，代码之前一直是用SVN来管理代码版本。为了响应党的号召，改Git，公司还花钱买了github企业版，这年头花钱买github而不是自己搭gitlab，良心企业啊。上网搜搜教程，试了一试，便成功了。关键操作记录在此了。
+需求一：svn转git git svn init http://svn_address git svn fetch</pre> or using git svn fetch -r 1:HEAD, 从revision 1开始fetch 去趟厕所，再喝杯咖啡，看stdout的信息可以看到正在从svn server上一个revision一个revision的内容往下拖，C工程（java代码为主，三万多行代码，引用的jar包10来个，其他的引用的jar包都用maven配置好了，所以不用把jar包存在工程里，SVN 的revision 700个左右），耗时大概10分钟，便转换完毕了。
+然后本地的git project已经建立好了。往远端push就好了。
+git remote add origin git@git_address git push -u origin master</pre> 需求二：将svn的改动同步到git 由于IDE使用的不熟悉，不是立马用IDE git clone过来工程就能直接用，没空来折腾。所以最近几天仍然只用svn来commit，但是想要更新svn project上的内容到git。
+怎么搞。上网一搜，挺好搞。
+git svn fetch git svn rebase git svn fetch git push -u origin master</pre> 不要问我为什么用这几句话，我也就是临时上网搜一下拿来用了。需要知道这命令干什么用的话，用help命令好了。
+产出 之后用git来管理C工程源代码了，托github企业版的福，可以更加方便的在网页上show给别人看了，哪天我改了多少代码，代码量啦，多少个新的feature啦，release note啦，issue track啦，都可以统统的放在一个网站上搞定了。
+还有，github pages的功能，给C工程建了一个宣传网页，瞬间高大上了有没有。
+by the way, 我参考的网页
+http://www.blogjava.net/lishunli/archive/2012/01/15/368562.html">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">svn转git简单实践</h1>
+<p class=tracked>
+By <strong>
+young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2015-04-29T00:00:00Z>April 29, 2015</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h1 id=前言>前言</h1>
+<p>涉及公司内部的名词，就用abc来代替好了。</p>
+<p>我负责的C工程，代码之前一直是用SVN来管理代码版本。为了响应党的号召，改Git，公司还花钱买了github企业版，这年头花钱买github而不是自己搭gitlab，良心企业啊。上网搜搜教程，试了一试，便成功了。关键操作记录在此了。</p>
+<h1 id=需求一svn转git>需求一：svn转git</h1>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>git svn init http://svn_address
+git svn fetch&lt;/pre&gt;
+
+or using git svn fetch -r 1:HEAD, 从revision 1开始fetch
+</code></pre></div><p>去趟厕所，再喝杯咖啡，看stdout的信息可以看到正在从svn server上一个revision一个revision的内容往下拖，C工程（java代码为主，三万多行代码，引用的jar包10来个，其他的引用的jar包都用maven配置好了，所以不用把jar包存在工程里，SVN 的revision 700个左右），耗时大概10分钟，便转换完毕了。</p>
+<p>然后本地的git project已经建立好了。往远端push就好了。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>git remote add origin git@git_address
+git push -u origin master&lt;/pre&gt;
+</code></pre></div><h1 id=需求二将svn的改动同步到git>需求二：将svn的改动同步到git</h1>
+<p>由于IDE使用的不熟悉，不是立马用IDE git clone过来工程就能直接用，没空来折腾。所以最近几天仍然只用svn来commit，但是想要更新svn project上的内容到git。</p>
+<p>怎么搞。上网一搜，挺好搞。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>git svn fetch
+git svn rebase
+
+git svn fetch
+git push -u origin master&lt;/pre&gt;
+</code></pre></div><p>不要问我为什么用这几句话，我也就是临时上网搜一下拿来用了。需要知道这命令干什么用的话，用help命令好了。</p>
+<h1 id=产出>产出</h1>
+<p>之后用git来管理C工程源代码了，托github企业版的福，可以更加方便的在网页上show给别人看了，哪天我改了多少代码，代码量啦，多少个新的feature啦，release note啦，issue track啦，都可以统统的放在一个网站上搞定了。</p>
+<p>还有，github pages的功能，给C工程建了一个宣传网页，瞬间高大上了有没有。</p>
+<p>by the way, 我参考的网页</p>
+<p><a href=http://www.blogjava.net/lishunli/archive/2012/01/15/368562.html>http://www.blogjava.net/lishunli/archive/2012/01/15/368562.html</a></p>
+<ul class=pa0>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

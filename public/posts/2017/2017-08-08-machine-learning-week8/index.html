@@ -1,0 +1,179 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>coursera Andrew Ng 机器学习第八周笔记 降低维度 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="unsupervised learning k-means altorithm clustering, optimization objective clustering, random initialization should have K < m
+Randomly pick K training examples.
+clustering, choosing the number of clusters, K Please draw a graph. Elbow method
+Dimensionality reduction Motivation I: data compressioni
+Motivation II: Visualization
+Princiapl Component Analysis reduce from n-dimension to k-dimension: find k vectors u1 u2 u3 uk onto which to project the data,so as to minimize the projection error.
+PCA steps">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="coursera Andrew Ng 机器学习第八周笔记 降低维度">
+<meta property="og:description" content="unsupervised learning k-means altorithm clustering, optimization objective clustering, random initialization should have K < m
+Randomly pick K training examples.
+clustering, choosing the number of clusters, K Please draw a graph. Elbow method
+Dimensionality reduction Motivation I: data compressioni
+Motivation II: Visualization
+Princiapl Component Analysis reduce from n-dimension to k-dimension: find k vectors u1 u2 u3 uk onto which to project the data,so as to minimize the projection error.
+PCA steps">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2017/2017-08-08-machine-learning-week8/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-08-08T00:00:00+00:00">
+<meta property="article:modified_time" content="2017-08-08T00:00:00+00:00">
+<meta itemprop=name content="coursera Andrew Ng 机器学习第八周笔记 降低维度">
+<meta itemprop=description content="unsupervised learning k-means altorithm clustering, optimization objective clustering, random initialization should have K < m
+Randomly pick K training examples.
+clustering, choosing the number of clusters, K Please draw a graph. Elbow method
+Dimensionality reduction Motivation I: data compressioni
+Motivation II: Visualization
+Princiapl Component Analysis reduce from n-dimension to k-dimension: find k vectors u1 u2 u3 uk onto which to project the data,so as to minimize the projection error.
+PCA steps"><meta itemprop=datePublished content="2017-08-08T00:00:00+00:00">
+<meta itemprop=dateModified content="2017-08-08T00:00:00+00:00">
+<meta itemprop=wordCount content="139">
+<meta itemprop=keywords content="PCA,ai,machine learning,Andrew Ng,coursera,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="coursera Andrew Ng 机器学习第八周笔记 降低维度">
+<meta name=twitter:description content="unsupervised learning k-means altorithm clustering, optimization objective clustering, random initialization should have K < m
+Randomly pick K training examples.
+clustering, choosing the number of clusters, K Please draw a graph. Elbow method
+Dimensionality reduction Motivation I: data compressioni
+Motivation II: Visualization
+Princiapl Component Analysis reduce from n-dimension to k-dimension: find k vectors u1 u2 u3 uk onto which to project the data,so as to minimize the projection error.
+PCA steps">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">coursera Andrew Ng 机器学习第八周笔记 降低维度</h1>
+<p class=tracked>
+By <strong>
+Young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2017-08-08T00:00:00Z>August 8, 2017</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h2 id=unsupervised-learning>unsupervised learning</h2>
+<h4 id=k-means-altorithm>k-means altorithm</h4>
+<p><img src=./2017-08-08/k-means.png alt></p>
+<h4 id=clustering-optimization-objective>clustering, optimization objective</h4>
+<p><img src=./2017-08-08/k-means-optimization.png alt></p>
+<h4 id=clustering-random-initialization>clustering, random initialization</h4>
+<p>should have K &lt; m</p>
+<p>Randomly pick K training examples.</p>
+<h4 id=clustering-choosing-the-number-of-clusters-k>clustering, choosing the number of clusters, K</h4>
+<p>Please draw a graph. <strong>Elbow method</strong></p>
+<p><img src=./2017-08-08/elbow-method.png alt></p>
+<h2 id=dimensionality-reduction>Dimensionality reduction</h2>
+<p><strong>Motivation I: data compressioni</strong></p>
+<p><strong>Motivation II: Visualization</strong></p>
+<h4 id=princiapl-component-analysis>Princiapl Component Analysis</h4>
+<p>reduce from n-dimension to k-dimension:
+find k vectors u1 u2 u3 uk onto which to project the data,so as to minimize the projection error.</p>
+<p><strong>PCA steps</strong></p>
+<ul>
+<li>preprocessing: feature scaling + mean normalization</li>
+<li>compute &ldquo;covariance matrix&rdquo;</li>
+<li>compute &ldquo;eigenvectors&rdquo; of matrix Sigma<code>[U,S,V] = svd(Sigma);</code></li>
+</ul>
+<p><img src=./2017-08-08/pca-summary.png alt></p>
+<p><img src=./2017-08-08/pca-choosek.png alt></p>
+<h4 id=advice>advice</h4>
+<p>mapping matrix(from N-d to K-d) should be defined by running PCA only on the training set.
+This mapping can be applied as well to the examples X-cv and X-test in the cross validation and test sets.</p>
+<p><strong>application of PCA</strong></p>
+<ul>
+<li>compression</li>
+<li>reduce memory/disk needed to store dat</li>
+<li>speed up learning algorithm</li>
+<li>visualization</li>
+</ul>
+<p><img src=./2017-08-08/pca-advice1.png alt></p>
+<p><img src=./2017-08-08/pca-advice2.png alt></p>
+<ul class=pa0>
+<li class=list>
+<a href=/tags/pca class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">PCA</a>
+</li>
+<li class=list>
+<a href=/tags/ai class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ai</a>
+</li>
+<li class=list>
+<a href=/tags/machine-learning class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">machine learning</a>
+</li>
+<li class=list>
+<a href=/tags/andrew-ng class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Andrew Ng</a>
+</li>
+<li class=list>
+<a href=/tags/coursera class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">coursera</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2017/2017-08-07-machine-learning-week7/>coursera Andrew Ng 机器学习第七周笔记 支持向量机</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-06-machine-learning-week6/>coursera Andrew Ng 机器学习第六周笔记 系统设计与优化技巧</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-05-machine-learning-week5/>coursera Andrew Ng 机器学习第五周笔记 神经网络的学习过程</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-04-machine-learning-week4/>coursera Andrew Ng 机器学习第四周笔记 神经网络模型</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-03-machine-learning-week3/>coursera Andrew Ng 机器学习第三周笔记 逻辑回归与泛化</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-02-machine-learning-week2/>coursera Andrew Ng 机器学习第二周笔记 多个变量的线性回归</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-01-machine-learning-week1/>coursera Andrew Ng 机器学习第一周笔记 线性回归</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

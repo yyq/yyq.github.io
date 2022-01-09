@@ -1,0 +1,197 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>JavaScript DOM 编程艺术 读书笔记 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="读后感 第一次认真看完前端的书籍，理解到了网页上的“MVC”，即：结构，样式，行为。
+Model 模型，在此处即结构，DOM树，网页的核心内容，一个网页，可以没有行为，也可以没有样式，但是一定得有结构；在html结构中，可以指定样式，也可以嵌入行为。
+View 样式，网页的外观等，大多用CSS来实现；
+Controller 行为，最灵活的一个部分，让网页上的一切“动”起来的灵魂，大多用JavaScript来实现。在JavaScript中，可以修改结构，也可以修改样式。
+写网站的时候，一定要注意的一点就是：平稳退化。
+摘抄笔记 这本书的重点是JavaScript，笔记中如果没有特别描述，都是在讲JavaScript.
+ 全局变量，可以在脚本的任何位置被引用。 var关键字可以明确的为函数变量设定作用域。如果在某个函数中使用了var，那么变量就将被视为一个局部变量，反之，如果没有使用var，那个变量就将被视为一个全局变量。 在定义一个函数时，我们一定要把它内部的变量全部明确地声明为局部变量。总是使用var关键字，就能避免任何形式的二义性隐患 DOM===Document Object Model JavaScript里的对象可以分为三种类型。 用户定义对象：程序员自己创建的。 内建对象：内建在JavaScript语言里的对象，Array,Math,Date等 宿主对象：由浏览器提供的对象。例如：window DOM的原子是元素节点 元素节点的nodeType === 1 属性节点的nodeType === 2 文本节点的nodeType === 3  <p> id='x'>Hello Motor!</p>  包含在p元素里的文本是另一种节点，他是p元素的第一个子节点。文本的内容可以用alert(x.childNodes[0].nodeValue);显示出来 如果使用JavaScript，就要确认，这么做会对用户的浏览体验产生怎样的影响，还有个更重要的问题，如果用户的浏览器不支持JavaScript该怎么办？所谓的平稳退化，就是虽然某些功能无法使用，但是最基本的操作仍能顺利完成 接上一条，把链接类节点里，href属性设置为真实存在的URL地址后，即使JavaScript被禁用，这个链接也是可用的，这是一个经典的平稳退化的例子 if(!document.getElementsByTagName) return false,具有良好的向后兼容性。 出于可读性的考虑，把return false的语句尽量全部集中到函数的开头部分。 共享onload事件  function addLoadEvent(func){ var oldonload = window.onload; if (typeof window.onload != 'function'){ window.onload =func; }else{ window.onload = function(){ oldonload(); func(); } } }  千万不要忘记并非所有的用户都使用鼠标。比如视力残疾的用户往往无法看清屏幕，更喜欢使用键盘 结构与行为的分离程度，越大越好 JavaScript通过创建新元素和修改现有元素来改变网页结构 把结构，行为和样式分开永远都是一个好主意，避免在<body>部分乱用<script>标签，避免使用document.">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="JavaScript DOM 编程艺术 读书笔记">
+<meta property="og:description" content="读后感 第一次认真看完前端的书籍，理解到了网页上的“MVC”，即：结构，样式，行为。
+Model 模型，在此处即结构，DOM树，网页的核心内容，一个网页，可以没有行为，也可以没有样式，但是一定得有结构；在html结构中，可以指定样式，也可以嵌入行为。
+View 样式，网页的外观等，大多用CSS来实现；
+Controller 行为，最灵活的一个部分，让网页上的一切“动”起来的灵魂，大多用JavaScript来实现。在JavaScript中，可以修改结构，也可以修改样式。
+写网站的时候，一定要注意的一点就是：平稳退化。
+摘抄笔记 这本书的重点是JavaScript，笔记中如果没有特别描述，都是在讲JavaScript.
+ 全局变量，可以在脚本的任何位置被引用。 var关键字可以明确的为函数变量设定作用域。如果在某个函数中使用了var，那么变量就将被视为一个局部变量，反之，如果没有使用var，那个变量就将被视为一个全局变量。 在定义一个函数时，我们一定要把它内部的变量全部明确地声明为局部变量。总是使用var关键字，就能避免任何形式的二义性隐患 DOM===Document Object Model JavaScript里的对象可以分为三种类型。 用户定义对象：程序员自己创建的。 内建对象：内建在JavaScript语言里的对象，Array,Math,Date等 宿主对象：由浏览器提供的对象。例如：window DOM的原子是元素节点 元素节点的nodeType === 1 属性节点的nodeType === 2 文本节点的nodeType === 3  <p> id='x'>Hello Motor!</p>  包含在p元素里的文本是另一种节点，他是p元素的第一个子节点。文本的内容可以用alert(x.childNodes[0].nodeValue);显示出来 如果使用JavaScript，就要确认，这么做会对用户的浏览体验产生怎样的影响，还有个更重要的问题，如果用户的浏览器不支持JavaScript该怎么办？所谓的平稳退化，就是虽然某些功能无法使用，但是最基本的操作仍能顺利完成 接上一条，把链接类节点里，href属性设置为真实存在的URL地址后，即使JavaScript被禁用，这个链接也是可用的，这是一个经典的平稳退化的例子 if(!document.getElementsByTagName) return false,具有良好的向后兼容性。 出于可读性的考虑，把return false的语句尽量全部集中到函数的开头部分。 共享onload事件  function addLoadEvent(func){ var oldonload = window.onload; if (typeof window.onload != 'function'){ window.onload =func; }else{ window.onload = function(){ oldonload(); func(); } } }  千万不要忘记并非所有的用户都使用鼠标。比如视力残疾的用户往往无法看清屏幕，更喜欢使用键盘 结构与行为的分离程度，越大越好 JavaScript通过创建新元素和修改现有元素来改变网页结构 把结构，行为和样式分开永远都是一个好主意，避免在<body>部分乱用<script>标签，避免使用document.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2016/2016-12-24-javascript-dom/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2016-12-24T00:00:00+00:00">
+<meta property="article:modified_time" content="2016-12-24T00:00:00+00:00">
+<meta itemprop=name content="JavaScript DOM 编程艺术 读书笔记">
+<meta itemprop=description content="读后感 第一次认真看完前端的书籍，理解到了网页上的“MVC”，即：结构，样式，行为。
+Model 模型，在此处即结构，DOM树，网页的核心内容，一个网页，可以没有行为，也可以没有样式，但是一定得有结构；在html结构中，可以指定样式，也可以嵌入行为。
+View 样式，网页的外观等，大多用CSS来实现；
+Controller 行为，最灵活的一个部分，让网页上的一切“动”起来的灵魂，大多用JavaScript来实现。在JavaScript中，可以修改结构，也可以修改样式。
+写网站的时候，一定要注意的一点就是：平稳退化。
+摘抄笔记 这本书的重点是JavaScript，笔记中如果没有特别描述，都是在讲JavaScript.
+ 全局变量，可以在脚本的任何位置被引用。 var关键字可以明确的为函数变量设定作用域。如果在某个函数中使用了var，那么变量就将被视为一个局部变量，反之，如果没有使用var，那个变量就将被视为一个全局变量。 在定义一个函数时，我们一定要把它内部的变量全部明确地声明为局部变量。总是使用var关键字，就能避免任何形式的二义性隐患 DOM===Document Object Model JavaScript里的对象可以分为三种类型。 用户定义对象：程序员自己创建的。 内建对象：内建在JavaScript语言里的对象，Array,Math,Date等 宿主对象：由浏览器提供的对象。例如：window DOM的原子是元素节点 元素节点的nodeType === 1 属性节点的nodeType === 2 文本节点的nodeType === 3  <p> id='x'>Hello Motor!</p>  包含在p元素里的文本是另一种节点，他是p元素的第一个子节点。文本的内容可以用alert(x.childNodes[0].nodeValue);显示出来 如果使用JavaScript，就要确认，这么做会对用户的浏览体验产生怎样的影响，还有个更重要的问题，如果用户的浏览器不支持JavaScript该怎么办？所谓的平稳退化，就是虽然某些功能无法使用，但是最基本的操作仍能顺利完成 接上一条，把链接类节点里，href属性设置为真实存在的URL地址后，即使JavaScript被禁用，这个链接也是可用的，这是一个经典的平稳退化的例子 if(!document.getElementsByTagName) return false,具有良好的向后兼容性。 出于可读性的考虑，把return false的语句尽量全部集中到函数的开头部分。 共享onload事件  function addLoadEvent(func){ var oldonload = window.onload; if (typeof window.onload != 'function'){ window.onload =func; }else{ window.onload = function(){ oldonload(); func(); } } }  千万不要忘记并非所有的用户都使用鼠标。比如视力残疾的用户往往无法看清屏幕，更喜欢使用键盘 结构与行为的分离程度，越大越好 JavaScript通过创建新元素和修改现有元素来改变网页结构 把结构，行为和样式分开永远都是一个好主意，避免在<body>部分乱用<script>标签，避免使用document."><meta itemprop=datePublished content="2016-12-24T00:00:00+00:00">
+<meta itemprop=dateModified content="2016-12-24T00:00:00+00:00">
+<meta itemprop=wordCount content="99">
+<meta itemprop=keywords content="javascript,计算机,dom,读书笔记,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="JavaScript DOM 编程艺术 读书笔记">
+<meta name=twitter:description content="读后感 第一次认真看完前端的书籍，理解到了网页上的“MVC”，即：结构，样式，行为。
+Model 模型，在此处即结构，DOM树，网页的核心内容，一个网页，可以没有行为，也可以没有样式，但是一定得有结构；在html结构中，可以指定样式，也可以嵌入行为。
+View 样式，网页的外观等，大多用CSS来实现；
+Controller 行为，最灵活的一个部分，让网页上的一切“动”起来的灵魂，大多用JavaScript来实现。在JavaScript中，可以修改结构，也可以修改样式。
+写网站的时候，一定要注意的一点就是：平稳退化。
+摘抄笔记 这本书的重点是JavaScript，笔记中如果没有特别描述，都是在讲JavaScript.
+ 全局变量，可以在脚本的任何位置被引用。 var关键字可以明确的为函数变量设定作用域。如果在某个函数中使用了var，那么变量就将被视为一个局部变量，反之，如果没有使用var，那个变量就将被视为一个全局变量。 在定义一个函数时，我们一定要把它内部的变量全部明确地声明为局部变量。总是使用var关键字，就能避免任何形式的二义性隐患 DOM===Document Object Model JavaScript里的对象可以分为三种类型。 用户定义对象：程序员自己创建的。 内建对象：内建在JavaScript语言里的对象，Array,Math,Date等 宿主对象：由浏览器提供的对象。例如：window DOM的原子是元素节点 元素节点的nodeType === 1 属性节点的nodeType === 2 文本节点的nodeType === 3  <p> id='x'>Hello Motor!</p>  包含在p元素里的文本是另一种节点，他是p元素的第一个子节点。文本的内容可以用alert(x.childNodes[0].nodeValue);显示出来 如果使用JavaScript，就要确认，这么做会对用户的浏览体验产生怎样的影响，还有个更重要的问题，如果用户的浏览器不支持JavaScript该怎么办？所谓的平稳退化，就是虽然某些功能无法使用，但是最基本的操作仍能顺利完成 接上一条，把链接类节点里，href属性设置为真实存在的URL地址后，即使JavaScript被禁用，这个链接也是可用的，这是一个经典的平稳退化的例子 if(!document.getElementsByTagName) return false,具有良好的向后兼容性。 出于可读性的考虑，把return false的语句尽量全部集中到函数的开头部分。 共享onload事件  function addLoadEvent(func){ var oldonload = window.onload; if (typeof window.onload != 'function'){ window.onload =func; }else{ window.onload = function(){ oldonload(); func(); } } }  千万不要忘记并非所有的用户都使用鼠标。比如视力残疾的用户往往无法看清屏幕，更喜欢使用键盘 结构与行为的分离程度，越大越好 JavaScript通过创建新元素和修改现有元素来改变网页结构 把结构，行为和样式分开永远都是一个好主意，避免在<body>部分乱用<script>标签，避免使用document.">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">JavaScript DOM 编程艺术 读书笔记</h1>
+<p class=tracked>
+By <strong>
+Young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2016-12-24T00:00:00Z>December 24, 2016</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h1 id=读后感>读后感</h1>
+<p>第一次认真看完前端的书籍，理解到了网页上的“MVC”，即：结构，样式，行为。</p>
+<h2 id=model>Model</h2>
+<p>模型，在此处即结构，DOM树，网页的核心内容，一个网页，可以没有行为，也可以没有样式，但是一定得有结构；在html结构中，可以指定样式，也可以嵌入行为。</p>
+<h2 id=view>View</h2>
+<p>样式，网页的外观等，大多用CSS来实现；</p>
+<h2 id=controller>Controller</h2>
+<p>行为，最灵活的一个部分，让网页上的一切“动”起来的灵魂，大多用JavaScript来实现。在JavaScript中，可以修改结构，也可以修改样式。</p>
+<p>写网站的时候，一定要注意的一点就是：平稳退化。</p>
+<h1 id=摘抄笔记>摘抄笔记</h1>
+<p>这本书的重点是JavaScript，笔记中如果没有特别描述，都是在讲JavaScript.</p>
+<ul>
+<li>全局变量，可以在脚本的任何位置被引用。</li>
+<li>var关键字可以明确的为函数变量设定作用域。如果在某个函数中使用了var，那么变量就将被视为一个局部变量，反之，如果没有使用var，那个变量就将被视为一个全局变量。</li>
+<li>在定义一个函数时，我们一定要把它内部的变量全部明确地声明为局部变量。总是使用var关键字，就能避免任何形式的二义性隐患</li>
+<li>DOM===Document Object Model</li>
+<li>JavaScript里的对象可以分为三种类型。</li>
+<li>用户定义对象：程序员自己创建的。</li>
+<li>内建对象：内建在JavaScript语言里的对象，Array,Math,Date等</li>
+<li>宿主对象：由浏览器提供的对象。例如：window</li>
+<li>DOM的原子是元素节点</li>
+<li>元素节点的nodeType === 1</li>
+<li>属性节点的nodeType === 2</li>
+<li>文本节点的nodeType === 3</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>p</span>&gt; id=&#39;x&#39;&gt;Hello Motor!&lt;/<span style=color:#f92672>p</span>&gt;
+</code></pre></div><ul>
+<li>包含在p元素里的文本是另一种节点，他是p元素的第一个子节点。文本的内容可以用alert(x.childNodes[0].nodeValue);显示出来</li>
+<li>如果使用JavaScript，就要确认，这么做会对用户的浏览体验产生怎样的影响，还有个更重要的问题，如果用户的浏览器不支持JavaScript该怎么办？所谓的平稳退化，就是虽然某些功能无法使用，但是最基本的操作仍能顺利完成</li>
+<li>接上一条，把链接类节点里，href属性设置为真实存在的URL地址后，即使JavaScript被禁用，这个链接也是可用的，这是一个经典的平稳退化的例子</li>
+<li><code>if(!document.getElementsByTagName) return false</code>,具有良好的向后兼容性。</li>
+<li>出于可读性的考虑，把return false的语句尽量全部集中到函数的开头部分。</li>
+<li>共享onload事件</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#66d9ef>function</span> <span style=color:#a6e22e>addLoadEvent</span>(<span style=color:#a6e22e>func</span>){
+  <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>oldonload</span> <span style=color:#f92672>=</span> window.<span style=color:#a6e22e>onload</span>;
+  <span style=color:#66d9ef>if</span> (<span style=color:#66d9ef>typeof</span> window.<span style=color:#a6e22e>onload</span> <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#39;function&#39;</span>){
+    window.<span style=color:#a6e22e>onload</span> <span style=color:#f92672>=</span><span style=color:#a6e22e>func</span>;
+  }<span style=color:#66d9ef>else</span>{
+    window.<span style=color:#a6e22e>onload</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>function</span>(){
+      <span style=color:#a6e22e>oldonload</span>();
+      <span style=color:#a6e22e>func</span>();
+    }
+  }  
+}
+</code></pre></div><ul>
+<li>千万不要忘记并非所有的用户都使用鼠标。比如视力残疾的用户往往无法看清屏幕，更喜欢使用键盘</li>
+<li>结构与行为的分离程度，越大越好</li>
+<li>JavaScript通过创建新元素和修改现有元素来改变网页结构</li>
+<li>把结构，行为和样式分开永远都是一个好主意，避免在<code>&lt;body></code>部分乱用<code>&lt;script></code>标签，避免使用document.write方法</li>
+<li>createElement, appendChild, CreateTextNode</li>
+<li>insertBefore(), parentNode</li>
+<li>利用nextSibling(下一个兄弟元素)来做一个自己的insertAfter()</li>
+<li>Ajax</li>
+<li>异步加载页面内容，Ajax的主要优势就是对页面的请求以异步方式发送到服务器</li>
+<li>XMLHttpRequest对象由许多的方法，其中最有用的是open方法，它用来指定服务器上将要访问的文件，指定请求类型:GET,POST,SEND</li>
+<li>onreadystatechange是一个事件处理函数</li>
+<li>访问服务器发送回来的数据要通过两个属性完成，一个是responseText属性，这个属性用于保存文本字符串形式的数据。另外一个属性是responseXML属性，用于保存Context-Type头部中指定为text/xml的数据，其实是一个DocumentFragment对象。</li>
+<li>要构建成功的Ajax应用，关键在于将Ajax功能看做一般的JavaScript增强功能，在平稳退化的基础上求得渐进增强</li>
+<li>用Ajax拦住发送到服务器的请求，并将请求转交给XMLHttpRequest对象处理。这种情况之下，Ajax就扮演了一个位于常规站点之上的层。</li>
+<li>构建Ajax网站的最好方法，也是先构建一个常规的网站，然后Hijix它，渐进增强的使用Ajax。</li>
+<li>Progressive enhancement,内容应该在刚开始编写文档时就成为文档的组成部分</li>
+<li>平稳退化。</li>
+<li>有的浏览器会把换行符解释为一个文本节点。</li>
+<li>在某一类场合，需要决定采用纯粹的CSS来解决还是利用DOM来设置样式，需要考虑一下因素：这个问题最简单的解决方案是什么，哪种解决方案会得到更多浏览器的支持</li>
+<li>如果你引用一个外部css样式表，并且其中有一条针对.intro类的样式声明, 想要把元素的样式改成这种，那把属性设置为intro就可以达到目的。</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript>.<span style=color:#a6e22e>intro</span>{
+  <span style=color:#a6e22e>font</span><span style=color:#f92672>-</span><span style=color:#a6e22e>weight</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>bold</span>;
+  <span style=color:#a6e22e>font</span><span style=color:#f92672>-</span><span style=color:#a6e22e>size</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>1.2</span><span style=color:#a6e22e>em</span>;
+}
+
+<span style=color:#a6e22e>elem</span>.<span style=color:#a6e22e>setAttribute</span>(<span style=color:#e6db74>&#34;class&#34;</span>, <span style=color:#e6db74>&#34;intro&#34;</span>);
+</code></pre></div><ul>
+<li>在需要给一个元素添加class属性时，该怎么做</li>
+</ul>
+<ul class=pa0>
+<li class=list>
+<a href=/tags/javascript class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">javascript</a>
+</li>
+<li class=list>
+<a href=/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">计算机</a>
+</li>
+<li class=list>
+<a href=/tags/dom class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">dom</a>
+</li>
+<li class=list>
+<a href=/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0 class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">读书笔记</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2016/2016-08-22-i-m-back/>I'm back</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

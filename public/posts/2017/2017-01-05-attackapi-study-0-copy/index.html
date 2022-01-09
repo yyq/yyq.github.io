@@ -1,0 +1,164 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>AttackAPI安装教程 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="本文用来描述部署AttackAPI环境，网上搜了一些教程和内容，有的描述太简单，有的描述已过时，总有这样那样的问题，自己又是一个小白前端，摸索了好一会儿才搞明白，于是记录此文。
+0x00 AttackAPI简介 AttackAPI是一个基于Web的攻击构造库，开源项目，作者此软件的官网在http://www.gnucitizen.org/blog/attackapi/.
+曾经的源代码放在google code上，不过后来此网站关门了，有很多人将此工程收藏在github上了，在github上搜索attackapi可以得到源代码。
+0x01 配置 为了防止以后代码失传，我fork了一份到我自己账户下，https://github.com/yyq/attackapi.
+下载好代码后，看了看目录，只有一个Tags目录，目测是一个典型的SVN结构，需要自己整理一下文件切换到对应版本号.
+看到build.xml文件，知道此工程需要ant一下
+发现可以ant命令没有错误的最高版本号是2.5.0a
+web服务器，为了省事，用windows环境，下载了https://www.appserv.org/en/按照默认选项一路安装完成，启动apache服务，把attackapi文件夹copy到C:\AppServ\www目录下
+0x02 hell0world 用火狐浏览器打开http://localhost/attackapi/build/tests/firetest-interactive.htm, 然后在firebug的控制台里，输入命令dir(AttackAPI),可以看到如下的信息则证明基本配置成功了： 0x03 踩过的坑  找到正确的代码格式，了解svn apache启动失败，端口被其他程序占用 AppServ的运行会需要各个版本的vc11,vc140,vc10等等.dll文件的支持，好在它都会自动安装 ant编译步骤不能少，不然文件结构不正确，导致htm中一些js文件引用失败  下一个步骤是了解和使用attackapi了，敬请期待下一篇日志吧。
+0x04 两天后的更新： 囧了，按照书上试了半天，attackapi里有些函数已经不顶用了，看了看源代码才知道有的方式过时了。例如访问历史浏览过的网页scanHistory这个功能，attackapi里用的方法是利用a:visited加网址，然后根据display属性来判断，这一招几年前应该还管用。
+近年随着大家对web安全防范的意识越来越高，过去的很多方法都失效，得用新的方法来搞定。">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="AttackAPI安装教程">
+<meta property="og:description" content="本文用来描述部署AttackAPI环境，网上搜了一些教程和内容，有的描述太简单，有的描述已过时，总有这样那样的问题，自己又是一个小白前端，摸索了好一会儿才搞明白，于是记录此文。
+0x00 AttackAPI简介 AttackAPI是一个基于Web的攻击构造库，开源项目，作者此软件的官网在http://www.gnucitizen.org/blog/attackapi/.
+曾经的源代码放在google code上，不过后来此网站关门了，有很多人将此工程收藏在github上了，在github上搜索attackapi可以得到源代码。
+0x01 配置 为了防止以后代码失传，我fork了一份到我自己账户下，https://github.com/yyq/attackapi.
+下载好代码后，看了看目录，只有一个Tags目录，目测是一个典型的SVN结构，需要自己整理一下文件切换到对应版本号.
+看到build.xml文件，知道此工程需要ant一下
+发现可以ant命令没有错误的最高版本号是2.5.0a
+web服务器，为了省事，用windows环境，下载了https://www.appserv.org/en/按照默认选项一路安装完成，启动apache服务，把attackapi文件夹copy到C:\AppServ\www目录下
+0x02 hell0world 用火狐浏览器打开http://localhost/attackapi/build/tests/firetest-interactive.htm, 然后在firebug的控制台里，输入命令dir(AttackAPI),可以看到如下的信息则证明基本配置成功了： 0x03 踩过的坑  找到正确的代码格式，了解svn apache启动失败，端口被其他程序占用 AppServ的运行会需要各个版本的vc11,vc140,vc10等等.dll文件的支持，好在它都会自动安装 ant编译步骤不能少，不然文件结构不正确，导致htm中一些js文件引用失败  下一个步骤是了解和使用attackapi了，敬请期待下一篇日志吧。
+0x04 两天后的更新： 囧了，按照书上试了半天，attackapi里有些函数已经不顶用了，看了看源代码才知道有的方式过时了。例如访问历史浏览过的网页scanHistory这个功能，attackapi里用的方法是利用a:visited加网址，然后根据display属性来判断，这一招几年前应该还管用。
+近年随着大家对web安全防范的意识越来越高，过去的很多方法都失效，得用新的方法来搞定。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2017/2017-01-05-attackapi-study-0-copy/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-01-05T00:00:00+00:00">
+<meta property="article:modified_time" content="2017-01-05T00:00:00+00:00">
+<meta itemprop=name content="AttackAPI安装教程">
+<meta itemprop=description content="本文用来描述部署AttackAPI环境，网上搜了一些教程和内容，有的描述太简单，有的描述已过时，总有这样那样的问题，自己又是一个小白前端，摸索了好一会儿才搞明白，于是记录此文。
+0x00 AttackAPI简介 AttackAPI是一个基于Web的攻击构造库，开源项目，作者此软件的官网在http://www.gnucitizen.org/blog/attackapi/.
+曾经的源代码放在google code上，不过后来此网站关门了，有很多人将此工程收藏在github上了，在github上搜索attackapi可以得到源代码。
+0x01 配置 为了防止以后代码失传，我fork了一份到我自己账户下，https://github.com/yyq/attackapi.
+下载好代码后，看了看目录，只有一个Tags目录，目测是一个典型的SVN结构，需要自己整理一下文件切换到对应版本号.
+看到build.xml文件，知道此工程需要ant一下
+发现可以ant命令没有错误的最高版本号是2.5.0a
+web服务器，为了省事，用windows环境，下载了https://www.appserv.org/en/按照默认选项一路安装完成，启动apache服务，把attackapi文件夹copy到C:\AppServ\www目录下
+0x02 hell0world 用火狐浏览器打开http://localhost/attackapi/build/tests/firetest-interactive.htm, 然后在firebug的控制台里，输入命令dir(AttackAPI),可以看到如下的信息则证明基本配置成功了： 0x03 踩过的坑  找到正确的代码格式，了解svn apache启动失败，端口被其他程序占用 AppServ的运行会需要各个版本的vc11,vc140,vc10等等.dll文件的支持，好在它都会自动安装 ant编译步骤不能少，不然文件结构不正确，导致htm中一些js文件引用失败  下一个步骤是了解和使用attackapi了，敬请期待下一篇日志吧。
+0x04 两天后的更新： 囧了，按照书上试了半天，attackapi里有些函数已经不顶用了，看了看源代码才知道有的方式过时了。例如访问历史浏览过的网页scanHistory这个功能，attackapi里用的方法是利用a:visited加网址，然后根据display属性来判断，这一招几年前应该还管用。
+近年随着大家对web安全防范的意识越来越高，过去的很多方法都失效，得用新的方法来搞定。"><meta itemprop=datePublished content="2017-01-05T00:00:00+00:00">
+<meta itemprop=dateModified content="2017-01-05T00:00:00+00:00">
+<meta itemprop=wordCount content="28">
+<meta itemprop=keywords content="JavaScript,AttackAPI,Security,web,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="AttackAPI安装教程">
+<meta name=twitter:description content="本文用来描述部署AttackAPI环境，网上搜了一些教程和内容，有的描述太简单，有的描述已过时，总有这样那样的问题，自己又是一个小白前端，摸索了好一会儿才搞明白，于是记录此文。
+0x00 AttackAPI简介 AttackAPI是一个基于Web的攻击构造库，开源项目，作者此软件的官网在http://www.gnucitizen.org/blog/attackapi/.
+曾经的源代码放在google code上，不过后来此网站关门了，有很多人将此工程收藏在github上了，在github上搜索attackapi可以得到源代码。
+0x01 配置 为了防止以后代码失传，我fork了一份到我自己账户下，https://github.com/yyq/attackapi.
+下载好代码后，看了看目录，只有一个Tags目录，目测是一个典型的SVN结构，需要自己整理一下文件切换到对应版本号.
+看到build.xml文件，知道此工程需要ant一下
+发现可以ant命令没有错误的最高版本号是2.5.0a
+web服务器，为了省事，用windows环境，下载了https://www.appserv.org/en/按照默认选项一路安装完成，启动apache服务，把attackapi文件夹copy到C:\AppServ\www目录下
+0x02 hell0world 用火狐浏览器打开http://localhost/attackapi/build/tests/firetest-interactive.htm, 然后在firebug的控制台里，输入命令dir(AttackAPI),可以看到如下的信息则证明基本配置成功了： 0x03 踩过的坑  找到正确的代码格式，了解svn apache启动失败，端口被其他程序占用 AppServ的运行会需要各个版本的vc11,vc140,vc10等等.dll文件的支持，好在它都会自动安装 ant编译步骤不能少，不然文件结构不正确，导致htm中一些js文件引用失败  下一个步骤是了解和使用attackapi了，敬请期待下一篇日志吧。
+0x04 两天后的更新： 囧了，按照书上试了半天，attackapi里有些函数已经不顶用了，看了看源代码才知道有的方式过时了。例如访问历史浏览过的网页scanHistory这个功能，attackapi里用的方法是利用a:visited加网址，然后根据display属性来判断，这一招几年前应该还管用。
+近年随着大家对web安全防范的意识越来越高，过去的很多方法都失效，得用新的方法来搞定。">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">AttackAPI安装教程</h1>
+<p class=tracked>
+By <strong>
+Young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2017-01-05T00:00:00Z>January 5, 2017</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>本文用来描述部署AttackAPI环境，网上搜了一些教程和内容，有的描述太简单，有的描述已过时，总有这样那样的问题，自己又是一个小白前端，摸索了好一会儿才搞明白，于是记录此文。</p>
+<h3 id=0x00-attackapi简介>0x00 AttackAPI简介</h3>
+<p>AttackAPI是一个基于Web的攻击构造库，开源项目，作者此软件的官网在<a href=http://www.gnucitizen.org/blog/attackapi/>http://www.gnucitizen.org/blog/attackapi/</a>.</p>
+<p>曾经的源代码放在google code上，不过后来此网站关门了，有很多人将此工程收藏在github上了，在github上搜索<strong>attackapi</strong>可以得到源代码。</p>
+<h3 id=0x01-配置>0x01 配置</h3>
+<p>为了防止以后代码失传，我fork了一份到我自己账户下，<a href=https://github.com/yyq/attackapi>https://github.com/yyq/attackapi</a>.</p>
+<p>下载好代码后，看了看目录，只有一个Tags目录，目测是一个典型的SVN结构，需要自己整理一下文件切换到对应版本号.</p>
+<p>看到build.xml文件，知道此工程需要ant一下</p>
+<p>发现可以ant命令没有错误的最高版本号是2.5.0a</p>
+<p>web服务器，为了省事，用windows环境，下载了<a href=https://www.appserv.org/en/>https://www.appserv.org/en/</a>按照默认选项一路安装完成，启动apache服务，把attackapi文件夹copy到<strong>C:\AppServ\www</strong>目录下</p>
+<h3 id=0x02-hell0world>0x02 hell0world</h3>
+<p>用火狐浏览器打开<a href=http://127.0.0.1/attackapi/build/tests/firetest-interactive.htm>http://localhost/attackapi/build/tests/firetest-interactive.htm</a>, 然后在firebug的控制台里，输入命令<code>dir(AttackAPI)</code>,可以看到如下的信息则证明基本配置成功了：
+<img src=2017-01-05/0.png alt=x></p>
+<h3 id=0x03-踩过的坑>0x03 踩过的坑</h3>
+<ul>
+<li>找到正确的代码格式，了解svn</li>
+<li>apache启动失败，端口被其他程序占用</li>
+<li>AppServ的运行会需要各个版本的vc11,vc140,vc10等等.dll文件的支持，好在它都会自动安装</li>
+<li>ant编译步骤不能少，不然文件结构不正确，导致htm中一些js文件引用失败</li>
+</ul>
+<p>下一个步骤是了解和使用attackapi了，敬请期待下一篇日志吧。</p>
+<h3 id=0x04-两天后的更新>0x04 两天后的更新：</h3>
+<p>囧了，按照书上试了半天，attackapi里有些函数已经不顶用了，看了看源代码才知道有的方式过时了。例如访问历史浏览过的网页scanHistory这个功能，attackapi里用的方法是利用<code>a:visited</code>加网址，然后根据display属性来判断，这一招几年前应该还管用。</p>
+<p>近年随着大家对web安全防范的意识越来越高，过去的很多方法都失效，得用新的方法来搞定。</p>
+<ul class=pa0>
+<li class=list>
+<a href=/tags/javascript class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">JavaScript</a>
+</li>
+<li class=list>
+<a href=/tags/attackapi class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">AttackAPI</a>
+</li>
+<li class=list>
+<a href=/tags/security class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Security</a>
+</li>
+<li class=list>
+<a href=/tags/web class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">web</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2017/2017-01-03-xss-study-0/>XSS跨站脚本攻击剖析与防御-读书笔记</a>
+</li>
+<li class=mb2>
+<a href=/posts/2015/2015-07-26-commit-a-bug-to-wooyun/>在乌云提交一个漏洞成功并注册成为白帽子</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

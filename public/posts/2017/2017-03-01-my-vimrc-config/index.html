@@ -1,0 +1,141 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>我的vim配置说明 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="参考了不少书籍和网站，最终形成一个自己觉得顺手的vim配置文件，存在github的gist了，有兴趣的朋友可以看看，交流交流。 .vimrc .vimrc.bundles
+要相关插件都正常工作的话，需要手动执行的一些操作如下：
+ mkdir ~/.vim touch .vimrc touch .vimrc.bundles fill the file content(vimrc, vimrc.bundles) Download Vundle for VIM git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim open vim, and run :BundleInstall  The command to install ctags on my mac: brew install ctags
+The command to install YouCompleteMe
+cd ~/.vim/bundle/YouCompleteMe ./install.py --clang-completer 有的插件对VIM有版本要求，版本号不能太低了。我是用的macOS，安装了最近的8.0版本，绝大部分插件都能正常工作
+关于各个插件的详细使用说明和配置说明的话，可以参考vimrc.bundles里面的各个github链接，看他们的readme，或者直接看他们源代码，代码都存在~/.vim/bundle里面了
+我把我的这两个配置文件也贴在这里好了">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="我的vim配置说明">
+<meta property="og:description" content="参考了不少书籍和网站，最终形成一个自己觉得顺手的vim配置文件，存在github的gist了，有兴趣的朋友可以看看，交流交流。 .vimrc .vimrc.bundles
+要相关插件都正常工作的话，需要手动执行的一些操作如下：
+ mkdir ~/.vim touch .vimrc touch .vimrc.bundles fill the file content(vimrc, vimrc.bundles) Download Vundle for VIM git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim open vim, and run :BundleInstall  The command to install ctags on my mac: brew install ctags
+The command to install YouCompleteMe
+cd ~/.vim/bundle/YouCompleteMe ./install.py --clang-completer 有的插件对VIM有版本要求，版本号不能太低了。我是用的macOS，安装了最近的8.0版本，绝大部分插件都能正常工作
+关于各个插件的详细使用说明和配置说明的话，可以参考vimrc.bundles里面的各个github链接，看他们的readme，或者直接看他们源代码，代码都存在~/.vim/bundle里面了
+我把我的这两个配置文件也贴在这里好了">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2017/2017-03-01-my-vimrc-config/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-03-01T00:00:00+00:00">
+<meta property="article:modified_time" content="2017-03-01T00:00:00+00:00">
+<meta itemprop=name content="我的vim配置说明">
+<meta itemprop=description content="参考了不少书籍和网站，最终形成一个自己觉得顺手的vim配置文件，存在github的gist了，有兴趣的朋友可以看看，交流交流。 .vimrc .vimrc.bundles
+要相关插件都正常工作的话，需要手动执行的一些操作如下：
+ mkdir ~/.vim touch .vimrc touch .vimrc.bundles fill the file content(vimrc, vimrc.bundles) Download Vundle for VIM git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim open vim, and run :BundleInstall  The command to install ctags on my mac: brew install ctags
+The command to install YouCompleteMe
+cd ~/.vim/bundle/YouCompleteMe ./install.py --clang-completer 有的插件对VIM有版本要求，版本号不能太低了。我是用的macOS，安装了最近的8.0版本，绝大部分插件都能正常工作
+关于各个插件的详细使用说明和配置说明的话，可以参考vimrc.bundles里面的各个github链接，看他们的readme，或者直接看他们源代码，代码都存在~/.vim/bundle里面了
+我把我的这两个配置文件也贴在这里好了"><meta itemprop=datePublished content="2017-03-01T00:00:00+00:00">
+<meta itemprop=dateModified content="2017-03-01T00:00:00+00:00">
+<meta itemprop=wordCount content="51">
+<meta itemprop=keywords content="vim,vimrc,bundles,plugin,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="我的vim配置说明">
+<meta name=twitter:description content="参考了不少书籍和网站，最终形成一个自己觉得顺手的vim配置文件，存在github的gist了，有兴趣的朋友可以看看，交流交流。 .vimrc .vimrc.bundles
+要相关插件都正常工作的话，需要手动执行的一些操作如下：
+ mkdir ~/.vim touch .vimrc touch .vimrc.bundles fill the file content(vimrc, vimrc.bundles) Download Vundle for VIM git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim open vim, and run :BundleInstall  The command to install ctags on my mac: brew install ctags
+The command to install YouCompleteMe
+cd ~/.vim/bundle/YouCompleteMe ./install.py --clang-completer 有的插件对VIM有版本要求，版本号不能太低了。我是用的macOS，安装了最近的8.0版本，绝大部分插件都能正常工作
+关于各个插件的详细使用说明和配置说明的话，可以参考vimrc.bundles里面的各个github链接，看他们的readme，或者直接看他们源代码，代码都存在~/.vim/bundle里面了
+我把我的这两个配置文件也贴在这里好了">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">我的vim配置说明</h1>
+<p class=tracked>
+By <strong>
+Young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2017-03-01T00:00:00Z>March 1, 2017</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>参考了不少书籍和网站，最终形成一个自己觉得顺手的vim配置文件，存在github的gist了，有兴趣的朋友可以看看，交流交流。
+<a href=https://gist.github.com/yyq/b701e781b00822fb41f271eef42c9767>.vimrc</a>
+<a href=https://gist.github.com/yyq/750d1a1b23ea5050a7f4cf34d98b0864>.vimrc.bundles</a></p>
+<p>要相关插件都正常工作的话，需要手动执行的一些操作如下：</p>
+<ol>
+<li>mkdir ~/.vim</li>
+<li>touch .vimrc</li>
+<li>touch .vimrc.bundles</li>
+<li>fill the file content(vimrc, vimrc.bundles)</li>
+<li>Download Vundle for VIM <code>git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim</code></li>
+<li>open vim, and run <code>:BundleInstall</code></li>
+</ol>
+<p>The command to install ctags on my mac:
+<code>brew install ctags</code></p>
+<p>The command to install YouCompleteMe</p>
+<pre tabindex=0><code>cd ~/.vim/bundle/YouCompleteMe
+./install.py --clang-completer
+</code></pre><p>有的插件对VIM有版本要求，版本号不能太低了。我是用的macOS，安装了最近的8.0版本，绝大部分插件都能正常工作</p>
+<p>关于各个插件的详细使用说明和配置说明的话，可以参考vimrc.bundles里面的各个github链接，看他们的readme，或者直接看他们源代码，代码都存在~/.vim/bundle里面了</p>
+<p>我把我的这两个配置文件也贴在这里好了</p>
+<ul class=pa0>
+<li class=list>
+<a href=/tags/vim class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">vim</a>
+</li>
+<li class=list>
+<a href=/tags/vimrc class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">vimrc</a>
+</li>
+<li class=list>
+<a href=/tags/bundles class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">bundles</a>
+</li>
+<li class=list>
+<a href=/tags/plugin class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">plugin</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2017/2017-02-22-vimtutor-chinese-summary/>vim中文手册 vimtutor中文版</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

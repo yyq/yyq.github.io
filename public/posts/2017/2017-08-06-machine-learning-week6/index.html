@@ -1,0 +1,149 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>coursera Andrew Ng 机器学习第六周笔记 系统设计与优化技巧 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="Advice for Applying Machine Learning 重要的笔记，必须手写上传 Machine Learning System Design email spam example Given a data set of emails, we could construct a vector for each email. Each entry in this vector represents a word. The vector normally contains 10,000 to 50,000 entries gathered by finding the most frequently used words in our data set. If a word is to be found in the email, we would assign its respective entry a 1, else if it is not found, that entry would be a 0.">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="coursera Andrew Ng 机器学习第六周笔记 系统设计与优化技巧">
+<meta property="og:description" content="Advice for Applying Machine Learning 重要的笔记，必须手写上传 Machine Learning System Design email spam example Given a data set of emails, we could construct a vector for each email. Each entry in this vector represents a word. The vector normally contains 10,000 to 50,000 entries gathered by finding the most frequently used words in our data set. If a word is to be found in the email, we would assign its respective entry a 1, else if it is not found, that entry would be a 0.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2017/2017-08-06-machine-learning-week6/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-08-06T00:00:00+00:00">
+<meta property="article:modified_time" content="2017-08-06T00:00:00+00:00">
+<meta itemprop=name content="coursera Andrew Ng 机器学习第六周笔记 系统设计与优化技巧">
+<meta itemprop=description content="Advice for Applying Machine Learning 重要的笔记，必须手写上传 Machine Learning System Design email spam example Given a data set of emails, we could construct a vector for each email. Each entry in this vector represents a word. The vector normally contains 10,000 to 50,000 entries gathered by finding the most frequently used words in our data set. If a word is to be found in the email, we would assign its respective entry a 1, else if it is not found, that entry would be a 0."><meta itemprop=datePublished content="2017-08-06T00:00:00+00:00">
+<meta itemprop=dateModified content="2017-08-06T00:00:00+00:00">
+<meta itemprop=wordCount content="298">
+<meta itemprop=keywords content="ai,machine learning,Andrew Ng,coursera,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="coursera Andrew Ng 机器学习第六周笔记 系统设计与优化技巧">
+<meta name=twitter:description content="Advice for Applying Machine Learning 重要的笔记，必须手写上传 Machine Learning System Design email spam example Given a data set of emails, we could construct a vector for each email. Each entry in this vector represents a word. The vector normally contains 10,000 to 50,000 entries gathered by finding the most frequently used words in our data set. If a word is to be found in the email, we would assign its respective entry a 1, else if it is not found, that entry would be a 0.">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">coursera Andrew Ng 机器学习第六周笔记 系统设计与优化技巧</h1>
+<p class=tracked>
+By <strong>
+Young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2017-08-06T00:00:00Z>August 6, 2017</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h2 id=advice-for-applying-machine-learning>Advice for Applying Machine Learning</h2>
+<h3 id=重要的笔记必须手写上传>重要的笔记，必须手写上传</h3>
+<p><img src=./2017-08-06/advice-1.png alt></p>
+<p><img src=./2017-08-06/advice-2.png alt></p>
+<p><img src=./2017-08-06/advice-3.png alt></p>
+<p><img src=./2017-08-06/advice-4.png alt></p>
+<h2 id=machine-learning-system-design>Machine Learning System Design</h2>
+<h3 id=email-spam-example>email spam example</h3>
+<p>Given a data set of emails, we could construct a vector for each email. Each entry in this vector represents a word. The vector normally contains 10,000 to 50,000 entries gathered by finding the most frequently used words in our data set. If a word is to be found in the email, we would assign its respective entry a 1, else if it is not found, that entry would be a 0. Once we have all our x vectors ready, we train our algorithm and finally, we could use it to classify if an email is a spam or not.</p>
+<p><img src=./2017-08-06/email-spam.png alt></p>
+<p>So how could you spend your time to improve the accuracy of this classifier?</p>
+<ul>
+<li>Collect lots of data (for example &ldquo;honeypot&rdquo; project but doesn&rsquo;t always work)</li>
+<li>Develop sophisticated features (for example: using email header data in spam emails)</li>
+<li>Develop algorithms to process your input in different ways (recognizing misspellings in spam).</li>
+</ul>
+<p>It is difficult to tell which of the options will be most helpful.</p>
+<h3 id=error-analysis>error analysis</h3>
+<p>The recommended approach to solving machine learning problems is to:</p>
+<ul>
+<li>Start with a simple algorithm, implement it quickly, and test it early on your cross validation data.</li>
+<li>Plot learning curves to decide if more data, more features, etc. are likely to help.</li>
+<li>Manually examine the errors on examples in the cross validation set and try to spot a trend where most of the errors were made.</li>
+</ul>
+<h3 id=error-metrics-for-skewed-classes>error metrics for skewed classes</h3>
+<p><img src=./2017-08-06/skewed-class-example.png alt></p>
+<p>这下查准率和召回率就比较重要了</p>
+<pre tabindex=0><code>TP = True Positive
+FP = Fake Positive
+FN = Fake Negative
+
+Precision = TP / (TP + FP)
+				
+Recall = TP / (TP + FN)
+
+</code></pre><h3 id=trading-off-precision-and-recall>trading off precision and recall</h3>
+<p>F1-Score = 2 * P * R / (P + R)</p>
+<h3 id=data-for-machine-learning>Data for machine learning</h3>
+<p><strong>数据量的重要性</strong></p>
+<p><img src=./2017-08-06/large-data-importance.png alt></p>
+<ul class=pa0>
+<li class=list>
+<a href=/tags/ai class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ai</a>
+</li>
+<li class=list>
+<a href=/tags/machine-learning class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">machine learning</a>
+</li>
+<li class=list>
+<a href=/tags/andrew-ng class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Andrew Ng</a>
+</li>
+<li class=list>
+<a href=/tags/coursera class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">coursera</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2017/2017-08-05-machine-learning-week5/>coursera Andrew Ng 机器学习第五周笔记 神经网络的学习过程</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-04-machine-learning-week4/>coursera Andrew Ng 机器学习第四周笔记 神经网络模型</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-03-machine-learning-week3/>coursera Andrew Ng 机器学习第三周笔记 逻辑回归与泛化</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-02-machine-learning-week2/>coursera Andrew Ng 机器学习第二周笔记 多个变量的线性回归</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-01-machine-learning-week1/>coursera Andrew Ng 机器学习第一周笔记 线性回归</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

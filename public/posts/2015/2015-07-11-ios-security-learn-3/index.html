@@ -1,0 +1,156 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>iOS逆向工程学习日记3--实践 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="Results： 学会了使用反汇编工具hopper，找了一些个程序，试了试，有的二进制文件还是比较容易分析的，有的比较难，我暂时还不会。我搞定的成果如下：
+Mac OS X，迅雷，VIP离线下载权限
+Mac OS X，iExplorer，免注册
+iOS，搜狐视频，跳过所有广告，解除美剧下载限制
+update:
+iOS PPTV，乐视视频，可以观看VIP影片
+ Key： 改掉几个函数的返回值就好了，类似isRegister这个函数或者isVIP这样的函数，看看逻辑，分析分析代码流程，再把关键位置的汇编代码改掉，即可。
+x86汇编指令，mov eax, 0x1，把数字1放到eax寄存器，通常函数的返回值存在eax中，然后用ret指令
+arm汇编指令，movs r0, #0x1，寄存器用r0
+ Thinking： 想要改变一个iOS软件的行为，可以从三个层次去着手：
+  改掉汇编代码，重新生成新的可执行文件，替换
+  hook一些函数，例如Theos的常用手法
+  拦截并且修改网络请求
+   ">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="iOS逆向工程学习日记3--实践">
+<meta property="og:description" content="Results： 学会了使用反汇编工具hopper，找了一些个程序，试了试，有的二进制文件还是比较容易分析的，有的比较难，我暂时还不会。我搞定的成果如下：
+Mac OS X，迅雷，VIP离线下载权限
+Mac OS X，iExplorer，免注册
+iOS，搜狐视频，跳过所有广告，解除美剧下载限制
+update:
+iOS PPTV，乐视视频，可以观看VIP影片
+ Key： 改掉几个函数的返回值就好了，类似isRegister这个函数或者isVIP这样的函数，看看逻辑，分析分析代码流程，再把关键位置的汇编代码改掉，即可。
+x86汇编指令，mov eax, 0x1，把数字1放到eax寄存器，通常函数的返回值存在eax中，然后用ret指令
+arm汇编指令，movs r0, #0x1，寄存器用r0
+ Thinking： 想要改变一个iOS软件的行为，可以从三个层次去着手：
+  改掉汇编代码，重新生成新的可执行文件，替换
+  hook一些函数，例如Theos的常用手法
+  拦截并且修改网络请求
+   ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2015/2015-07-11-ios-security-learn-3/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2015-07-11T00:00:00+00:00">
+<meta property="article:modified_time" content="2015-07-11T00:00:00+00:00">
+<meta itemprop=name content="iOS逆向工程学习日记3--实践">
+<meta itemprop=description content="Results： 学会了使用反汇编工具hopper，找了一些个程序，试了试，有的二进制文件还是比较容易分析的，有的比较难，我暂时还不会。我搞定的成果如下：
+Mac OS X，迅雷，VIP离线下载权限
+Mac OS X，iExplorer，免注册
+iOS，搜狐视频，跳过所有广告，解除美剧下载限制
+update:
+iOS PPTV，乐视视频，可以观看VIP影片
+ Key： 改掉几个函数的返回值就好了，类似isRegister这个函数或者isVIP这样的函数，看看逻辑，分析分析代码流程，再把关键位置的汇编代码改掉，即可。
+x86汇编指令，mov eax, 0x1，把数字1放到eax寄存器，通常函数的返回值存在eax中，然后用ret指令
+arm汇编指令，movs r0, #0x1，寄存器用r0
+ Thinking： 想要改变一个iOS软件的行为，可以从三个层次去着手：
+  改掉汇编代码，重新生成新的可执行文件，替换
+  hook一些函数，例如Theos的常用手法
+  拦截并且修改网络请求
+   "><meta itemprop=datePublished content="2015-07-11T00:00:00+00:00">
+<meta itemprop=dateModified content="2015-07-11T00:00:00+00:00">
+<meta itemprop=wordCount content="25">
+<meta itemprop=keywords content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="iOS逆向工程学习日记3--实践">
+<meta name=twitter:description content="Results： 学会了使用反汇编工具hopper，找了一些个程序，试了试，有的二进制文件还是比较容易分析的，有的比较难，我暂时还不会。我搞定的成果如下：
+Mac OS X，迅雷，VIP离线下载权限
+Mac OS X，iExplorer，免注册
+iOS，搜狐视频，跳过所有广告，解除美剧下载限制
+update:
+iOS PPTV，乐视视频，可以观看VIP影片
+ Key： 改掉几个函数的返回值就好了，类似isRegister这个函数或者isVIP这样的函数，看看逻辑，分析分析代码流程，再把关键位置的汇编代码改掉，即可。
+x86汇编指令，mov eax, 0x1，把数字1放到eax寄存器，通常函数的返回值存在eax中，然后用ret指令
+arm汇编指令，movs r0, #0x1，寄存器用r0
+ Thinking： 想要改变一个iOS软件的行为，可以从三个层次去着手：
+  改掉汇编代码，重新生成新的可执行文件，替换
+  hook一些函数，例如Theos的常用手法
+  拦截并且修改网络请求
+   ">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">iOS逆向工程学习日记3--实践</h1>
+<p class=tracked>
+By <strong>
+young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2015-07-11T00:00:00Z>July 11, 2015</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h2 id=results>Results：</h2>
+<p>学会了使用反汇编工具hopper，找了一些个程序，试了试，有的二进制文件还是比较容易分析的，有的比较难，我暂时还不会。我搞定的成果如下：</p>
+<p>Mac OS X，迅雷，VIP离线下载权限</p>
+<p>Mac OS X，iExplorer，免注册</p>
+<p>iOS，搜狐视频，跳过所有广告，解除美剧下载限制</p>
+<p>update:</p>
+<p>iOS PPTV，乐视视频，可以观看VIP影片</p>
+<p> </p>
+<h2 id=key>Key：</h2>
+<p>改掉几个函数的返回值就好了，类似isRegister这个函数或者isVIP这样的函数，看看逻辑，分析分析代码流程，再把关键位置的汇编代码改掉，即可。</p>
+<p>x86汇编指令，mov eax, 0x1，把数字1放到eax寄存器，通常函数的返回值存在eax中，然后用ret指令</p>
+<p>arm汇编指令，movs r0, #0x1，寄存器用r0</p>
+<p> </p>
+<h2 id=thinking>Thinking：</h2>
+<p>想要改变一个iOS软件的行为，可以从三个层次去着手：</p>
+<ol>
+<li>
+<p>改掉汇编代码，重新生成新的可执行文件，替换</p>
+</li>
+<li>
+<p>hook一些函数，例如Theos的常用手法</p>
+</li>
+<li>
+<p>拦截并且修改网络请求</p>
+</li>
+</ol>
+<p> </p>
+<ul class=pa0>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

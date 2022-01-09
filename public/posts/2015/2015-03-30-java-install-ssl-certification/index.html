@@ -1,0 +1,223 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>Java访问https网页时证书问题 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="报错信息：
+
+内部工具开发中，有一个步骤要去一个https的网页上抓取内容，然后该网站的证书没有被本机认可，于是乎拒绝了抓取内容。我本来的想法是，检测到证书问题之后，安装证书好了。上网搜了搜，解决方案大致两类：一是自己手动改改这里那里添加证书完事。二是在java代码中设定忽略所有证书问题。
+如果是用第一种方案，那我的工具在所有其他工程师电脑上运行的时候，都需要它们自己去手动添加证书，那也太麻烦我的customer们了，虽然这种手动添加证书的事情只用干一次，但是他们都那么娇生惯养的，估计耽误他们工作时间来做这样的事情肯定不妥的。遂放弃的第一种思路，来看第二种，忽略所有，呵呵，代码能搞定。不过会有安全问题是吧。不过这又是内部工具，就把安全问题忽略好了。">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="Java访问https网页时证书问题">
+<meta property="og:description" content="报错信息：
+
+内部工具开发中，有一个步骤要去一个https的网页上抓取内容，然后该网站的证书没有被本机认可，于是乎拒绝了抓取内容。我本来的想法是，检测到证书问题之后，安装证书好了。上网搜了搜，解决方案大致两类：一是自己手动改改这里那里添加证书完事。二是在java代码中设定忽略所有证书问题。
+如果是用第一种方案，那我的工具在所有其他工程师电脑上运行的时候，都需要它们自己去手动添加证书，那也太麻烦我的customer们了，虽然这种手动添加证书的事情只用干一次，但是他们都那么娇生惯养的，估计耽误他们工作时间来做这样的事情肯定不妥的。遂放弃的第一种思路，来看第二种，忽略所有，呵呵，代码能搞定。不过会有安全问题是吧。不过这又是内部工具，就把安全问题忽略好了。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2015/2015-03-30-java-install-ssl-certification/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2015-03-30T00:00:00+00:00">
+<meta property="article:modified_time" content="2015-03-30T00:00:00+00:00">
+<meta itemprop=name content="Java访问https网页时证书问题">
+<meta itemprop=description content="报错信息：
+
+内部工具开发中，有一个步骤要去一个https的网页上抓取内容，然后该网站的证书没有被本机认可，于是乎拒绝了抓取内容。我本来的想法是，检测到证书问题之后，安装证书好了。上网搜了搜，解决方案大致两类：一是自己手动改改这里那里添加证书完事。二是在java代码中设定忽略所有证书问题。
+如果是用第一种方案，那我的工具在所有其他工程师电脑上运行的时候，都需要它们自己去手动添加证书，那也太麻烦我的customer们了，虽然这种手动添加证书的事情只用干一次，但是他们都那么娇生惯养的，估计耽误他们工作时间来做这样的事情肯定不妥的。遂放弃的第一种思路，来看第二种，忽略所有，呵呵，代码能搞定。不过会有安全问题是吧。不过这又是内部工具，就把安全问题忽略好了。"><meta itemprop=datePublished content="2015-03-30T00:00:00+00:00">
+<meta itemprop=dateModified content="2015-03-30T00:00:00+00:00">
+<meta itemprop=wordCount content="269">
+<meta itemprop=keywords content="certification,https,java,ssl,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="Java访问https网页时证书问题">
+<meta name=twitter:description content="报错信息：
+
+内部工具开发中，有一个步骤要去一个https的网页上抓取内容，然后该网站的证书没有被本机认可，于是乎拒绝了抓取内容。我本来的想法是，检测到证书问题之后，安装证书好了。上网搜了搜，解决方案大致两类：一是自己手动改改这里那里添加证书完事。二是在java代码中设定忽略所有证书问题。
+如果是用第一种方案，那我的工具在所有其他工程师电脑上运行的时候，都需要它们自己去手动添加证书，那也太麻烦我的customer们了，虽然这种手动添加证书的事情只用干一次，但是他们都那么娇生惯养的，估计耽误他们工作时间来做这样的事情肯定不妥的。遂放弃的第一种思路，来看第二种，忽略所有，呵呵，代码能搞定。不过会有安全问题是吧。不过这又是内部工具，就把安全问题忽略好了。">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">Java访问https网页时证书问题</h1>
+<p class=tracked>
+By <strong>
+young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2015-03-30T00:00:00Z>March 30, 2015</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>报错信息：</p>
+<p>内部工具开发中，有一个步骤要去一个https的网页上抓取内容，然后该网站的证书没有被本机认可，于是乎拒绝了抓取内容。我本来的想法是，检测到证书问题之后，安装证书好了。上网搜了搜，解决方案大致两类：一是自己手动改改这里那里添加证书完事。二是在java代码中设定忽略所有证书问题。</p>
+<p>如果是用第一种方案，那我的工具在所有其他工程师电脑上运行的时候，都需要它们自己去手动添加证书，那也太麻烦我的customer们了，虽然这种手动添加证书的事情只用干一次，但是他们都那么娇生惯养的，估计耽误他们工作时间来做这样的事情肯定不妥的。遂放弃的第一种思路，来看第二种，忽略所有，呵呵，代码能搞定。不过会有安全问题是吧。不过这又是内部工具，就把安全问题忽略好了。</p>
+<p>最后，我参考了这里，<a href="http://javaweb.org/?p=1237">http://javaweb.org/?p=1237</a>解决了我的问题。</p>
+<p>后记：我在想如果第一种方案也可以用代码自动搞定的话，那ssl的安全性有形同虚设？这像是一个悖论。如果是某安全限制能允许代码自动设置和绕过，那么此安全限制则形同虚设了。第二种方案，如果不是公司内部工具的话，我是绝对不会采用的，就算给出教程或者简单的文档提示，也会让用户自己去完成。</p>
+<p> </p>
+<p>需要在工程中添加这样一个class：
+{% codeblock lang:java %}
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;</p>
+<p>import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;</p>
+<p>public class SslUtils {</p>
+<pre><code>private static void trustAllHttpsCertificates() throws Exception {
+    TrustManager[] trustAllCerts = new TrustManager[1];
+    TrustManager tm = new miTM();
+    trustAllCerts[0] = tm;
+    SSLContext sc = SSLContext.getInstance(&quot;SSL&quot;);
+    sc.init(null, trustAllCerts, null);
+    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+}
+
+static class miTM implements TrustManager,X509TrustManager {
+    public X509Certificate[] getAcceptedIssuers() {
+        return null;
+    }
+
+    public boolean isServerTrusted(X509Certificate[] certs) {
+        return true;
+    }
+
+    public boolean isClientTrusted(X509Certificate[] certs) {
+        return true;
+    }
+
+    public void checkServerTrusted(X509Certificate[] certs, String authType)
+            throws CertificateException {
+        return;
+    }
+
+    public void checkClientTrusted(X509Certificate[] certs, String authType)
+            throws CertificateException {
+        return;
+    }
+}
+ 
+/**
+ * 忽略HTTPS请求的SSL证书，必须在openConnection之前调用
+ * @throws Exception
+ */
+public static void ignoreSsl() throws Exception{
+    HostnameVerifier hv = new HostnameVerifier() {
+        public boolean verify(String urlHostName, SSLSession session) {
+            System.out.println(&quot;Warning: URL Host: &quot; + urlHostName + &quot; vs. &quot; + session.getPeerHost());
+            return true;
+        }
+    };
+    trustAllHttpsCertificates();
+    HttpsURLConnection.setDefaultHostnameVerifier(hv);
+}
+</code></pre>
+<p>}</p>
+<p>{% endcodeblock %}</p>
+<p>使用的example：</p>
+<p>{% codeblock lang:java %}
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import org.apache.commons.io.IOUtils;</p>
+<p>public class SslTest {</p>
+<pre><code>public String getRequest(String url,int timeOut) throws Exception{
+    URL u = new URL(url);
+    if(&quot;https&quot;.equalsIgnoreCase(u.getProtocol())){
+        SslUtils.ignoreSsl();
+    }
+    URLConnection conn = u.openConnection();
+    conn.setConnectTimeout(timeOut);
+    conn.setReadTimeout(timeOut);
+    return IOUtils.toString(conn.getInputStream());
+}
+ 
+public String postRequest(String urlAddress,String args,int timeOut) throws Exception{
+    URL url = new URL(urlAddress);
+    if(&quot;https&quot;.equalsIgnoreCase(url.getProtocol())){
+        SslUtils.ignoreSsl();
+    }
+    URLConnection u = url.openConnection();
+    u.setDoInput(true);
+    u.setDoOutput(true);
+    u.setConnectTimeout(timeOut);
+    u.setReadTimeout(timeOut);
+    OutputStreamWriter osw = new OutputStreamWriter(u.getOutputStream(), &quot;UTF-8&quot;);
+    osw.write(args);
+    osw.flush();
+    osw.close();
+    u.getOutputStream();
+    return IOUtils.toString(u.getInputStream());
+}
+ 
+public static void main(String[] args) {
+    try {
+        SslTest st = new SslTest();
+        String a = st.getRequest(&quot;https://xxx.com/login.action&quot;, 3000);
+        System.out.println(a);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+</code></pre>
+<p>}</p>
+<p>{% endcodeblock %}</p><ul class=pa0>
+<li class=list>
+<a href=/tags/certification class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">certification</a>
+</li>
+<li class=list>
+<a href=/tags/https class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">https</a>
+</li>
+<li class=list>
+<a href=/tags/java class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">java</a>
+</li>
+<li class=list>
+<a href=/tags/ssl class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ssl</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2015/2015-03-05-the-importance-of-writing-log/>论在程序中写log的重要性</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

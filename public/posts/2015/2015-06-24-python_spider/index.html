@@ -1,0 +1,385 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>Python爬糗百热门20条并邮件分发+wxPython简易GUI+py2app转成可执行文件 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="学了一阵子Python，拿来做个什么有意思的东西呢？爬糗百好了，爬到的内容，邮件分发出去。
+然后又啃了两天的wxpython，做了个简易的邮件管理界面，可以在这里增加或者删除邮件，并且一键爬虫发送。
+最后，索性封装成APP吧，又试了一把py2app，简单好用。
+由于是让用户自行添加和删除邮箱，所以程序一定要兼顾到各种情况：比如输入的邮箱格式不合法，输入的邮箱里包含中文字符，分隔符不对，删除了全部邮箱然后又要发邮件等问题。">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="Python爬糗百热门20条并邮件分发+wxPython简易GUI+py2app转成可执行文件">
+<meta property="og:description" content="学了一阵子Python，拿来做个什么有意思的东西呢？爬糗百好了，爬到的内容，邮件分发出去。
+然后又啃了两天的wxpython，做了个简易的邮件管理界面，可以在这里增加或者删除邮件，并且一键爬虫发送。
+最后，索性封装成APP吧，又试了一把py2app，简单好用。
+由于是让用户自行添加和删除邮箱，所以程序一定要兼顾到各种情况：比如输入的邮箱格式不合法，输入的邮箱里包含中文字符，分隔符不对，删除了全部邮箱然后又要发邮件等问题。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2015/2015-06-24-python_spider/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2015-06-24T00:00:00+00:00">
+<meta property="article:modified_time" content="2015-06-24T00:00:00+00:00">
+<meta itemprop=name content="Python爬糗百热门20条并邮件分发+wxPython简易GUI+py2app转成可执行文件">
+<meta itemprop=description content="学了一阵子Python，拿来做个什么有意思的东西呢？爬糗百好了，爬到的内容，邮件分发出去。
+然后又啃了两天的wxpython，做了个简易的邮件管理界面，可以在这里增加或者删除邮件，并且一键爬虫发送。
+最后，索性封装成APP吧，又试了一把py2app，简单好用。
+由于是让用户自行添加和删除邮箱，所以程序一定要兼顾到各种情况：比如输入的邮箱格式不合法，输入的邮箱里包含中文字符，分隔符不对，删除了全部邮箱然后又要发邮件等问题。"><meta itemprop=datePublished content="2015-06-24T00:00:00+00:00">
+<meta itemprop=dateModified content="2015-06-24T00:00:00+00:00">
+<meta itemprop=wordCount content="696">
+<meta itemprop=keywords content="py2app,python,SMTP,wxpython,爬虫,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="Python爬糗百热门20条并邮件分发+wxPython简易GUI+py2app转成可执行文件">
+<meta name=twitter:description content="学了一阵子Python，拿来做个什么有意思的东西呢？爬糗百好了，爬到的内容，邮件分发出去。
+然后又啃了两天的wxpython，做了个简易的邮件管理界面，可以在这里增加或者删除邮件，并且一键爬虫发送。
+最后，索性封装成APP吧，又试了一把py2app，简单好用。
+由于是让用户自行添加和删除邮箱，所以程序一定要兼顾到各种情况：比如输入的邮箱格式不合法，输入的邮箱里包含中文字符，分隔符不对，删除了全部邮箱然后又要发邮件等问题。">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">Python爬糗百热门20条并邮件分发+wxPython简易GUI+py2app转成可执行文件</h1>
+<p class=tracked>
+By <strong>
+sophie
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2015-06-24T00:00:00Z>June 24, 2015</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>学了一阵子Python，拿来做个什么有意思的东西呢？爬糗百好了，爬到的内容，邮件分发出去。</p>
+<p>然后又啃了两天的wxpython，做了个简易的邮件管理界面，可以在这里增加或者删除邮件，并且一键爬虫发送。</p>
+<p>最后，索性封装成APP吧，又试了一把py2app，简单好用。</p>
+<p>由于是让用户自行添加和删除邮箱，所以程序一定要兼顾到各种情况：比如输入的邮箱格式不合法，输入的邮箱里包含中文字符，分隔符不对，删除了全部邮箱然后又要发邮件等问题。</p>
+<p>首先是QiuBai.py：爬虫，正则匹配我们想要的内容，然后将内容稍作处理返回。</p>
+<pre tabindex=0><code>#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import re
+import urllib2
+__author__ = 'Sophie2805'
+
+class FetchData(object):
+    def __init__(self,URL,referURL,pattern_1,pattern_2):
+        self.URL = URL
+        self.pattern_1 = pattern_1
+        self.patttern_2 = pattern_2
+        self.referURL = referURL
+
+    def getHtml(self):
+        headers = {
+            'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6',
+            'Referer':self.referURL  #http://www.qiushibaike.com/
+        }
+        req = urllib2.Request(
+            url = self.URL, #http://www.qiushibaike.com/text
+            headers = headers)
+        return urllib2.urlopen(req).read()
+
+    def getData(self,html):
+        p_1 = re.compile(self.pattern_1)
+        div_content = p_1.findall(html.decode('utf8'))
+        row = 0
+        for m in range(len(div_content)):
+            div_content[m] = re.sub(self.patttern_2,'',div_content[m])
+            div_content[m] = (&quot;---&quot; + str(row+1) + &quot;---&quot; + div_content[m]).encode('utf-8')
+            row += 1
+        return div_content
+</code></pre><p>接下来就是mail.py，注意，发送人的邮箱要检查下是否打开了SMTP协议。</p>
+<pre tabindex=0><code>#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import smtplib
+from email.mime.text import MIMEText
+from email.header import Header
+
+__author__ = 'Sophie2805'
+
+class SMail:
+    def __init__(self):
+        self.sender = '***@qq.com'
+        self.receiver = ['***@163.com','***@qq.com']
+        self.subject = '糗百热门20条推送'
+        self.username = '***@qq.com'
+        self.password = '******'
+
+    def send_mail(self,msg):
+        try:
+            self.msg = MIMEText(msg,'plain','utf-8')
+            self.msg['Subject'] = Header(self.subject,'utf-8')
+            self.msg['To'] = ','.join(self.receiver)
+            self.msg['From'] = self.sender
+            self.smtp = smtplib.SMTP()
+            self.smtp.connect('smtp.qq.com')
+            self.smtp.login(self.username,self.password)
+            self.smtp.sendmail(self.msg['From'],self.receiver,self.msg.as_string())
+            self.smtp.quit()
+            return '1'
+        except Exception, e:
+            return str(e)&lt;/pre&gt;
+</code></pre><p>最后，用wxpython做了个简易的收件人管理界面，Spider_QiuBai.py，实现：增加邮件、删除邮件、一键爬虫发送糗百热门20条到邮件列表。</p>
+<p>当然，为了程序正确运行，会有各种验证，比如输入的邮箱格式是否合法，发送时检查receiver列表是否为空等。</p>
+<p><img src=2015-06-24-1.png alt=x></p>
+<p> </p>
+<p>程序比较简单，代码如下：</p>
+<pre tabindex=0><code>#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+__author__ = 'Sophie2805'
+
+import wx
+import wx.grid
+from mail import *
+from QiuBai import *
+
+class Frame(wx.Frame):
+    QiuBai = None
+    content = None
+    m = SMail()
+    def __init__(self, parent=None, title='Get the Hottest QiuBai!',size=(450, 630),
+                 style=wx.DEFAULT_FRAME_STYLE ^ (wx.RESIZE_BORDER |wx.MAXIMIZE_BOX)):
+        wx.Frame.__init__(self, parent=parent,  title=title, size=size,style = style)
+        self.Centre()
+        panel = wx.Panel(self,-1)
+
+        self.text_Email = wx.StaticText(panel,1, &quot;You want it too? Add your email below. Using ';' between multiple emails. Existing emails will not be added again.&quot;)
+        self.input_Email = wx.TextCtrl(panel,2)
+        self.button_Email = wx.Button(panel,3,label='+')
+
+        '''Bind with function'''
+        self.button_Email.Bind(wx.EVT_BUTTON,self.add)
+
+        self.text_DeleteEmail = wx.StaticText(panel,4, &quot;Existing receivers are listed below. You can delete by double clicking them and clicking on '-' button. Please note that it can hold 20 emails at most one time.&quot;)
+
+        '''grid'''
+        self.grid = wx.grid.Grid(panel,5)
+        self.grid.CreateGrid(20,1)
+        self.grid.EnableEditing(False)
+        self.grid.SetColSize(0,200)
+        self.grid.SetColLabelValue(0,'Emails')
+        for i in range(len(self.m.receiver)):
+                self.grid.SetCellBackgroundColour(i,0,&quot;grey&quot;)
+                self.grid.SetCellValue(i,0,self.m.receiver[i])
+
+        self.grid.Bind(wx.grid.EVT_GRID_CELL_LEFT_DCLICK,self.grid_change_color)
+
+        self.button_DeleteEmail = wx.Button(panel,6,label='-')
+        self.button_Send = wx.Button(panel,7,label='send')
+
+        '''Bind with function'''
+        self.button_Send.Bind(wx.EVT_BUTTON,self.sendmail)
+        self.button_DeleteEmail.Bind(wx.EVT_BUTTON,self.d_emails)
+
+        '''BoxSizer'''
+        '''================================================================'''
+        add_Email = wx.BoxSizer() #input box and add button
+        add_Email.Add(self.input_Email,proportion=4,flag = wx.LEFT, border = 5)
+        add_Email.Add(self.button_Email,proportion=1,flag=wx.LEFT,border=15)
+
+        ae = wx.BoxSizer(wx.VERTICAL)
+        ae.Add(self.text_Email,proportion =4, flag=wx.ALL, border=5)
+        ae.Add(add_Email,proportion=2, flag=wx.LEFT|wx.BOTTOM|wx.RIGHT, border=5)
+
+        h_b = wx.BoxSizer()#send button and delete button
+        h_b.Add(self.button_Send,flag=wx.LEFT,border=5)
+        h_b.Add(self.button_DeleteEmail,flag=wx.LEFT,border=250)
+
+        de = wx.BoxSizer(wx.VERTICAL)
+        de.Add(self.text_DeleteEmail,proportion=2,flag=wx.ALL, border=5)
+        de.Add(self.grid,proportion = 4,flag=wx.LEFT, border=80)
+        de.Add(h_b,proportion=1,flag=wx.TOP, border=10)
+
+        vBoxSizer = wx.BoxSizer(wx.VERTICAL)
+        vBoxSizer.Add(ae,proportion=2,flag=wx.ALL,border=5)
+        vBoxSizer.Add(de,proportion=4,flag=wx.LEFT|wx.BOTTOM|wx.RIGHT,border=5)
+        panel.SetSizer(vBoxSizer)
+
+    #delete the emails that cell bk color changed to yellow
+    def d_emails(self,evt):
+        count_yellow = 0
+        for i in range(len(self.m.receiver)):
+            if self.grid.GetCellBackgroundColour(i,0)==(255, 255, 0, 255): # yellow
+                count_yellow += 1
+
+        if count_yellow == 0:
+            wx.MessageBox('Wake up!\nSelect then delete!')
+
+        else:
+            l = len(self.m.receiver)
+            self.m.receiver=[]
+            for i in range(l):
+                if self.grid.GetCellBackgroundColour(i,0)==(128, 128, 128, 255):#grey
+                    self.m.receiver.append(self.grid.GetCellValue(i,0))
+                self.grid.SetCellValue(i,0,'')#clear the cell's value
+                self.grid.SetCellBackgroundColour(i,0,'white')
+
+            for i in range(len(self.m.receiver)):
+                self.grid.SetCellBackgroundColour(i,0,&quot;grey&quot;)
+                self.grid.SetCellValue(i,0,self.m.receiver[i])
+            self.grid.ForceRefresh()
+
+    #change cell bk color when double click the cell. The cell without value will not be changed
+    def grid_change_color(self,evt):
+        if self.grid.GetCellValue(self.grid.GridCursorRow,self.grid.GridCursorCol) != '':
+            if self.grid.GetCellBackgroundColour(self.grid.GridCursorRow,self.grid.GridCursorCol)==(128, 128, 128, 255):#grey
+                self.grid.SetCellBackgroundColour(self.grid.GridCursorRow,self.grid.GridCursorCol,'yellow')
+            else:
+                self.grid.SetCellBackgroundColour(self.grid.GridCursorRow,self.grid.GridCursorCol,'grey')
+        self.grid.ForceRefresh()
+
+    #add the emails that user input
+    def add(self,evt):
+        x = str(self.input_Email.GetValue().encode('utf-8'))
+        if len(x) == 0:
+            wx.MessageBox('Hey dude, input something first!')
+        elif len(x) != len(x.decode('utf-8')):#non ASCII character contained
+            wx.MessageBox('Hey dude, please input English character only!')
+        else:
+            x = x.split(';')
+            tag = 0
+            for i in range(len(x)):
+                if len(x[i]) != 0:
+                    if x[i] in self.m.receiver:
+                        x[i]=''#existing emails, set to ''
+                    elif self.validate_email(x[i]) == None:
+                        wx.MessageBox('Hey dude, eyes wide open! \nPlease input like this: xxx@xxx.com;eee@eee.org')
+                        tag = 1
+                        break
+            if tag == 0: # all emails are valid
+                for item in x:
+                    if len(item) != 0:
+                        self.m.receiver.append(item)
+                for i in range(len(self.m.receiver)):
+                    self.grid.SetCellBackgroundColour(i,0,&quot;grey&quot;)
+                    self.grid.SetCellValue(i,0,self.m.receiver[i])
+                self.input_Email.Clear()
+                self.grid.ForceRefresh()
+
+    #validate the emails user input
+    def validate_email(self,s):
+        pattern = &quot;^[a-zA-Z0-9\._-]+@([a-zA-Z0-9_-]+\.)+([a-zA-Z]{2,3})$&quot;
+        p = re.compile(pattern)
+        return p.match(s)
+
+    def sendmail(self,evt):
+        if len(self.m.receiver) == 0:
+            wx.MessageBox('Are you kidding me?\n Add some receivers then send!')
+        else:
+            self.QiuBai = FetchData('http://www.qiushibaike.com/text','http://www.qiushibaike.com/',
+                                '&amp;lt;div class=&quot;content&quot;&amp;gt;[\n\s]+.+[\n\s]','[&amp;lt;div class=&quot;content&quot;&amp;gt;&amp;lt;br/&amp;gt;\n]')
+            self.content = self.QiuBai.getData(self.QiuBai.getHtml())
+            msg = '\n\n'.join(self.content)
+            result = self.m.send_mail(msg)
+            if result == '1':
+                wx.MessageBox('The hottest QiuBai had been sent.\n Enjoy it ^_^ !')
+            else:
+                wx.MessageBox('Some exception occurred :-(\nTry again later...\n'+result)
+class GetQiuBaiApp(wx.App):
+    def OnInit(self):
+        frame = Frame()
+        frame.Show()
+        return True
+
+if __name__ == &quot;__main__&quot;:
+    app = GetQiuBaiApp()
+    app.MainLoop()
+
+</code></pre><p>最后就是Python转APP了：</p>
+<p>（1）在MAC终端里输入pip install py2app安装py2app</p>
+<p>（2）创建setup.py，我的project位于/Users/Sophie/PycharmProjects/QiuBai，所以cd到这个路径下，然后vi setup.py，在这个文件里输入如下内容（提前准备个icns图标，放到project路径下）</p>
+<pre tabindex=0><code>py2app build script for MyApplication
+
+Usage:
+
+python setup.py py2app
+
+from setuptools import setup
+
+OPTIONS = {
+
+&amp;#8216;iconfile&amp;#8217;:&amp;#8217;lemon.icns&amp;#8217;
+
+}
+
+setup(
+
+app=[&amp;#8220;Spider_QiuBai.py&amp;#8221;],
+
+options={&amp;#8216;py2app&amp;#8217;: OPTIONS},
+
+setup_requires=[&amp;#8220;py2app&amp;#8221;],
+
+)
+</code></pre><p>（3）rm -rf build dist（如果重复多次打包的话，这个命令是需要的，第一次不需要）</p>
+<p>（4）python setup.py py2app 用这个命令打包，打包好的app会存放在该路径下的dist路径下，我的如下：/Users/Sophie/PycharmProjects/QiuBai/dist</p>
+<p><img src=2015-06-24-2.png alt=x></p>
+<p>至此，这个小玩意儿已经做好了，其中略麻烦的可能就是正则还有界面了 Hope you enjoy it ^ ^</p>
+<p> </p><ul class=pa0>
+<li class=list>
+<a href=/tags/py2app class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">py2app</a>
+</li>
+<li class=list>
+<a href=/tags/python class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">python</a>
+</li>
+<li class=list>
+<a href=/tags/smtp class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">SMTP</a>
+</li>
+<li class=list>
+<a href=/tags/wxpython class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">wxpython</a>
+</li>
+<li class=list>
+<a href=/tags/%E7%88%AC%E8%99%AB class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">爬虫</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2015/2015-06-14-python-property/>Python @property装饰器</a>
+</li>
+<li class=mb2>
+<a href=/posts/2015/2015-06-05-python-decorator-research/>Python装饰器有趣实例探究</a>
+</li>
+<li class=mb2>
+<a href=/posts/2015/2015-05-14-that-cloud-services-of-ci/>That Cloud Services of CI</a>
+</li>
+<li class=mb2>
+<a href=/posts/2015/2015-03-30-python-through-leetcodeoj/>我要用python把leetcodeOJ算法题刷一遍。</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

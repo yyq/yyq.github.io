@@ -1,0 +1,136 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>python scrapy爬虫练手 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="简介 初步了解和实践了一下用python写个爬虫，有现成的库，学起来的方便。
+用的爬虫框架是：scrapy 官网链接
+参考的网页是：Segmentfault.com的这篇文章
+我的代码存放在：GitHub link
+新增加的技能点  基本了解scrapy的用法，爬虫的最基本的思路 python 3的语法里，print是一定要有括号的 xpath基础知识掌握和应用，简单的抓取用xpath基本够了，不过以后要来高精专的字符提取，还是得精通正则 python yield关键字的了解，它通常会出现在某个generator函数里，当这个generator函数执行的时候，遇到yield表达式，就会执行这个表达式，并且将其结果当做返回值return yield在某种情况下非常有用：有很多很多的条目，只需要读取一次。可以避免生成超大的数组。当你有很多大量的元素需要访问一次的时候，全部（或者部分）直接存到内存里都不是高效的做法，高效的做法是一次只载入内存一个，用完了之后就等待，当需要访问下一个元素的时候，才启动这个函数，去处理下一个元素。 scrapy工程需要注意一下，project名称和爬虫名称别用同一个单词，不然有些文件里需要引用其他文件夹的class的时候，会出错  ">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="python scrapy爬虫练手">
+<meta property="og:description" content="简介 初步了解和实践了一下用python写个爬虫，有现成的库，学起来的方便。
+用的爬虫框架是：scrapy 官网链接
+参考的网页是：Segmentfault.com的这篇文章
+我的代码存放在：GitHub link
+新增加的技能点  基本了解scrapy的用法，爬虫的最基本的思路 python 3的语法里，print是一定要有括号的 xpath基础知识掌握和应用，简单的抓取用xpath基本够了，不过以后要来高精专的字符提取，还是得精通正则 python yield关键字的了解，它通常会出现在某个generator函数里，当这个generator函数执行的时候，遇到yield表达式，就会执行这个表达式，并且将其结果当做返回值return yield在某种情况下非常有用：有很多很多的条目，只需要读取一次。可以避免生成超大的数组。当你有很多大量的元素需要访问一次的时候，全部（或者部分）直接存到内存里都不是高效的做法，高效的做法是一次只载入内存一个，用完了之后就等待，当需要访问下一个元素的时候，才启动这个函数，去处理下一个元素。 scrapy工程需要注意一下，project名称和爬虫名称别用同一个单词，不然有些文件里需要引用其他文件夹的class的时候，会出错  ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2017/2017-02-16-python-crawler-practice/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-02-16T00:00:00+00:00">
+<meta property="article:modified_time" content="2017-02-16T00:00:00+00:00">
+<meta itemprop=name content="python scrapy爬虫练手">
+<meta itemprop=description content="简介 初步了解和实践了一下用python写个爬虫，有现成的库，学起来的方便。
+用的爬虫框架是：scrapy 官网链接
+参考的网页是：Segmentfault.com的这篇文章
+我的代码存放在：GitHub link
+新增加的技能点  基本了解scrapy的用法，爬虫的最基本的思路 python 3的语法里，print是一定要有括号的 xpath基础知识掌握和应用，简单的抓取用xpath基本够了，不过以后要来高精专的字符提取，还是得精通正则 python yield关键字的了解，它通常会出现在某个generator函数里，当这个generator函数执行的时候，遇到yield表达式，就会执行这个表达式，并且将其结果当做返回值return yield在某种情况下非常有用：有很多很多的条目，只需要读取一次。可以避免生成超大的数组。当你有很多大量的元素需要访问一次的时候，全部（或者部分）直接存到内存里都不是高效的做法，高效的做法是一次只载入内存一个，用完了之后就等待，当需要访问下一个元素的时候，才启动这个函数，去处理下一个元素。 scrapy工程需要注意一下，project名称和爬虫名称别用同一个单词，不然有些文件里需要引用其他文件夹的class的时候，会出错  "><meta itemprop=datePublished content="2017-02-16T00:00:00+00:00">
+<meta itemprop=dateModified content="2017-02-16T00:00:00+00:00">
+<meta itemprop=wordCount content="16">
+<meta itemprop=keywords content="python,crawler,scrapy,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="python scrapy爬虫练手">
+<meta name=twitter:description content="简介 初步了解和实践了一下用python写个爬虫，有现成的库，学起来的方便。
+用的爬虫框架是：scrapy 官网链接
+参考的网页是：Segmentfault.com的这篇文章
+我的代码存放在：GitHub link
+新增加的技能点  基本了解scrapy的用法，爬虫的最基本的思路 python 3的语法里，print是一定要有括号的 xpath基础知识掌握和应用，简单的抓取用xpath基本够了，不过以后要来高精专的字符提取，还是得精通正则 python yield关键字的了解，它通常会出现在某个generator函数里，当这个generator函数执行的时候，遇到yield表达式，就会执行这个表达式，并且将其结果当做返回值return yield在某种情况下非常有用：有很多很多的条目，只需要读取一次。可以避免生成超大的数组。当你有很多大量的元素需要访问一次的时候，全部（或者部分）直接存到内存里都不是高效的做法，高效的做法是一次只载入内存一个，用完了之后就等待，当需要访问下一个元素的时候，才启动这个函数，去处理下一个元素。 scrapy工程需要注意一下，project名称和爬虫名称别用同一个单词，不然有些文件里需要引用其他文件夹的class的时候，会出错  ">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">python scrapy爬虫练手</h1>
+<p class=tracked>
+By <strong>
+Young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2017-02-16T00:00:00Z>February 16, 2017</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h3 id=简介>简介</h3>
+<p>初步了解和实践了一下用python写个爬虫，有现成的库，学起来的方便。</p>
+<p>用的爬虫框架是：scrapy <a href=https://scrapy.org/>官网链接</a></p>
+<p>参考的网页是：Segmentfault.com的<a href=https://segmentfault.com/a/1190000008135000>这篇文章</a></p>
+<p>我的代码存放在：<a href=https://github.com/yyq/learn-python-crawler>GitHub link</a></p>
+<h3 id=新增加的技能点>新增加的技能点</h3>
+<ul>
+<li>基本了解scrapy的用法，爬虫的最基本的思路</li>
+<li>python 3的语法里，print是一定要有括号的</li>
+<li>xpath基础知识掌握和应用，简单的抓取用xpath基本够了，不过以后要来高精专的字符提取，还是得精通正则</li>
+<li>python yield关键字的了解，它通常会出现在某个generator函数里，当这个generator函数执行的时候，遇到yield表达式，就会执行这个表达式，并且将其结果当做返回值return</li>
+<li>yield在某种情况下非常有用：有很多很多的条目，只需要读取一次。可以避免生成超大的数组。当你有很多大量的元素需要访问一次的时候，全部（或者部分）直接存到内存里都不是高效的做法，高效的做法是一次只载入内存一个，用完了之后就等待，当需要访问下一个元素的时候，才启动这个函数，去处理下一个元素。</li>
+<li>scrapy工程需要注意一下，project名称和爬虫名称别用同一个单词，不然有些文件里需要引用其他文件夹的class的时候，会出错</li>
+</ul>
+<ul class=pa0>
+<li class=list>
+<a href=/tags/python class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">python</a>
+</li>
+<li class=list>
+<a href=/tags/crawler class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">crawler</a>
+</li>
+<li class=list>
+<a href=/tags/scrapy class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">scrapy</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2015/2015-06-24-python_spider/>Python爬糗百热门20条并邮件分发+wxPython简易GUI+py2app转成可执行文件</a>
+</li>
+<li class=mb2>
+<a href=/posts/2015/2015-06-14-python-property/>Python @property装饰器</a>
+</li>
+<li class=mb2>
+<a href=/posts/2015/2015-06-05-python-decorator-research/>Python装饰器有趣实例探究</a>
+</li>
+<li class=mb2>
+<a href=/posts/2015/2015-05-14-that-cloud-services-of-ci/>That Cloud Services of CI</a>
+</li>
+<li class=mb2>
+<a href=/posts/2015/2015-03-30-python-through-leetcodeoj/>我要用python把leetcodeOJ算法题刷一遍。</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

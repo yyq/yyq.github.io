@@ -1,0 +1,334 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>Python装饰器有趣实例探究 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="廖老师的教程实在太高深，没弄懂，点击打开链接
+def deco_functionNeedDoc(func):
+    if func.__doc__ == None :
+        print func, &#34;has no __doc__, it's a bad habit.&#34;
+    else:
+        print func, ':', func.__doc__, '.'
+    return func
+@deco_functionNeedDoc
+def f():
+    print 'f() Do something'
+@deco_functionNeedDoc
+def g():
+    'I have a __doc__'
+    print 'g() Do something'
+f()
+g()
+print f
+print g</pre>
+这段代码打印结果如下：
+<function f at 0x0238F930> has no**doc**, it&amp;#8217;s a bad habit.
+
+<function g at 0x0238F8B0> : I have a **doc** .f() Do somethingg() Do something
+
+<function f at 0x0238F930>
+
+<function g at 0x0238F8B0>
+当时我就晕菜了，想了很久，原来在@装饰器函数的时候就会调用装饰器，装饰器函数return func，而func就是传进去的参数f。这个时候把代码改改。">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="Python装饰器有趣实例探究">
+<meta property="og:description" content="廖老师的教程实在太高深，没弄懂，点击打开链接
+def deco_functionNeedDoc(func):
+    if func.__doc__ == None :
+        print func, &#34;has no __doc__, it's a bad habit.&#34;
+    else:
+        print func, ':', func.__doc__, '.'
+    return func
+@deco_functionNeedDoc
+def f():
+    print 'f() Do something'
+@deco_functionNeedDoc
+def g():
+    'I have a __doc__'
+    print 'g() Do something'
+f()
+g()
+print f
+print g</pre>
+这段代码打印结果如下：
+<function f at 0x0238F930> has no**doc**, it&amp;#8217;s a bad habit.
+
+<function g at 0x0238F8B0> : I have a **doc** .f() Do somethingg() Do something
+
+<function f at 0x0238F930>
+
+<function g at 0x0238F8B0>
+当时我就晕菜了，想了很久，原来在@装饰器函数的时候就会调用装饰器，装饰器函数return func，而func就是传进去的参数f。这个时候把代码改改。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2015/2015-06-05-python-decorator-research/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2015-06-05T00:00:00+00:00">
+<meta property="article:modified_time" content="2015-06-05T00:00:00+00:00">
+<meta itemprop=name content="Python装饰器有趣实例探究">
+<meta itemprop=description content="廖老师的教程实在太高深，没弄懂，点击打开链接
+def deco_functionNeedDoc(func):
+    if func.__doc__ == None :
+        print func, &#34;has no __doc__, it's a bad habit.&#34;
+    else:
+        print func, ':', func.__doc__, '.'
+    return func
+@deco_functionNeedDoc
+def f():
+    print 'f() Do something'
+@deco_functionNeedDoc
+def g():
+    'I have a __doc__'
+    print 'g() Do something'
+f()
+g()
+print f
+print g</pre>
+这段代码打印结果如下：
+<function f at 0x0238F930> has no**doc**, it&amp;#8217;s a bad habit.
+
+<function g at 0x0238F8B0> : I have a **doc** .f() Do somethingg() Do something
+
+<function f at 0x0238F930>
+
+<function g at 0x0238F8B0>
+当时我就晕菜了，想了很久，原来在@装饰器函数的时候就会调用装饰器，装饰器函数return func，而func就是传进去的参数f。这个时候把代码改改。"><meta itemprop=datePublished content="2015-06-05T00:00:00+00:00">
+<meta itemprop=dateModified content="2015-06-05T00:00:00+00:00">
+<meta itemprop=wordCount content="423">
+<meta itemprop=keywords content="python,装饰器,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="Python装饰器有趣实例探究">
+<meta name=twitter:description content="廖老师的教程实在太高深，没弄懂，点击打开链接
+def deco_functionNeedDoc(func):
+    if func.__doc__ == None :
+        print func, &#34;has no __doc__, it's a bad habit.&#34;
+    else:
+        print func, ':', func.__doc__, '.'
+    return func
+@deco_functionNeedDoc
+def f():
+    print 'f() Do something'
+@deco_functionNeedDoc
+def g():
+    'I have a __doc__'
+    print 'g() Do something'
+f()
+g()
+print f
+print g</pre>
+这段代码打印结果如下：
+<function f at 0x0238F930> has no**doc**, it&amp;#8217;s a bad habit.
+
+<function g at 0x0238F8B0> : I have a **doc** .f() Do somethingg() Do something
+
+<function f at 0x0238F930>
+
+<function g at 0x0238F8B0>
+当时我就晕菜了，想了很久，原来在@装饰器函数的时候就会调用装饰器，装饰器函数return func，而func就是传进去的参数f。这个时候把代码改改。">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">Python装饰器有趣实例探究</h1>
+<p class=tracked>
+By <strong>
+sophie
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2015-06-05T00:00:00Z>June 5, 2015</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>廖老师的教程实在太高深，没弄懂，点击打开链接</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>deco_functionNeedDoc</span>(func):
+    <span style=color:#66d9ef>if</span> func<span style=color:#f92672>.</span>__doc__ <span style=color:#f92672>==</span> <span style=color:#66d9ef>None</span> :
+        print func, <span style=color:#e6db74>&#34;has no __doc__, it&#39;s a bad habit.&#34;</span>
+    <span style=color:#66d9ef>else</span>:
+        print func, <span style=color:#e6db74>&#39;:&#39;</span>, func<span style=color:#f92672>.</span>__doc__, <span style=color:#e6db74>&#39;.&#39;</span>
+    <span style=color:#66d9ef>return</span> func
+<span style=color:#a6e22e>@deco_functionNeedDoc</span>
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>f</span>():
+    print <span style=color:#e6db74>&#39;f() Do something&#39;</span>
+<span style=color:#a6e22e>@deco_functionNeedDoc</span>
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>g</span>():
+    <span style=color:#e6db74>&#39;I have a __doc__&#39;</span>
+    print <span style=color:#e6db74>&#39;g() Do something&#39;</span>
+f()
+g()
+print f
+print g<span style=color:#f92672>&lt;/</span>pre<span style=color:#f92672>&gt;</span>
+</code></pre></div><p>这段代码打印结果如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&lt;</span>function f at <span style=color:#ae81ff>0x0238F930</span><span style=color:#f92672>&gt;</span> has no<span style=color:#f92672>**</span>doc<span style=color:#f92672>**</span>, it<span style=color:#f92672>&amp;</span><span style=color:#75715e>#8217;s a bad habit.</span>
+
+<span style=color:#f92672>&lt;</span>function g at <span style=color:#ae81ff>0x0238F8B0</span><span style=color:#f92672>&gt;</span> : I have a <span style=color:#f92672>**</span>doc<span style=color:#f92672>**</span> <span style=color:#f92672>.</span>f() Do somethingg() Do something
+
+<span style=color:#f92672>&lt;</span>function f at <span style=color:#ae81ff>0x0238F930</span><span style=color:#f92672>&gt;</span>
+
+<span style=color:#f92672>&lt;</span>function g at <span style=color:#ae81ff>0x0238F8B0</span><span style=color:#f92672>&gt;</span>
+</code></pre></div><p>当时我就晕菜了，想了很久，原来在@装饰器函数的时候就会调用装饰器，装饰器函数return func，而func就是传进去的参数f。这个时候把代码改改。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>deco_functionNeedDoc</span>(func):
+    <span style=color:#66d9ef>if</span> func<span style=color:#f92672>.</span>__doc__ <span style=color:#f92672>==</span> <span style=color:#66d9ef>None</span> :
+        print func, <span style=color:#e6db74>&#34;has no __doc__, it&#39;s a bad habit.&#34;</span>
+    <span style=color:#66d9ef>else</span>:
+        print func, <span style=color:#e6db74>&#39;:&#39;</span>, func<span style=color:#f92672>.</span>__doc__, <span style=color:#e6db74>&#39;.&#39;</span>
+    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>func_1</span>(<span style=color:#f92672>*</span>args, <span style=color:#f92672>**</span>kw):
+        print func<span style=color:#f92672>.</span>__name__,<span style=color:#e6db74>&#39; : this is func_1&#39;</span>
+    <span style=color:#66d9ef>return</span> func_1
+<span style=color:#a6e22e>@deco_functionNeedDoc</span>
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>f</span>():
+    print <span style=color:#e6db74>&#39;f() Do something&#39;</span>
+<span style=color:#a6e22e>@deco_functionNeedDoc</span>
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>g</span>():
+    <span style=color:#e6db74>&#39;I have a __doc__&#39;</span>
+    print <span style=color:#e6db74>&#39;g() Do something&#39;</span>
+f()
+g()
+print f
+print g<span style=color:#f92672>&lt;/</span>pre<span style=color:#f92672>&gt;</span>
+</code></pre></div><p>此时的打印结果：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&lt;</span>function f at <span style=color:#ae81ff>0x023CF930</span><span style=color:#f92672>&gt;</span> has no \_\_doc\_\_, it<span style=color:#f92672>&amp;</span><span style=color:#75715e>#8217;s a bad habit.  </span>
+<span style=color:#f92672>&lt;</span>function g at <span style=color:#ae81ff>0x023CF8B0</span><span style=color:#f92672>&gt;</span> : I have a \_\_doc\_\_ <span style=color:#f92672>.</span>  
+f  : this <span style=color:#f92672>is</span> func_1  
+g  : this <span style=color:#f92672>is</span> func_1  
+func_1  
+func_1
+</code></pre></div><p>问题至此，应该很明了了~~只是，装饰器拿来干嘛呢？？应用在什么情况下呢？？待探索</p>
+<p>最后再贴一个超级大团圆，太有意思了，这个不解释了，困了，理解了这个，估摸装饰器的基本原理就透彻了。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>deco_functionNeedDoc</span>(func1):
+    <span style=color:#66d9ef>if</span> func1<span style=color:#f92672>.</span>__name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;yyy&#34;</span> :
+        print func1, <span style=color:#e6db74>&#34;the func1 == yyy&#34;</span>
+    <span style=color:#66d9ef>else</span>:
+        print func1, <span style=color:#e6db74>&#39;:&#39;</span>, func1<span style=color:#f92672>.</span>__doc__, <span style=color:#e6db74>&#39;.&#39;</span>
+
+    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>xxx</span>() : <span style=color:#75715e># y + f + h + x</span>
+        func1() <span style=color:#75715e># y + f + h + f + h</span>
+        print <span style=color:#e6db74>&#34;plus xxx&#34;</span>
+        <span style=color:#66d9ef>return</span> func1() <span style=color:#75715e># y + f + h + f + h</span>
+
+    <span style=color:#66d9ef>return</span> xxx
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>deco_functionNeedDocxxx</span>(func2):
+    <span style=color:#66d9ef>if</span> func2<span style=color:#f92672>.</span>__name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;hhh&#34;</span> :
+        print func2, <span style=color:#e6db74>&#34;the func2 == hhh&#34;</span>
+    <span style=color:#66d9ef>else</span>:
+        print func2, <span style=color:#e6db74>&#39;:&#39;</span>, func2<span style=color:#f92672>.</span>__doc__, <span style=color:#e6db74>&#39;.&#39;</span>
+
+    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>yyy</span>(): <span style=color:#75715e># y + f + h + f + h</span>
+        print <span style=color:#e6db74>&#34;plus yyy&#34;</span>
+        func2()  <span style=color:#75715e># f + h</span>
+        <span style=color:#66d9ef>return</span> func2() <span style=color:#75715e># f + h</span>
+
+    <span style=color:#66d9ef>return</span> yyy
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>deco_functionNeedDochhh</span>(func3):
+    <span style=color:#66d9ef>if</span> func3<span style=color:#f92672>.</span>__name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;f&#34;</span> :
+        print func3, <span style=color:#e6db74>&#34;the func3 == f&#34;</span>
+    <span style=color:#66d9ef>else</span>:
+        print func3, <span style=color:#e6db74>&#39;:&#39;</span>, func3<span style=color:#f92672>.</span>__doc__, <span style=color:#e6db74>&#39;.&#39;</span>
+
+    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>hhh</span>() : <span style=color:#75715e># = f + h</span>
+        func3()  <span style=color:#75715e># = f</span>
+        print <span style=color:#e6db74>&#34;plus hhh&#34;</span>
+        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;Hello Wrold&#34;</span>
+    <span style=color:#66d9ef>return</span> hhh
+
+
+<span style=color:#a6e22e>@deco_functionNeedDoc</span>
+<span style=color:#a6e22e>@deco_functionNeedDocxxx</span>
+<span style=color:#a6e22e>@deco_functionNeedDochhh</span>
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>f</span>():
+    print <span style=color:#e6db74>&#39;print original fff&#39;</span>
+
+f()
+print <span style=color:#e6db74>&#34;------------&#34;</span>
+print f
+print <span style=color:#e6db74>&#34;------------&#34;</span>
+print f()<span style=color:#f92672>&lt;/</span>pre<span style=color:#f92672>&gt;</span>
+
+</code></pre></div><p>结果如下：</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&lt;</span>function f at <span style=color:#ae81ff>0x109a2b938</span><span style=color:#f92672>&gt;</span> the func3 <span style=color:#f92672>==</span> f  
+<span style=color:#f92672>&lt;</span>function hhh at <span style=color:#ae81ff>0x109a2b9b0</span><span style=color:#f92672>&gt;</span> the func2 <span style=color:#f92672>==</span> hhh  
+<span style=color:#f92672>&lt;</span>function yyy at <span style=color:#ae81ff>0x109a2ba28</span><span style=color:#f92672>&gt;</span> the func1 <span style=color:#f92672>==</span> yyy  
+plus yyy  
+print original fff  
+plus hhh  
+print original fff  
+plus hhh  
+plus xxx  
+plus yyy  
+print original fff  
+plus hhh  
+print original fff  
+plus hhh  
+<span style=color:#f92672>&amp;</span><span style=color:#75715e>#8212;&amp;#8212;&amp;#8212;&amp;#8212;  </span>
+<span style=color:#f92672>&lt;</span>function xxx at <span style=color:#ae81ff>0x109a2baa0</span><span style=color:#f92672>&gt;</span>  
+<span style=color:#f92672>&amp;</span><span style=color:#75715e>#8212;&amp;#8212;&amp;#8212;&amp;#8212;  </span>
+plus yyy  
+print original fff  
+plus hhh  
+print original fff  
+plus hhh  
+plus xxx  
+plus yyy  
+print original fff  
+plus hhh  
+print original fff  
+plus hhh  
+Hello Wrold
+</code></pre></div><ul class=pa0>
+<li class=list>
+<a href=/tags/python class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">python</a>
+</li>
+<li class=list>
+<a href=/tags/%E8%A3%85%E9%A5%B0%E5%99%A8 class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">装饰器</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2015/2015-05-14-that-cloud-services-of-ci/>That Cloud Services of CI</a>
+</li>
+<li class=mb2>
+<a href=/posts/2015/2015-03-30-python-through-leetcodeoj/>我要用python把leetcodeOJ算法题刷一遍。</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

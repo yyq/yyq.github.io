@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>model on Young Story</title><link>https://yyq.github.io/tags/model/</link><description>Recent content in model on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 14 May 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/model/index.xml" rel="self" type="application/rss+xml"/><item><title>kaggle模型组合指南</title><link>https://yyq.github.io/posts/2018/2018-05-14-kaggle-ensemble-guide/</link><pubDate>Mon, 14 May 2018 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2018/2018-05-14-kaggle-ensemble-guide/</guid><description>前言 本文大部分干货内容，翻译自 kaggle ensembling guide,感谢。
+半年前刚刚开始玩kaggle的时候,讨论区，kernel区，获奖分享等等就有很多人发出关键字ensemble，blend之类的。当想要深入了解其中,许多人首推这个博客链接：https://mlwave.com/kaggle-ensembling-guide/, 随意瞥一眼，看上去有用。自己实践的时候，只用了多个模型预测结果的线性组合，有效果。于是计划了要仔细从头到尾把这篇长博客撸一遍，今天终于有空来，翻译一下，方便以后查阅。
+模型组合是一个非常强大的黑科技，在很多类型的机器学习任务中都可以用来提升准确率。这篇文章我将会分享我在kaggle比赛中用到的各种组合方法。
+文章的第一部分，我会介绍从submission文件作出组合来，第二部分我会介绍用融合的方法。
+我会解释为什么组合会降低general的错误。最后我会展示不同的组合方法，给出一些代码，你也可以自己试试.
+This is how you win ML competitions: you take other peoples’ work and ensemble them together. by Vitaly Kuznetsov NIPS2014
+从submission文件创建组合 最基本的最方便的组合方式，就是从提交的csv文件开始。你只需要那些预测的结果文件，不需要重新训练模型。这是对已经存在的模型最快的组合方式，在组队的时候玩起来更high。
+投票组合 我们先来看看简单的投票玩法。了解为什么模型组合可以降低错误率，为什么用低相关性的模型结果的组合效果更好。
+纠错码 在某个竞赛任务重，所有的信号都正确的排列，是非常重要的。如果我们有一个二进制信号序列如下： 1110110011101111011111011011 然而我们得到的是有一点点被破坏了的版本（有一位被取反了）： 1010110011101111011111011011
+一个机器学习例子 投票者的数量 相关性 在热带雨林覆盖类型预测题目中的应用</description></item></channel></rss>

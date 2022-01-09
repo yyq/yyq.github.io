@@ -1,0 +1,246 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>学习linux启动过程 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="下一步需要学习动态的linux函数调用关系，所以得先从启动过程开始了解。从一本书linux内核设计的艺术中了解到的资料，以下内容如果不做特别注释的话，均为Linux0.11中的方式，可能新版本的kernel的函数名和这个会不一样，但是处理流程，我想应该每个操作系统都是一样的吧。">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="学习linux启动过程">
+<meta property="og:description" content="下一步需要学习动态的linux函数调用关系，所以得先从启动过程开始了解。从一本书linux内核设计的艺术中了解到的资料，以下内容如果不做特别注释的话，均为Linux0.11中的方式，可能新版本的kernel的函数名和这个会不一样，但是处理流程，我想应该每个操作系统都是一样的吧。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2013/2013-01-15-xue-xi-linuxqi-dong-guo-cheng/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2013-01-15T09:50:01+00:00">
+<meta property="article:modified_time" content="2013-01-15T09:50:01+00:00">
+<meta itemprop=name content="学习linux启动过程">
+<meta itemprop=description content="下一步需要学习动态的linux函数调用关系，所以得先从启动过程开始了解。从一本书linux内核设计的艺术中了解到的资料，以下内容如果不做特别注释的话，均为Linux0.11中的方式，可能新版本的kernel的函数名和这个会不一样，但是处理流程，我想应该每个操作系统都是一样的吧。"><meta itemprop=datePublished content="2013-01-15T09:50:01+00:00">
+<meta itemprop=dateModified content="2013-01-15T09:50:01+00:00">
+<meta itemprop=wordCount content="109">
+<meta itemprop=keywords content="linux,kernel,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="学习linux启动过程">
+<meta name=twitter:description content="下一步需要学习动态的linux函数调用关系，所以得先从启动过程开始了解。从一本书linux内核设计的艺术中了解到的资料，以下内容如果不做特别注释的话，均为Linux0.11中的方式，可能新版本的kernel的函数名和这个会不一样，但是处理流程，我想应该每个操作系统都是一样的吧。">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">学习linux启动过程</h1>
+<time class="f6 mv4 dib tracked" datetime=2013-01-15T09:50:01Z>January 15, 2013</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>下一步需要学习动态的linux函数调用关系，所以得先从启动过程开始了解。从一本书<strong>linux内核设计的艺术</strong>中了解到的资料，以下内容如果不做特别注释的话，均为Linux0.11中的方式，可能新版本的kernel的函数名和这个会不一样，但是处理流程，我想应该每个操作系统都是一样的吧。</p>
+<h2 id=从开机加电到执行main函数之前的过程>从开机加电，到执行main函数之前的过程</h2>
+<p>好吧，这里应该是有执行3个汇编的文件，但是我不太了解。囧</p>
+<h2 id=从main函数到启动ok即可以响应用户操作了>从main函数，到启动OK（即可以响应用户操作了）</h2>
+<p>这个步骤做了3件事情：</p>
+<ul>
+<li>创建进程0，使之具备在主机中进行运算的能力，2.1</li>
+<li>已进程0为母本创建进程1，不仅有运算能力，而且还能以文件的行驶与外设进行数据交互，2.2-2.4</li>
+<li>以进程1为母本创建进程2，全面具备进程1的能力和环境，进一步具备支持“人机交互”，实现怠速，2.5-2.8</li>
+</ul>
+<h3 id=开中断之前的准备工作>开中断之前的准备工作</h3>
+<ol>
+<li>复制根设备号和硬盘参数表</li>
+<li>物理内存规划格局：除了1MB以内的内核区之外，其余物理内存要完成的工作是不同的，对这三类不同性质的区域，在大小，位置，以及管理方式上进行规划
+<ul>
+<li>“主内存区“：用来承载进程的相关信息，包括进程管理结构，进程对应的程序；</li>
+<li>“缓冲区”：主机与外设进行数据交互的中转站</li>
+<li>“虚拟盘区”：可选的区域，可将外设上的数据先复制到虚拟盘区，然后再使用。</li>
+</ul>
+</li>
+<li>虚拟盘设置与初始化：rd_init（某个设备请求的函数，对应到内核某块代码？？？？？）</li>
+<li>内存管理结构mem_map初始化：mem_init,对于1MB以上的内存都是分页管理的。</li>
+<li>异常处理类中断服务程序挂接：trap_init</li>
+<li>初始化块设备请求项结构</li>
+<li>与简历人机交互界面相关的外设的中断服务程序挂接
+<ul>
+<li>串行口设置</li>
+<li>显示器设置</li>
+<li>键盘设置</li>
+</ul>
+</li>
+<li>开机启动时间设置：进程0需要具备对时间的掌控能力，time_init()</li>
+<li>系统开始激活进程0：sched_init函数开始
+<ul>
+<li>使其具备运算及创建其他进程的能力</li>
+<li>时刻具备参与多进程轮询的能力</li>
+<li>具备处理系统调用的能力</li>
+</ul>
+</li>
+<li>进程相关事务初始化设置：
+<ul>
+<li>“任务状态描述符表”和“局部数据描述符表”挂接到全局描述附表GDT中</li>
+<li>对GDT和进程管理结构task[64]中除了与进程0相关的位置外，清空设置</li>
+<li>将GDT中关于进程0的“任务状态描述符”和“局部数据描述符”分别记录在CPU中的“任务状态寄存器”和“局部数据寄存器”中。</li>
+</ul>
+</li>
+<li>时钟中断设置</li>
+<li>系统调用服务程序挂接：set_system_gate与中断描述符表挂接</li>
+<li>初始化缓冲区管理结构</li>
+<li>初始化硬盘hd_init,hd_interrupt</li>
+<li>初始化软盘floppy_init</li>
+<li>开中断:<strong>系统中所有中断服务程序都已经和中断描述附表正常挂接</strong>，中断服务构建完毕，系统可以在32位保护模式下处理中断信号了。</li>
+</ol>
+<h3 id=进程创建的最基本动作>进程创建的最基本动作</h3>
+<ol>
+<li>OS为进程0创建进程1做准备，
+<ul>
+<li>move_to_user_mode,从内核态转换到用户态</li>
+<li>上述函数后，相当于进行了一次中断返回，CS特权级从0转换到3，内核→用户</li>
+<li>用户态的进程0，从LDT去的代码段描述符，与弹出的EIP组成线性地址</li>
+<li>调用fork函数</li>
+</ul>
+</li>
+<li>在进程槽中为进程1申请一个空闲位置并且获取进程号
+<ul>
+<li>find_empty_process，为进程1获得可用的进程号和空闲的任务号</li>
+<li>全局变量last_pid存放系统开机以来累计的进程数。</li>
+<li>内核的数据区中有个task[NR_TASKS]进程槽，存放task_struct指针。第一次遍历该数组，判断获得的进程号是否可用。ifyes,第二次遍历获得一个空的task_struct。linux0.11中，最多64个进程。</li>
+</ul>
+</li>
+<li>复制进程信息之前，先将一些数据压栈：将进程0的管理结构拷贝给进程1的管理结构
+<ul>
+<li>copy_process</li>
+</ul>
+</li>
+<li>初步设置进程1管理结构
+<ul>
+<li>进程0的母本包括：“进程0的管理结构”，“进程0的页表项”</li>
+</ul>
+</li>
+<li>进程0创建进程1的过程中发生时钟中断（场景分析）
+<ul>
+<li>中断服务程序开始工作，跳转到_timer_interrupt执行，xxx压入进程0内核栈，保护现场</li>
+<li>_do_timer判断是否需要进程切换</li>
+</ul>
+</li>
+<li>从时钟中断返回
+<ul>
+<li>ret_from_sys_call开始执行</li>
+</ul>
+</li>
+<li>调整进程1管理结构
+<ul>
+<li>进程0的管理结构数据信息不一定全都适用于进程1，还需针对具体情况调整。</li>
+</ul>
+</li>
+<li>设置进程1的线性地址空间及物理页面
+<ul>
+<li>创建页目录项和复制页表，从copy_mem开始</li>
+<li>copy_page_tables</li>
+</ul>
+</li>
+<li>调整进程1管理结构</li>
+<li>OS如何区分进程0和进程1
+<ul>
+<li>_syscall0函数中，if(res>=0)这一行就是进程0中断返回后将要执行的第一行指令。。。</li>
+<li>到底如何区分，我也没搞清楚。。。</li>
+</ul>
+</li>
+<li>进程0准备切换到进程1</li>
+<li>系统切换到进程1执行</li>
+</ol>
+<h3 id=加载根文件系统进程1来完成原文中均有流程图说明>加载根文件系统（进程1来完成；原文中均有流程图说明）</h3>
+<ul>
+<li>进程1通过对一些与硬盘管理相关的数据结构进行设置，进一步为进程依托系统与硬盘以文件行驶进行数据交互创造条件</li>
+<li>进程11用虚拟盘代替软盘，使之成为根设备</li>
+<li>进程1以虚拟盘中提供的数据为依据，加载根文件系统</li>
+</ul>
+<hr>
+<ol>
+<li>开始执行：从_syscall0的if(__res>=0)这行代码开始,然后调用init函数</li>
+<li>开始执行：在init中，先调用setup</li>
+<li>进程1开始以数据块的形式操作硬盘</li>
+<li>将找到的缓冲块与请求项挂接</li>
+<li>将请求项与硬盘处理函数挂接</li>
+<li>进行硬盘读盘前的准备工作</li>
+<li>给硬盘下达读盘指令</li>
+<li>进程1由于等待读盘操作挂起</li>
+<li>系统切换到进程0执行</li>
+<li>进程0的执行过程</li>
+<li>进程0执行过程中发生硬盘中断</li>
+<li>硬盘中断服务程序响应后，进程0继续执行</li>
+<li>再次响应硬盘中断并唤醒进程1</li>
+<li>读盘操作完成后，进程1继续执行</li>
+<li>进程1继续设置硬盘管理结构</li>
+<li>进程1获取软盘超级块，为加载根文件系统做准备</li>
+<li>进程1备份超级快数据</li>
+<li>进程1将根文件系统从软盘拷贝到虚拟盘</li>
+<li>进程1开始加载根文件系统</li>
+<li>进程1准备根文件系统超级块</li>
+<li>进程1准备读取根目录i节点</li>
+<li>进程1加载根目录i节点
+1。进程1结束加载根文件系统的过程</li>
+</ol>
+<h3 id=打开中断设备文件及复制文件句柄>打开中断设备文件及复制文件句柄</h3>
+<ol>
+<li>进程1与内核文件表挂接，为打开文件做准备</li>
+<li>确定打开操作的起点</li>
+<li>获得枝梢i节点-dev目录文件的i节点</li>
+<li>确定dev目录文件i节点为枝梢i节点</li>
+<li>继续返回枝梢i节点</li>
+<li>查找tty0文件的i节点</li>
+<li>将tty0设备文件的i节点返回给sys_open系统调用</li>
+<li>分析tty0文件i节点</li>
+<li>设置文件管理结构并返回给用户进程</li>
+<li>进程1复制tty0文件句柄</li>
+</ol>
+<h3 id=创建进程2>创建进程2</h3>
+<h3 id=进程1等待进程2退出>进程1等待进程2退出</h3>
+<h3 id=shell程序的加载>shell程序的加载</h3>
+<h3 id=系统实现怠速>系统实现怠速</h3><ul class=pa0>
+<li class=list>
+<a href=/tags/linux class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">linux</a>
+</li>
+<li class=list>
+<a href=/tags/kernel class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">kernel</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2012/2012-12-26-doxygenshi-yong-shuo-ming-ge-ren-zong-jie-/>Doxygen使用说明（个人总结）</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

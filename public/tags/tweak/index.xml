@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>tweak on Young Story</title><link>https://yyq.github.io/tags/tweak/</link><description>Recent content in tweak on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 07 Jul 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/tweak/index.xml" rel="self" type="application/rss+xml"/><item><title>iOS逆向-学习日记2-Mac OS X上的工具</title><link>https://yyq.github.io/posts/2015/2015-07-07-ios-security-learn-2/</link><pubDate>Tue, 07 Jul 2015 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2015/2015-07-07-ios-security-learn-2/</guid><description>&lt;p>这一次，主要是按照别人的教程，把Mac上逆向工程有关的工具挨个试了个遍。先说几个重点的：Charles，Reveal，TheOS，IDA，Hopper。其中Charles，Reveal，IDA和Hopper都是收费的，且都有demo版本可以下载适用，TheOS是免费。&lt;/p>
+&lt;h2 id="简介四个收费工具">简介四个收费工具&lt;/h2>
+&lt;p>Charles用于分析网络流量，模拟器，mac os x，device都可以搞定各种get post connect，header cookie分门别类一目了然。价格不贵。&lt;/p>
+&lt;p>Reveal主攻iOS UI，模拟器和device都行，对于越狱的设备可在cydia里装个插件，然后查看并且临时修改UI，利器。&lt;/p>
+&lt;p>IDA和Hopper，算作一类了，主要功能是二进制文件到汇编代码，和进一步的汇编代码到C语言代码。我亲自使用过后，着实感觉到工具的强大，十分的强大。再加上工具里各种代码块和控制流的显示，就算我只是一个逆向工程的外行，也知道这样的信息会带来多么恐怖的分析成果。IDA是各个平台的产品都有，价格上千美刀了。Hopper是只有Mac平台上的，价格几百块的样子。据学习过逆向工程的同事说，IDA还是很强大很流行的。&lt;/p>
+&lt;p>这四个工具的使用难度，Charles比较简单，Reveal略复杂一点。反汇编工具就超级复杂了。不过都有UI，自己可以一个个试着玩玩。&lt;/p>
+&lt;h2 id="详细介绍theos越狱开发工具">详细介绍Theos越狱开发工具&lt;/h2>
+&lt;p>接下来说说花了我很多时间用来实践的Theos吧。一个跨平台的development kit，用于开发编译iOS软件的，without Xcode。越狱后的iOS所用的插件，Cydia上的那些工具，大都基于Theos开发的。&lt;/p></description></item></channel></rss>

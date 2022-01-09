@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>regression on Young Story</title><link>https://yyq.github.io/tags/regression/</link><description>Recent content in regression on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 17 Jan 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/regression/index.xml" rel="self" type="application/rss+xml"/><item><title>kaggle | favorita-grocery-sales-forecasting</title><link>https://yyq.github.io/posts/2018/2018-01-17-favorita-grocery-sales-forecasting/</link><pubDate>Wed, 17 Jan 2018 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2018/2018-01-17-favorita-grocery-sales-forecasting/</guid><description>我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+输入数据为某连锁商店的各个店铺各个商品的销量，预测接下来16天的个店铺的各个商品的销量
+在Public LB做到了3%，等privateLB出来之后，掉到了6%，发现提交历史记录里，自己的最好的单模型成绩比自己最后提交的组合模型答案成绩还好，可是最好的但模型成绩在publicLB都没有进入10%,心里慌啊，用尽全力的调整到3%啊。终于，自己对LB做到了overfit了，呵呵，教训啊！我的最好单模型成绩public LB 510, private LB 518, 组合模型成绩public LB 508 private LB 519.
+1 Lessons learned of myself: 特征工程比模型调参更重要，重要性大出一个数量级 模型调参时，学习率先从较大的数字开始，节约时间 有关日期的比赛，本地cv日期的选择很重要，和最终测试日期有相似性才比较好 本地的每一次运行，cv，参数，分数都需要很好的记录下来，供后期对比分析 很多大神都开始在回归类题目里面开始用NN了，确实成绩会比xgb lgb等会有较大提升 2 Lessons learned from others: 总结两个观点先：
+特征工程特别重要 神经网络要胜过决策树boost了 每一段摘要都标记原作者，原文章标题，和原文链接
+2.1 Eureka 1st place solution 借鉴了四个别人的模型，cnn，lstm，lgbm，lgbm
+只用了2017年的数据，训练集，0531-0719 or 0614-0719, 不同的模型用不同的训练集，验证集，0726-0810
+数据处理：把空值和负值都填0
+特征工程：
+基本特征，分类（store,item,family,class,cluseter）,打折否，day_of_week(only for model 3); 统计特征，时间窗口，最近日期:[1,3,5,7,14,30,60,140]；等时间窗口[1] * 16, [7] * 20; 关键特征：store x item， item， store x class, target： promotion, unit_sales, zeros, 方法：mean,median,max,min,std, day since last appearance.</description></item></channel></rss>

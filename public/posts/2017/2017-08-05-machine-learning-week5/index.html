@@ -1,0 +1,150 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>coursera Andrew Ng 机器学习第五周笔记 神经网络的学习过程 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="Neural Networks: Learning cost function L = total number of layers in the network sl = number of units (not counting bias unit) in layer l K = number of output units/classes the double sum simply adds up the logistic regression costs calculated for each cell in the output layer the triple sum simply adds up the squares of all the individual Θs in the entire network. the i in the triple sum does not refer to training example i Backpropagation Algorithm Backpropagation in Practice thetaVector = [ Theta1(:); Theta2(:); Theta3(:); ] deltaVector = [ D1(:); D2(:); D3(:) ] Theta1 = reshape(thetaVector(1:110),10,11) Theta2 = reshape(thetaVector(111:220),10,11) Theta3 = reshape(thetaVector(221:231),1,11) gradient checking Once you have verified once that your backpropagation algorithm is correct, you don&rsquo;t need to compute gradApprox again.">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="coursera Andrew Ng 机器学习第五周笔记 神经网络的学习过程">
+<meta property="og:description" content="Neural Networks: Learning cost function L = total number of layers in the network sl = number of units (not counting bias unit) in layer l K = number of output units/classes the double sum simply adds up the logistic regression costs calculated for each cell in the output layer the triple sum simply adds up the squares of all the individual Θs in the entire network. the i in the triple sum does not refer to training example i Backpropagation Algorithm Backpropagation in Practice thetaVector = [ Theta1(:); Theta2(:); Theta3(:); ] deltaVector = [ D1(:); D2(:); D3(:) ] Theta1 = reshape(thetaVector(1:110),10,11) Theta2 = reshape(thetaVector(111:220),10,11) Theta3 = reshape(thetaVector(221:231),1,11) gradient checking Once you have verified once that your backpropagation algorithm is correct, you don&rsquo;t need to compute gradApprox again.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2017/2017-08-05-machine-learning-week5/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-08-05T00:00:00+00:00">
+<meta property="article:modified_time" content="2017-08-05T00:00:00+00:00">
+<meta itemprop=name content="coursera Andrew Ng 机器学习第五周笔记 神经网络的学习过程">
+<meta itemprop=description content="Neural Networks: Learning cost function L = total number of layers in the network sl = number of units (not counting bias unit) in layer l K = number of output units/classes the double sum simply adds up the logistic regression costs calculated for each cell in the output layer the triple sum simply adds up the squares of all the individual Θs in the entire network. the i in the triple sum does not refer to training example i Backpropagation Algorithm Backpropagation in Practice thetaVector = [ Theta1(:); Theta2(:); Theta3(:); ] deltaVector = [ D1(:); D2(:); D3(:) ] Theta1 = reshape(thetaVector(1:110),10,11) Theta2 = reshape(thetaVector(111:220),10,11) Theta3 = reshape(thetaVector(221:231),1,11) gradient checking Once you have verified once that your backpropagation algorithm is correct, you don&rsquo;t need to compute gradApprox again."><meta itemprop=datePublished content="2017-08-05T00:00:00+00:00">
+<meta itemprop=dateModified content="2017-08-05T00:00:00+00:00">
+<meta itemprop=wordCount content="321">
+<meta itemprop=keywords content="ai,machine learning,Andrew Ng,Neural Network,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="coursera Andrew Ng 机器学习第五周笔记 神经网络的学习过程">
+<meta name=twitter:description content="Neural Networks: Learning cost function L = total number of layers in the network sl = number of units (not counting bias unit) in layer l K = number of output units/classes the double sum simply adds up the logistic regression costs calculated for each cell in the output layer the triple sum simply adds up the squares of all the individual Θs in the entire network. the i in the triple sum does not refer to training example i Backpropagation Algorithm Backpropagation in Practice thetaVector = [ Theta1(:); Theta2(:); Theta3(:); ] deltaVector = [ D1(:); D2(:); D3(:) ] Theta1 = reshape(thetaVector(1:110),10,11) Theta2 = reshape(thetaVector(111:220),10,11) Theta3 = reshape(thetaVector(221:231),1,11) gradient checking Once you have verified once that your backpropagation algorithm is correct, you don&rsquo;t need to compute gradApprox again.">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">coursera Andrew Ng 机器学习第五周笔记 神经网络的学习过程</h1>
+<p class=tracked>
+By <strong>
+Young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2017-08-05T00:00:00Z>August 5, 2017</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h2 id=neural-networks-learning>Neural Networks: Learning</h2>
+<h4 id=cost-function>cost function</h4>
+<pre tabindex=0><code>L = total number of layers in the network
+sl = number of units (not counting bias unit) in layer l
+K = number of output units/classes
+</code></pre><p><img src=./2017-08-05/cost-function.png alt></p>
+<pre tabindex=0><code>the double sum simply adds up the logistic regression costs calculated for each cell in the output layer
+the triple sum simply adds up the squares of all the individual Θs in the entire network.
+the i in the triple sum does not refer to training example i
+</code></pre><h4 id=backpropagation-algorithm>Backpropagation Algorithm</h4>
+<p><img src=./2017-08-05/backpropagation-0.png alt></p>
+<p><img src=./2017-08-05/backpropagation-1.png alt></p>
+<h4 id=backpropagation-in-practice>Backpropagation in Practice</h4>
+<pre tabindex=0><code>thetaVector = [ Theta1(:); Theta2(:); Theta3(:); ]
+deltaVector = [ D1(:); D2(:); D3(:) ]
+Theta1 = reshape(thetaVector(1:110),10,11)
+Theta2 = reshape(thetaVector(111:220),10,11)
+Theta3 = reshape(thetaVector(221:231),1,11)
+</code></pre><h4 id=gradient-checking>gradient checking</h4>
+<p><img src=./2017-08-05/gradient-checking.png alt></p>
+<p>Once you have verified <strong>once</strong> that your backpropagation algorithm is correct, you don&rsquo;t need to compute gradApprox again. The code to compute gradApprox can be very slow.</p>
+<h4 id=random-initialization>random initialization</h4>
+<p><img src=./2017-08-05/random-init.png alt></p>
+<h4 id=whole-workflow>Whole workflow</h4>
+<p>First, pick a network architecture; choose the layout of your neural network, including how many hidden units in each layer and how many layers in total you want to have.</p>
+<ul>
+<li>Number of input units = dimension of features x(i)</li>
+<li>Number of output units = number of classes</li>
+<li>Number of hidden units per layer = usually more the better (must balance with cost of computation as it increases with more hidden units)</li>
+<li>Defaults: 1 hidden layer. If you have more than 1 hidden layer, then it is recommended that you have the same number of units in every hidden layer.</li>
+</ul>
+<p><strong>Training a Neural Network</strong></p>
+<ul>
+<li>Randomly initialize the weights</li>
+<li>Implement forward propagation to get hΘ(x(i)) for any x(i)</li>
+<li>Implement the cost function</li>
+<li>Implement backpropagation to compute partial derivatives</li>
+<li>Use gradient checking to confirm that your backpropagation works. Then disable gradient checking.</li>
+<li>Use gradient descent or a built-in optimization function to minimize the cost function with the weights in theta.</li>
+</ul>
+<pre tabindex=0><code>for i = 1:m,
+   Perform forward propagation and backpropagation using example (x(i),y(i))
+   (Get activations a(l) and delta terms d(l) for l = 2,...,L
+</code></pre><p><img src=./2017-08-05/train-nn.png alt></p>
+<ul class=pa0>
+<li class=list>
+<a href=/tags/ai class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ai</a>
+</li>
+<li class=list>
+<a href=/tags/machine-learning class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">machine learning</a>
+</li>
+<li class=list>
+<a href=/tags/andrew-ng class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Andrew Ng</a>
+</li>
+<li class=list>
+<a href=/tags/neural-network class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Neural Network</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2017/2017-08-04-machine-learning-week4/>coursera Andrew Ng 机器学习第四周笔记 神经网络模型</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-03-machine-learning-week3/>coursera Andrew Ng 机器学习第三周笔记 逻辑回归与泛化</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-02-machine-learning-week2/>coursera Andrew Ng 机器学习第二周笔记 多个变量的线性回归</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-08-01-machine-learning-week1/>coursera Andrew Ng 机器学习第一周笔记 线性回归</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

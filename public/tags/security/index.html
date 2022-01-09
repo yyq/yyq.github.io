@@ -1,0 +1,274 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>security | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<link href=/tags/security/index.xml rel=alternate type=application/rss+xml title="Young Story">
+<link href=/tags/security/index.xml rel=feed type=application/rss+xml title="Young Story">
+<meta property="og:title" content="security">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yyq.github.io/tags/security/">
+<meta itemprop=name content="security">
+<meta itemprop=description content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="security">
+<meta name=twitter:description content>
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class="pb3-m pb6-l bg-black">
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+<div class="tc-l pv3 ph3 ph4-ns">
+<h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+security
+</h1>
+</div>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="cf pa3 pa4-m pa4-l">
+<div class="measure-wide-l center f4 lh-copy nested-copy-line-height nested-links nested-img mid-gray">
+<p>Below you will find pages that utilize the taxonomy term “security”</p>
+</div>
+</article>
+<div class="mw8 center">
+<section class="flex-ns flex-wrap justify-around mt5">
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-03-29-sql-injection-attacks-defense-3/ class="link black dim">
+《SQL注入攻击与防御》之防御
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+代码层防御 领域驱动的安全性 SQL注入之所以发生，是因为我们的应用程序不正确的将数据在不同表示方式之间进行映射 通过将数据封装到有效的值对象中，并限制对原始数据的访问，我们就可以控制对数据的使用 使用过参数化语句 动态SQL（或者将SQL查询组装成包含受用户控制的输入的字符串并提交给数据库）是引发SQL注入漏洞的主要原因 应该使用参数化语句（也叫做预处理语句）而非动态SQL来安全的组装SQL查询 在提供数据时可以只使用参数化语句，但却无法使用参数化语句来提供SQL关键字或标识符（比如表名或者列名） 验证输入 尽可能坚持使用白名单输入验证（只接收期望的已知良好的输入） 确保验证应用受到的所有受用户控制的输入的类型，大小，范围和内容 只有当无法使用白名单输入验证时才能使用黑名单输入验证（拒绝已知不良的或基于签名的输入） 绝不能单独只使用黑名单检验数据。至少应该总是将它与输出编码技术一起结合使用 编码输出 确保对包含用户可控制输入的查询进行正确编码以防止使用单引号或其他字符来修改查询 如果正在使用LIKE子句，请确保对LIKE中的通配符恰当的编码 在使用从数据库接收到的数据之前确保已经对数据中的敏感内容进行了恰当的输入验证和输出编码 规范化 将输入编码或变味规范格式后才能执行输入验证过滤器和输出编码 请注意，任何单个字符都存在多种表示方式以及编码方法 尽可能使用白名单输入验证并拒绝非规范格式的输入 通过设计来避免SQL注入的危险 使用存储过程以便在数据库层拥有较细粒度的许可 可以使用数据访问抽象层来对整个应用施加安全的数据访问 设计时，请考虑对敏感信息进行附加的控制 平台层防御 使用运行时保护 无法修改代码时，运行时保护是应对SQL注入的一种有效技术 如果调整得当，Web应用防火墙可以有效监测，缓和和预防SQL注入 运行时保护可以跨越多层，多级，其中包括网络，web服务器，应用程序框架以及数据库服务器 确保数据库安全 加固数据库虽然无法完全阻止SQL注入，但却可以显著降低其影响 应该只将攻击者沙箱化在应用程序所用数据上。在锁定的数据库服务器中，不应该影响所连接网络上的其他数据库和系统 应该将访问局限在必须的数据库对象上，比如存储过程只授予EXECUTE许可，此外，对敏感数据明智的使用强加密技术可以防止未经验证的数据访问 额外的部署考虑 加固过的web层部署和网络架构无法完全阻止SLQ注入，但却可以显著降低其影响。 面对自动攻击者的威胁（比如SQL注入蠕虫），尽量减少网络，web和应用程序级别上的泄露，将有助于减少被发现的机会 架构得当的网络应该只允许使用验证过的连接来连接数据库服务器，并且数据库服务器自身不应该产生带外连接 确认并从SQL注入攻击中恢复 调查可疑的SQL注入攻击 只能由计算机安全事件响应人员和组织中已授权执行调查的取证专家，来执行SQL注入攻击的调查取证工作。 合理的调差取证实践要求 在调查取证期间，应该对收集到的所有文件做到真正bit-for-bit复制 应该为复制的每一个文件生成哈希值，并与源文件的哈希值进行比较，以验证bit-for-bit复制的完整性 将调查取证期间执行的所有操作记录在文档中，包括对RDBMS执行的所有查询和返回的查询结果 确保所有收集到的文件写入洁净的存储介质中，并保存在一个安全的地方 分析数字化痕迹 数字化痕迹就是相关数据的集合 对于SQL注入攻击的调查取证，下列痕迹非常有用：web服务器的日志文件，数据库执行计划，事务日志和数据库对象的时间戳 识别SQL注入攻击活动 对web服务器的日志文件执行一次广泛的分析，查找异常偏高的web请求数量出现的日期，或者web服务器与客户端计算机之前带宽利用率异常偏高的日期 检查数据库执行计划和相关日志，查找恶意查询 检查食物日志，寻找在攻击时间段内出现的可疑活动，重点关注已执行的INSERT,UPDATE和DELETE语句 检查数据库对象的时间戳，以识别用户账号的创建，权限提升和表的创建操作 确认SQL注入攻击是否成功 如果发现下列情况，就可以确认一次SQL注入攻击已经成功 在数据库的执行计划或相关数据库日志中捕获了SQL注入的活动 在未经授权的情况下，创建或修改了事物或对象 遏制安全事件 拔除受损害数据库和相应web服务器的网线 评估涉及的数据 必须对数据进行评估，以确保组织机构确定适当的监管和法律要求 通知正确的人员 应该由受损害组织机构的高级管理人员和法律顾问对损害通报进行管控 确定攻击者在系统上执行的操作 可以通过对数据库进行取证，确定攻击者在攻击期间执行的具体操作 确定攻击的有效载荷 备份受害的数据库 提取恶意的SQL注入查询 检查并理解恶意查询的逻辑，从而理解攻击载荷企图实现什么目的 搜索对恶意查询的引用 确定已识别的恶意查询是否属于静态或动态攻击载荷的一部分 查找多种漏洞 应该根据承载的是静态载荷还是动态载荷对攻击进行分类 根据攻击载荷确定如何从安全事件中恢复 从SQL注入攻击中恢复 将数据库恢复到已知的良好状态 检验数据库服务器的配置 识别并修复SQL注入漏洞 在线恢复系统并恢复web服务
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-03-27-owasp-top10-go-through/ class="link black dim">
+OWASP TOP 10 浅显解读
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+OWASP的全称是Open Web Application Security Project，开放式网络应用安全项目，官网在https://www.owasp.org/index.php/Main_Page
+OWASP组织最近一次正式发布TOP10是在2013年，官网介绍页面是https://www.owasp.org/index.php/Top_10_2013-Top_10
+A1-注入 注入，例如SQL注入，操作系统注入，LDAP注入等等，一般发生在命令或者查询中包括了不可信任的数据，并且被发送到了解释器（解释命令或者查询的软件）。攻击者的攻击数据可以出发解释器来执行一些不怀好意的命令或者访问一些数据而无需正常授权。
+A2-坏授权和会话管理 在web应用中，和授权有关的，会话管理有关的一些功能，通常没有正确的实现，这会让攻击者破坏你的密码，密钥或者会话令牌，或者利用其它 实现的缺陷来伪装其它用户的身份
+A3-跨站脚本 XSS漏洞，通常发生在：应用拿到不可信任的数据并且发送给浏览器而没有做出正确的校验和过滤。XSS会允许攻击者在受害者的浏览器来执行脚本，这可以让攻击者劫持用户会话，修改网站或者把用户重定向到恶意网站
+A4-不安全的直接引用其他对象 这个缺陷一般发生：在当开发人员暴露一个对象给内部功能用，比如某个文件，某个目录或者某个数据库秘钥。如果没有正确的权限控制检查或者其他保护，那么攻击者可以操作利用这个对象来访问未授权的数据。
+A5-安全的错误配置 良好的安全:得有一个安全配置的规则，并且部署到应用，框架，应用服务器，网络服务器，数据库服务器和平台。安全设置应该被妥善的定义，实施和维护，一般来说默认场景都是不安全的。另外，软件要尽量保持更新。
+A6-敏感数据泄露 许多web应用都没有合适的保护好敏感数据，例如信用卡，个人税号和密码等等。攻击者可以偷取或者修改弱保护数据来实施信用卡欺诈，身份盗用或者其他犯罪。敏感的数据应该需要更多的保护，例如存储时和传输时都要进行加密，和浏览器进行交互时也需要特殊的预防泄露。
+A7-缺失的功能分级访问控制 大多数web应用会在把功能展示在界面上之前进行验证访问权限。、，当每一个功能被访问的时候，都要在服务器上执行同样的检查访问权限。如果网络请求没有被验证通过，攻击者将会伪造请求来进行未授权的访问。
+A8-CSRF，跨站伪造请求 CSRF攻击会迫使一个已经登录的受害者的浏览器来发送伪造的http请求，包括受害者的会话cookie，也包括任何其他的身份验证信息，发送到一个脆弱的web应用。这让攻击者可以强迫受害者的浏览器来生成请求,而没有防护的应用会认为这个请求来自于受害者的合法请求
+A9-使用了有已知漏洞的组件 组件，例如库，框架和其他软件模块，他们通常是以拥有所有权限来运行的。如果一个有漏洞的组件暴露了出来，一个攻击者就可以造成严重的数据丢失或者服务器接管。一个有已知漏洞组件的应用可能自己身的防御已经失效并且会引发一系列可能的攻击和影响
+A10-未授权的重定向和转发 web应用频繁的重定向和把用户引导向其他的页面和网站，使用不信任的数据来决定最终的目的地网页。如果没有合适的校验过程，攻击者可以将受害者重定向到钓鱼网站或者恶意网站，或者使用转发来访问未经授权的页面。
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-03-25-sql-injection-attacks-defense-2/ class="link black dim">
+《SQL注入攻击与防御》之高级攻击
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+SQL盲注利用 寻找并确认SQL盲注 无效数据将返回通用错误页面而非详细错误，这时可通过包含副作用比如时间延迟来确认SQL注入，还可以拆分与平衡参数。如果数字字段为5，就提交3+2或者6-1；如果字符串参数中包含"MadBod",就提交‘Mad’||'Bod' 请思考漏洞的属性：是否强制产生错误以及能否控制无错误页面的内容 可通过在SQL中提问某一位是0或者1来推断某个信息位，有很多推断技术可用于实现该目标 使用基于时间的技术 可使用逐位方法或二分搜索法提取数据并利用延迟表示数据的值，可使用明确的SLEEP类型函数或运行很长的查询类引入延迟 通常在SQL Server和Oracle上采用以时间作为推断的方法，不过这在MySQL上不太可靠，改机制很可能会失败 使用时间作为推断方法在本质上是不可靠的，但却可以通过增加超时或借助其他技巧来进行改进 使用基于响应的技术 可使用逐位方法或二分搜索方法提取数据并利用相应内容表示数据的值。一般来说，现有查询中都包含一条插入子句，它能够根据推断的值来保持查询不变或返回空结果。 基于响应的技术可成功用于多种多样的数据库 某些情况下，一个请求可返回多个信息位 使用非主流通道 带外通信的优点是：可以以块而非位的方式来提取数据，并且在速度上有明显改进 最常用的通道是DNS，攻击者说服数据库执行一次名称查找，该查找包含一个由攻击者控制的域名并在域名前添加了一些要提取的数据。当请求到达DNS名称服务器后，攻击者就可以查看数据。其他通道还包括HTTP和SMTP 不同数据库支持不同的非主流通道，支持非主流通道的工具的数量明显要比支持推断技术的少 自动利用SQL盲注 有一些工具都不是开源的，这里我只记录Sqlmap的好了 Sqlmap将漏洞的发现和利用结合在一款强大的工具中，它既支持基于时间的推断方法，也支持基于响应的推断方法，另外还支持ICMP通道方法。该工具的成长速度和开发也很快 利用操作系统 访问文件系统 读取文件有关：
+在MySQL中，可以使用LOAD DATA INFILE和LOAD_FILE()命令从主机读取任何文件
+在Microsoft SQL Server中，可以使用BULK INSERT或OLE Automation从文件系统读取文件。对于较新的系统（SQL Server 2005以及之后的版本），可以使用CREATE ASSEMBLY方法从文件系统读取文件
+在Oracle中，可以使用Oracle目录，Oracle Text或UTL_FILE方法读取文件
+写入文件有关：
+MySQL,使用select into outfile和select into dumpfile命令向文件系统写文件
+MS SQL,可以使用OLE Automation和简单的重定向（通过命令执行）在目标文件系统中创建文件。可以从命令行使用debug.exe和BCP,进而在目标系统中辅助创建二进制文件
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-02-11-sql-injection-attacks-defense/ class="link black dim">
+《SQL注入攻击与防御》之攻击
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+重点看了攻击方面的内容，防御没怎么看，我觉得在攻击方面的知识没有消化理解的话，可能防御类的知识也会比较糊涂，决定过一段时间，自己实践过sql攻击之后，有了一些理解，再来学习防御，会有收获。
+计划：去ichunqiu学习学习sqlmap的使用，之前简单学习过，这次得找个站练练手，至少成功实践一次
+什么是SQL注入 理解web应用的工作原理 Web应用是一种使用Web浏览器并通过Internet或内部网络访问的程序。它同时还是一种使用浏览器所支持语言（HTML,JavaScript,Java）编写的计算机软件程序，借助不同的web浏览器来呈现应用程序的可执行文件 基本的数据库驱动的动态web应用通常包含一个后台数据库和很多包含服务器端脚本的web页面，这些脚本则是由可从数据库（数据库的选择依不同的交互而定）中提取特定信息的编程语言编写而成的 基本的数据库驱动的动态web应用通常包含三层：表示层（Web浏览器或呈现引擎）、逻辑层（c#,ASP,.Net,PHP,JSP等）和存储层（例如SQL Server,MySQL,Oracle等数据库）。Web浏览器向中间层（逻辑层）发送请求，中间层通过查询，更新数据库（存储层）来响应该请求。 理解SQL注入 SQL注入是一种将SQL代码插入或添加到应用（用户）的输入参数中，之后再将这些参数传递后台的SQL服务器加以解析并执行的攻击 SQL注入的主要方式是直接将代码插入到参数中，这些参数会被值入SQL命令中加以执行 攻击者能够修改SQL语句时，该进程将与执行命令的组件（数据库服务器，应用服务器或者web服务器）拥有相同的权限，该权限通常级别很高 理解SQL注入的产生过程 如果web应用开发人员无法确保在将从web表单，cookie，输入参数等收到的值传递给SQL查询（该查询在数据库服务器上执行）之前已经对其进行过验证，通常就会出现SQL注入漏洞 如果攻击者能够控制发送给SQL查询的输入，并且能操纵该输入将其解析为代码而非数据，那么攻击者就可能有能力在后台数据库上执行该代码 如果应用开发人员无法彻底理解与他们交互的基础数据库或者无法完全理解并意识到所开发代码潜在的安全问题，那么他们编写的应用通常是不安全的，并且容易受到sql注入攻击 SQL注入测试 寻找sql注入 寻找sql注入漏洞存在三个关键点 识别web应用接收的数据输入 修改输入值以包含危险的字符串 检测服务器返回的异常 使用web代理角色扮演工具有助于绕过客户端限制，完全控制发送给服务器的请求，此外，它们还能提高服务器响应的可见度，提供更多检测到细小漏洞的机会 包含数据库错误或http错误代码的服务器响应通常能降低识别sql注入漏洞的难度，不过，sql盲注是一种即使应用不返回明显错误也能利用漏洞的技术 确认sql注入 想要确认一个sql注入漏洞并进一步加以利用，需要构造一条能注入sql代码的请求以便应用程序创建一条语法正确的sql语句，之后由数据库服务器执行该语句且不返回任何错误 创建语法正确的语句时，可以通过注入注释终止该语句，并注释掉剩余的查询。对于这种情况，通常可以毫无约束的连接任意sql代码（假设后台数据库支持执行多条语句），进而提供执行攻击的能力 有时，应用程序对注入操作没有回复任何可见的信息，这时可以通过向来自数据库的回复引入延迟来确认注入，应用服务器将等待数据库回复，我们则可以确认是否存在漏洞，对于这种情况，需要意识到网络和服务器工作负荷可能会对延迟造成轻微干扰 自动发现sql注入 寻找sql注入漏洞所涉及的操作可以被适度自动化。当需要测试大型的web站点时，自动技术非常有用，但需要意识到自动发现工具可能无法识别某些存在的漏洞，不能完全依赖自动化的工具 有多款商业工具可以对web站点的完整安全性进行评估，还可以进行sql注入漏洞测试 利用sql注入 理解常见的漏洞利用技术 select语句中经常出现sql注入漏洞，但不会修改数据。sql注入还会出现在修改数据的语句（insert，update，delete）中，虽然可使用相同的技术，但此时应仔细思考技术对数据库有可能会产生的影响，而对于select语句，则应尽可能使用sql注入，如果不能利用select语句，在攻击期间还可以使用其他的一些技术以减少修改所带来的危害程度 在本地安装一个与用于测试注入语法的数据库完全相同的数据库会非常有用 如果后台数据库和应用架构支持多条语句相连，那么利用漏洞会变得相当容易 识别数据库 在一个成功的攻击中，第一步始终会包含远程数据库的精确跟踪 最直接的方法是强迫远程应用返回一条能揭示数据库服务器技术的消息（通常是一条错误消息） 如果那样做不行，可注入一条只能工作在特定数据库服务器上的查询 使用UINON语句提取数据 要想成功的向现有查询添加数据，就必须保证他们的列数和数据类型均匹配 所有数据类型均接受NULL值，GROUP BY是寻找要注入的准确列数的最快方法 如果远程web应用只返回第一行，那么可通过添加一个永假条件来移除原来的行，然后一次一行的提取想要的行 使用条件语句 使用条件语句，攻击者的每次请求可以提取一个数据位 根据所提取值得不同，可以选择引入延迟，产生错误或强迫应用程序返回一个不同的HTML页面 每种技术都有最适合使用的场景。给予延迟的技术速度虽慢但非常灵活，基于内容的技术相比于错误的技术则会留下更少的痕迹 枚举数据库模式 遵循一种分级的方法，首先枚举数据库，然后是每个数据库的表，之后是每个表的列，最后是每一列的数据 如果远程数据库很大，就不需要提取整个数据库，快速浏览一下表名通常就足以确定想要的数据的位置 注入INSERT查询 如果要在INSERT、UPDATE或者DELETE查询中利用SQL注入漏洞，就必须小心处理，以避免出现垃圾数据填充数据库或者大量修改or删除数据等副作用 安全注入的办法包括：修改INSERTorUPDATE查询以更新一个可以在应用程序的其他地方看到的值；或者修改INSERT、UPDATE、DELETE查询使之在整体上执行失败，但可以返回数据或在结果上产生明显差别，比如时间上的延迟或不同的错误消息。 提升权限 所有主流数据库服务器一直以来都深受权限提升漏洞之苦。我们正在攻击的数据库服务器很可能未升级至最新的安全更新程序 对于其他情况，可以尝试暴力破解管理员账户，例如在SQL Server上使用OPENROWSET 窃取哈希口令 如果拥有管理员权限，请不要错过获取哈希口令的机会。人们都倾向于重用口令，这些哈希可能成为进入整个“新世界”的钥匙 带外通信 如果无法使用前面的方法提取数据，可尝试建立一种完全不同的通道 可能的选项包括email(SMTP)、HTTP、DNS、文件系统或针对特定数据库的连接 移动设备上的sql注入 很多移动设备和嵌入式设备使用本地SQL数据库来存储或缓存信息 虽然在访问方式上存在差异，但在适当的条件下，这些移动应用程序也存在可利用的SQL注入漏洞，就像任何Web应用程序一样 自动利用sql注入 本章分析的大多数攻击都需要发送大量请求以达到目的 幸运的是，有几种工具可以辅助实现自动攻击 这些工具提供了很多不同的攻击模式和选项，从远程数据库服务器跟踪到提取它所包含的数据
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-01-05-attackapi-study-0-copy/ class="link black dim">
+AttackAPI安装教程
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+本文用来描述部署AttackAPI环境，网上搜了一些教程和内容，有的描述太简单，有的描述已过时，总有这样那样的问题，自己又是一个小白前端，摸索了好一会儿才搞明白，于是记录此文。
+0x00 AttackAPI简介 AttackAPI是一个基于Web的攻击构造库，开源项目，作者此软件的官网在http://www.gnucitizen.org/blog/attackapi/.
+曾经的源代码放在google code上，不过后来此网站关门了，有很多人将此工程收藏在github上了，在github上搜索attackapi可以得到源代码。
+0x01 配置 为了防止以后代码失传，我fork了一份到我自己账户下，https://github.com/yyq/attackapi.
+下载好代码后，看了看目录，只有一个Tags目录，目测是一个典型的SVN结构，需要自己整理一下文件切换到对应版本号.
+看到build.xml文件，知道此工程需要ant一下
+发现可以ant命令没有错误的最高版本号是2.5.0a
+web服务器，为了省事，用windows环境，下载了https://www.appserv.org/en/按照默认选项一路安装完成，启动apache服务，把attackapi文件夹copy到C:\AppServ\www目录下
+0x02 hell0world 用火狐浏览器打开http://localhost/attackapi/build/tests/firetest-interactive.htm, 然后在firebug的控制台里，输入命令dir(AttackAPI),可以看到如下的信息则证明基本配置成功了： 0x03 踩过的坑 找到正确的代码格式，了解svn apache启动失败，端口被其他程序占用 AppServ的运行会需要各个版本的vc11,vc140,vc10等等.dll文件的支持，好在它都会自动安装 ant编译步骤不能少，不然文件结构不正确，导致htm中一些js文件引用失败 下一个步骤是了解和使用attackapi了，敬请期待下一篇日志吧。
+0x04 两天后的更新： 囧了，按照书上试了半天，attackapi里有些函数已经不顶用了，看了看源代码才知道有的方式过时了。例如访问历史浏览过的网页scanHistory这个功能，attackapi里用的方法是利用a:visited加网址，然后根据display属性来判断，这一招几年前应该还管用。
+近年随着大家对web安全防范的意识越来越高，过去的很多方法都失效，得用新的方法来搞定。
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-01-03-xss-study-0/ class="link black dim">
+XSS跨站脚本攻击剖析与防御-读书笔记
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+初次了解cross-site scripting, 阅读完第一章第二章，感觉需要精读和理解的知识点不少，先摘抄下来，以供之后查阅。
+什么是xss跨站脚本？ 计算机安全漏洞，web应用程序中的，是由于web应用程序对用户的输入过滤不足而产生的
+xss的分类 反射型：主要用于将恶意脚本附加到URL地址的参数中。特点是用户点击时触发，而且只执行一次，非持久化，所以称为反射型。常出现在搜索栏，用户登入口，常用来窃取客户端Cookies或进行钓鱼欺骗
+持久型：攻击者实现将恶意javascript代码上传或者存储在漏洞服务器中，只要受害者浏览包含此恶意代码的页面，就会被执行。一般出现在网站的留言，评论，博客日志等交互处。
+发掘 用&lt;textarea>来闭合前后的对应的标记，中间写&lt;script>代码，是一个典型的持久型XSS，并且在管理员查看留言时才出发，攻击的对象是后台管理员。
+程序没有过滤任何有害字符，从而导致一个持久型xss的产生
+xss的构造剖析 利用&lt; >标记注射html/javascript, &lt;script>alert('XSS');&lt;/script> 防御：过滤&lt; >和&lt;script>字样 利用HTML标签属性值执行XSS &lt;table background="javascript:alert(/xss/)">&lt;/table> &lt;img src="javascript:alert('xss');" 防御：过滤&lt;javascript>等关键字 空格回车Tab，一类的键位符 原因比较复杂，JavaScript语句通常以分号结尾，如果javascript引擎确定一个语句是完整的，而这一行的结尾有换行符，那么可以省略分号。有时候，引擎没有把换行符解释为语句的终止符，js会继续处理发现内容，直到遇到分号或者完整语句. 拆分关键字的技巧成功执行了跨站脚本代码 &lt;img src="javas cript: alert(/xss/)" witdth=100> 对标签属性值的转码
+t的ASCII码值是116，可以用&#116来表示，冒号可以用&#58来表示，javascript:alert('xss');转码后可以是javascrip&#116&#58alert(/xss/)
+防范利用HTML标签属性值编码的XSS,最好也过滤&#\等字符
+产生自己的事件
+测试事件型的跨站脚本，还有大量的事件可以运用：
+&lt;input type=&ldquo;button&rdquo; value=&ldquo;click me&rdquo; onclick=&ldquo;alert(&lsquo;click me&rsquo;)&rdquo; onResume onReverse onRowDelete onSeek &mldr; ```
+利用CSS跨站解析
+CSS中的expression执行js代码；HTML标签的style属性执行js代码，如下两个例子
+&lt;dev style="width: expression(alert('xss'));">
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2016/2016-12-27-arp-attack-defence/ class="link black dim">
+基于ARP协议的攻防
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+研究了一下ARP攻击和防御，给感兴趣的同学分享一下知识
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-07-26-commit-a-bug-to-wooyun/ class="link black dim">
+在乌云提交一个漏洞成功并注册成为白帽子
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+厂商确认了，并且给评价等级为中，给了rank10。
+从去年我想开始注册乌云帐号开始，终于自己有能力提交一个简单的漏洞了，YES！
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-07-07-ios-security-learn-2/ class="link black dim">
+iOS逆向-学习日记2-Mac OS X上的工具
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+<p>这一次，主要是按照别人的教程，把Mac上逆向工程有关的工具挨个试了个遍。先说几个重点的：Charles，Reveal，TheOS，IDA，Hopper。其中Charles，Reveal，IDA和Hopper都是收费的，且都有demo版本可以下载适用，TheOS是免费。</p>
+<h2 id=简介四个收费工具>简介四个收费工具</h2>
+<p>Charles用于分析网络流量，模拟器，mac os x，device都可以搞定各种get post connect，header cookie分门别类一目了然。价格不贵。</p>
+<p>Reveal主攻iOS UI，模拟器和device都行，对于越狱的设备可在cydia里装个插件，然后查看并且临时修改UI，利器。</p>
+<p>IDA和Hopper，算作一类了，主要功能是二进制文件到汇编代码，和进一步的汇编代码到C语言代码。我亲自使用过后，着实感觉到工具的强大，十分的强大。再加上工具里各种代码块和控制流的显示，就算我只是一个逆向工程的外行，也知道这样的信息会带来多么恐怖的分析成果。IDA是各个平台的产品都有，价格上千美刀了。Hopper是只有Mac平台上的，价格几百块的样子。据学习过逆向工程的同事说，IDA还是很强大很流行的。</p>
+<p>这四个工具的使用难度，Charles比较简单，Reveal略复杂一点。反汇编工具就超级复杂了。不过都有UI，自己可以一个个试着玩玩。</p>
+<h2 id=详细介绍theos越狱开发工具>详细介绍Theos越狱开发工具</h2>
+<p>接下来说说花了我很多时间用来实践的Theos吧。一个跨平台的development kit，用于开发编译iOS软件的，without Xcode。越狱后的iOS所用的插件，Cydia上的那些工具，大都基于Theos开发的。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-03-08-ios-security-learn-1/ class="link black dim">
+iOS安全-学习日记1
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+<h1 id=前fei言hua>前(fei)言(hua)</h1>
+<p>上班之余，自学一些计算机安全一类的知识。有相关经验的同学给了我几个建议：1.计算机安全范围很广，有web啦，sql啦，移动端啦balabala，自己选择一个自己感兴趣的较窄的学习就好。2. 社区，乌云，看雪</p>
+<p>我自己对iOS还有些兴趣，遂决定开始自学iOS安全。乌云我是连注册都没资格，需要提交漏洞才行，我这什么相关知识都不会，只先看看好了。在谷歌上搜了搜，很容易搜到CSDN上念茜的《iOS安全攻防》这个看上去知识比较浅一点，应该会适合我。那么就一课一课开始学。她写的相关博文是一两年前了，不一定百分之百能适用于当前的环境，不过正好是增加学习难度的机会。也可以用自己的博文来更新和更加详细的注释一下她的博客，更容易让初学者学习到。</p>
+<h1 id=ios安全攻防一hack必备的命令与工具> iOS安全攻防（一）：Hack必备的命令与工具</h1>
+<p><a href=http://blog.csdn.net/yiyaaixuexi/article/details/8288077>念茜博客原文地址</a></p>
+<p>先是一些操作系统的基本的命令，我用过并且略有了解的如下：ps, netstat, route, ifconfig, tcpdump, gdb, ssh</p>
+<p>然后我没有接触过的：</p>
+<p>sysctl：检查设定Kernel配置；renice：调整程序运行的优先级；lsof：列出当前系统打开的文件列表，一切皆文件包括网络，硬件设备；patch：补丁工具。</p>
+<p>然后她有特意注释的三个工具，otool，可以查看可执行程序都链接了哪些库，nm，显示符号表，ldid，用于给需要运行在iOS上的程序签名用。otool和nm在自己的mac电脑上有，os x上我没找到ldid，于是在ipad上用cydia装了ldid。不过之后的实验中好像不签名也能运行来着。</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

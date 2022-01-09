@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Latex on Young Story</title><link>https://yyq.github.io/tags/latex/</link><description>Recent content in Latex on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 19 Mar 2013 00:40:01 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/latex/index.xml" rel="self" type="application/rss+xml"/><item><title>MacTex中文乱码解决方法</title><link>https://yyq.github.io/posts/2013/2013-03-19-wo-xue-tex/</link><pubDate>Tue, 19 Mar 2013 00:40:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-03-19-wo-xue-tex/</guid><description>今儿开周会的时候有同学又介绍Latex了。
+第一次接触Latex是在大三弄数学建模的时候，据说用Latex写文档如何如何XXX。后来是在写本科毕业设计的时候有老师说Latex如何如何好，不过那个时候也就混个毕业论文了，随意就对付过去了。
+终于，自己得开始着手准备写研究生的毕业设计了。正好又有同学用过，可以交流，决定开始好好写研究生的论文。也得用一用最牛逼的写文档的工具了。
+废话那么多，其实今儿实际上和tex有关的东西就一点点。
+Mac上使用tex是很方便滴！Macx系统有个专用的tex，MacTex，下载地址
+下载之后，安装很简单，目前遇到的小问题是中文输入，不过在同学的指点和google一下，轻松解决。
+打开TexShop，模式用XeLatex，字体用SimSun。
+具体操作，先选择模板，点一下XeLatex模板，然后把代码中描述字体的那一行改掉。
+%\setromanfont[Mapping=tex-text]{Hoefler Text} 这一行是被我注释掉的模板中的字体描述 \setromanfont{SimSun} %这一行是我自己添加的字体描述 然后随意在Title里面改成中文，点一下排版，有中文标题的文章，就出来了。</description></item></channel></rss>

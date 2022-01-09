@@ -1,0 +1,322 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<link href=/posts/index.xml rel=alternate type=application/rss+xml title="Young Story">
+<link href=/posts/index.xml rel=feed type=application/rss+xml title="Young Story">
+<meta property="og:title" content="Posts">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yyq.github.io/posts/">
+<meta itemprop=name content="Posts">
+<meta itemprop=description content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="Posts">
+<meta name=twitter:description content>
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class="pb3-m pb6-l bg-black">
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+<div class="tc-l pv3 ph3 ph4-ns">
+<h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+Posts
+</h1>
+</div>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="pa3 pa4-ns nested-copy-line-height nested-img">
+<section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray"></section>
+<section class="flex-ns flex-wrap justify-around mt5">
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2020/2020-10-22-exp-thinking/ class="link black dim">
+对数据科学实验的思考
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+从本周的一位同学的分享开始
+他分享的是一系列特征有关的实验，末尾是QA环节，实验质量（实验方式，实验结果的分析）被多个角度质疑，显而易见，他的实验结果大家很难认可了。无论是他个人的时间花费，还是这次分享的质量，都有些苍白。
+最近某项目小组，在一个调优目标上，多位同学参与，短时间内也做了大量的实验，从结果来看，无一显著性的提升。其实我的内心也有在怀疑小伙伴们实验做的很仓促（所以很粗糙），写的代码有bug么？上传到评分版的数据有传错么？实验结论难道仅仅只看最终的一个准确率指标比大小？有没有看稍微更详细的一点的实验结果？新加的改动，对重要的预测条目有什么影响？有的实验结果是准确率上升了，按理说应该很高兴，但是我也会问一下有从哪几个角度看一下数据泄露的可能性没？
+实验结果最好不要只有最后一个准确率的数字，应该从一个准确率的数字，下钻到更多的细节，有更多的观察，然后给出进一步的分析结论，进而给出进一步想探索的实验思路。
+实验的分析链条上，尽量的严密，逻辑要清晰，连贯，自洽。不要随意猜。
+分析思路枯竭了，再开始猜，可以先有猜想，然后看数字来证明到自己的猜想是对还是错。
+大家在学生阶段的课上应该都学过基本的实验思路，在动手开始实验之前，要明确实验的变量是什么，哪些是不变的，实验过程你会怎么做，预期实验结果是什么。如果结果和预期一致，那么说明了什么，证明了你的什么想法。如果结果和预期不一致，也请回顾实验过程的各个环节（有没有做错哪里？），每个环节的现象是什么，来间接推理为什么结果和预期不一致。想来，做数据科学的实验，也应该保持小时候做科学实验的初心，好奇，探索，严谨，而不是只交出一个数字。
+之前和同事A交流的时候，讨论过需要收集很多很多实验结果，来做meta learning，应是有趣的一条路；目前，我的想法有变，单次实验的质量比大量（不一定准确的）实验结果更加重要。
+为了尽量去保证团队中各位同学的实验质量，可以有什么手段呢？手把手指导，言传身教？我也没想清楚。
+以上的思考，或许是这此听分享给我带来的最大的价值。
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2018/2018-12-07-doodle-recognition/ class="link black dim">
+kaggle | quickdraw-doodle-recognition top 6%
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+前言 这次是google举办的一个“你画我猜”的题目，题目链接：kaggle - quickdraw-doodle-recognition。给的数据是游戏玩家在屏幕上画画的每一笔的坐标起始位置，然后让训练模型来猜出这幅画是画的什么，4900万张画，340个category。我记得微信上有个小游戏就是这么个东东。
+本来没打算做这个比赛的，家里事情多了一些，然后毕竟cv也不是自己擅长的，后来吧，觉着GCP上还有1500多刀的过期时间和这个比赛时间一样，不用白不用，那就突破一下自己的comfort zone。比赛前期一直是自己在刷，最后8天的时候，自己做的两个单模在0.932，然后有找cv方面比较擅长的朋友组队，最后成绩还是略遗憾，没拿到银牌，和实力有关，也和运气有关吧，最后选交的不是队伍的最高分数。队友还是有比较伤心的，同时感觉自己年龄大了，对这个成绩和分数不是那么看重了，在论坛浏览了很多，和队友讨论了很多，过程中自己实践了很多，这才是对我最有价值的体验。
+自己的收获 总的来说，认真从头到尾实践了cv的比赛，谢谢google送我的free credits，大幅修炼了我多显卡的实践能力（双卡？四卡？nonono，小伙子同时使用8个v100了解一下，还为了训练速度认真调优了显卡，cpu的使用率和io的效率等）。
+图像有关的题嘛，卷积神经网络是肯定得用上了，然后笔画顺序有关嘛，循环神经网络肯定能有贡献，最后自己训练的两个单模se-resnet50和xception都是CNN类的，双向的lstm玩崩了，试了若干次都是第一个epoch顺利完成第2个epoch中间崩掉，至今没找到错误原因在哪。
+下面总结一下自己的收获和踩过的坑吧：
+先看来自蛙神的建议：bigger img size matters, larger batch_size matters, training number matters, more iterations matters, 简单验证过他这几个idea，全对！但是，卧槽了，这么些牛逼的建议再加上4900万张图，云主机党表示钱包好慌张 最新版的TF里自带的keras版本号是2.1.6，多GPU有神坑，性能奇差无比，别问我怎么知道的，花了老子好多钱之后才知道！后来单独用的最新版2.2.4的keras有很大提升。 2.2.4的keras的multiGPU的model也有坑，save_model的时候，得找到多GPU的model里的那个单GPU model的那一层，然后存下来 keras的fit_generator之前用过，这次很熟悉的再来一次 json.loads比ast.literal_eval快了10倍不止 制作img的速度，cv2和pillow这两个库不相上下，其他的都是垃圾 做3-channel彩色图的结果比灰度图的结果更好 做图的时候，line width matters，我猜是太细的笔画pool了几次之后就损失了细节 pretrained并没有比随机初始化的好，至少我自己实验是这样子的，论坛上意见不一 图片数量太多，极其费时，用二分法查找到自己最大的batch_size 再次看到蛙神的帖子，感谢paperhttps://arxiv.org/pdf/1810.00736.pdf ,这篇里有一张图展示了各类state of the art models的性能对比吧，主要是top-1 accuracy, top-5 accuracy, Operations(G-FLOPs)，这对资源吃紧而又想要分高的朋友特别重要了 16 cpu core的电脑，训练时别把16个core都用完了，还得留几个给处理多GPUmodel，10个workers比较合适 以前只知道在若干个epoch之后调整学习率，这一个epoch至少20个小时的训练肯定不能这么玩，习得新的调整LR的技法，比如Cyclical Learning Rate 或者是余弦学习率衰减, 原来keras的callback还有个默认的操作手法是在batch_end时有所动作，论坛上还有其他调整LR的算法，值得慢慢把玩 实在是时间有限，精力有限，以后参赛想要高分，对于我这类水平的人说，尽早开始多试错才能弥补专业知识的不足 观摩大佬分享 第一名 [ods.ai]Pablos link CNN方面，尝试了这么多的模型: resnet18, resnet34, resnet50, resnet101, resnet152, resnext50, resnext101, densenet121, densenet201, vgg11, pnasnet, incresnet, polynet, nasnetmobile, senet154, seresnet50, seresnext50, seresnext101，1 channel的3 channel的图像，112的256的图像都试了，一共搞了40来个模型 (大佬是有多少机器资源？或者收敛速度是我的几十倍？)
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2018/2018-09-25-kaggle-model-insights/ class="link black dim">
+kaggle | Machine Learning for Insights Challenge
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+前言 最近比较忙，这次不是比赛分享了，是来分享一个“挑战”，kaggle上用词说是Challenge，在我理解这个是某专家管理员建立了一个简短的course，介绍了某主题的玩法，然后让大家做做简单的练习，一起讨论交流一下。
+这次学习的是一个关于模型洞察力的主题，原文链接https://www.kaggle.com/ml-for-insights-signup， 本文这里主要是将我看到的有用的内容按照自己的理解翻译，记录下来。这个ML for insights，字面直译为模型洞察力了，在我理解来则是模型可解释性分析。
+My Insights 我个人在玩kaggle和工作中用到最多的主要是树类模型(lgb,xgb)和神经网络(cnn, rnn)，确实很少去思考其中的含义和解释性，如果让我自己回答这个问题，我理解到用决策树的信息熵计算统计概率得出叶子节点的重要性，再加上拟合残差的思路就是xgb类的算法了。而神经网络方面，我则简单的理解为求导拟合。高中课本里的一次函数二次函数的求导大家都会，神经网络只是用链式法则给若干个矩阵求导罢了，思路还是朝着目标去拟合。
+如此之粗浅，见笑了，下面看看别人的insights玩法。
+User Case 一个模型的哪些东西是可解释的 许多人认为机器学习模型是黑盒子，在他们认为模型可以做出很好的预测，但是大家无法理解这些预测背后的逻辑。确实是，很多数据科学家不知道如何用模型来解释数据的实际意义。这里的文章将会从这么几个方面来讨论：
+哪些特征在模型看到是最重要的？ 关于某一条记录的预测，每一个特征是如何影响到最终的预测结果的？ 从大量的记录整体来考虑，每一个特征如何影响模型的预测的？ 为什么这些解释信息是有价值的 调试模型用 指导工程师做特征工程 指导数据采集的方向 指导人们做决策 建立模型和人之间的信任 调试模型用 一般的真实业务场景会有很多不可信赖的，没有组织好的脏数据。你在预处理数据时就有可能加进来了潜在的错误，或者不小心泄露了预测目标的信息等，考虑各种潜在的灾难性后果，debug的思路就尤其重要了。当你遇到了用现有业务知识无法解释的数据的时候，了解模型预测的模式，可以帮助你快速定位问题，balabala
+指导特征工程 特征工程通常是提升模型准确率最有效的方法。特征工程通常涉及到到反复的操作原始数据(或者之前的简单特征)，用不同的方法来得到新的特征。
+有时候你完成FE的过程只用到了自己的直觉。这其实还不够，当你有上百个原始特征的时候，或者当你缺乏业务背景知识的时候，你将会需要更多的指导方向。
+这个预测贷款结果的kaggle竞赛就是一个比较极端的例子，这个比赛有上百个原始特征。并且因为隐私原因，特征的名称都是f1, f2, f3等等而不是普通的英文单词来描述。这就模拟了一个场景，你没有任何业务方面直觉的场景。有一位参赛者发现了某两个特征相减f527, f528可以创建出特别有用的新特征。拥有这个新特征的模型比没有这个特征的模型优秀很多。但是当你面对几百个特征时，你如何创造出这样优秀的特征呢？
+在这门课程里，你将会学习到找到最重要的特征的方法，并且可以发现两个特别相关的特征，当面对越来越多的特征的时候，这种方法就会很重要啦。
+指导未来数据收集 对于网上下载的数据集你完全控制不了。不过很多公司和机构用数据科学来指导他们从更多方面收集数据。一般来说，收集新数据很可能花费比较高或者不是很容易，所以大家很想要知道哪些数据是值得收集的。基于模型的洞察力分析可以教你很好的理解已有的特征，这将会帮助你推断什么样子的新特征是有用的
+指导人们决策 一些决策是模型自动做出来的，虽然亚马逊不会用人工来决定展示给你网页上的商品，但是很多重要的决策是由人来做出的，而对于这些决定，模型的洞察力会比模型的预测结果更有价值。
+建立信任 很多人在做重要决策的时候不会轻易的相信模型，除非他们验证过模型的一些基本特性，这当然是合理的。实际上，把模型的可解释性展示出来，如果可以匹配上人们对问题的理解，那么这将会建立起大家对模型的信任，即使是在那些没有数据科学知识的人群中。
+Permuation Importance 一个最基本的问题大概会是什么特征对我模型预测的影响最大呢？ 这个东西就叫做“feature importance”即特征重要性。anyway，字面意思看这个东东就很重要啦。我们有很多方法来衡量特征的重要性，这里呢，将会介绍一种方法：排列重要性。这种方法和其他方法比起来，优势有：
+计算速度快 广泛使用和理解 Consistent with properties we would want a feature importance measure to have 工作原理 排列重要性，一定是在model训练完成后，才可以计算的。简单来说，就是改变数据表格中某一列的数据的排列，看其对预测准确性的影响有多大。大概三个步骤：
+训练好模型 拿某一个feature column, 然后随机打乱顺序。然后用模型来重新预测一遍，看看自己的metric或者loss function变化了多少 把上一个步骤中打乱的column复原，换下一个column重复上一个步骤，直到所有column都算一遍 代码示例 这个case是利用FIFA 18很多场的足球比赛的数据统计，来预测"Winner of The Game"
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2018/2018-06-29-kaggle-avito/ class="link black dim">
+kaggle | avito-demand-prediction top 10%
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+题目链接:kaggle, avito是一家俄罗斯公司，从网站上来看是一个线上购物平台，这一次题目的目标，就是预测某一个商品在某一天被售出的概率，给定的数据有一段时间内的商品的销售情况（数量，价格，地区，品类，商品的全面俄文描述，商品的图片）等信息。
+我的kaggle账号：https://www.kaggle.com/yyqing/competitions
+丢了top10% 自己的时间规划出了点问题，工作上临时加了点任务，所以玩比赛这边就少花了点时间，水平也不到位，本来在勉强拿到10%的最后一名，当剔除违规竞赛者之后，排在了10%之外。:(
+很少有题目同时用到了GBDT,CV,NLP的，这次算是遇到一个，算是涨了见识，有人取胜重点靠抽取到商品图像的特征，有人取胜重点靠全量商品描述的词向量，有人取胜在于强大的ensemble各路模型各路特征。这一次我入场比较晚，找人组队就很难了，一个人打还是比较累的，虽然利用到了之前储存好的各种代码片段，不过还是时间太紧，精力有限，再加上我是球迷，我德表现如此糟糕，于是，哎哟喂，我也表现如此糟糕
+自己的收获 短短10天，虽然成绩不佳，但是知识和技能上的收获还是感觉满满的：
+组合模型在这一题发挥了重要的作用，我除了自己训练了xgb，lgb和catboost之外，还从讨论区拷贝来了rnn，ridge regression的成果 自己没怎么实践过自然语言处理，照猫画虎罗列好了tfidf，pca，svd等等，微调一下ngram，对自己分数提高还有有用的 认真按照自己的思路对着各路category实践了target encode，感觉用处不大，过拟合有点重了，后来在讨论中得知，大神们用的高阶的target encode还有加噪音加平滑，据说也有用，下次我也玩高级的TE 由于是第一次搞词向量的题目，第一次实践了稀疏矩阵，lgb和xgb都支持，catboost还不支持，不过用pca将稀疏矩阵做成少量几列还是可以喂给catboost用 拼接各种数据的时候，numpy的运算速度比dataframe要快，有的时候直接用pandas做数学运算，慢到出奇，不如把数据先导出到numpy，运算完再重填回dataframe，节约时间大于一个数量级 压缩数据在内存中占的体积，link这个参考很不错 多线程提取图像特征，参考这里，让我差不多一天时间就把大约180万张图的基本特征都拿出来了。 在处理大量小图片的时候，固态硬盘比机械硬盘的优势就显示出来了，机械硬盘的IOPS实在是跟不上cpu gpu的推理速度，分分钟就到瓶颈，不过GCP上的几百GB ssd价格好贵啊，玩了一会儿做完图像就赶紧换回了机械硬盘。 高分答案集锦 这一次由于数据的丰富性，值得学习的思路很多，且很多大神分享的思路会有部分重合，这里只摘抄我认为最值得学习并且去重的部分思路
+1st, Little Boat, Dance with Ensemble 有一些lgb，有一些nn，有一些xgb作为第一层，第二层还是一些lgb+nn+xgb,第三层就是一个nn了。不过这么组合出来分数提升了大约0.0002到0.0004，和直接线性组合比起来，可能差不多。
+最佳单模型的nn和lgb都做到了215x的分数，另外队友加来一个大量商品描述+RNN做出来的特征，给lgb分数boost到了213x。
+stacking在这一局非常重要，模型的多样化是取胜的关键，
+神经网络 我自己是重点时间都放NN了，所以也没怎么做特征工程。我就来分享一下如何用一个nn做到215x的吧。
+数字特征加上类别特征，分数有0.227x 加上了title和description都用rnn训练一下，再加上fastText预训练的embedding，调整一下，分数到了0.221x 自训练的fastText embedding，在全量数据上，分数到了0.220x 加上vgg16的top layer的平均池化，这个让分数变差了。tuning一下，在合并文本、图像、类别、数字特征之前，分别加了一层，有了效果，0.219x了 尝试调整文本模型，CNN或者attention等等，没有一个work。最后，两层的LSTM加一个dense，提高了分数0.0003 给图像尝试不同的CNN，没有一个“fine tune”的模型有用，并且还花了很多时间。最后发现fixed ResNet50的中间层有用，提高了0.0005， 到了0.218x了 开始各种tuning，都是基于自己想法的去调，发现在text和LSTM之间加上spatial dropout超级有用，提升了大约0.0007到0.001，又结合调整了dropout的比例，提升了0.001到0.0015，分数到了0.2165到0.217 开始把队友做的特征都加进来，队友做的文字类的特征加进来都没啥用，不过其他类的特征都有用，最后一个NN做到0.215x 如果一路上把所有模型都存下来（少量特征训练的模型，加了特征分数变差的模型），然后再训练一个全连接on top of those,可以得到0.008的提升，这个分数可以进入前10名了 秀一下我的模型架构图吧： 评论区摘抄 我在评论中看到他有说，keras的RNN模型，用CuDNN实现的来运行的话，会快很多。
+然后他贴出了他的rnn代码：
+seq_title_description = Input(shape=[max_seq_description_length], name="seq_description") emb_seq_title_description = Embedding(vocab_size, EMBEDDING_DIM1, weights=[embedding_matrix1], trainable=False)( seq_title_description) emb_seq_title_description = SpatialDropout1D(0.
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2018/2018-05-14-kaggle-ensemble-guide/ class="link black dim">
+kaggle模型组合指南
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+前言 本文大部分干货内容，翻译自 kaggle ensembling guide,感谢。
+半年前刚刚开始玩kaggle的时候,讨论区，kernel区，获奖分享等等就有很多人发出关键字ensemble，blend之类的。当想要深入了解其中,许多人首推这个博客链接：https://mlwave.com/kaggle-ensembling-guide/, 随意瞥一眼，看上去有用。自己实践的时候，只用了多个模型预测结果的线性组合，有效果。于是计划了要仔细从头到尾把这篇长博客撸一遍，今天终于有空来，翻译一下，方便以后查阅。
+模型组合是一个非常强大的黑科技，在很多类型的机器学习任务中都可以用来提升准确率。这篇文章我将会分享我在kaggle比赛中用到的各种组合方法。
+文章的第一部分，我会介绍从submission文件作出组合来，第二部分我会介绍用融合的方法。
+我会解释为什么组合会降低general的错误。最后我会展示不同的组合方法，给出一些代码，你也可以自己试试.
+This is how you win ML competitions: you take other peoples’ work and ensemble them together. by Vitaly Kuznetsov NIPS2014
+从submission文件创建组合 最基本的最方便的组合方式，就是从提交的csv文件开始。你只需要那些预测的结果文件，不需要重新训练模型。这是对已经存在的模型最快的组合方式，在组队的时候玩起来更high。
+投票组合 我们先来看看简单的投票玩法。了解为什么模型组合可以降低错误率，为什么用低相关性的模型结果的组合效果更好。
+纠错码 在某个竞赛任务重，所有的信号都正确的排列，是非常重要的。如果我们有一个二进制信号序列如下： 1110110011101111011111011011 然而我们得到的是有一点点被破坏了的版本（有一位被取反了）： 1010110011101111011111011011
+一个机器学习例子 投票者的数量 相关性 在热带雨林覆盖类型预测题目中的应用
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2018/2018-05-09-talking-data/ class="link black dim">
+kaggle | talkingdata-adtracking-fraud-detection top 4%
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+题目链接:kaggle, talkingdata是一家中国公司，我将其理解成一个第三方的移动数据平台，移动端的广告分发是其一个重要业务，其中会出现一些恶意的点击，这个比赛的意义在于：他们想要通过机器学习的方式抓出其中的欺诈类型的点击。
+我的kaggle账号：https://www.kaggle.com/yyqing/competitions
+纪念一下自己的第一个solo 银牌 之前有个比赛进过前5%的，不过由于用了两个账号在轮番提交，被取消成绩了。这次算是记住教训了，就一个账号玩，依然solo，排名122/3967，public LB score 0.9898130, private LB 0.9821300, mark一下，离自己的mater目标迈出了重要的一步。另外值得庆幸的是，这是第若干次比赛成绩出来后，我的私榜排名是比公榜排名进步的，证明我的模型的泛化能力一直还行，至少是领先于kaggle上大家的平均水平的。
+这次比赛的最后一次ensemble结果提交是在回湖南的火车上完成的，正好看到kaggle社区总积分的新晋No.1&ndash;bestfitting的访谈博客，这位同学竟然是长沙人，也是蛮意外的。我努力向老乡学习吧。
+自评：又一场内存的战役 学到了很多，这些知识大概不会有哪本书籍有写，也不会有哪个视频教程说，都是自己摸爬滚打得来的，主要是对于大量数据的存，取，和运算。公司也没有给我集群机器玩的情况下，只能自己在谷歌云上玩了。当自费的玩大容量云主机的时候，全都按时收费，每一个GB内存和硬盘都要收费，每一个cpu core都收费的情况下，我会格外的在意，我会最大化的利用cpu，内存等"昂贵"资源。穷嘛，省时间就是省钱。
+接下来就说一些在有关方面的技巧吧
+习惯性的del不再使用的数据，then gc.collect() could save your asshole. 很多时候调整模型都要考虑使用或者更改不同的特征，当你有几十个特征，每个特征的存放都会占用GB级别的资源的时候，不要尝试一次性处理所有的特征。一个一个来，180Million的数据，一个特征，一次开一个进程，只计算一个特征，比如groupby过程中会爆炸到20多GB的内存，虽然最后计算完结果只有1GB内存。 不要尝试将包含所有特征的大表存成一个文件，将每一个特征保存成一个单独文件。之后要用到这个特征的时候，再读取进来join到dataframe中。提高灵活性，用哪些我就只载入哪些。 pandas读取大体积（1GB或者更大）csv文件速度很慢，特别是当我有几十个特征，每个特征都有一两GB的时候，pandas读取一个30GB的csv文件所花费的时间，绝对会让你崩溃。这个时候pandas.read_feather()和pandas.to_feather()是一个很好的方式，直接把一个dataframe的内容，以feather的格式，从内存dump到磁盘，不用管csv的index等等相关参数，就是dump什么样的内容到磁盘，读取回来还是什么内容在内存，重点是，速度比read_csv快了一个数量级。 关于pandas有点慢的问题，期间还认真尝试过dask和pandas on ray两个开源工具，dask功能齐全一些，在有一些操作比pandas快很多，不过在这次实践中对我的时间节约没有太多的帮助，所以没用。pandas on ray的话，显然还不太成熟，各种常用函数缺失，遂放弃。 每一次探索新特征的时候，一定要有一个较小的可用的可靠的快速的validation的方案，来验证新的特征是否有效。不然每次都用全量的数据来计算，时间成本太高。 每一次运行时间较长的实验（比如全量数据，比如超小的学习率）之前，一定得有一个debug pipeline，快速走完整个过程。 养成随时save model的好习惯。之前做图像深度学习的时候还知道存下很多个epoch完毕之后的模型文件，没成想lightGBM在遇到稍微大点的数据集的也会有各种坑。比如有时候会遇到训练到一半，内存炸了，程序崩了，比如有时候会train完毕后没有及时清理删除训练数据集，predict的时候内存炸了。想起mxnet的李沐博士的视频里说的，我就是不小心把整栋机房弄停电了嘛，你们跑了三四天的程序都不保存中间模型，那能怪我喽，谁叫你们不随时保存的。 哎呀，说多了都是泪，对于我个人来说都是浪费的钱啊，以后想起来什么泪点，我再补充到这个段落来。 高分答案集锦 接下来欣赏欣赏别人的思路吧
+3rd, bestfitting, NN based solution 在同时做另外一个google landmark的题目，正好发现最近的NN模型可以用，就在这里也直接用NN了。（大神就是可以模型广泛应用到各个业务上，难道以后深度模型要统治所有，彻底打败树么）。他的主要尝试了的是23个特征，用single LGBM做到了在public LB分数0.9817。（这分数比我最终提交的分数还高），这是他第一次在kaggle里用LGBM。
+设计了基于那23个特征，并且适当处理后(NA, out of vocabulary, scale)，用NN做到了公榜0.9820，然后论坛上发现click delta是个重要线索，于是多做了前五个和后五个click的时间序列加到网络里，用RNN来寻找点击序列的模式，模型可以做到公榜9821了。然后设计了不同的神经网络来增加多样性，都是很简单的，比如增加一些残差链接到dense层。四个模型，不单独考虑分数，只考虑综合起来的多样性带来的提升。在组装了神经网络和lgbm模型的成绩之后，分数到了9827。
+再加上n-fold和全部数据。稍微有点花时间了，一个fold就两个多小时，一块1080i的GPU.
+然后用之前的模型在整个数据集上预测的结果，再加上一些特征（基于IP的，app-os-channel），做了第二层神经网络,分数到了9833。最后的这个提升做好的时候，离比赛时间结束只有30个小时了，来不及其他改进了，时间限制，NN模型的弱点，等等，就酱。他用到的一些特征如下：
+channel 1011 os 544 hour 472 app 468 ip_app_os_device_day_click_time_next_1 320 app_channel_os_mean_is_attributed 189 ip_app_mean_is_attributed 124 ip_app_os_device_day_click_time_next_2 120 ip_os_device_count_click_id 113 ip_var_hour 94 ip_day_hour_count_click_id 91 ip_mean_is_attributed 74 ip_count_click_id 73 ip_app_os_device_day_click_time_lag1 67 app_mean_is_attributed 67 ip_nunique_os_device 65 ip_nunique_app 63 ip_nunique_os 51 ip_nunique_app_channel 49 ip_os_device_mean_is_attributed 46 device 41 app_channel_os_count_click_id 37 ip_hour_mean_is_attributed 21 (可以看出来几类特征比较有效，click_time_next，target mean code，count，unique count，还有就是大多特征都是基于ip和其他特征组合来的)
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2018/2018-03-30-opt-image-training/ class="link black dim">
+记近两天调优图像训练的过程
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+起因 拿来小伙伴的代码，数据预处理阶段程序就跪了，找了找原因，内存用完了。要来他的top命令截图一看，呵呵，0.2t，小伙伴用的学校实验室的最好的机器，256GB的内存，玩起来当然没所谓，我用的公司的机器就略微寒酸了，内存32GB。我这个要玩的话，只能分批次读入图片，处理。 what i&rsquo;ve done 认真找了找tensorflow的分批次读取数据的方案，有方法，找到了tf dataset的文档，功能强大，完全，可以一批一批高效的读进来数据给显卡时刻准备着。 后来还是放弃了tf的路子，现有的代码全是keras，把tf的代码嵌入进来，略微费劲儿了一点，况且我这次实验目标只是一个短期小实验，如果之后需要上线产品用再改用tf dataset或者TFRecord好了，在大量数据情况下配合集群hdfs会有更好的成效。 将来用的时候可以参考的这几个链接，描述tf读取数据的技巧： tensorflow 官网链接1 tensorflow 官网链接2 博客 a 博客 b 找到了keras里有也有分批次读取数据的玩法，叫做fit_generator, 找到了官网文档，然后也找到了一位斯坦福同学的博客，我就按着这两个做下来，恩，完成了，效果不错。 """stream data by batch""" import numpy as np import keras from keras.utils import np_utils from PIL import Image class DataGenerator(keras.utils.Sequence): def __init__(self, data, batch_size=128, dim=(32, 128, 3), n_classes=21000, shuffle=True): """ :param data: 包括了图片名称，路径，四个标签 :param batch_size: 一批训练128张图片 :param dim: 图片的维度 :param n_classes: 有多少种汉字 :param shuffle: 每个epoch末尾，是否打乱index顺序 """ self.
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2018/2018-02-24-sp-society-camera-model-identification/ class="link black dim">
+kaggle | sp-society-camera-model-identification 看图认相机
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+此题目标为根据照片来判断牌照相机的型号
+这件事情的原理是：每一家设备都有自己的数字图像处理算法，总会有属于自己的图像特征
+这件事情的意义在于：警察破案，图片是否有被软件修改等等
+我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+0 自评 自己做的第二个图像类的题目，最大的收获就是体验到了extra data的威力，在论坛区看到有大家讨论说使用额外的一些的数据，50GB的训练集果然效果不错，直接把我的public LB成绩从0.87提升到0.92，后来经过自己的各种transfer learn和fine tune keras里的一些模型，然后组合，在private LB拿到了0.96的分数。看看排名前几的大神的总结里，很多人都使用了比我找的数据集更大的数据集，所以准确率也比我高出几个数量级（第一名0.9896）。
+训练大量图像是一件非常非常消耗时间的事情，优化的方向有这么几个：1)切取大图像中的小块来训练;2)显卡计算能力利用率提高，注意显卡的频率，内存，注意程序中的CPU处理部分，做到及时处理一直给显卡喂数据，别让显卡时忙时闲 3)算法的优化，能并行做计算的部分尽量，不过注意估算好显卡的内存消耗，过大过小都是一种浪费 4)transfer来的不同的模型，参数数量不一样，最小图片像素也不一样 5) 做好pipeline
+1 高分答案集锦 第一名 Pavel Pleskov 模型 参考了Andres的代码，用pyTorch实现了，如下模型有较好的效果
+984_densenet201_antorsaegen_29_0.98624 976_densenet201_antorsaegen_62_0.98271 977_resnet50_antorsaegen_119_val_0.9815 976_DenseNet201_do0.3_doc0.0_avg-epoch072-val_acc0.981250 967_InceptionResNetV2_do0.1_avg-epoch154-val_acc0.965625 962_Xception_do0.3_avg-epoch079-val_acc0.991667 (leaky validation, pls ignore) 所有模型的输入图像都用的512*512，并且都是Test Time Augmentation(测试时也用增强过的数据)。这里是最大败笔，因为后来发现及时用较小size的图片可以更快的训练，然后更多的TTA可以达到相似的准确率
+数据 我服，他另外下载了300GB从flickr和yandex.foto的图片。过滤掉分别率不适合的图片，质量不好的图片（图片质量可以用ImageMagick得到），自己用selenium做爬虫抓来的图片。
+硬件 五个队员，有五个1080ti和一个1070
+提交 平均所有的TTA所有的模型，by power mean powers of 1 2 4.最后有较大的LB overfit, public LB 0.991 private LB 0.985 通过hold-out，融合预测结果。20个xgboost，20个lightGBM，12个Keras，public LB 0.986, private LB 0.989. 关键点 收集尽可能多的图像数据，做好清理 尝试更小的图片切图，尝试所有的架构类型 LB probing是恶魔，相信自己的CV.
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2018/2018-02-10-kaggle-expert-top-1000/ class="link black dim">
+kaggle | Expert成就达成 社区top1000成就达成
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+Congrats!
+我的kaggle ID: https://www.kaggle.com/yyqing
+半年之前转到机器学习方向时，给自己订的目标是在kaggle比赛获得两枚铜牌，就可以kaggle expert称号了。彼时kaggle上的grand master + master + expert一共约4000人。
+17年11月底，在平台上拿到第一块铜牌（一般比赛top10%就可以获得铜牌）。
+17年12月份，去上海参加谷歌开发者大会，听李飞飞的演讲中，也有提到说kaggle社区前1000名中有65位中国人，心中便埋下了一个目标，我要是能进top1000那也不错。
+18年1月份，在kaggle的几项比赛中越来越顺手，感觉可以在过年前拿下4块铜牌。
+于是2月10号，哈哈~，第4块铜牌到手，rank 872，小目标实现啦！
+从去年秋天开始做第一个题目，参赛了7次，主要目的是通过比赛学习和长见识，所以全是solo，七次有四次获得铜牌，当前rank 872 / 77033.
+参加的四个题目里，先参加的两个是预测回归类的，后两个是图像识别类的，因为工作中的目标将要和图像有关，所以开始做图像类的题目了。四次比赛从public LB到private LB的排名全都是shake up，多次验证了论坛上各位大佬反复强调的"trust your local cv"的名言警句。这么做题实践下来，对自己的理论知识还是有比较扎实的验证了。
+在社区中阅读别人的代码评论，参与讨论，受益匪浅，进步较快，再接再厉。
+p.s. 下一个小目标，先来个银牌吧，再搞个master称号啥啥的
+p.p.s. top 100名也是不错的哟，小伙子要不要试试？
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2018/2018-01-25-statoil-iceberg-classifier-challenge/ class="link black dim">
+kaggle | statoil-iceberg-classifier-challenge 捡到铜牌一个
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+此题目标为识别图像中是否有冰山，数据图像均为卫星拍摄海面获得
+我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+0 自评 第一次开始尝试图像的题目，和普通回归类的题目还真是不一样，除了修改一些别人的模型看得懂别人模型之外，自己还没有水平直接改进到10%。coursera的课程知识不够用了，觉得自己有知识瓶颈了，计划把cs231n刷一遍（中文字幕的，编程作业一定自己完成的），目标要至少做到：在不做实验的情况下，增删改查模型的各个地方，对自己的运行结果，得利用先验理论知识进行预判。这样的话，可以在实践各种方案的同时，持续强化自己对理论知识的深刻理解。
+尝试使用了keras，确实好用，方便快捷，生成图像的函数ImageDataGenerator很好用。不过听说pytorch的速度比tensorflow要快啊，keras的底端默认是调用的tensorflow，下次编程实践试试pytorch。
+有几次自己思考过后，改了改模型运行完提交之后，看到public LB得分下降了，就没有继续尝试了，然后赛后才看到那几次在private LB上的得分还升高了呢。所以啊，还是得相信自己的知识，不应该一味的看着public LB然后怀疑自己的知识。
+1 高分答案集锦 第一名 David 画图理解图像很重要,把数据项inc_angle可视化出来很重要,他也发现了
+inc_angle的重要性,不同类型的分类，很重要。
+始终坚信自己的本地cv很重要。
+他有个cnn pipeline，直接先100个模型训练一下看看，惊掉我下巴有没有
+对inc_angle做聚类算法，识别分类，确认此参数非常有效，logloss对于极端值错误惩罚比较严重，设置一个阈值好了
+重新针对另外的类别，训练100多个模型，这下训练效果非常好了，对比其他参赛者，有显著提升
+附上作者原文:So in summary, 200+ CNN models, a handful of clustering algorithms, a few different thresholds, a heavy reliance on inc_angle, don’t push log_loss thresholds to the extreme, trust your local CV, and you have a formula for a winning solution.
+</div>
+</div>
+</div>
+</div>
+</section>
+<ul class="pagination pagination-default">
+<li class="page-item disabled">
+<a aria-disabled=true aria-label=First class=page-link role=button tabindex=-1><span aria-hidden=true>&#171;&#171;</span></a>
+</li>
+<li class="page-item disabled">
+<a aria-disabled=true aria-label=Previous class=page-link role=button tabindex=-1><span aria-hidden=true>&#171;</span></a>
+</li>
+<li class="page-item active">
+<a aria-current=page aria-label="Page 1" class=page-link role=button>1</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/2/ aria-label="Page 2" class=page-link role=button>2</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/3/ aria-label="Page 3" class=page-link role=button>3</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/4/ aria-label="Page 4" class=page-link role=button>4</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/5/ aria-label="Page 5" class=page-link role=button>5</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/2/ aria-label=Next class=page-link role=button><span aria-hidden=true>&#187;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/page/11/ aria-label=Last class=page-link role=button><span aria-hidden=true>&#187;&#187;</span></a>
+</li>
+</ul></article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

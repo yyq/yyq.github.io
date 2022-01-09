@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>unix on Young Story</title><link>https://yyq.github.io/tags/unix/</link><description>Recent content in unix on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 21 Dec 2012 23:52:01 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/unix/index.xml" rel="self" type="application/rss+xml"/><item><title>重拾APUE</title><link>https://yyq.github.io/posts/2012/2012-12-21-zhong-shi-apue/</link><pubDate>Fri, 21 Dec 2012 23:52:01 +0000</pubDate><guid>https://yyq.github.io/posts/2012/2012-12-21-zhong-shi-apue/</guid><description>&lt;p>&lt;strong>APUE→Advanced Programming in the UNIX Environment&lt;/strong>&lt;/p>
+&lt;p>&lt;strong>UNIX环境高级编程&lt;/strong>&lt;/p>
+&lt;h3 id="为什么说是重拾呢">为什么说是重拾呢&lt;/h3>
+&lt;p>第一次接触这本书是在大三的那个暑假，在ibm aix技术支持的组实习。正式报到之前，Tao给发邮件说了我们入门需要参考的数据，首推了这两本书：&lt;/p>
+&lt;p>&lt;a href="http://www.apuebook.com/">Advanced Programming in the UNIX Environment, Second Edition&lt;/a>&lt;/p>
+&lt;p>&lt;a href="http://www.amazon.com/Design-UNIX-Operating-System-Maurice/dp/0132017997">Design of the UNIX Operating System&lt;/a>&lt;/p></description></item></channel></rss>

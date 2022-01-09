@@ -1,0 +1,281 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<link href=/posts/index.xml rel=alternate type=application/rss+xml title="Young Story">
+<link href=/posts/index.xml rel=feed type=application/rss+xml title="Young Story">
+<meta property="og:title" content="Posts">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yyq.github.io/posts/">
+<meta itemprop=name content="Posts">
+<meta itemprop=description content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="Posts">
+<meta name=twitter:description content>
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class="pb3-m pb6-l bg-black">
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+<div class="tc-l pv3 ph3 ph4-ns">
+<h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+Posts
+</h1>
+</div>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="pa3 pa4-ns nested-copy-line-height nested-img">
+<section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray"></section>
+<section class="flex-ns flex-wrap justify-around mt5">
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-01-05-attackapi-study-0-copy/ class="link black dim">
+AttackAPI安装教程
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+本文用来描述部署AttackAPI环境，网上搜了一些教程和内容，有的描述太简单，有的描述已过时，总有这样那样的问题，自己又是一个小白前端，摸索了好一会儿才搞明白，于是记录此文。
+0x00 AttackAPI简介 AttackAPI是一个基于Web的攻击构造库，开源项目，作者此软件的官网在http://www.gnucitizen.org/blog/attackapi/.
+曾经的源代码放在google code上，不过后来此网站关门了，有很多人将此工程收藏在github上了，在github上搜索attackapi可以得到源代码。
+0x01 配置 为了防止以后代码失传，我fork了一份到我自己账户下，https://github.com/yyq/attackapi.
+下载好代码后，看了看目录，只有一个Tags目录，目测是一个典型的SVN结构，需要自己整理一下文件切换到对应版本号.
+看到build.xml文件，知道此工程需要ant一下
+发现可以ant命令没有错误的最高版本号是2.5.0a
+web服务器，为了省事，用windows环境，下载了https://www.appserv.org/en/按照默认选项一路安装完成，启动apache服务，把attackapi文件夹copy到C:\AppServ\www目录下
+0x02 hell0world 用火狐浏览器打开http://localhost/attackapi/build/tests/firetest-interactive.htm, 然后在firebug的控制台里，输入命令dir(AttackAPI),可以看到如下的信息则证明基本配置成功了： 0x03 踩过的坑 找到正确的代码格式，了解svn apache启动失败，端口被其他程序占用 AppServ的运行会需要各个版本的vc11,vc140,vc10等等.dll文件的支持，好在它都会自动安装 ant编译步骤不能少，不然文件结构不正确，导致htm中一些js文件引用失败 下一个步骤是了解和使用attackapi了，敬请期待下一篇日志吧。
+0x04 两天后的更新： 囧了，按照书上试了半天，attackapi里有些函数已经不顶用了，看了看源代码才知道有的方式过时了。例如访问历史浏览过的网页scanHistory这个功能，attackapi里用的方法是利用a:visited加网址，然后根据display属性来判断，这一招几年前应该还管用。
+近年随着大家对web安全防范的意识越来越高，过去的很多方法都失效，得用新的方法来搞定。
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-01-03-xss-study-0/ class="link black dim">
+XSS跨站脚本攻击剖析与防御-读书笔记
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+初次了解cross-site scripting, 阅读完第一章第二章，感觉需要精读和理解的知识点不少，先摘抄下来，以供之后查阅。
+什么是xss跨站脚本？ 计算机安全漏洞，web应用程序中的，是由于web应用程序对用户的输入过滤不足而产生的
+xss的分类 反射型：主要用于将恶意脚本附加到URL地址的参数中。特点是用户点击时触发，而且只执行一次，非持久化，所以称为反射型。常出现在搜索栏，用户登入口，常用来窃取客户端Cookies或进行钓鱼欺骗
+持久型：攻击者实现将恶意javascript代码上传或者存储在漏洞服务器中，只要受害者浏览包含此恶意代码的页面，就会被执行。一般出现在网站的留言，评论，博客日志等交互处。
+发掘 用&lt;textarea>来闭合前后的对应的标记，中间写&lt;script>代码，是一个典型的持久型XSS，并且在管理员查看留言时才出发，攻击的对象是后台管理员。
+程序没有过滤任何有害字符，从而导致一个持久型xss的产生
+xss的构造剖析 利用&lt; >标记注射html/javascript, &lt;script>alert('XSS');&lt;/script> 防御：过滤&lt; >和&lt;script>字样 利用HTML标签属性值执行XSS &lt;table background="javascript:alert(/xss/)">&lt;/table> &lt;img src="javascript:alert('xss');" 防御：过滤&lt;javascript>等关键字 空格回车Tab，一类的键位符 原因比较复杂，JavaScript语句通常以分号结尾，如果javascript引擎确定一个语句是完整的，而这一行的结尾有换行符，那么可以省略分号。有时候，引擎没有把换行符解释为语句的终止符，js会继续处理发现内容，直到遇到分号或者完整语句. 拆分关键字的技巧成功执行了跨站脚本代码 &lt;img src="javas cript: alert(/xss/)" witdth=100> 对标签属性值的转码
+t的ASCII码值是116，可以用&#116来表示，冒号可以用&#58来表示，javascript:alert('xss');转码后可以是javascrip&#116&#58alert(/xss/)
+防范利用HTML标签属性值编码的XSS,最好也过滤&#\等字符
+产生自己的事件
+测试事件型的跨站脚本，还有大量的事件可以运用：
+&lt;input type=&ldquo;button&rdquo; value=&ldquo;click me&rdquo; onclick=&ldquo;alert(&lsquo;click me&rsquo;)&rdquo; onResume onReverse onRowDelete onSeek &mldr; ```
+利用CSS跨站解析
+CSS中的expression执行js代码；HTML标签的style属性执行js代码，如下两个例子
+&lt;dev style="width: expression(alert('xss'));">
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2016/2016-12-27-arp-attack-defence/ class="link black dim">
+基于ARP协议的攻防
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+研究了一下ARP攻击和防御，给感兴趣的同学分享一下知识
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2016/2016-12-27-rubikcube/ class="link black dim">
+玩魔方
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+因为自己平常玩魔方嘛，给同事介绍介绍，分享一下
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2016/2016-12-24-javascript-dom/ class="link black dim">
+JavaScript DOM 编程艺术 读书笔记
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+读后感 第一次认真看完前端的书籍，理解到了网页上的“MVC”，即：结构，样式，行为。
+Model 模型，在此处即结构，DOM树，网页的核心内容，一个网页，可以没有行为，也可以没有样式，但是一定得有结构；在html结构中，可以指定样式，也可以嵌入行为。
+View 样式，网页的外观等，大多用CSS来实现；
+Controller 行为，最灵活的一个部分，让网页上的一切“动”起来的灵魂，大多用JavaScript来实现。在JavaScript中，可以修改结构，也可以修改样式。
+写网站的时候，一定要注意的一点就是：平稳退化。
+摘抄笔记 这本书的重点是JavaScript，笔记中如果没有特别描述，都是在讲JavaScript.
+全局变量，可以在脚本的任何位置被引用。 var关键字可以明确的为函数变量设定作用域。如果在某个函数中使用了var，那么变量就将被视为一个局部变量，反之，如果没有使用var，那个变量就将被视为一个全局变量。 在定义一个函数时，我们一定要把它内部的变量全部明确地声明为局部变量。总是使用var关键字，就能避免任何形式的二义性隐患 DOM===Document Object Model JavaScript里的对象可以分为三种类型。 用户定义对象：程序员自己创建的。 内建对象：内建在JavaScript语言里的对象，Array,Math,Date等 宿主对象：由浏览器提供的对象。例如：window DOM的原子是元素节点 元素节点的nodeType === 1 属性节点的nodeType === 2 文本节点的nodeType === 3 &lt;p> id='x'>Hello Motor!&lt;/p> 包含在p元素里的文本是另一种节点，他是p元素的第一个子节点。文本的内容可以用alert(x.childNodes[0].nodeValue);显示出来 如果使用JavaScript，就要确认，这么做会对用户的浏览体验产生怎样的影响，还有个更重要的问题，如果用户的浏览器不支持JavaScript该怎么办？所谓的平稳退化，就是虽然某些功能无法使用，但是最基本的操作仍能顺利完成 接上一条，把链接类节点里，href属性设置为真实存在的URL地址后，即使JavaScript被禁用，这个链接也是可用的，这是一个经典的平稳退化的例子 if(!document.getElementsByTagName) return false,具有良好的向后兼容性。 出于可读性的考虑，把return false的语句尽量全部集中到函数的开头部分。 共享onload事件 function addLoadEvent(func){ var oldonload = window.onload; if (typeof window.onload != 'function'){ window.onload =func; }else{ window.onload = function(){ oldonload(); func(); } } } 千万不要忘记并非所有的用户都使用鼠标。比如视力残疾的用户往往无法看清屏幕，更喜欢使用键盘 结构与行为的分离程度，越大越好 JavaScript通过创建新元素和修改现有元素来改变网页结构 把结构，行为和样式分开永远都是一个好主意，避免在&lt;body>部分乱用&lt;script>标签，避免使用document.
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2016/2016-08-22-i-m-back/ class="link black dim">
+I'm back
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+许久没更新博客了，装修房子这事儿实在是太忙了，比上班还累，劳神劳心费时间。不多废话，Let&rsquo;s see the checkpoint and milestones：
+生活 新房，装修 工作 L1签证办好了，可以出差美帝了，可以有本事带老婆出国生小孩了。读小学时候总是有听说那些移民美国的中国人，读大学了还羡慕那些去美国读书在美国上班的别人家的孩子。Right now，我这也算是具备申请绿卡的第一步条件了，却没有了太多的想法，杭州的工作生活也挺好的，最重要的是家人都还在中国呢 业余 给三个github上的repo贡献了代码，一个10000多星的(fastlane)，一个1000多星的(berkshelf)，还有一个10星的(chef-osx/xcode，不是为了贡献代码而贡献，工作中有用到这几个ruby的库，遇到有错或者不合理的地方，顺手就改了，贡献社区这种感觉蛮爽的，利人利己 自己写了个flickrBackup来把自己所有保存在flickr上的照片原图下载来，主要是因为flickr相关官方政策改了，要收钱，然而我的15000多张的照片，手动点原图下载是不可能的，还好flickr有api文档，不然要哭晕在厕所 自己写了个ServerSelector来自动连接VPN服务器，花钱买的vpn服务，服务器世界各地有一票，连哪个最快，写了个程序自动查，查好了哪个最快然后自动连接。以后不用像中奖一样随机选服务器了，有程序一键搞定，也算是懒人有懒人的福气，DevOps Engineer总是想着automation everything
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2016/2016-06-11-mariage-damour/ class="link black dim">
+新琴首秀之《梦中的婚礼》MARIAGE D'AMOUR
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-07-26-commit-a-bug-to-wooyun/ class="link black dim">
+在乌云提交一个漏洞成功并注册成为白帽子
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+厂商确认了，并且给评价等级为中，给了rank10。
+从去年我想开始注册乌云帐号开始，终于自己有能力提交一个简单的漏洞了，YES！
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-07-19-archsummit2015/ class="link black dim">
+参加ArchSummit2015有感
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+作为一个才上班一年多的新人，可以和公司的高级领导，architect，principalSE一起参加架构师峰会，深感荣幸，感谢一下我司MSTR出的门票钱和我的leader对我的信任。
+简介 为期两天的会终于结束了，内容非常丰富，很多很多有价值的分享，听都听不过来，时间上略紧，两天结束了，人也有些疲劳。
+这次代表公司来参加这个会议，我最大的收获就是这个词：微服务
+微服务 微服务这个概念：AWS，JavaChampion，青云，七牛等等都重点提到了若干次。并且很多创业公司都在使用docker（或者其他虚拟化，资源隔离）来做自己的微服务，土豪公司都花钱从aws买各种微服务。
+请自行google各种微服务的概念以及实践，我就不赘述了。
+个人观点1：把服务（或者产品）很好的解耦合，做成很多个拥有独立功能集合的微服务（或者模块），将会很有利于将来各种扩展和复用，具体到DevOps这方面的话，微服务可以做到更好的持续集成和敏捷开发。
+个人观点2：微服务是方法，而不是目的。不要为了使用微服务而去「微」。解耦一个产品或者服务，需要有较好的架构观念，如果解耦好了，微服务会非常有利于将来的发展，如果解耦出的架构有缺陷或者某个东西本身就很不适合解耦，那么微服务也会给开发运维带来灾难。
+PS. The two-piaaz team这个概念也在好几个session被提到，我理解下来的意思就是，什么样大小的团队开发一个微服务比较合适呢？当该团队吃两个12寸的pizza能吃饱的时候。In the US, eight people is perfect for a microservice team. 美国人挺能吃的哈。
+其他印象深刻的session 360的开源：360的工程师那个讲开源的session给我留下了深刻的印象。主要分享的不是开源的概念，分享的是他们团队怎么做的，他们自己实践的方式，very impressive to me.
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-07-11-ios-security-learn-3/ class="link black dim">
+iOS逆向工程学习日记3--实践
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+Results： 学会了使用反汇编工具hopper，找了一些个程序，试了试，有的二进制文件还是比较容易分析的，有的比较难，我暂时还不会。我搞定的成果如下：
+Mac OS X，迅雷，VIP离线下载权限
+Mac OS X，iExplorer，免注册
+iOS，搜狐视频，跳过所有广告，解除美剧下载限制
+update:
+iOS PPTV，乐视视频，可以观看VIP影片
+ Key： 改掉几个函数的返回值就好了，类似isRegister这个函数或者isVIP这样的函数，看看逻辑，分析分析代码流程，再把关键位置的汇编代码改掉，即可。
+x86汇编指令，mov eax, 0x1，把数字1放到eax寄存器，通常函数的返回值存在eax中，然后用ret指令
+arm汇编指令，movs r0, #0x1，寄存器用r0
+ Thinking： 想要改变一个iOS软件的行为，可以从三个层次去着手：
+改掉汇编代码，重新生成新的可执行文件，替换
+hook一些函数，例如Theos的常用手法
+拦截并且修改网络请求
+ 
+</div>
+</div>
+</div>
+</div>
+</section>
+<ul class="pagination pagination-default">
+<li class=page-item>
+<a href=/posts/ aria-label=First class=page-link role=button><span aria-hidden=true>&#171;&#171;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/page/4/ aria-label=Previous class=page-link role=button><span aria-hidden=true>&#171;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/page/3/ aria-label="Page 3" class=page-link role=button>3</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/4/ aria-label="Page 4" class=page-link role=button>4</a>
+</li>
+<li class="page-item active">
+<a aria-current=page aria-label="Page 5" class=page-link role=button>5</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/6/ aria-label="Page 6" class=page-link role=button>6</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/7/ aria-label="Page 7" class=page-link role=button>7</a>
+</li>
+<li class=page-item>
+<a href=/posts/page/6/ aria-label=Next class=page-link role=button><span aria-hidden=true>&#187;</span></a>
+</li>
+<li class=page-item>
+<a href=/posts/page/11/ aria-label=Last class=page-link role=button><span aria-hidden=true>&#187;&#187;</span></a>
+</li>
+</ul></article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

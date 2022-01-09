@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CS on Young Story</title><link>https://yyq.github.io/tags/cs/</link><description>Recent content in CS on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 03 Jan 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/cs/index.xml" rel="self" type="application/rss+xml"/><item><title>XSS跨站脚本攻击剖析与防御-读书笔记</title><link>https://yyq.github.io/posts/2017/2017-01-03-xss-study-0/</link><pubDate>Tue, 03 Jan 2017 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2017/2017-01-03-xss-study-0/</guid><description>初次了解cross-site scripting, 阅读完第一章第二章，感觉需要精读和理解的知识点不少，先摘抄下来，以供之后查阅。
+什么是xss跨站脚本？ 计算机安全漏洞，web应用程序中的，是由于web应用程序对用户的输入过滤不足而产生的
+xss的分类 反射型：主要用于将恶意脚本附加到URL地址的参数中。特点是用户点击时触发，而且只执行一次，非持久化，所以称为反射型。常出现在搜索栏，用户登入口，常用来窃取客户端Cookies或进行钓鱼欺骗
+持久型：攻击者实现将恶意javascript代码上传或者存储在漏洞服务器中，只要受害者浏览包含此恶意代码的页面，就会被执行。一般出现在网站的留言，评论，博客日志等交互处。
+发掘 用&amp;lt;textarea&amp;gt;来闭合前后的对应的标记，中间写&amp;lt;script&amp;gt;代码，是一个典型的持久型XSS，并且在管理员查看留言时才出发，攻击的对象是后台管理员。
+程序没有过滤任何有害字符，从而导致一个持久型xss的产生
+xss的构造剖析 利用&amp;lt; &amp;gt;标记注射html/javascript, &amp;lt;script&amp;gt;alert('XSS');&amp;lt;/script&amp;gt; 防御：过滤&amp;lt; &amp;gt;和&amp;lt;script&amp;gt;字样 利用HTML标签属性值执行XSS &amp;lt;table background=&amp;quot;javascript:alert(/xss/)&amp;quot;&amp;gt;&amp;lt;/table&amp;gt; &amp;lt;img src=&amp;quot;javascript:alert('xss');&amp;quot; 防御：过滤&amp;lt;javascript&amp;gt;等关键字 空格回车Tab，一类的键位符 原因比较复杂，JavaScript语句通常以分号结尾，如果javascript引擎确定一个语句是完整的，而这一行的结尾有换行符，那么可以省略分号。有时候，引擎没有把换行符解释为语句的终止符，js会继续处理发现内容，直到遇到分号或者完整语句. 拆分关键字的技巧成功执行了跨站脚本代码 &amp;lt;img src=&amp;quot;javas cript: alert(/xss/)&amp;quot; witdth=100&amp;gt; 对标签属性值的转码
+t的ASCII码值是116，可以用&amp;amp;#116来表示，冒号可以用&amp;amp;#58来表示，javascript:alert('xss');转码后可以是javascrip&amp;amp;#116&amp;amp;#58alert(/xss/)
+防范利用HTML标签属性值编码的XSS,最好也过滤&amp;amp;#\等字符
+产生自己的事件
+测试事件型的跨站脚本，还有大量的事件可以运用：
+&amp;lt;input type=&amp;ldquo;button&amp;rdquo; value=&amp;ldquo;click me&amp;rdquo; onclick=&amp;ldquo;alert(&amp;lsquo;click me&amp;rsquo;)&amp;rdquo; onResume onReverse onRowDelete onSeek &amp;hellip; ```
+利用CSS跨站解析
+CSS中的expression执行js代码；HTML标签的style属性执行js代码，如下两个例子
+&amp;lt;dev style=&amp;quot;width: expression(alert('xss'));&amp;quot;&amp;gt;</description></item></channel></rss>

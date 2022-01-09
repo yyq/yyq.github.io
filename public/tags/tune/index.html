@@ -1,0 +1,83 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>tune | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<link href=/tags/tune/index.xml rel=alternate type=application/rss+xml title="Young Story">
+<link href=/tags/tune/index.xml rel=feed type=application/rss+xml title="Young Story">
+<meta property="og:title" content="tune">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yyq.github.io/tags/tune/">
+<meta itemprop=name content="tune">
+<meta itemprop=description content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="tune">
+<meta name=twitter:description content>
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class="pb3-m pb6-l bg-black">
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+<div class="tc-l pv3 ph3 ph4-ns">
+<h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+tune
+</h1>
+</div>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="cf pa3 pa4-m pa4-l">
+<div class="measure-wide-l center f4 lh-copy nested-copy-line-height nested-links nested-img mid-gray">
+<p>Below you will find pages that utilize the taxonomy term “tune”</p>
+</div>
+</article>
+<div class="mw8 center">
+<section class="flex-ns flex-wrap justify-around mt5">
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-10-23-xgboost-tune/ class="link black dim">
+xgboost模型调试攻略
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+最近做题的感受，结合网上看来的资料，总结如下：
+xgboost python api 描述 xgboost.DMatrix, 是个类，存的是数据矩阵，自带内存优化，训练加速，可以从numpy.arrays初始化 xgboost.Booster，是个类，模型所在地，包括了较低层次的routines for training,prediction and evalution xgboost.train，是个函数，给定参数来训练booster，返回一个训练完成的booster xgboost.cv，是个函数，给定参数做交叉验证，返回评估历史，list(string) scikit-learn包装的api, xgboost.XGBRegressor, xgboost.XGBClassifier 画图有关的api, xgboost.plot_importance, 根据fitted trees画出重要性，返回的是matplotlib Axes xgboost.plot_tree，画出指定的树 xgboost.to_graphviz,将指定的树转化成graphviz实例 about parameter tune 选用一个相对高一点的learning rate例如0.1，一般选用0.05到0.3之间对于大部分问题都可以了。定了学习率，然后决定合适数量的树，用cv 调整树的特定参数，比如max_depth,min_child_weight,gamma,subsample,colsample_bytree 调整正则化参数例如lambda和alpha，可以降低模型复杂度和提高性能 降低learning rate，再继续优化参数们 tune step by step 第一步，确定learning rate和estimator的数量 不过我们需要初始化一些基本变量，例如：
+max_depth=5，一般用3到10，456都是不错的starting points min_child_weight=1，选择较小的值是因为数据分类很不对称并且叶子节点有可能具有较小的group size gamma=0，选择0.1或者0.2都可以，稍后一定需要调试 subsample colsample_bytree=0.8, 典型的选择在0.5到0.9之间 scale_pos_weight=1, 数据类别高度不平衡 learning rate就先用0.1，先用cv来寻找最优的estimators
+第二步，max_depth和 min_child_weight 调整着两个是因为它们对模型结果有很大的影响，开始的测试用的范围广泛一点，以后再用较小的范围来确定具体选择为多少。for example: max_depth(3,10,2) min_child_weight(1,6,2)
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

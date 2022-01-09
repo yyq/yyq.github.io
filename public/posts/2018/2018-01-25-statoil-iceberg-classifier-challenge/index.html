@@ -1,0 +1,263 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>kaggle | statoil-iceberg-classifier-challenge 捡到铜牌一个 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="此题目标为识别图像中是否有冰山，数据图像均为卫星拍摄海面获得
+我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+0 自评 第一次开始尝试图像的题目，和普通回归类的题目还真是不一样，除了修改一些别人的模型看得懂别人模型之外，自己还没有水平直接改进到10%。coursera的课程知识不够用了，觉得自己有知识瓶颈了，计划把cs231n刷一遍（中文字幕的，编程作业一定自己完成的），目标要至少做到：在不做实验的情况下，增删改查模型的各个地方，对自己的运行结果，得利用先验理论知识进行预判。这样的话，可以在实践各种方案的同时，持续强化自己对理论知识的深刻理解。
+尝试使用了keras，确实好用，方便快捷，生成图像的函数ImageDataGenerator很好用。不过听说pytorch的速度比tensorflow要快啊，keras的底端默认是调用的tensorflow，下次编程实践试试pytorch。
+有几次自己思考过后，改了改模型运行完提交之后，看到public LB得分下降了，就没有继续尝试了，然后赛后才看到那几次在private LB上的得分还升高了呢。所以啊，还是得相信自己的知识，不应该一味的看着public LB然后怀疑自己的知识。
+1 高分答案集锦 第一名 David   画图理解图像很重要,把数据项inc_angle可视化出来很重要,他也发现了
+  inc_angle的重要性,不同类型的分类，很重要。
+  始终坚信自己的本地cv很重要。
+  他有个cnn pipeline，直接先100个模型训练一下看看，惊掉我下巴有没有
+  对inc_angle做聚类算法，识别分类，确认此参数非常有效，logloss对于极端值错误惩罚比较严重，设置一个阈值好了
+  重新针对另外的类别，训练100多个模型，这下训练效果非常好了，对比其他参赛者，有显著提升
+  附上作者原文:So in summary, 200+ CNN models, a handful of clustering algorithms, a few different thresholds, a heavy reliance on inc_angle, don’t push log_loss thresholds to the extreme, trust your local CV, and you have a formula for a winning solution.">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="kaggle | statoil-iceberg-classifier-challenge 捡到铜牌一个">
+<meta property="og:description" content="此题目标为识别图像中是否有冰山，数据图像均为卫星拍摄海面获得
+我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+0 自评 第一次开始尝试图像的题目，和普通回归类的题目还真是不一样，除了修改一些别人的模型看得懂别人模型之外，自己还没有水平直接改进到10%。coursera的课程知识不够用了，觉得自己有知识瓶颈了，计划把cs231n刷一遍（中文字幕的，编程作业一定自己完成的），目标要至少做到：在不做实验的情况下，增删改查模型的各个地方，对自己的运行结果，得利用先验理论知识进行预判。这样的话，可以在实践各种方案的同时，持续强化自己对理论知识的深刻理解。
+尝试使用了keras，确实好用，方便快捷，生成图像的函数ImageDataGenerator很好用。不过听说pytorch的速度比tensorflow要快啊，keras的底端默认是调用的tensorflow，下次编程实践试试pytorch。
+有几次自己思考过后，改了改模型运行完提交之后，看到public LB得分下降了，就没有继续尝试了，然后赛后才看到那几次在private LB上的得分还升高了呢。所以啊，还是得相信自己的知识，不应该一味的看着public LB然后怀疑自己的知识。
+1 高分答案集锦 第一名 David   画图理解图像很重要,把数据项inc_angle可视化出来很重要,他也发现了
+  inc_angle的重要性,不同类型的分类，很重要。
+  始终坚信自己的本地cv很重要。
+  他有个cnn pipeline，直接先100个模型训练一下看看，惊掉我下巴有没有
+  对inc_angle做聚类算法，识别分类，确认此参数非常有效，logloss对于极端值错误惩罚比较严重，设置一个阈值好了
+  重新针对另外的类别，训练100多个模型，这下训练效果非常好了，对比其他参赛者，有显著提升
+  附上作者原文:So in summary, 200+ CNN models, a handful of clustering algorithms, a few different thresholds, a heavy reliance on inc_angle, don’t push log_loss thresholds to the extreme, trust your local CV, and you have a formula for a winning solution.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2018/2018-01-25-statoil-iceberg-classifier-challenge/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2018-01-25T00:00:00+00:00">
+<meta property="article:modified_time" content="2018-01-25T00:00:00+00:00">
+<meta itemprop=name content="kaggle | statoil-iceberg-classifier-challenge 捡到铜牌一个">
+<meta itemprop=description content="此题目标为识别图像中是否有冰山，数据图像均为卫星拍摄海面获得
+我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+0 自评 第一次开始尝试图像的题目，和普通回归类的题目还真是不一样，除了修改一些别人的模型看得懂别人模型之外，自己还没有水平直接改进到10%。coursera的课程知识不够用了，觉得自己有知识瓶颈了，计划把cs231n刷一遍（中文字幕的，编程作业一定自己完成的），目标要至少做到：在不做实验的情况下，增删改查模型的各个地方，对自己的运行结果，得利用先验理论知识进行预判。这样的话，可以在实践各种方案的同时，持续强化自己对理论知识的深刻理解。
+尝试使用了keras，确实好用，方便快捷，生成图像的函数ImageDataGenerator很好用。不过听说pytorch的速度比tensorflow要快啊，keras的底端默认是调用的tensorflow，下次编程实践试试pytorch。
+有几次自己思考过后，改了改模型运行完提交之后，看到public LB得分下降了，就没有继续尝试了，然后赛后才看到那几次在private LB上的得分还升高了呢。所以啊，还是得相信自己的知识，不应该一味的看着public LB然后怀疑自己的知识。
+1 高分答案集锦 第一名 David   画图理解图像很重要,把数据项inc_angle可视化出来很重要,他也发现了
+  inc_angle的重要性,不同类型的分类，很重要。
+  始终坚信自己的本地cv很重要。
+  他有个cnn pipeline，直接先100个模型训练一下看看，惊掉我下巴有没有
+  对inc_angle做聚类算法，识别分类，确认此参数非常有效，logloss对于极端值错误惩罚比较严重，设置一个阈值好了
+  重新针对另外的类别，训练100多个模型，这下训练效果非常好了，对比其他参赛者，有显著提升
+  附上作者原文:So in summary, 200+ CNN models, a handful of clustering algorithms, a few different thresholds, a heavy reliance on inc_angle, don’t push log_loss thresholds to the extreme, trust your local CV, and you have a formula for a winning solution."><meta itemprop=datePublished content="2018-01-25T00:00:00+00:00">
+<meta itemprop=dateModified content="2018-01-25T00:00:00+00:00">
+<meta itemprop=wordCount content="602">
+<meta itemprop=keywords content="kaggle,deep learning,neural networks,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="kaggle | statoil-iceberg-classifier-challenge 捡到铜牌一个">
+<meta name=twitter:description content="此题目标为识别图像中是否有冰山，数据图像均为卫星拍摄海面获得
+我的kaggle账号:https://www.kaggle.com/yyqing/competitions
+0 自评 第一次开始尝试图像的题目，和普通回归类的题目还真是不一样，除了修改一些别人的模型看得懂别人模型之外，自己还没有水平直接改进到10%。coursera的课程知识不够用了，觉得自己有知识瓶颈了，计划把cs231n刷一遍（中文字幕的，编程作业一定自己完成的），目标要至少做到：在不做实验的情况下，增删改查模型的各个地方，对自己的运行结果，得利用先验理论知识进行预判。这样的话，可以在实践各种方案的同时，持续强化自己对理论知识的深刻理解。
+尝试使用了keras，确实好用，方便快捷，生成图像的函数ImageDataGenerator很好用。不过听说pytorch的速度比tensorflow要快啊，keras的底端默认是调用的tensorflow，下次编程实践试试pytorch。
+有几次自己思考过后，改了改模型运行完提交之后，看到public LB得分下降了，就没有继续尝试了，然后赛后才看到那几次在private LB上的得分还升高了呢。所以啊，还是得相信自己的知识，不应该一味的看着public LB然后怀疑自己的知识。
+1 高分答案集锦 第一名 David   画图理解图像很重要,把数据项inc_angle可视化出来很重要,他也发现了
+  inc_angle的重要性,不同类型的分类，很重要。
+  始终坚信自己的本地cv很重要。
+  他有个cnn pipeline，直接先100个模型训练一下看看，惊掉我下巴有没有
+  对inc_angle做聚类算法，识别分类，确认此参数非常有效，logloss对于极端值错误惩罚比较严重，设置一个阈值好了
+  重新针对另外的类别，训练100多个模型，这下训练效果非常好了，对比其他参赛者，有显著提升
+  附上作者原文:So in summary, 200+ CNN models, a handful of clustering algorithms, a few different thresholds, a heavy reliance on inc_angle, don’t push log_loss thresholds to the extreme, trust your local CV, and you have a formula for a winning solution.">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">kaggle | statoil-iceberg-classifier-challenge 捡到铜牌一个</h1>
+<p class=tracked>
+By <strong>
+Young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2018-01-25T00:00:00Z>January 25, 2018</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>此题目标为识别图像中是否有冰山，数据图像均为卫星拍摄海面获得</p>
+<p>我的kaggle账号:<a href=https://www.kaggle.com/yyqing/competitions>https://www.kaggle.com/yyqing/competitions</a></p>
+<h2 id=0-自评>0 自评</h2>
+<p>第一次开始尝试图像的题目，和普通回归类的题目还真是不一样，除了修改一些别人的模型看得懂别人模型之外，自己还没有水平直接改进到10%。coursera的课程知识不够用了，觉得自己有知识瓶颈了，计划把cs231n刷一遍（中文字幕的，编程作业一定自己完成的），目标要至少做到：在不做实验的情况下，增删改查模型的各个地方，对自己的运行结果，得利用先验理论知识进行预判。这样的话，可以在实践各种方案的同时，持续强化自己对理论知识的深刻理解。</p>
+<p>尝试使用了keras，确实好用，方便快捷，生成图像的函数ImageDataGenerator很好用。不过听说pytorch的速度比tensorflow要快啊，keras的底端默认是调用的tensorflow，下次编程实践试试pytorch。</p>
+<p>有几次自己思考过后，改了改模型运行完提交之后，看到public LB得分下降了，就没有继续尝试了，然后赛后才看到那几次在private LB上的得分还升高了呢。所以啊，还是得相信自己的知识，不应该一味的看着public LB然后怀疑自己的知识。</p>
+<h2 id=1-高分答案集锦>1 高分答案集锦</h2>
+<h3 id=第一名-davidhttpswwwkagglecomcstatoil-iceberg-classifier-challengediscussion48241>第一名 <a href=https://www.kaggle.com/c/statoil-iceberg-classifier-challenge/discussion/48241>David</a></h3>
+<ul>
+<li>
+<p>画图理解图像很重要,把数据项inc_angle可视化出来很重要,他也发现了</p>
+</li>
+<li>
+<p>inc_angle的重要性,不同类型的分类，很重要。</p>
+</li>
+<li>
+<p>始终坚信自己的本地cv很重要。</p>
+</li>
+<li>
+<p>他有个cnn pipeline，直接先100个模型训练一下看看，惊掉我下巴有没有</p>
+</li>
+<li>
+<p>对inc_angle做聚类算法，识别分类，确认此参数非常有效，logloss对于极端值错误惩罚比较严重，设置一个阈值好了</p>
+</li>
+<li>
+<p>重新针对另外的类别，训练100多个模型，这下训练效果非常好了，对比其他参赛者，有显著提升</p>
+</li>
+<li>
+<p>附上作者原文:So in summary, 200+ CNN models, a handful of clustering algorithms, a few different thresholds, a heavy reliance on inc_angle, don’t push log_loss thresholds to the extreme, trust your local CV, and you have a formula for a winning solution. Cheers!</p>
+</li>
+<li>
+<p>Q:怎么调的200多个模型。A:随机搜索的，用cv只选最好的出来</p>
+</li>
+<li>
+<p>Q:post-processing很重要哈</p>
+</li>
+<li>
+<p>Q:怎么做的ensemble和stack。A:ensemble就是根据CV选出得分高的，然后直接平均，stacking就是经典的方法，基本模型的答案，用xgboost作为level-2的再训练一遍。没有用min-max因为怕过拟合。</p>
+</li>
+</ul>
+<h3 id=第二名-belugahttpswwwkagglecomcstatoil-iceberg-classifier-challengediscussion48294>第二名 <a href=https://www.kaggle.com/c/statoil-iceberg-classifier-challenge/discussion/48294>beluga</a></h3>
+<ul>
+<li>概括：训练了上百了XGB和上百个CNN，也利用好了data leak.暴力搜索对于获得稳定的local/public/private很有帮助！</li>
+<li>Layer1 - CNN</li>
+<li>fix 5 fold cv, hundreds CNN, different random parameters. 分fold是基于incident angle来分的，怕leakage。主要用了3类model families: 1)大部分时间custom CNN from scratch on 2 channel; 2) finetuned VGG16 加上第三层的band1+band2平均； 3）double训练数据加上伪标签，不过最后觉得没啥用</li>
+<li>因为数据集相对小一点，我倾向于训练an army of weaker but different models instend of 优化最好的模型。数据增加方面，用了flip flop zoom rotation shift。随机搜索的参数如下：</li>
+</ul>
+<pre tabindex=0><code>preprocessing in ['mean_std', 'minmax', 'raw']
+cnn_type in ['simple', 'double']
+conv_layers in [[32, 48, 64], [32, 64, 128], [64, 128, 256], [64, 128, 128, [32, 64, 128, 256], [64, 100, 128, 150]]
+dense_layers in [[64, 32], [128, 64], [256, 128], [512, 256], [128, 64, 32]]
+conv_dropout in [False, 0.1, 0.2]
+dense_dropout in [False, 0.25, 0.5]
+learning_rate in [0.0004, 0.0008, 0.001, 0.002, 0.004, 0.005]
+optim_type in ['Adam', 'RMSProp', 'SGD']
+flip0 in [0, 0.25, 0.5]
+flip1 in [0, 0.25, 0.5]
+rotation in [(0, 0, 0), (0.25, 0, 20), (0.5, 0, 20)]
+zoom in [(0, 0, 0), (0.25, 0.8, 1.2), (0.5, 0.8, 1.2)]
+shift in [(0, 0, 0), (0.25, 0, 0.1), (0.5, 0, 0.1)]
+</code></pre><ul>
+<li>Layer2 - XGBoost</li>
+<li>放弃了观察缺少incident angle的数据。用最好的5 10 15 20个模型（都从3类里面选），针对每一个fold。每一个类别都在leaderboard上验货得分在0.165到0.173之间。</li>
+<li>additional features were extracted for each:</li>
+</ul>
+<pre tabindex=0><code>Observation
+L1 prediction stats(min, mean, geomean, median, max, std)
+Raw inc_angle
+Raw stats for both HH and HV(min, mean, median, max, std, quantiles)
+Distinct incident angle groups
+Count, train count, ship count, iceberg rate
+L1 prediction stats(min, mean, geomean, median, max)
+Closest K incident angle roups
+Distance
+Mean Prediction
+Incident angle bins
+Mean Prediction
+Count, train count, iceberg count
+</code></pre><ul>
+<li>xgb的参数是随机的on same fix CV splits as in previous layer.</li>
+<li>Layer3 - Model average</li>
+<li>最后9天，尝试了更大的CNN,更多的基于angle的特征，更多的XGB，自己的trainingCV从0.116下降到0.1以下但是无法从public score提升了。</li>
+<li>最后1天，重新训练了上千个xgb，用更加保守的参数，尽全力避免CV过拟合</li>
+</ul>
+<pre tabindex=0><code>round all features to the 3rd decimal
+min_child_weight &gt;= 3
+colsample &lt;= 0.5
+max_depth in [3,4,5]
+switched off early stopping
+</code></pre><ul>
+<li>最后结果 %95 平均了100个最好的xgb，%5 平均了100个最好的不带inc_angle的xgb</li>
+<li>Quite a few interesting postprocessing technique were suggested in kernels and discussions. I experimented with clipping, geometric mean, rounding for confident predictions. They did not gave stable improvement in my local validation so I rejected any postprocessing. To be on the safe side I wanted to clip my final submission anyway but model averaging already solved the problem all my predictions were in (0.005, 0.995). I selected my best public LB and latest submission the best would be 8th on the private leaderboard while the final gave me the 2nd place.</li>
+<li>ENV</li>
+<li>I used keras with tensorflow for the cnns. I do not have my own GPU which is actually quite painful in computer vision challenges. I used to rent spot p2.xlarge EC2 machines with K80. Unfortunately they are not exactly cheap (0.37$/hour) and they are actually quite slow compared to the best cards. In general I prefer more data however here I enjoyed the quick training times and fast iteration a lot (single model could be trained in minutes instead of hours or even days!). At the beginning I used my custom AMI with manual installed libs. It could be painful to keep everything uptodate so I was happy that free (at least free in terms of software) maintained Deep Learnning AMIs are available now.</li>
+</ul>
+<h3 id=第三名-evgeny-nekrasovhttpswwwkagglecomcstatoil-iceberg-classifier-challengediscussion48207>第三名 <a href=https://www.kaggle.com/c/statoil-iceberg-classifier-challenge/discussion/48207>Evgeny Nekrasov</a></h3>
+<ul>
+<li>训练了7个ANN，怕过拟合，也为了得到smooth的预测，用了5folds并且重复30遍。不同的ANN用了不同架构，数据归一化，预处理，数据增加</li>
+<li>用xgboost混合7个ANN的预测，stacking way using 7 folds 重复1000次</li>
+<li>利用好inc_angle, 做好伪标签，再次开始训练</li>
+</ul>
+<h3 id=第四名-andrii-sydorchukhttpswwwkagglecomcstatoil-iceberg-classifier-challengediscussion48163>第四名 <a href=https://www.kaggle.com/c/statoil-iceberg-classifier-challenge/discussion/48163>Andrii Sydorchuk</a></h3>
+<ul>
+<li>训练了5个神经网络，每个都用cv5同样的split，NN tuning 用了不同的架构，最好的数据增加参数，最好的CV5-seed</li>
+<li>又一个好好利用inc_angle哎，我是一个正经的数据科学家啊，别总是给我data leak解决方案嘛！！！！</li>
+<li>LightGBM level-2 stack, tune LightGBM</li>
+<li>把最后结果修整到(0.001,0.999)区间，预防措施</li>
+</ul>
+<h2 id=2-评论区精华摘抄>2 评论区精华摘抄</h2>
+<p><a href=https://www.kaggle.com/devm2024/keras-model-for-beginners-0-210-on-lb-eda-r-d/notebook>https://www.kaggle.com/devm2024/keras-model-for-beginners-0-210-on-lb-eda-r-d/notebook</a> 这里的3D图像画的很棒，让人肉眼直接看出一艘船和一个冰山的区别。</p>
+<p><a href=https://www.kaggle.com/muonneutrino/exploration-transforming-images-in-python/notebook>https://www.kaggle.com/muonneutrino/exploration-transforming-images-in-python/notebook</a></p>
+<ol>
+<li>统计了图像上的像素的max,maxpos,min,minpos,med,std,mean等，有效的特征工程，</li>
+<li>先画了各种各样的图，图像的题目嘛，先看图比先分析会更加有效</li>
+<li>做了smooth等等各种图像操作，能肉眼看出一些端倪，然后可以让机器做的更好</li>
+</ol>
+<p><a href=https://www.kaggle.com/devm2024/transfer-learning-with-vgg-16-cnn-aug-lb-0-1712>https://www.kaggle.com/devm2024/transfer-learning-with-vgg-16-cnn-aug-lb-0-1712</a> transfer learning from VGG16, skill point get.</p>
+<p><a href=https://www.kaggle.com/supersp1234/best-single-model-lb-0-1400/code>Best Single Model LB1400</a>确实是我看到的最好的单模型了。 基于torch，对图片有进行随机水平翻转，随机竖直翻转</p>
+<p><a href=https://www.kaggle.com/c/statoil-iceberg-classifier-challenge/discussion/44849#273821>Open sourcing my PyTorch CNN Ensembler</a></p>
+<ul class=pa0>
+<li class=list>
+<a href=/tags/kaggle class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">kaggle</a>
+</li>
+<li class=list>
+<a href=/tags/deep-learning class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">deep learning</a>
+</li>
+<li class=list>
+<a href=/tags/neural-networks class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">neural networks</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2018/2018-01-17-favorita-grocery-sales-forecasting/>kaggle | favorita-grocery-sales-forecasting</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-11-29-kaggle/>第一次kaggle参赛，铜牌一枚</a>
+</li>
+<li class=mb2>
+<a href=/posts/2017/2017-11-13-cnn/>deeplearning.ai之卷积神经网络课程总结</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

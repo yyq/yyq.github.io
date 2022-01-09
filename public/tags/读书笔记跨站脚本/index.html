@@ -1,0 +1,94 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>读书笔记，跨站脚本 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<link href=/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC/index.xml rel=alternate type=application/rss+xml title="Young Story">
+<link href=/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC/index.xml rel=feed type=application/rss+xml title="Young Story">
+<meta property="og:title" content="读书笔记，跨站脚本">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yyq.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC/">
+<meta itemprop=name content="读书笔记，跨站脚本">
+<meta itemprop=description content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="读书笔记，跨站脚本">
+<meta name=twitter:description content>
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class="pb3-m pb6-l bg-black">
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+<div class="tc-l pv3 ph3 ph4-ns">
+<h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+读书笔记，跨站脚本
+</h1>
+</div>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="cf pa3 pa4-m pa4-l">
+<div class="measure-wide-l center f4 lh-copy nested-copy-line-height nested-links nested-img mid-gray">
+<p>Below you will find pages that utilize the taxonomy term “读书笔记，跨站脚本”</p>
+</div>
+</article>
+<div class="mw8 center">
+<section class="flex-ns flex-wrap justify-around mt5">
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2017/2017-01-03-xss-study-0/ class="link black dim">
+XSS跨站脚本攻击剖析与防御-读书笔记
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+初次了解cross-site scripting, 阅读完第一章第二章，感觉需要精读和理解的知识点不少，先摘抄下来，以供之后查阅。
+什么是xss跨站脚本？ 计算机安全漏洞，web应用程序中的，是由于web应用程序对用户的输入过滤不足而产生的
+xss的分类 反射型：主要用于将恶意脚本附加到URL地址的参数中。特点是用户点击时触发，而且只执行一次，非持久化，所以称为反射型。常出现在搜索栏，用户登入口，常用来窃取客户端Cookies或进行钓鱼欺骗
+持久型：攻击者实现将恶意javascript代码上传或者存储在漏洞服务器中，只要受害者浏览包含此恶意代码的页面，就会被执行。一般出现在网站的留言，评论，博客日志等交互处。
+发掘 用&lt;textarea>来闭合前后的对应的标记，中间写&lt;script>代码，是一个典型的持久型XSS，并且在管理员查看留言时才出发，攻击的对象是后台管理员。
+程序没有过滤任何有害字符，从而导致一个持久型xss的产生
+xss的构造剖析 利用&lt; >标记注射html/javascript, &lt;script>alert('XSS');&lt;/script> 防御：过滤&lt; >和&lt;script>字样 利用HTML标签属性值执行XSS &lt;table background="javascript:alert(/xss/)">&lt;/table> &lt;img src="javascript:alert('xss');" 防御：过滤&lt;javascript>等关键字 空格回车Tab，一类的键位符 原因比较复杂，JavaScript语句通常以分号结尾，如果javascript引擎确定一个语句是完整的，而这一行的结尾有换行符，那么可以省略分号。有时候，引擎没有把换行符解释为语句的终止符，js会继续处理发现内容，直到遇到分号或者完整语句. 拆分关键字的技巧成功执行了跨站脚本代码 &lt;img src="javas cript: alert(/xss/)" witdth=100> 对标签属性值的转码
+t的ASCII码值是116，可以用&#116来表示，冒号可以用&#58来表示，javascript:alert('xss');转码后可以是javascrip&#116&#58alert(/xss/)
+防范利用HTML标签属性值编码的XSS,最好也过滤&#\等字符
+产生自己的事件
+测试事件型的跨站脚本，还有大量的事件可以运用：
+&lt;input type=&ldquo;button&rdquo; value=&ldquo;click me&rdquo; onclick=&ldquo;alert(&lsquo;click me&rsquo;)&rdquo; onResume onReverse onRowDelete onSeek &mldr; ```
+利用CSS跨站解析
+CSS中的expression执行js代码；HTML标签的style属性执行js代码，如下两个例子
+&lt;dev style="width: expression(alert('xss'));">
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>offer on Young Story</title><link>https://yyq.github.io/tags/offer/</link><description>Recent content in offer on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 05 Sep 2013 21:08:01 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/offer/index.xml" rel="self" type="application/rss+xml"/><item><title>剑指offer--读后总结</title><link>https://yyq.github.io/posts/2013/2013-09-05-jian-zhi-offer-du-hou-zong-jie/</link><pubDate>Thu, 05 Sep 2013 21:08:01 +0000</pubDate><guid>https://yyq.github.io/posts/2013/2013-09-05-jian-zhi-offer-du-hou-zong-jie/</guid><description>&lt;h2 id="记录一下看完这本书后自己需要改进的地方算法的技巧等等">记录一下，看完这本书后，自己需要改进的地方。算法的技巧等等。&lt;/h2>
+&lt;h3 id="项目经验">项目经验：&lt;/h3>
+&lt;ul>
+&lt;li>简短的项目背景&lt;/li>
+&lt;li>自己完成的任务&lt;/li>
+&lt;li>为了完成任务做了哪些工作，怎么做的&lt;/li>
+&lt;li>自己的贡献&lt;/li>
+&lt;/ul>
+&lt;h3 id="技术环节">技术环节&lt;/h3>
+&lt;ul>
+&lt;li>扎实的基础知识：编程语言，数据结构，算法&lt;/li>
+&lt;li>高质量的代码：代码鲁棒性，越简单的题目考官期望越高，各种特殊情形的处理考虑（边界条件，空指针，空字串，error）&lt;/li>
+&lt;li>清晰的思路，解决复杂问题的3个方式（画图形象化，举例具体化，分解简单化）&lt;/li>
+&lt;li>优化程序：空间优化，时间优化&lt;/li>
+&lt;/ul>
+&lt;h3 id="应聘者提问">应聘者提问&lt;/h3>
+&lt;ul>
+&lt;li>必须提前做好准备，招聘的职位或者项目&lt;/li>
+&lt;li>网上收集，主要业务，职位要求，需求（或者请面试官讲讲他在哪个组，做什么样的工作，常用的开发工具，语言）&lt;/li>
+&lt;li>留心面试官说过的话。然后提问&lt;/li>
+&lt;/ul>
+&lt;h3 id="例题">例题&lt;/h3>
+&lt;ul>
+&lt;li>第4题，替换空格，输入“we are happy”,输出“we%20are%20happy”&lt;/li>
+&lt;li>solution:先扫描一遍旧的char数组，数一下有多少个空格，新数组长度就出来了。然后从末尾向前复制。时间，空间都是O(n);&lt;/li>
+&lt;/ul></description></item></channel></rss>

@@ -1,0 +1,232 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>vim中文手册 vimtutor中文版 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="最近在学习VIM的使用，在命令行里输入vimtutor可以打开基本教程，然后跟着练习一个一个做下来，也算是入门了。不过因为没有时刻都在用，所有有时候有的命令就忘记了。于是把教程中的每一课的summary都翻译成中文，保存下来，供以后查阅。
+ 第一课 摘要 1. 光标移动使用箭头或者hjkl四个字母 h (左) j (下) k (上) l (右) 2. 从shell开始启动vim的命令是：vim 文件名 <ENTER> 3. 退出VIM: 放弃所有更改退出： <ESC> :q! <ENTER> . 保存更改退出： <ESC> :wq <ENTER> . 4. 删除光标处的字符: x 5. 插入字符： 在光标之前插入字符： i 在行尾添加字符： A 注意：按<ESC>键可以让你回到正常模式或者取消你未完成的命令  第二课 摘要 1. 删除字符，从光标开始直到遇到下一个单词 dw 2. 删除字符，从光标开始直到当前行的末尾 d$ 3. 删除一整行 dd 4. 重复一个动作，可以在动作之前加一个数字： 2w 5. 一些操作的格式是： 操作符 [数字] 移动 操作符：要做什么，例如字母d是用于删除 数字： 你要重复的次数 移动： 你的操作要作用在多少文本内容上，例如w就是一个单词，$是到行尾 6. 把光标移动到行首： 0 7. 撤销之前的动作： u (小写u) 撤销这一行的所有改动： U （大写U） 撤销刚才的”撤销“： CTRL-R  第三课 摘要 1.">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="vim中文手册 vimtutor中文版">
+<meta property="og:description" content="最近在学习VIM的使用，在命令行里输入vimtutor可以打开基本教程，然后跟着练习一个一个做下来，也算是入门了。不过因为没有时刻都在用，所有有时候有的命令就忘记了。于是把教程中的每一课的summary都翻译成中文，保存下来，供以后查阅。
+ 第一课 摘要 1. 光标移动使用箭头或者hjkl四个字母 h (左) j (下) k (上) l (右) 2. 从shell开始启动vim的命令是：vim 文件名 <ENTER> 3. 退出VIM: 放弃所有更改退出： <ESC> :q! <ENTER> . 保存更改退出： <ESC> :wq <ENTER> . 4. 删除光标处的字符: x 5. 插入字符： 在光标之前插入字符： i 在行尾添加字符： A 注意：按<ESC>键可以让你回到正常模式或者取消你未完成的命令  第二课 摘要 1. 删除字符，从光标开始直到遇到下一个单词 dw 2. 删除字符，从光标开始直到当前行的末尾 d$ 3. 删除一整行 dd 4. 重复一个动作，可以在动作之前加一个数字： 2w 5. 一些操作的格式是： 操作符 [数字] 移动 操作符：要做什么，例如字母d是用于删除 数字： 你要重复的次数 移动： 你的操作要作用在多少文本内容上，例如w就是一个单词，$是到行尾 6. 把光标移动到行首： 0 7. 撤销之前的动作： u (小写u) 撤销这一行的所有改动： U （大写U） 撤销刚才的”撤销“： CTRL-R  第三课 摘要 1.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2017/2017-02-22-vimtutor-chinese-summary/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2017-02-22T00:00:00+00:00">
+<meta property="article:modified_time" content="2017-02-22T00:00:00+00:00">
+<meta itemprop=name content="vim中文手册 vimtutor中文版">
+<meta itemprop=description content="最近在学习VIM的使用，在命令行里输入vimtutor可以打开基本教程，然后跟着练习一个一个做下来，也算是入门了。不过因为没有时刻都在用，所有有时候有的命令就忘记了。于是把教程中的每一课的summary都翻译成中文，保存下来，供以后查阅。
+ 第一课 摘要 1. 光标移动使用箭头或者hjkl四个字母 h (左) j (下) k (上) l (右) 2. 从shell开始启动vim的命令是：vim 文件名 <ENTER> 3. 退出VIM: 放弃所有更改退出： <ESC> :q! <ENTER> . 保存更改退出： <ESC> :wq <ENTER> . 4. 删除光标处的字符: x 5. 插入字符： 在光标之前插入字符： i 在行尾添加字符： A 注意：按<ESC>键可以让你回到正常模式或者取消你未完成的命令  第二课 摘要 1. 删除字符，从光标开始直到遇到下一个单词 dw 2. 删除字符，从光标开始直到当前行的末尾 d$ 3. 删除一整行 dd 4. 重复一个动作，可以在动作之前加一个数字： 2w 5. 一些操作的格式是： 操作符 [数字] 移动 操作符：要做什么，例如字母d是用于删除 数字： 你要重复的次数 移动： 你的操作要作用在多少文本内容上，例如w就是一个单词，$是到行尾 6. 把光标移动到行首： 0 7. 撤销之前的动作： u (小写u) 撤销这一行的所有改动： U （大写U） 撤销刚才的”撤销“： CTRL-R  第三课 摘要 1."><meta itemprop=datePublished content="2017-02-22T00:00:00+00:00">
+<meta itemprop=dateModified content="2017-02-22T00:00:00+00:00">
+<meta itemprop=wordCount content="260">
+<meta itemprop=keywords content="vim,vimtutor,chinese,summary,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="vim中文手册 vimtutor中文版">
+<meta name=twitter:description content="最近在学习VIM的使用，在命令行里输入vimtutor可以打开基本教程，然后跟着练习一个一个做下来，也算是入门了。不过因为没有时刻都在用，所有有时候有的命令就忘记了。于是把教程中的每一课的summary都翻译成中文，保存下来，供以后查阅。
+ 第一课 摘要 1. 光标移动使用箭头或者hjkl四个字母 h (左) j (下) k (上) l (右) 2. 从shell开始启动vim的命令是：vim 文件名 <ENTER> 3. 退出VIM: 放弃所有更改退出： <ESC> :q! <ENTER> . 保存更改退出： <ESC> :wq <ENTER> . 4. 删除光标处的字符: x 5. 插入字符： 在光标之前插入字符： i 在行尾添加字符： A 注意：按<ESC>键可以让你回到正常模式或者取消你未完成的命令  第二课 摘要 1. 删除字符，从光标开始直到遇到下一个单词 dw 2. 删除字符，从光标开始直到当前行的末尾 d$ 3. 删除一整行 dd 4. 重复一个动作，可以在动作之前加一个数字： 2w 5. 一些操作的格式是： 操作符 [数字] 移动 操作符：要做什么，例如字母d是用于删除 数字： 你要重复的次数 移动： 你的操作要作用在多少文本内容上，例如w就是一个单词，$是到行尾 6. 把光标移动到行首： 0 7. 撤销之前的动作： u (小写u) 撤销这一行的所有改动： U （大写U） 撤销刚才的”撤销“： CTRL-R  第三课 摘要 1.">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">vim中文手册 vimtutor中文版</h1>
+<p class=tracked>
+By <strong>
+Young
+</strong>
+</p>
+<time class="f6 mv4 dib tracked" datetime=2017-02-22T00:00:00Z>February 22, 2017</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>最近在学习VIM的使用，在命令行里输入vimtutor可以打开基本教程，然后跟着练习一个一个做下来，也算是入门了。不过因为没有时刻都在用，所有有时候有的命令就忘记了。于是把教程中的每一课的summary都翻译成中文，保存下来，供以后查阅。</p>
+<pre tabindex=0><code>             第一课 摘要
+
+
+  1. 光标移动使用箭头或者hjkl四个字母
+   h (左) j (下)       k (上)     l (右)
+
+  2. 从shell开始启动vim的命令是：vim 文件名 &lt;ENTER&gt;
+
+  3. 退出VIM:     
+      放弃所有更改退出： &lt;ESC&gt;   :q!   &lt;ENTER&gt;  .
+      保存更改退出：     &lt;ESC&gt;   :wq   &lt;ENTER&gt;  .
+
+  4. 删除光标处的字符:  x
+
+  5. 插入字符：
+      在光标之前插入字符： i
+      在行尾添加字符：    A
+
+  注意：按&lt;ESC&gt;键可以让你回到正常模式或者取消你未完成的命令
+
+</code></pre><pre tabindex=0><code>             第二课 摘要
+
+  1. 删除字符，从光标开始直到遇到下一个单词 dw
+
+  2. 删除字符，从光标开始直到当前行的末尾  d$
+  
+  3. 删除一整行  dd
+  
+  4. 重复一个动作，可以在动作之前加一个数字： 2w
+  
+  5. 一些操作的格式是：
+        操作符  [数字]  移动
+    操作符：要做什么，例如字母d是用于删除
+    数字： 你要重复的次数
+    移动： 你的操作要作用在多少文本内容上，例如w就是一个单词，$是到行尾
+  
+  6. 把光标移动到行首： 0
+  
+  7. 撤销之前的动作： u  (小写u)
+     撤销这一行的所有改动： U  （大写U）
+     撤销刚才的”撤销“： CTRL-R
+
+</code></pre><pre tabindex=0><code>             第三课 摘要
+
+  1. 打印出你刚刚删除的内容： p
+     它会把内容打印在你光标的后面
+  
+  2. 喜欢光标位置的字符：先输入r，然后输入新的字符
+  
+  3. 改动类操作符可以让你改变从当前光标到”motion“的位置
+     例如，
+     ce 可以改变从光标到单词的末尾
+     c$ 可以改变从光标都行末尾
+
+  4. 改动类操作的格式是：
+     c   [数字]   移动
+
+</code></pre><pre tabindex=0><code>             第四课 摘要
+
+  1. CRTL-G 显示你的光标在文档中的位置信息
+     移动到文件末尾:  G
+     移动到某一行: 行号  G
+     移动到第一行   gg
+
+  2. 前向搜索，输入 / 然后紧跟你要搜索的字符串，
+     后向搜索，输入 ？ 
+     输入 n 来找到下一个出现的地方
+     输入 N 来找到上一个出现的地方
+     CTRL-O可以回到之前的编辑的位置
+     CTRL-I可以跳到新的位置
+
+  3. 输入 % 来跳转到与之匹配的括号，当光标在 ( ) [ ] { } 
+
+  4. 替换改行的第一个old单词为new
+     :s/old/new
+     替换改行的所有old单词为new
+     :s/old/new/g
+     替换两个#之间的单词
+     :#,#s/old/new/g
+     替换文件中所有的单词
+     :%s/old/new/g
+     每一个替换之前都需要确认的话，在命令末尾加一个 c
+     :%s/old/new/gc
+
+</code></pre><pre tabindex=0><code>             第五课 摘要
+
+  1. :!命令   会执行一个外部命令
+     
+     一些例子如下：
+    (MS-DOS)   (Unix)
+    :!dir       :!ls       列出目录
+    :!del FILE  :!rm FILE  删除文件
+
+  2.  :w 文件名  把当前vim文件另存为某个文件名
+
+  3.  v  motion  :w FILENAME  把选中的内容另存为到文件
+
+  4.  :r FILENAME  从某个文件中取出内容添加到当前的位置
+
+  5.  :r !dir  把列出目录命令的结果添加到光标的位置
+
+</code></pre><pre tabindex=0><code>             第六课 摘要
+  1. 小写字母 o  在当前行的下方插入一个空白行，并进入编辑模式
+     大写字母 O  在当前行的上方插入一个空白行，并进入编辑模式
+
+  2. 小写字母  a  要在光标的后面插入字符.
+     大写字母  A  要在该行的末尾添加字符
+
+  3. e 移动到单词的末尾
+
+  4. y操作符 用来拷贝文本， p 用来粘贴
+
+  5. 大写字母 R 进入 替换模式，直到按下&lt;ESC&gt;键
+
+  6. &quot;:set xxx&quot;来设置选项 &quot;xxx&quot;, 举例选项如下：
+
+    'ic' 'ignorecase' 搜索的时候忽略大写小写
+    'is' 'incsearch'  在输入搜索目标字符串的时候实时匹配并显示
+    'hls' 'hlsearch'  高亮匹配项
+     这些选项，可以用缩写也可以用简写
+
+  7. 在选项前面加一个”no“来关闭该选项 :set noic
+
+</code></pre><pre tabindex=0><code>             第七课 摘要
+
+  1. 输入 :help 或者 按下&lt;F1&gt;or&lt;HELP&gt; 来打开帮助窗口
+
+  2. 输入  :help cmd  来打开命令cmd的帮助文档 .
+
+  3. 输入  CTRL-W CTRL-W  来跳转到另外的窗口
+
+  4. 输入  :q  来关闭帮助窗口
+
+  5. 创建一个vimrc文件来保存你自己喜欢的设置
+
+  6. 当输入一个  :  时, 按下 CTRL-D 来看有哪些命令来补全.
+     按下 &lt;TAB&gt; 来补全.
+   
+</code></pre><ul class=pa0>
+<li class=list>
+<a href=/tags/vim class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">vim</a>
+</li>
+<li class=list>
+<a href=/tags/vimtutor class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">vimtutor</a>
+</li>
+<li class=list>
+<a href=/tags/chinese class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">chinese</a>
+</li>
+<li class=list>
+<a href=/tags/summary class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">summary</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>小心加法的溢出 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="过几天又有一次微软的笔试了，还是把手头上ios的进度缓一缓。随意翻翻编程之美吧。今天看了一到题目，如何写出正确的二分查找。想起来，看上去不会很难。但是一上来就错了。。。。。
+  mid = (smalll + big) /2; 这个句子中的加法，是有可能溢出造成结果不对。所以推荐用
+mid = small + ( big - small ) / 2;
+  对for循环或者while 或者递归等，每当自己写完之后，观察边界：初始条件，转化，终止条件
+  突然想到的代码，到底能不能正常运行： {% codeblock %} #include <stdio.h> int main(int argc, char *argv[]) { int a[3] = {1,2,3};
+ int *b = a; int *c = &a[2]; int *d; d = (int *)((int)b / 2 + (int)c / 2); printf(&#34;%d %d %d\n&#34;, *b , *c, d); return 0; } {% endcodeblock %}   ">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="小心加法的溢出">
+<meta property="og:description" content="过几天又有一次微软的笔试了，还是把手头上ios的进度缓一缓。随意翻翻编程之美吧。今天看了一到题目，如何写出正确的二分查找。想起来，看上去不会很难。但是一上来就错了。。。。。
+  mid = (smalll + big) /2; 这个句子中的加法，是有可能溢出造成结果不对。所以推荐用
+mid = small + ( big - small ) / 2;
+  对for循环或者while 或者递归等，每当自己写完之后，观察边界：初始条件，转化，终止条件
+  突然想到的代码，到底能不能正常运行： {% codeblock %} #include <stdio.h> int main(int argc, char *argv[]) { int a[3] = {1,2,3};
+ int *b = a; int *c = &a[2]; int *d; d = (int *)((int)b / 2 + (int)c / 2); printf(&#34;%d %d %d\n&#34;, *b , *c, d); return 0; } {% endcodeblock %}   ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2013/2013-06-18-xiao-xin-jia-fa-hui-yi-chu/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2013-06-18T00:06:01+00:00">
+<meta property="article:modified_time" content="2013-06-18T00:06:01+00:00">
+<meta itemprop=name content="小心加法的溢出">
+<meta itemprop=description content="过几天又有一次微软的笔试了，还是把手头上ios的进度缓一缓。随意翻翻编程之美吧。今天看了一到题目，如何写出正确的二分查找。想起来，看上去不会很难。但是一上来就错了。。。。。
+  mid = (smalll + big) /2; 这个句子中的加法，是有可能溢出造成结果不对。所以推荐用
+mid = small + ( big - small ) / 2;
+  对for循环或者while 或者递归等，每当自己写完之后，观察边界：初始条件，转化，终止条件
+  突然想到的代码，到底能不能正常运行： {% codeblock %} #include <stdio.h> int main(int argc, char *argv[]) { int a[3] = {1,2,3};
+ int *b = a; int *c = &a[2]; int *d; d = (int *)((int)b / 2 + (int)c / 2); printf(&#34;%d %d %d\n&#34;, *b , *c, d); return 0; } {% endcodeblock %}   "><meta itemprop=datePublished content="2013-06-18T00:06:01+00:00">
+<meta itemprop=dateModified content="2013-06-18T00:06:01+00:00">
+<meta itemprop=wordCount content="70">
+<meta itemprop=keywords content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="小心加法的溢出">
+<meta name=twitter:description content="过几天又有一次微软的笔试了，还是把手头上ios的进度缓一缓。随意翻翻编程之美吧。今天看了一到题目，如何写出正确的二分查找。想起来，看上去不会很难。但是一上来就错了。。。。。
+  mid = (smalll + big) /2; 这个句子中的加法，是有可能溢出造成结果不对。所以推荐用
+mid = small + ( big - small ) / 2;
+  对for循环或者while 或者递归等，每当自己写完之后，观察边界：初始条件，转化，终止条件
+  突然想到的代码，到底能不能正常运行： {% codeblock %} #include <stdio.h> int main(int argc, char *argv[]) { int a[3] = {1,2,3};
+ int *b = a; int *c = &a[2]; int *d; d = (int *)((int)b / 2 + (int)c / 2); printf(&#34;%d %d %d\n&#34;, *b , *c, d); return 0; } {% endcodeblock %}   ">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">小心加法的溢出</h1>
+<time class="f6 mv4 dib tracked" datetime=2013-06-18T00:06:01Z>June 18, 2013</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>过几天又有一次微软的笔试了，还是把手头上ios的进度缓一缓。随意翻翻编程之美吧。今天看了一到题目，如何写出正确的二分查找。想起来，看上去不会很难。但是一上来就错了。。。。。</p>
+<ol>
+<li>
+<p>mid = (smalll + big) /2; 这个句子中的加法，是有可能溢出造成结果不对。所以推荐用</p>
+<p>mid = small + ( big - small ) / 2;</p>
+</li>
+<li>
+<p>对for循环或者while 或者递归等，每当自己写完之后，观察边界：初始条件，转化，终止条件</p>
+</li>
+<li>
+<p>突然想到的代码，到底能不能正常运行：
+{% codeblock %}
+#include &lt;stdio.h>
+int main(int argc, char *argv[]) {
+int a[3] = {1,2,3};</p>
+<pre><code> int *b = a;
+ int *c = &amp;a[2];
+
+ int *d;
+
+ d = (int *)((int)b / 2 + (int)c / 2);
+
+ printf(&quot;%d %d %d\n&quot;, *b , *c, d);
+
+ return 0;
+ }
+ {% endcodeblock %}</code></pre>
+</li>
+</ol>
+<ul class=pa0>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

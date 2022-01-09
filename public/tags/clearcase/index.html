@@ -1,0 +1,85 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>clearcase | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<link href=/tags/clearcase/index.xml rel=alternate type=application/rss+xml title="Young Story">
+<link href=/tags/clearcase/index.xml rel=feed type=application/rss+xml title="Young Story">
+<meta property="og:title" content="clearcase">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yyq.github.io/tags/clearcase/">
+<meta itemprop=name content="clearcase">
+<meta itemprop=description content><meta name=twitter:card content="summary">
+<meta name=twitter:title content="clearcase">
+<meta name=twitter:description content>
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class="pb3-m pb6-l bg-black">
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+<div class="tc-l pv3 ph3 ph4-ns">
+<h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+clearcase
+</h1>
+</div>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="cf pa3 pa4-m pa4-l">
+<div class="measure-wide-l center f4 lh-copy nested-copy-line-height nested-links nested-img mid-gray">
+<p>Below you will find pages that utilize the taxonomy term “clearcase”</p>
+</div>
+</article>
+<div class="mw8 center">
+<section class="flex-ns flex-wrap justify-around mt5">
+<div class="relative w-100 mb4 bg-white">
+<div class="relative w-100 mb4 bg-white nested-copy-line-height">
+<div class="bg-white mb3 pa4 gray overflow-hidden">
+<span class="f6 db">Posts</span>
+<h1 class="f3 near-black">
+<a href=/posts/2015/2015-01-11-clearcase2git-usage-of-git-cc/ class="link black dim">
+ClearCase2Git，git-cc的使用
+</a>
+</h1>
+<div class="nested-links f5 lh-copy nested-copy-line-height">
+<h1 id=简介>简介</h1>
+<h1 id=基本环境>基本环境</h1>
+<p>一个linuxVM，有cleartool，git，python。其中较为棘手的应该是在一个linux机器上安装clearcase的一系列工具了，cleartool是命令行版本的CC。总之安装Clearcase不是一件简单的事情，我是从公司要了个自带clearcase的RHEL的模板就开始了。</p>
+<h1 id=了解git-cc>了解git-cc</h1>
+<p>关于git，看完过PRO GIT那本书(it’s free here)，有些认识。对clearcase，不熟悉，问了同事也告诉我只能通过man来快速了解cleartool的各个命令。好像没有别的办法来速成了，git-cc这工具是网上看着免费的比较流行的cc2git的工具了。拿来直接用，报错一堆堆，搞不定，没接触过python，然后把codecademy上的python教程学完，之后再看git-cc源代码，能理解一些了。</p>
+<p>这个工具做的主要的事情就是：下载一个snapshot view，新建一个空的git repository，cleartool lsh列出view的历史活动信息，处理好新建文件和checkin代码以及各个文件的版本号信息，然后按照从开始到现在的时间顺序，做若干次把cc中某个文件的某个版本copy到git中，然后git commit。然后结束了。</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>

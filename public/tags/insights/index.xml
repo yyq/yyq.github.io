@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>insights on Young Story</title><link>https://yyq.github.io/tags/insights/</link><description>Recent content in insights on Young Story</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 25 Sep 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://yyq.github.io/tags/insights/index.xml" rel="self" type="application/rss+xml"/><item><title>kaggle | Machine Learning for Insights Challenge</title><link>https://yyq.github.io/posts/2018/2018-09-25-kaggle-model-insights/</link><pubDate>Tue, 25 Sep 2018 00:00:00 +0000</pubDate><guid>https://yyq.github.io/posts/2018/2018-09-25-kaggle-model-insights/</guid><description>前言 最近比较忙，这次不是比赛分享了，是来分享一个“挑战”，kaggle上用词说是Challenge，在我理解这个是某专家管理员建立了一个简短的course，介绍了某主题的玩法，然后让大家做做简单的练习，一起讨论交流一下。
+这次学习的是一个关于模型洞察力的主题，原文链接https://www.kaggle.com/ml-for-insights-signup， 本文这里主要是将我看到的有用的内容按照自己的理解翻译，记录下来。这个ML for insights，字面直译为模型洞察力了，在我理解来则是模型可解释性分析。
+My Insights 我个人在玩kaggle和工作中用到最多的主要是树类模型(lgb,xgb)和神经网络(cnn, rnn)，确实很少去思考其中的含义和解释性，如果让我自己回答这个问题，我理解到用决策树的信息熵计算统计概率得出叶子节点的重要性，再加上拟合残差的思路就是xgb类的算法了。而神经网络方面，我则简单的理解为求导拟合。高中课本里的一次函数二次函数的求导大家都会，神经网络只是用链式法则给若干个矩阵求导罢了，思路还是朝着目标去拟合。
+如此之粗浅，见笑了，下面看看别人的insights玩法。
+User Case 一个模型的哪些东西是可解释的 许多人认为机器学习模型是黑盒子，在他们认为模型可以做出很好的预测，但是大家无法理解这些预测背后的逻辑。确实是，很多数据科学家不知道如何用模型来解释数据的实际意义。这里的文章将会从这么几个方面来讨论：
+哪些特征在模型看到是最重要的？ 关于某一条记录的预测，每一个特征是如何影响到最终的预测结果的？ 从大量的记录整体来考虑，每一个特征如何影响模型的预测的？ 为什么这些解释信息是有价值的 调试模型用 指导工程师做特征工程 指导数据采集的方向 指导人们做决策 建立模型和人之间的信任 调试模型用 一般的真实业务场景会有很多不可信赖的，没有组织好的脏数据。你在预处理数据时就有可能加进来了潜在的错误，或者不小心泄露了预测目标的信息等，考虑各种潜在的灾难性后果，debug的思路就尤其重要了。当你遇到了用现有业务知识无法解释的数据的时候，了解模型预测的模式，可以帮助你快速定位问题，balabala
+指导特征工程 特征工程通常是提升模型准确率最有效的方法。特征工程通常涉及到到反复的操作原始数据(或者之前的简单特征)，用不同的方法来得到新的特征。
+有时候你完成FE的过程只用到了自己的直觉。这其实还不够，当你有上百个原始特征的时候，或者当你缺乏业务背景知识的时候，你将会需要更多的指导方向。
+这个预测贷款结果的kaggle竞赛就是一个比较极端的例子，这个比赛有上百个原始特征。并且因为隐私原因，特征的名称都是f1, f2, f3等等而不是普通的英文单词来描述。这就模拟了一个场景，你没有任何业务方面直觉的场景。有一位参赛者发现了某两个特征相减f527, f528可以创建出特别有用的新特征。拥有这个新特征的模型比没有这个特征的模型优秀很多。但是当你面对几百个特征时，你如何创造出这样优秀的特征呢？
+在这门课程里，你将会学习到找到最重要的特征的方法，并且可以发现两个特别相关的特征，当面对越来越多的特征的时候，这种方法就会很重要啦。
+指导未来数据收集 对于网上下载的数据集你完全控制不了。不过很多公司和机构用数据科学来指导他们从更多方面收集数据。一般来说，收集新数据很可能花费比较高或者不是很容易，所以大家很想要知道哪些数据是值得收集的。基于模型的洞察力分析可以教你很好的理解已有的特征，这将会帮助你推断什么样子的新特征是有用的
+指导人们决策 一些决策是模型自动做出来的，虽然亚马逊不会用人工来决定展示给你网页上的商品，但是很多重要的决策是由人来做出的，而对于这些决定，模型的洞察力会比模型的预测结果更有价值。
+建立信任 很多人在做重要决策的时候不会轻易的相信模型，除非他们验证过模型的一些基本特性，这当然是合理的。实际上，把模型的可解释性展示出来，如果可以匹配上人们对问题的理解，那么这将会建立起大家对模型的信任，即使是在那些没有数据科学知识的人群中。
+Permuation Importance 一个最基本的问题大概会是什么特征对我模型预测的影响最大呢？ 这个东西就叫做“feature importance”即特征重要性。anyway，字面意思看这个东东就很重要啦。我们有很多方法来衡量特征的重要性，这里呢，将会介绍一种方法：排列重要性。这种方法和其他方法比起来，优势有：
+计算速度快 广泛使用和理解 Consistent with properties we would want a feature importance measure to have 工作原理 排列重要性，一定是在model训练完成后，才可以计算的。简单来说，就是改变数据表格中某一列的数据的排列，看其对预测准确性的影响有多大。大概三个步骤：
+训练好模型 拿某一个feature column, 然后随机打乱顺序。然后用模型来重新预测一遍，看看自己的metric或者loss function变化了多少 把上一个步骤中打乱的column复原，换下一个column重复上一个步骤，直到所有column都算一遍 代码示例 这个case是利用FIFA 18很多场的足球比赛的数据统计，来预测&amp;quot;Winner of The Game&amp;quot;</description></item></channel></rss>

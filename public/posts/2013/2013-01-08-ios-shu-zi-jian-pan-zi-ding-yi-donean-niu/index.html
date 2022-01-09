@@ -1,0 +1,165 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge,chrome=1">
+<title>ios 数字键盘自定义done按钮 | Young Story</title>
+<meta name=viewport content="width=device-width,minimum-scale=1">
+<meta name=description content="总体逻辑，监听系统数字键盘的弹出和消失，在系统键盘弹出时，show my self-defined done key,在系统键盘消失时，hide it">
+<meta name=generator content="Hugo 0.91.2">
+<meta name=ROBOTS content="NOINDEX, NOFOLLOW">
+<link rel=stylesheet href=/ananke/css/main.min.css>
+<meta property="og:title" content="ios 数字键盘自定义done按钮">
+<meta property="og:description" content="总体逻辑，监听系统数字键盘的弹出和消失，在系统键盘弹出时，show my self-defined done key,在系统键盘消失时，hide it">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://yyq.github.io/posts/2013/2013-01-08-ios-shu-zi-jian-pan-zi-ding-yi-donean-niu/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2013-01-08T11:36:01+00:00">
+<meta property="article:modified_time" content="2013-01-08T11:36:01+00:00">
+<meta itemprop=name content="ios 数字键盘自定义done按钮">
+<meta itemprop=description content="总体逻辑，监听系统数字键盘的弹出和消失，在系统键盘弹出时，show my self-defined done key,在系统键盘消失时，hide it"><meta itemprop=datePublished content="2013-01-08T11:36:01+00:00">
+<meta itemprop=dateModified content="2013-01-08T11:36:01+00:00">
+<meta itemprop=wordCount content="154">
+<meta itemprop=keywords content="ios,xcode,NumberPad,"><meta name=twitter:card content="summary">
+<meta name=twitter:title content="ios 数字键盘自定义done按钮">
+<meta name=twitter:description content="总体逻辑，监听系统数字键盘的弹出和消失，在系统键盘弹出时，show my self-defined done key,在系统键盘消失时，hide it">
+</head>
+<body class="ma0 avenir bg-near-white">
+<header>
+<div class=bg-black>
+<nav class="pv3 ph3 ph4-ns" role=navigation>
+<div class="flex-l justify-between items-center center">
+<a href=/ class="f3 fw2 hover-white no-underline white-90 dib">
+Young Story
+</a>
+<div class="flex-l items-center">
+<div class=ananke-socials>
+</div>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class=pb7 role=main>
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<aside class="instapaper_ignoref b helvetica tracked">
+POSTS
+</aside>
+<div id=sharing class="mt3 ananke-socials">
+</div>
+<h1 class="f1 athelas mt3 mb1">ios 数字键盘自定义done按钮</h1>
+<time class="f6 mv4 dib tracked" datetime=2013-01-08T11:36:01Z>January 8, 2013</time>
+</header>
+<div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>总体逻辑，监听系统数字键盘的弹出和消失，在系统键盘弹出时，show my self-defined <em>done key</em>,在系统键盘消失时，hide it</p>
+<h2 id=1界面上的操作>1.界面上的操作</h2>
+<ol>
+<li>
+<p>在stroyboard中选中某个按钮，然后option+command+4，调出<em>Attributes inspector</em>,在<em>test field</em>里面的keyboard，得用<strong>Number Pad</strong>，如下图：
+<img src=2013-01-11-9.31.55.png alt=x></p>
+</li>
+<li>
+<p>按住control，把按钮拖到viewcontroller.h文件，选择<em>Connection</em>为<strong>Action</strong>,<em>Event</em>为<strong>Touch Down</strong>,对应的name就自己随意取个名字好了。</p>
+</li>
+</ol>
+<h2 id=2添加代码>2.添加代码</h2>
+<h3 id=响应touch-down事件的代码>响应touch down事件的代码：</h3>
+<pre><code>- (IBAction)NOBut:(id)sender {
+	doneInKeyboardButton.hidden=NO;
+}
+</code></pre>
+<p>这里我的事件的名字是用的NOBut。doneInKeyboardButton就是那个按钮了。接下来我们要添加的是这样两个部分，<strong>1</strong>让这个自定义按钮在numberpad弹出的时候弹出；<strong>2</strong>让这个自定义按钮在numberpad消失的时候也消失。</p>
+<h3 id=注册系统键盘弹出和消失的通知>注册系统键盘弹出和消失的通知</h3>
+<p>在viewDidLoad的函数里添加：</p>
+<pre><code>[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+</code></pre>
+<h3 id=反注册通知>反注册通知</h3>
+<p>在dealloc函数里添加</p>
+<pre><code>[[NSNotificationCenter defaultCenter] removeObserver:self];
+</code></pre>
+<p>在我参考的博客里，人家还写了一句什么[**** release];?</p>
+<p>但是我这个工程好像是用了ARC，自动retain计数？就不用自己管理内存空间了？而且有了那句话还会报错，我就直接把那个super release的代码去掉了。</p>
+<p>恩，接下来我们写<em>handleKeyboardDidShow</em>函数和<em>handleKeyboardWillHide</em>函数，就是让自定义的那个按钮出现和消失的函数。</p>
+<h3 id=弹出该按钮的函数>弹出该按钮的函数</h3>
+<pre><code>- (void)handleKeyboardDidShow:(NSNotification *)notification
+{
+	//如果这个按钮不存在，那就来一个
+	if (doneInKeyboardButton == nil)
+	{	//自定义按钮
+    	doneInKeyboardButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    	//根据不同手机屏幕，把按钮放在不同的位置
+    	CGFloat screenHeight = [[UIScreen mainScreen] bounds].size.height;
+    	if(screenHeight==568.0f){//爱疯5
+        	doneInKeyboardButton.frame = CGRectMake(0, 568 - 53, 106, 53);
+    	}else{//3.5寸
+        	doneInKeyboardButton.frame = CGRectMake(0, 480 - 53, 106, 53);
+    	}
+    
+    	doneInKeyboardButton.adjustsImageWhenHighlighted = NO;
+    	//加载图片，这里引用其他的文章里的内容了：图片直接抠腾讯财付通里面的= =!
+    	[doneInKeyboardButton setImage:[UIImage imageNamed:@&quot;btn_done_up@2x.png&quot;] forState:UIControlStateNormal];
+    	[doneInKeyboardButton setImage:[UIImage imageNamed:@&quot;btn_done_down@2x.png&quot;] forState:UIControlStateHighlighted];
+    	//如果触发了这个按钮的TouchUpInside事件，则开始finishAcion的操作
+    	[doneInKeyboardButton addTarget:self action:@selector(finishAction) forControlEvents:UIControlEventTouchUpInside];
+	}
+	//显示出这个按钮
+	UIWindow* tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:1];
+	//恩，这里这一行代码什么意思，我还没看懂，若有人理解，请在博客下方留言，谢谢
+	if (doneInKeyboardButton.superview == nil)
+	{
+    	[tempWindow addSubview:doneInKeyboardButton];    // 注意这里直接加到window上
+	}
+}
+</code></pre>
+<h3 id=finishaction事件的内容关闭键盘>finishAction事件的内容：关闭键盘</h3>
+<pre><code>-(void)finishAction{
+	[[[UIApplication sharedApplication] keyWindow] endEditing:YES];//关闭键盘
+}
+</code></pre>
+<h3 id=消失该按钮的函数>消失该按钮的函数</h3>
+<pre><code>- (void)handleKeyboardWillHide:(NSNotification *)notification
+{
+	if (doneInKeyboardButton.superview)
+	{
+    	[doneInKeyboardButton removeFromSuperview];
+	}
+}
+</code></pre>
+<h3 id=all-right--the-done-button-is-done>all right , the <strong>Done</strong> Button is done</h3><ul class=pa0>
+<li class=list>
+<a href=/tags/ios class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">ios</a>
+</li>
+<li class=list>
+<a href=/tags/xcode class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">xcode</a>
+</li>
+<li class=list>
+<a href=/tags/numberpad class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">NumberPad</a>
+</li>
+</ul>
+<div class="mt6 instapaper_ignoref">
+</div>
+</div>
+<aside class="w-30-l mt6-l">
+<div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+<p class="f5 b mb3">Related</p>
+<ul class="pa0 list">
+<li class=mb2>
+<a href=/posts/2013/2013-01-06-xcode-will-run-app-on-simulator-but-not-on-device/>xcode调试，在模拟器运行正常，在设备运行失败</a>
+</li>
+</ul>
+</div>
+</aside>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role=contentinfo>
+<div class="flex justify-between">
+<a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://yyq.github.io/>
+&copy; Young Story 2022
+</a>
+<div>
+<div class=ananke-socials>
+</div></div>
+</div>
+</footer>
+</body>
+</html>
