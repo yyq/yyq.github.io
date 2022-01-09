@@ -29,7 +29,7 @@ date: 2015-03-30
 &nbsp;
 
 需要在工程中添加这样一个class：
-{% codeblock lang:java %}
+```
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
  
@@ -91,11 +91,11 @@ public class SslUtils {
     }
 }
 
-{% endcodeblock %}
+```
 
 使用的example：
 
-{% codeblock lang:java %}
+```
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
@@ -144,4 +144,4 @@ public class SslTest {
  
 }
 
-{% endcodeblock %}
+```

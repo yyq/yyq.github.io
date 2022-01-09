@@ -144,7 +144,7 @@ tags: [offer,算法]
  
  * 46题，计算从1加到n，不用乘除法，不能用for while if else switch case等关键字
  * 由于我不大了解C++，所以只关注了函数指针解法，着实巧妙
- 		{% codeblock %}
+```
 		typedef unsigned int (*fun)(unsigned int);
 		unsigned int solution_terminator(unsigned int n){ return 0;}
 		unsigned int sum_solution( unsigned int n)
@@ -152,7 +152,7 @@ tags: [offer,算法]
 			static fun f[2] = { solution3_terminator , sum_solution};
 			return n+f[!!n](n-1);
 		}
-		{% endcodeblock %}
+```
  ---
  
  * 47题，不用加减乘除做加法

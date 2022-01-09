@@ -13,7 +13,7 @@ comments: true
 2. 对for循环或者while 或者递归等，每当自己写完之后，观察边界：初始条件，转化，终止条件
 
 3. 突然想到的代码，到底能不能正常运行：
-		{% codeblock %}
+```
 		#include <stdio.h>
 		int main(int argc, char *argv[]) {
 		int a[3] = {1,2,3};
@@ -29,4 +29,4 @@ comments: true
 	
 		return 0;
 		}
-		{% endcodeblock %}
+```
